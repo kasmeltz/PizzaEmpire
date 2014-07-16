@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.WindowsAzure.Storage.Table;
 
 namespace KS.PizzaEmpire.Business
 {
-   public class GamePlayer
+    public class GamePlayer : TableEntity
     {
+        public string Name { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace KS.PizzaEmpire.Services.Storage
@@ -28,7 +29,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <summary>
         /// Sets the current table.
         /// </summary>
-        /// <param name="TableName"></param>
+        /// <param name="TableName">The name of the table to use.</param>
         /// <returns></returns>
         public async Task SetTable(string tableName)
         {
@@ -37,167 +38,188 @@ namespace KS.PizzaEmpire.Services.Storage
         }
 
         /// <summary>
-        /// Inserts the specified data into the current table.
-        /// </summary>
-        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
-        /// <param name="data">The data.</param>
-        public async Task Insert<T>(T data) where T : TableEntity
-        {
-            TableOperation insertOperation = TableOperation.Insert(data);
-            await Table.ExecuteAsync(insertOperation);
-        }
-
-        /*
-        /// <summary>
-        /// Inserts a list of table entries as a batch.
-        /// </summary>
-        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
-        /// <param name="data">The data.</param>
-        public void InsertBatch<T>(List<T> data) where T : TableEntity
-        {
-            // Create the batch operation.
-            TableBatchOperation batchOperation = new TableBatchOperation();
-
-            // Add both customer entities to the batch insert operation.
-            foreach (TableEntity d in data)
-            {
-                batchOperation.Insert(d);
-            }
-
-            // Execute the batch operation.
-            table.ExecuteBatch(batchOperation);
-        }
-
-        /// <summary>
-        /// Gets all data corresponding to a partition key.
+        /// Gets all of the items in one partition.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="PartitionKey">The partition key.</param>
-        /// <returns>A list of T that has the corresponding partion key</returns>
-        public List<T> GetAll<T>(string PartitionKey) where T : TableEntity
+        /// <returns>An IEnumerable of items in the partition.</returns>
+        public async Task<IEnumerable<T>> GetAll<T>(string partitionKey) where T : TableEntity, new()
         {
-            // Construct the query operation for all customer entities where PartitionKey="Smith".
-            TableQuery<SomeDataItem> query = new TableQuery<SomeDataItem>().Where(
-              TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, PartitionKey));
-
-            List<T> Results = new List<T>();
-            // Print the fields for each customer.
-            foreach (SomeDataItem entity in table.ExecuteQuery(query))
-            {
-                Results.Add(entity as T);
-                //Console.WriteLine("{0}, {1}\t{2}\t{3}", entity.PartitionKey, entity.RowKey,
-                //    entity.Email, entity.PhoneNumber);
-            }
-            return Results;
+            TableQuery<T> query = new TableQuery<T>().Where(
+                TableQuery.GenerateFilterCondition(
+                    "PartitionKey", QueryComparisons.Equal, partitionKey));
+            return await Table.ExecuteQueryAsync<T>(query);
         }
 
         /// <summary>
-        /// Gets the single.
+        /// Gets a single item from the table.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
-        /// <param name="PartitionKey">The partition key.</param>
-        /// <param name="RowKey">The row key.</param>
+        /// <param name="partitionKey">The partition key.</param>
+        /// <param name="rowKey">The row key.</param>
         /// <returns></returns>
-        public T GetSingle<T>(string PartitionKey, string RowKey) where T : TableEntity
+        public async Task<T> Get<T>(string partitionKey, string rowKey) where T : TableEntity
         {
-
-            // Create a retrieve operation that takes a customer entity.
-            TableOperation retrieveOperation = TableOperation.Retrieve<T>(PartitionKey, RowKey);
-
-            // Execute the retrieve operation.
-            TableResult retrievedResult = table.Execute(retrieveOperation);
-
-            T result = null;
-            // Print the phone number of the result.
-            if (retrievedResult.Result != null)
-            {
-                result = retrievedResult.Result as T;
-            }
-            return result;
+            TableOperation operation = TableOperation.Retrieve<T>(partitionKey, rowKey);
+            TableResult results = await Table.ExecuteAsync(operation);
+            return results.Result as T;
         }
 
         /// <summary>
-        /// Replaces the specified partition key.
+        /// Inserts the specified item into the current table.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
-        /// <param name="PartitionKey">The partition key.</param>
-        /// <param name="RowKey">The row key.</param>
-        /// <param name="ReplacementData">The replacement data.</param>
-        /// <param name="InsertOrReplace">The insert O replace.</param>
-        public void Replace<T>(string PartitionKey, string RowKey,
-               T ReplacementData, Boolean InsertOrReplace) where T : TableEntity
+        /// <param name="item">The item to insert.</param>
+        public async Task Insert<T>(T item) where T : TableEntity
         {
-            // Create a retrieve operation that takes a customer entity.
-            TableOperation retrieveOperation = TableOperation.Retrieve<T>(PartitionKey, RowKey);
-
-            // Execute the operation.
-            TableResult retrievedResult = table.Execute(retrieveOperation);
-
-            // Assign the result to a CustomerEntity object.
-            T updateEntity = retrievedResult.Result as T;
-
-            if (updateEntity != null)
-            {
-                ReplacementData.PartitionKey = updateEntity.PartitionKey;
-                ReplacementData.RowKey = updateEntity.RowKey;
-
-                // Create the InsertOrReplace TableOperation
-                TableOperation updateOperation;
-                if (InsertOrReplace)
-                {
-                    updateOperation = TableOperation.InsertOrReplace(ReplacementData);
-                }
-                else
-                {
-                    updateOperation = TableOperation.Replace(ReplacementData);
-                }
-
-                // Execute the operation.
-                table.Execute(updateOperation);
-
-                Console.WriteLine("Entity updated.");
-            }
-
-            else
-                Console.WriteLine("Entity could not be retrieved.");
+            TableOperation operation = TableOperation.Insert(item);
+            await Table.ExecuteAsync(operation);
         }
 
         /// <summary>
-        /// Deletes the entry.
+        /// Inserts a list of items into the current table.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
-        /// <param name="PartitionKey">The partition key.</param>
-        /// <param name="RowKey">The row key.</param>
-        /// <param name="ReplacementData">The replacement data.</param>
-        public void DeleteEntry<T>(string PartitionKey, string RowKey, T ReplacementData) where T : TableEntity
+        /// <param name="items">The items to insert.</param>
+        public async Task Insert<T>(IEnumerable<T> items) where T : TableEntity
         {
-
-            // Create a retrieve operation that expects a customer entity.
-            TableOperation retrieveOperation = TableOperation.Retrieve<T>(PartitionKey, RowKey);
-
-            // Execute the operation.
-            TableResult retrievedResult = table.Execute(retrieveOperation);
-
-            // Assign the result to a CustomerEntity.
-            T deleteEntity = retrievedResult.Result as T;
-
-            // Create the Delete TableOperation.
-            if (deleteEntity != null)
+            TableBatchOperation operation = new TableBatchOperation();
+            foreach (TableEntity item in items)
             {
-                TableOperation deleteOperation = TableOperation.Delete(deleteEntity);
-
-                // Execute the operation.
-                table.Execute(deleteOperation);
-
-                Console.WriteLine("Entity deleted.");
+                operation.Insert(item);
             }
-
-            else
-                Console.WriteLine("Could not retrieve the entity.");
-
+            await Table.ExecuteBatchAsync(operation);
         }
 
-         * */
+        /// <summary>
+        /// Replaces the specified item into the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="item">The item to replace.</param>
+        public async Task Replace<T>(T item) where T : TableEntity
+        {
+            TableOperation operation = TableOperation.Replace(item);
+            await Table.ExecuteAsync(operation);
+        }
+
+        /// <summary>
+        /// Replaces a list of items into the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="items">The items to replace.</param>
+        public async Task Replace<T>(IEnumerable<T> items) where T : TableEntity
+        {
+            TableBatchOperation operation = new TableBatchOperation();
+            foreach (TableEntity item in items)
+            {
+                operation.Replace(item);
+            }
+            await Table.ExecuteBatchAsync(operation);
+        }
+       
+        /// <summary>
+        /// Merges the specified item into the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="item">The item to merge.</param>
+        public async Task Merge<T>(T item) where T : TableEntity
+        {
+            TableOperation operation = TableOperation.Merge(item);
+            await Table.ExecuteAsync(operation);
+        }
+
+        /// <summary>
+        /// Merges a list of items into the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="item">The items to merge.</param>
+        public async Task Merge<T>(IEnumerable<T> items) where T : TableEntity
+        {
+            TableBatchOperation operation = new TableBatchOperation();
+            foreach (TableEntity item in items)
+            {
+                operation.Merge(item);
+            }
+            await Table.ExecuteBatchAsync(operation);
+        }
+
+        /// <summary>
+        /// Inserts or Replaces the specified item into the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="item">The item to insert or replace.</param>
+        public async Task InsertOrReplace<T>(T item) where T : TableEntity
+        {
+            TableOperation operation = TableOperation.InsertOrReplace(item);
+            await Table.ExecuteAsync(operation);
+        }
+
+        /// <summary>
+        /// Inserts or Replaces a list of items into the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="items">The items to insert or replace.</param>
+        public async Task InsertOrReplace<T>(IEnumerable<T> items) where T : TableEntity
+        {
+            TableBatchOperation operation = new TableBatchOperation();
+            foreach (TableEntity item in items)
+            {
+                operation.InsertOrReplace(item);
+            }
+            await Table.ExecuteBatchAsync(operation);
+        }
+
+        /// <summary>
+        /// Inserts or Merges the specified item into the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="item">The item to insert or merge.</param>
+        public async Task InsertOrMerge<T>(T item) where T : TableEntity
+        {
+            TableOperation operation = TableOperation.InsertOrMerge(item);
+            await Table.ExecuteAsync(operation);
+        }
+
+        /// <summary>
+        /// Inserts or Merges a list of items into the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="items">The items to insert or merge.</param>
+        public async Task InsertOrMerge<T>(IEnumerable<T> items) where T : TableEntity
+        {
+            TableBatchOperation operation = new TableBatchOperation();
+            foreach (TableEntity item in items)
+            {
+                operation.InsertOrMerge(item);
+            }
+            await Table.ExecuteBatchAsync(operation);
+        }
+
+        /// <summary>
+        /// Deletes the specified item from the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="item">The item to delete.</param>
+        public async Task Delete<T>(T item) where T : TableEntity
+        {
+            TableOperation operation = TableOperation.Delete(item);
+            await Table.ExecuteAsync(operation);
+        }
+
+        /// <summary>
+        /// Deletes a list of items from the current table.
+        /// </summary>
+        /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
+        /// <param name="item">The items to delete.</param>
+        public async Task Delete<T>(IEnumerable<T> items) where T : TableEntity
+        {
+            TableBatchOperation operation = new TableBatchOperation();
+            foreach (TableEntity item in items)
+            {
+                operation.Delete(item);
+            }
+            await Table.ExecuteBatchAsync(operation);
+        }
 
         /// <summary>
         /// Deletes the current table.

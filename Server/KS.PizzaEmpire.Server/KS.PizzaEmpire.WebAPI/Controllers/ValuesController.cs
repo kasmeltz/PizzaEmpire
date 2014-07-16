@@ -1,18 +1,18 @@
-﻿using KS.PizzaEmpire.Services.Storage;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace KS.PizzaEmpire.WebAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ValuesController : ApiController
     {
         // GET api/values
-        public async Task<IEnumerable<string>> Get()
+        public IEnumerable<string> Get()
         {
-            AzureTableStorage storage = new AzureTableStorage();
-            await storage.SetTable("players");
             return new string[] { "value1", "value2" };
         }
 

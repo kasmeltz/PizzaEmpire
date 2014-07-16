@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.Services", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.Business", "KS.PizzaEmpire.Business\KS.PizzaEmpire.Business.csproj", "{4DA809FD-8D3C-470F-8608-04DA00F89554}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.Services.Test", "KS.PizzaEmpire.Services.Test\KS.PizzaEmpire.Services.Test.csproj", "{89C97F22-9093-408A-90AA-F4235FDA4E9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{4DA809FD-8D3C-470F-8608-04DA00F89554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DA809FD-8D3C-470F-8608-04DA00F89554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DA809FD-8D3C-470F-8608-04DA00F89554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C97F22-9093-408A-90AA-F4235FDA4E9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C97F22-9093-408A-90AA-F4235FDA4E9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C97F22-9093-408A-90AA-F4235FDA4E9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C97F22-9093-408A-90AA-F4235FDA4E9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
