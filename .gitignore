@@ -188,3 +188,10 @@ $RECYCLE.BIN/
 /Server/KS.PizzaEmpire.Server/packages/Owin.1.0
 /Server/KS.PizzaEmpire.Server/packages/Respond.1.2.0
 /Server/KS.PizzaEmpire.Server/packages/WebGrease.1.5.2
+/Server/KS.PizzaEmpire.Server/packages/Microsoft.Data.Edm.5.6.0
+/Server/KS.PizzaEmpire.Server/packages/Microsoft.Data.OData.5.6.0
+/Server/KS.PizzaEmpire.Server/packages/Microsoft.Data.Services.Client.5.6.0
+/Server/KS.PizzaEmpire.Server/packages/Microsoft.WindowsAzure.ConfigurationManager.1.8.0.0
+/Server/KS.PizzaEmpire.Server/packages/Newtonsoft.Json.5.0.8
+/Server/KS.PizzaEmpire.Server/packages/System.Spatial.5.6.0
+/Server/KS.PizzaEmpire.Server/packages/WindowsAzure.Storage.4.1.0
