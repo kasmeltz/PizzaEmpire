@@ -31,14 +31,15 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await storage.SetTable("players");
             await storage.Insert<GamePlayer>(new GamePlayer
             { 
-                PartitionKey = "K", RowKey = "Kevin", Name = "Kevin"
+                RowKey = "Kevin", 
+                Name = "Kevin"
             });
 
             // Act
-            GamePlayer player = await storage.Get<GamePlayer>("K", "Kevin");
+            GamePlayer player = await storage.Get<GamePlayer>("Ke", "Kevin");
 
             // Assert
-            Assert.AreEqual("K", player.PartitionKey);
+            Assert.AreEqual("Ke", player.PartitionKey);
             Assert.AreEqual("Kevin", player.RowKey);
             Assert.AreEqual("Kevin", player.Name);
         }
@@ -51,28 +52,25 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await storage.SetTable("players");
             await storage.Insert<GamePlayer>(new GamePlayer
             {
-                PartitionKey = "K",
                 RowKey = "Kevin",
                 Name = "Kevin"
             });
             await storage.Insert<GamePlayer>(new GamePlayer
             {
-                PartitionKey = "K",
                 RowKey = "Karen",
                 Name = "Karen"
             });
             await storage.Insert<GamePlayer>(new GamePlayer
             {
-                PartitionKey = "K",
                 RowKey = "Kathy",
                 Name = "Kathy"
             });
 
             // Act
-            List<GamePlayer> players = (await storage.GetAll<GamePlayer>("K")).ToList();
+            List<GamePlayer> players = (await storage.GetAll<GamePlayer>("Ka")).ToList();
 
             // Assert
-            Assert.AreEqual(players.Count, 3);
+            Assert.AreEqual(players.Count, 2);
 
             Dictionary<string, bool> ps = new Dictionary<string, bool>();
             foreach (GamePlayer pl in players)
@@ -80,7 +78,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
                 ps[pl.Name] = true;
             }
 
-            Assert.IsTrue(ps.ContainsKey("Kevin"));
             Assert.IsTrue(ps.ContainsKey("Karen"));
             Assert.IsTrue(ps.ContainsKey("Kathy"));
         }
