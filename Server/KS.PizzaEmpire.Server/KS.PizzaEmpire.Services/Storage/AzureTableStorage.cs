@@ -2,6 +2,7 @@
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace KS.PizzaEmpire.Services.Storage
 {
@@ -18,11 +19,10 @@ namespace KS.PizzaEmpire.Services.Storage
         /// Initializes a new instance of the <see cref="AzureTableStorage"/> class.
         /// </summary>
         /// <param name="TableName">Name of the table.</param>
-        public AzureTableStorage()
+        public AzureTableStorage(string connection)
         {
             StorageAccount = CloudStorageAccount.Parse(
                     "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1;");
-            //CloudConfigurationManager.GetSetting("StorageConnectionString"));
             TableClient = StorageAccount.CreateCloudTableClient();
         }
 
@@ -84,11 +84,15 @@ namespace KS.PizzaEmpire.Services.Storage
         public async Task Insert<T>(IEnumerable<T> items) where T : TableEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
-            foreach (TableEntity item in items)
+            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
             {
-                operation.Insert(item);
+                operation.Clear();
+                foreach (TableEntity item in batch)
+                {
+                    operation.Insert(item);
+                }
+                await Table.ExecuteBatchAsync(operation);
             }
-            await Table.ExecuteBatchAsync(operation);
         }
 
         /// <summary>
@@ -98,7 +102,8 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="item">The item to replace.</param>
         public async Task Replace<T>(T item) where T : TableEntity
         {
-            TableOperation operation = TableOperation.Replace(item);
+            item.ETag = "*";
+            TableOperation operation = TableOperation.Replace(item);            
             await Table.ExecuteAsync(operation);
         }
 
@@ -110,11 +115,16 @@ namespace KS.PizzaEmpire.Services.Storage
         public async Task Replace<T>(IEnumerable<T> items) where T : TableEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
-            foreach (TableEntity item in items)
+            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
             {
-                operation.Replace(item);
+                operation.Clear();
+                foreach (TableEntity item in batch)
+                {
+                    item.ETag = "*";
+                    operation.Replace(item);
+                }
+                await Table.ExecuteBatchAsync(operation);
             }
-            await Table.ExecuteBatchAsync(operation);
         }
        
         /// <summary>
@@ -124,7 +134,8 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="item">The item to merge.</param>
         public async Task Merge<T>(T item) where T : TableEntity
         {
-            TableOperation operation = TableOperation.Merge(item);
+            item.ETag = "*";
+            TableOperation operation = TableOperation.Merge(item);            
             await Table.ExecuteAsync(operation);
         }
 
@@ -136,11 +147,16 @@ namespace KS.PizzaEmpire.Services.Storage
         public async Task Merge<T>(IEnumerable<T> items) where T : TableEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
-            foreach (TableEntity item in items)
+            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
             {
-                operation.Merge(item);
+                operation.Clear();
+                foreach (TableEntity item in batch)
+                {
+                    item.ETag = "*";
+                    operation.Merge(item);
+                }
+                await Table.ExecuteBatchAsync(operation);
             }
-            await Table.ExecuteBatchAsync(operation);
         }
 
         /// <summary>
@@ -162,11 +178,15 @@ namespace KS.PizzaEmpire.Services.Storage
         public async Task InsertOrReplace<T>(IEnumerable<T> items) where T : TableEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
-            foreach (TableEntity item in items)
+            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
             {
-                operation.InsertOrReplace(item);
+                operation.Clear();
+                foreach (TableEntity item in batch)
+                {
+                    operation.InsertOrReplace(item);
+                }
+                await Table.ExecuteBatchAsync(operation);
             }
-            await Table.ExecuteBatchAsync(operation);
         }
 
         /// <summary>
@@ -188,11 +208,15 @@ namespace KS.PizzaEmpire.Services.Storage
         public async Task InsertOrMerge<T>(IEnumerable<T> items) where T : TableEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
-            foreach (TableEntity item in items)
+            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
             {
-                operation.InsertOrMerge(item);
+                operation.Clear();
+                foreach (TableEntity item in batch)
+                {
+                    operation.InsertOrMerge(item);
+                }
+                await Table.ExecuteBatchAsync(operation);
             }
-            await Table.ExecuteBatchAsync(operation);
         }
 
         /// <summary>
@@ -202,6 +226,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="item">The item to delete.</param>
         public async Task Delete<T>(T item) where T : TableEntity
         {
+            item.ETag = "*";
             TableOperation operation = TableOperation.Delete(item);
             await Table.ExecuteAsync(operation);
         }
@@ -214,11 +239,16 @@ namespace KS.PizzaEmpire.Services.Storage
         public async Task Delete<T>(IEnumerable<T> items) where T : TableEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
-            foreach (TableEntity item in items)
+            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
             {
-                operation.Delete(item);
+                operation.Clear();
+                foreach (TableEntity item in batch)
+                {
+                    item.ETag = "*";
+                    operation.Delete(item);
+                }
+                await Table.ExecuteBatchAsync(operation);
             }
-            await Table.ExecuteBatchAsync(operation);
         }
 
         /// <summary>
