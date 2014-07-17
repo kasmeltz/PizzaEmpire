@@ -1,4 +1,5 @@
-﻿using KS.PizzaEmpire.Services.Serialization;
+﻿using KS.PizzaEmpire.Business.Cache;
+using KS.PizzaEmpire.Services.Serialization;
 using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
@@ -74,7 +75,7 @@ namespace KS.PizzaEmpire.Services.Caching
         /// <typeparam name="T">The data type of the item that is stored in the cache.</typeparam>
         /// <param name="key">The key of the item in the cache.</param>
         /// <returns>The item from the cache.</returns>
-        public async Task<T> Get<T>(string key, CommandFlags flags = CommandFlags.None)
+        public async Task<T> Get<T>(string key, CommandFlags flags = CommandFlags.None) where T : ICacheEntity
         {            
             IDatabase cache = Connection.GetDatabase();
             RedisValue value = await cache.StringGetAsync(key, flags);
@@ -90,8 +91,8 @@ namespace KS.PizzaEmpire.Services.Caching
         /// </summary>
         /// <param name="key">The key of the item in the cache.</param>
         /// <param name="value">The item tio store</param>
-        public async Task Set(string key, object value, 
-            TimeSpan ts, When when = When.Always, CommandFlags flags = CommandFlags.None)
+        public async Task Set<T>(string key, T value,
+            TimeSpan ts, When when = When.Always, CommandFlags flags = CommandFlags.None) where T : ICacheEntity
         {
             IDatabase cache = Connection.GetDatabase();
             await cache.StringSetAsync(key, CacheSerializer.Serialize(value), ts, when, flags);
@@ -102,7 +103,7 @@ namespace KS.PizzaEmpire.Services.Caching
         /// </summary>
         /// <param name="key">The key to remove</param>
         /// <returns></returns>
-        public async Task Delete(string key, CommandFlags flags = CommandFlags.None)
+        public async Task Delete<T>(string key, CommandFlags flags = CommandFlags.None)where T : ICacheEntity
         {
             IDatabase cache = Connection.GetDatabase();
             if (await cache.KeyExistsAsync(key))

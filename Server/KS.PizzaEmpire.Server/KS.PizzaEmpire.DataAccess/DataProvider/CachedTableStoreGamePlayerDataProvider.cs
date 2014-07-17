@@ -1,4 +1,6 @@
 ﻿using KS.PizzaEmpire.Business;
+using KS.PizzaEmpire.Business.Logic;
+using KS.PizzaEmpire.Business.TableStorage;
 using KS.PizzaEmpire.Services.Caching;
 using KS.PizzaEmpire.Services.Storage;
 using System;
@@ -23,6 +25,7 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
         /// game player</returns>
         public async Task<GamePlayer> Get(string key)
         {
+            /*
             string cacheKey = "GP" + key;
             GamePlayer player = await RedisCache.Instance.Get<GamePlayer>(cacheKey);
             if (player == null)
@@ -31,7 +34,7 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
                         new AzureTableStorage(
                             "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1;");
                 await storage.SetTable("GamePlayer");
-                player = await storage.Get<GamePlayer>(GamePlayer.AutoPartitionKey(key), key);                
+                player = await storage.Get<GamePlayer>(GamePlayerTableStorage.AutoPartitionKey(key), key);                
                 if (player == null)
                 {
                     return null;
@@ -40,6 +43,9 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
             }
 
             return player;
+            */
+
+            return null;
         }
 
         /// <summary>
@@ -49,8 +55,10 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
         /// <returns>This is an async method</returns>
         public async Task Save(GamePlayer player)
         {
+            /*
             string cacheKey = "GP" + player.UniqueKey;
             await RedisCache.Instance.Set(cacheKey, player, TimeSpan.FromHours(6));
+             */
         }
 
         /// <summary>
@@ -61,6 +69,7 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
         /// <returns>This is an async method</returns>
         public async Task SetInactive(GamePlayer player)
         {
+            /*
             string cacheKey = "GP" + player.UniqueKey;
             AzureTableStorage storage =
                        new AzureTableStorage(
@@ -68,6 +77,7 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
             await storage.SetTable("GamePlayer");
             await storage.InsertOrReplace(player);
             await RedisCache.Instance.Delete(cacheKey);
+             * */
         }
     }
 }

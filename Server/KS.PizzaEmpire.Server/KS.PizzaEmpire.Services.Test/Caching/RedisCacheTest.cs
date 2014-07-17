@@ -1,7 +1,7 @@
-﻿using KS.PizzaEmpire.Services.Caching;
+﻿using KS.PizzaEmpire.Business.Cache;
+using KS.PizzaEmpire.Services.Caching;
 using KS.PizzaEmpire.Services.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage.Table;
 using ProtoBuf;
 using System;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace KS.PizzaEmpire.Services.Test.Caching
     /// </summary>
     [Serializable]
     [ProtoContract]
-    public class RedisCacheTestEntity : TableEntity
+    public class RedisCacheTestEntity : ICacheEntity
     {
         [ProtoMember(1)]
         public string Name { get; set; }
@@ -37,14 +37,14 @@ namespace KS.PizzaEmpire.Services.Test.Caching
             RedisCache.Instance.CacheSerializer = new ProtoBufSerializer();
 
             // Act
-            await RedisCache.Instance.Set("key1", entity, TimeSpan.FromMinutes(5));
+            await RedisCache.Instance.Set<RedisCacheTestEntity>("key1", entity, TimeSpan.FromMinutes(5));
             RedisCacheTestEntity otherEntity = await RedisCache.Instance.Get<RedisCacheTestEntity>("key1");
 
             // Assert
             Assert.AreEqual(entity.Name, otherEntity.Name);
             Assert.AreEqual(entity.Number, otherEntity.Number);
 
-            await RedisCache.Instance.Delete("key1");
+            await RedisCache.Instance.Delete<RedisCacheTestEntity>("key1");
             otherEntity = await RedisCache.Instance.Get<RedisCacheTestEntity>("key1");
             
             Assert.IsNull(otherEntity);

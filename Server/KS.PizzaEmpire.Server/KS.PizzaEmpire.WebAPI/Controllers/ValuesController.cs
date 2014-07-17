@@ -1,10 +1,6 @@
-﻿using KS.PizzaEmpire.Business;
+﻿using KS.PizzaEmpire.Business.Logic;
 using KS.PizzaEmpire.DataAccess.DataProvider;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -27,7 +23,7 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
 
             await provider.Save(player);
 
-            return new string[] { player.ETag, player.PartitionKey, player.RowKey, player.UniqueKey };
+            return new string[] { player.UniqueKey };
         }
 
         // GET api/values/5

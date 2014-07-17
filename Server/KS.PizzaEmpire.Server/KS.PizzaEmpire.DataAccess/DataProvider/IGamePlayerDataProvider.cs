@@ -1,8 +1,4 @@
-﻿using KS.PizzaEmpire.Business;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using KS.PizzaEmpire.Business.Logic;
 using System.Threading.Tasks;
 
 namespace KS.PizzaEmpire.DataAccess.DataProvider

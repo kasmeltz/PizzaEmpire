@@ -1,4 +1,5 @@
-﻿using KS.PizzaEmpire.Services.Storage;
+﻿using KS.PizzaEmpire.Business.TableStorage;
+using KS.PizzaEmpire.Services.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace KS.PizzaEmpire.Services.Test.Storage
     /// Simple data class that will be used to test the
     /// AzureTableStorage class.
     /// </summary>
-    public class AzureTableStorageTestEntity : TableEntity
+    public class AzureTableStorageTestEntity : TableEntity, ITableStorageEntity
     {
         private string _name;
         public string Name

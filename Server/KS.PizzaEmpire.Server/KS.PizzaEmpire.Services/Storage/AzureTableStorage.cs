@@ -1,8 +1,9 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using KS.PizzaEmpire.Business.TableStorage;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace KS.PizzaEmpire.Services.Storage
 {
@@ -42,7 +43,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="PartitionKey">The partition key.</param>
         /// <returns>An IEnumerable of items in the partition.</returns>
-        public async Task<IEnumerable<T>> GetAll<T>(string partitionKey) where T : TableEntity, new()
+        public async Task<IEnumerable<T>> GetAll<T>(string partitionKey) where T : TableEntity, ITableStorageEntity, new()
         {
             TableQuery<T> query = new TableQuery<T>().Where(
                 TableQuery.GenerateFilterCondition(
@@ -57,7 +58,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="partitionKey">The partition key.</param>
         /// <param name="rowKey">The row key.</param>
         /// <returns></returns>
-        public async Task<T> Get<T>(string partitionKey, string rowKey) where T : TableEntity
+        public async Task<T> Get<T>(string partitionKey, string rowKey) where T : TableEntity, ITableStorageEntity
         {
             TableOperation operation = TableOperation.Retrieve<T>(partitionKey, rowKey);
             TableResult results = await Table.ExecuteAsync(operation);
@@ -69,7 +70,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The item to insert.</param>
-        public async Task Insert<T>(T item) where T : TableEntity
+        public async Task Insert<T>(T item) where T : TableEntity, ITableStorageEntity
         {
             TableOperation operation = TableOperation.Insert(item);
             await Table.ExecuteAsync(operation);
@@ -80,7 +81,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="items">The items to insert.</param>
-        public async Task Insert<T>(IEnumerable<T> items) where T : TableEntity
+        public async Task Insert<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
             foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
@@ -99,7 +100,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The item to replace.</param>
-        public async Task Replace<T>(T item) where T : TableEntity
+        public async Task Replace<T>(T item) where T : TableEntity, ITableStorageEntity
         {
             item.ETag = "*";
             TableOperation operation = TableOperation.Replace(item);            
@@ -111,7 +112,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="items">The items to replace.</param>
-        public async Task Replace<T>(IEnumerable<T> items) where T : TableEntity
+        public async Task Replace<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
             foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
@@ -131,7 +132,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The item to merge.</param>
-        public async Task Merge<T>(T item) where T : TableEntity
+        public async Task Merge<T>(T item) where T : TableEntity, ITableStorageEntity
         {
             item.ETag = "*";
             TableOperation operation = TableOperation.Merge(item);            
@@ -143,7 +144,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The items to merge.</param>
-        public async Task Merge<T>(IEnumerable<T> items) where T : TableEntity
+        public async Task Merge<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
             foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
@@ -163,7 +164,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The item to insert or replace.</param>
-        public async Task InsertOrReplace<T>(T item) where T : TableEntity
+        public async Task InsertOrReplace<T>(T item) where T : TableEntity, ITableStorageEntity
         {
             TableOperation operation = TableOperation.InsertOrReplace(item);
             await Table.ExecuteAsync(operation);
@@ -174,7 +175,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="items">The items to insert or replace.</param>
-        public async Task InsertOrReplace<T>(IEnumerable<T> items) where T : TableEntity
+        public async Task InsertOrReplace<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
             foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
@@ -193,7 +194,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The item to insert or merge.</param>
-        public async Task InsertOrMerge<T>(T item) where T : TableEntity
+        public async Task InsertOrMerge<T>(T item) where T : TableEntity, ITableStorageEntity
         {
             TableOperation operation = TableOperation.InsertOrMerge(item);
             await Table.ExecuteAsync(operation);
@@ -204,7 +205,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="items">The items to insert or merge.</param>
-        public async Task InsertOrMerge<T>(IEnumerable<T> items) where T : TableEntity
+        public async Task InsertOrMerge<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
             foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
@@ -223,7 +224,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The item to delete.</param>
-        public async Task Delete<T>(T item) where T : TableEntity
+        public async Task Delete<T>(T item) where T : TableEntity, ITableStorageEntity
         {
             item.ETag = "*";
             TableOperation operation = TableOperation.Delete(item);
@@ -235,7 +236,7 @@ namespace KS.PizzaEmpire.Services.Storage
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The items to delete.</param>
-        public async Task Delete<T>(IEnumerable<T> items) where T : TableEntity
+        public async Task Delete<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
             TableBatchOperation operation = new TableBatchOperation();
             foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
