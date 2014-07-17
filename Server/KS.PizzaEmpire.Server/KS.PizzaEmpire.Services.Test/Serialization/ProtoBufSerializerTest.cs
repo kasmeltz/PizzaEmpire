@@ -1,5 +1,6 @@
 ﻿using KS.PizzaEmpire.Services.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Storage.Table;
 using ProtoBuf;
 
 namespace KS.PizzaEmpire.Services.Test.Serialization
@@ -9,7 +10,7 @@ namespace KS.PizzaEmpire.Services.Test.Serialization
     /// ProtoBufSerializer class.
     /// </summary>
     [ProtoContract]
-    public class ProtoBufSerializerTestEntity
+    public class ProtoBufSerializerTestEntity : TableEntity
     {
         [ProtoMember(1)]
         public string Name { get; set; }
@@ -28,6 +29,8 @@ namespace KS.PizzaEmpire.Services.Test.Serialization
         {
             // Arrange
             ProtoBufSerializerTestEntity entity = new ProtoBufSerializerTestEntity{
+                PartitionKey = "KE",
+                RowKey = "Hello",
                 Name = "Kevin",
                 Number = 5
             };

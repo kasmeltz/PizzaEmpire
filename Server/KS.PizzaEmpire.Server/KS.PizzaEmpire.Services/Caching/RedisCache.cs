@@ -77,7 +77,12 @@ namespace KS.PizzaEmpire.Services.Caching
         public async Task<T> Get<T>(string key, CommandFlags flags = CommandFlags.None)
         {            
             IDatabase cache = Connection.GetDatabase();
-            return CacheSerializer.Deserialize<T>(await cache.StringGetAsync(key, flags));
+            RedisValue value = await cache.StringGetAsync(key, flags);
+            if (value.IsNullOrEmpty)
+            {
+                return default(T);
+            }
+            return CacheSerializer.Deserialize<T>(value);
         }
        
         /// <summary>
@@ -90,6 +95,20 @@ namespace KS.PizzaEmpire.Services.Caching
         {
             IDatabase cache = Connection.GetDatabase();
             await cache.StringSetAsync(key, CacheSerializer.Serialize(value), ts, when, flags);
-        }        
+        }
+
+        /// <summary>
+        /// Removes the key from the cache.
+        /// </summary>
+        /// <param name="key">The key to remove</param>
+        /// <returns></returns>
+        public async Task Delete(string key, CommandFlags flags = CommandFlags.None)
+        {
+            IDatabase cache = Connection.GetDatabase();
+            if (await cache.KeyExistsAsync(key))
+            {
+                await cache.KeyDeleteAsync(key);
+            }
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KS.PizzaEmpire.Services.Caching;
+using KS.PizzaEmpire.Services.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +15,9 @@ namespace KS.PizzaEmpire.WebAPI
     {
         protected void Application_Start()
         {
+            RedisCache.Instance.ConnectionString = "localhost,6379";
+            RedisCache.Instance.CacheSerializer = new ProtoBufSerializer();
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

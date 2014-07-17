@@ -19,10 +19,9 @@ namespace KS.PizzaEmpire.Services.Storage
         /// Initializes a new instance of the <see cref="AzureTableStorage"/> class.
         /// </summary>
         /// <param name="TableName">Name of the table.</param>
-        public AzureTableStorage(string connection)
+        public AzureTableStorage(string connectionString)
         {
-            StorageAccount = CloudStorageAccount.Parse(
-                    "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1;");
+            StorageAccount = CloudStorageAccount.Parse(connectionString);
             TableClient = StorageAccount.CreateCloudTableClient();
         }
 

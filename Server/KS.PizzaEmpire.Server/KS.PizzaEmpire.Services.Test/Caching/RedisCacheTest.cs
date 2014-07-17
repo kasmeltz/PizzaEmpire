@@ -1,5 +1,8 @@
 ﻿using KS.PizzaEmpire.Services.Caching;
+using KS.PizzaEmpire.Services.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Storage.Table;
+using ProtoBuf;
 using System;
 using System.Threading.Tasks;
 
@@ -9,9 +12,12 @@ namespace KS.PizzaEmpire.Services.Test.Caching
     /// RedisCache class.
     /// </summary>
     [Serializable]
-    public class RedisCacheTestEntity
+    [ProtoContract]
+    public class RedisCacheTestEntity : TableEntity
     {
+        [ProtoMember(1)]
         public string Name { get; set; }
+        [ProtoMember(2)]
         public int? Number { get; set; }
     }
    
@@ -27,7 +33,8 @@ namespace KS.PizzaEmpire.Services.Test.Caching
                 Name = "Kevin",
                 Number = 5
             };
-            RedisCache.Instance.ConnectionString = "localhost,6379";
+            RedisCache.Instance.ConnectionString = "localhost:6379";
+            RedisCache.Instance.CacheSerializer = new ProtoBufSerializer();
 
             // Act
             await RedisCache.Instance.Set("key1", entity, TimeSpan.FromMinutes(5));
@@ -36,6 +43,11 @@ namespace KS.PizzaEmpire.Services.Test.Caching
             // Assert
             Assert.AreEqual(entity.Name, otherEntity.Name);
             Assert.AreEqual(entity.Number, otherEntity.Number);
+
+            await RedisCache.Instance.Delete("key1");
+            otherEntity = await RedisCache.Instance.Get<RedisCacheTestEntity>("key1");
+            
+            Assert.IsNull(otherEntity);
         }
     }
 }

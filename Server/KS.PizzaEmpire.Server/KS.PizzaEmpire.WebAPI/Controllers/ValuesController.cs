@@ -1,19 +1,33 @@
-﻿using System;
+﻿using KS.PizzaEmpire.Business;
+using KS.PizzaEmpire.DataAccess.DataProvider;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace KS.PizzaEmpire.WebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ValuesController : ApiController
     {
         // GET api/values
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            IGamePlayerDataProvider provider = new CachedTableStoreGamePlayerDataProvider();
+
+            GamePlayer player = await provider.Get("KevinSmeltzer");
+
+            if (player == null)
+            {
+                player = new GamePlayer { UniqueKey = "KevinSmeltzer" };
+            }
+
+            await provider.Save(player);
+
+            return new string[] { player.ETag, player.PartitionKey, player.RowKey, player.UniqueKey };
         }
 
         // GET api/values/5
