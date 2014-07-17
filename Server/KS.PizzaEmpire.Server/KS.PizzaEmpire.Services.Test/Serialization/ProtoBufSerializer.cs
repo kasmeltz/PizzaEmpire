@@ -5,8 +5,8 @@ using ProtoBuf;
 namespace KS.PizzaEmpire.Services.Test.Serialization
 {
     /// <summary>
-    /// Simple ProtoBufSerializer class that will be used to test the
-    /// AzureTableStorage class.
+    /// Simple data class that will be used to test the
+    /// ProtoBufSerializer class.
     /// </summary>
     [ProtoContract]
     public class ProtoBufSerializerTestEntity

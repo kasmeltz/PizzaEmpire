@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace KS.PizzaEmpire.Services.Test.Serialization
 {
     /// <summary>
-    /// Simple ProtoBufSerializer class that will be used to test the
+    /// Simple data class that will be used to test the
     /// BinaryFormatSerializer class.
     /// </summary>
     [Serializable]

@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caching\AzureRedisCache.cs" />
+    <Compile Include="Caching\RedisCache.cs" />
     <Compile Include="Serialization\BinaryFormatSerializer.cs" />
     <Compile Include="Serialization\ICacheSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
