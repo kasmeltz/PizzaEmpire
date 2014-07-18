@@ -67,7 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProvider\CachedTableStoreGamePlayerDataProvider.cs" />
+    <Compile Include="DataProvider\ConfigurableGamePlayerDataProvider.cs" />
     <Compile Include="DataProvider\IGamePlayerDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

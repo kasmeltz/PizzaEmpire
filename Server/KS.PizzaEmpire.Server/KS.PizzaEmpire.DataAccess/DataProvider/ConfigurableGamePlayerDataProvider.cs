@@ -15,7 +15,7 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
     /// Represents an item that will provide persistant data about
     /// a player of the game using a combination of caching and table storage.
     /// </summary>
-    public class CachedTableStoreGamePlayerDataProvider : IGamePlayerDataProvider
+    public class ConfigurableGamePlayerDataProvider : IGamePlayerDataProvider
     {
         /// <summary>
         /// Retrieves the persistent data for a game player from the data store.

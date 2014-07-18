@@ -115,12 +115,7 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         {
             // Arrange
             await Storage.SetTable("players");
-            List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
-            players.Add(new AzureTableStorageTestEntity
-            {
-                RowKey = "Kevin",
-                Name = "Kevin"
-            });
+            List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();          
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",
@@ -136,11 +131,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await Storage.Insert<AzureTableStorageTestEntity>(players);
 
             // Assert
-            AzureTableStorageTestEntity player = await Storage.Get<AzureTableStorageTestEntity>("Ke", "Kevin");
-            Assert.AreEqual("Ke", player.PartitionKey);
-            Assert.AreEqual("Kevin", player.RowKey);
-            Assert.AreEqual("Kevin", player.Name);
-
             players = (await Storage.GetAll<AzureTableStorageTestEntity>("Ka")).ToList();
             Assert.AreEqual(2, players.Count);
 
@@ -190,11 +180,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
-                RowKey = "Kevin",
-                Name = "Kevin"
-            });
-            players.Add(new AzureTableStorageTestEntity
-            {
                 RowKey = "Kathy",
                 Name = "Kathy"
             });
@@ -206,11 +191,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await Storage.Insert<AzureTableStorageTestEntity>(players);
 
             players = new List<AzureTableStorageTestEntity>();
-            players.Add(new AzureTableStorageTestEntity
-            {
-                RowKey = "Kevin",
-                Name = "Keith"
-            });
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",
@@ -226,11 +206,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await Storage.Replace<AzureTableStorageTestEntity>(players);
 
             // Assert
-            AzureTableStorageTestEntity player = await Storage.Get<AzureTableStorageTestEntity>("Ke", "Kevin");
-            Assert.AreEqual("Ke", player.PartitionKey);
-            Assert.AreEqual("Kevin", player.RowKey);
-            Assert.AreEqual("Keith", player.Name);
-
             players = (await Storage.GetAll<AzureTableStorageTestEntity>("Ka")).ToList();
             Assert.AreEqual(2, players.Count);
 
@@ -279,12 +254,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
-                RowKey = "Kevin",
-                Name = "Kevin",
-                Number = 1
-            });
-            players.Add(new AzureTableStorageTestEntity
-            {
                 RowKey = "Kathy",
                 Name = "Kathy",
                 Number = 2
@@ -298,12 +267,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await Storage.Insert<AzureTableStorageTestEntity>(players);
 
             players = new List<AzureTableStorageTestEntity>();
-            players.Add(new AzureTableStorageTestEntity
-            {
-                RowKey = "Kevin",
-                Name = "Keith",
-                Number = 4
-            });
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",
@@ -320,12 +283,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await Storage.Merge<AzureTableStorageTestEntity>(players);
 
             // Assert
-            AzureTableStorageTestEntity player = await Storage.Get<AzureTableStorageTestEntity>("Ke", "Kevin");
-            Assert.AreEqual("Ke", player.PartitionKey);
-            Assert.AreEqual("Kevin", player.RowKey);
-            Assert.AreEqual("Keith", player.Name);
-            Assert.AreEqual(4, player.Number);
-
             players = (await Storage.GetAll<AzureTableStorageTestEntity>("Ka")).ToList();
             Assert.AreEqual(2, players.Count);
 
@@ -378,11 +335,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
-                RowKey = "Kevin",
-                Name = "Kevin"
-            });
-            players.Add(new AzureTableStorageTestEntity
-            {
                 RowKey = "Kathy",
                 Name = "Kathy"
             });
@@ -393,12 +345,8 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             });
             await Storage.InsertOrReplace<AzureTableStorageTestEntity>(players);
 
-            players = new List<AzureTableStorageTestEntity>();
-            players.Add(new AzureTableStorageTestEntity
-            {
-                RowKey = "Kevin",
-                Name = "Keith"
-            });
+            players.Clear();
+
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",
@@ -414,11 +362,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await Storage.InsertOrReplace<AzureTableStorageTestEntity>(players);
 
             // Assert
-            AzureTableStorageTestEntity player = await Storage.Get<AzureTableStorageTestEntity>("Ke", "Kevin");
-            Assert.AreEqual("Ke", player.PartitionKey);
-            Assert.AreEqual("Kevin", player.RowKey);
-            Assert.AreEqual("Keith", player.Name);
-
             players = (await Storage.GetAll<AzureTableStorageTestEntity>("Ka")).ToList();
             Assert.AreEqual(2, players.Count);
 
@@ -467,12 +410,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
-                RowKey = "Kevin",
-                Name = "Kevin",
-                Number = 1
-            });
-            players.Add(new AzureTableStorageTestEntity
-            {
                 RowKey = "Kathy",
                 Name = "Kathy",
                 Number = 2
@@ -486,12 +423,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await Storage.InsertOrMerge<AzureTableStorageTestEntity>(players);
 
             players = new List<AzureTableStorageTestEntity>();
-            players.Add(new AzureTableStorageTestEntity
-            {
-                RowKey = "Kevin",
-                Name = "Keith",
-                Number = 4
-            });
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",
@@ -508,12 +439,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             await Storage.InsertOrMerge<AzureTableStorageTestEntity>(players);
 
             // Assert
-            AzureTableStorageTestEntity player = await Storage.Get<AzureTableStorageTestEntity>("Ke", "Kevin");
-            Assert.AreEqual("Ke", player.PartitionKey);
-            Assert.AreEqual("Kevin", player.RowKey);
-            Assert.AreEqual("Keith", player.Name);
-            Assert.AreEqual(4, player.Number);
-
             players = (await Storage.GetAll<AzureTableStorageTestEntity>("Ka")).ToList();
             Assert.AreEqual(2, players.Count);
 
@@ -561,11 +486,12 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             // Arrange
             await Storage.SetTable("players");
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
-            players.Add(new AzureTableStorageTestEntity
+            await Storage.InsertOrReplace<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
             {
                 RowKey = "Kevin",
                 Name = "Kevin"
             });
+            
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",
@@ -578,12 +504,7 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             });
             await Storage.InsertOrReplace<AzureTableStorageTestEntity>(players);
 
-            players = new List<AzureTableStorageTestEntity>();
-            players.Add(new AzureTableStorageTestEntity
-            {
-                RowKey = "Kevin",
-                Name = "Keith"
-            });
+            players = new List<AzureTableStorageTestEntity>();           
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",
@@ -600,7 +521,9 @@ namespace KS.PizzaEmpire.Services.Test.Storage
 
             // Assert
             AzureTableStorageTestEntity player = await Storage.Get<AzureTableStorageTestEntity>("Ke", "Kevin");
-            Assert.IsNull(player);
+            Assert.AreEqual("Ke", player.PartitionKey);
+            Assert.AreEqual("Kevin", player.RowKey);
+            Assert.AreEqual("Kevin", player.Name);
 
             players = (await Storage.GetAll<AzureTableStorageTestEntity>("Ka")).ToList();
             Assert.AreEqual(0, players.Count);

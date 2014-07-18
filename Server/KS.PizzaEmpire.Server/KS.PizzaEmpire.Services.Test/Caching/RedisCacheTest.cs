@@ -35,6 +35,7 @@ namespace KS.PizzaEmpire.Services.Test.Caching
             };
             RedisCache.Instance.ConnectionString = "localhost:6379";
             RedisCache.Instance.CacheSerializer = new ProtoBufSerializer();
+            RedisCache.Instance.RetryMillis = 5000;
 
             // Act
             await RedisCache.Instance.Set<RedisCacheTestEntity>("key1", entity, TimeSpan.FromMinutes(5));

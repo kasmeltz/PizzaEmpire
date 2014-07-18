@@ -36,6 +36,8 @@ namespace KS.PizzaEmpire.Services.Caching
                         {
                             instance = new RedisCache();
                             instance.CacheSerializer = new BinaryFormatSerializer();
+                            instance.MaxRetryAttempts = 3;
+                            instance.RetryMillis = 0;
                         }
                     }
                 }
@@ -51,7 +53,7 @@ namespace KS.PizzaEmpire.Services.Caching
 
         /// <summary>
         ///  The serializer to use when storing or retrieving items.
-        ///  Defaults to BinaryCacheSerializer
+        ///  Defaults to BinaryFormatSerializer
         /// </summary>
         public ICacheSerializer CacheSerializer { get; set; }
 
@@ -68,6 +70,26 @@ namespace KS.PizzaEmpire.Services.Caching
                 return connection;
             }
         }
+
+        /// <summary>
+        /// Forces a reconnection to the Redis Server
+        /// </summary>
+        public void Reconnect()
+        {
+            connection = null;
+        }
+
+        /// <summary>
+        /// The number of times to retry a failed cache operation before giving up and throwing an Exception.
+        /// Defaults to 3.
+        /// </summary>
+        public int MaxRetryAttempts { get; set; }
+
+        /// <summary>
+        /// The number of milliseconds to wait before retrying a failed cache operation.
+        /// Defaults to 0.
+        /// </summary>
+        public int RetryMillis { get; set; }
         
         /// <summary>.
         /// Returns an instance of type T from the cache
@@ -76,14 +98,17 @@ namespace KS.PizzaEmpire.Services.Caching
         /// <param name="key">The key of the item in the cache.</param>
         /// <returns>The item from the cache.</returns>
         public async Task<T> Get<T>(string key, CommandFlags flags = CommandFlags.None) where T : ICacheEntity
-        {            
-            IDatabase cache = Connection.GetDatabase();
-            RedisValue value = await cache.StringGetAsync(key, flags);
-            if (value.IsNullOrEmpty)
+        {
+            return await ServiceHelper.RetryAsync<T>(async () =>
             {
-                return default(T);
-            }
-            return CacheSerializer.Deserialize<T>(value);
+                IDatabase cache = Connection.GetDatabase();
+                RedisValue value = await cache.StringGetAsync(key, flags);
+                if (value.IsNullOrEmpty)
+                {
+                    return default(T);
+                }
+                return CacheSerializer.Deserialize<T>(value);
+            }, RetryMillis, MaxRetryAttempts);
         }
        
         /// <summary>
@@ -94,22 +119,30 @@ namespace KS.PizzaEmpire.Services.Caching
         public async Task Set<T>(string key, T value,
             TimeSpan ts, When when = When.Always, CommandFlags flags = CommandFlags.None) where T : ICacheEntity
         {
-            IDatabase cache = Connection.GetDatabase();
-            await cache.StringSetAsync(key, CacheSerializer.Serialize(value), ts, when, flags);
+            await ServiceHelper.RetryAsync<int>(async () =>
+            {
+                IDatabase cache = Connection.GetDatabase();
+                await cache.StringSetAsync(key, CacheSerializer.Serialize(value), ts, when, flags);
+                return 1;
+            }, RetryMillis, MaxRetryAttempts);
         }
 
         /// <summary>
-        /// Removes the key from the cache.
+        /// Removes the item with the specified key from the cache if it exists.
         /// </summary>
         /// <param name="key">The key to remove</param>
         /// <returns></returns>
         public async Task Delete<T>(string key, CommandFlags flags = CommandFlags.None)where T : ICacheEntity
         {
-            IDatabase cache = Connection.GetDatabase();
-            if (await cache.KeyExistsAsync(key))
+            await ServiceHelper.RetryAsync<int>(async () =>
             {
-                await cache.KeyDeleteAsync(key);
-            }
+                IDatabase cache = Connection.GetDatabase();
+                if (await cache.KeyExistsAsync(key))
+                {
+                    await cache.KeyDeleteAsync(key);
+                }
+                return 1;
+            }, RetryMillis, MaxRetryAttempts);
         }
     }
 }

@@ -9,12 +9,25 @@ namespace KS.PizzaEmpire.Services.Storage
 {
     /// <summary>
     /// A simple wrapper class for using Azure Table Storage.
+    /// Batch operations are limited to items with the same partition key.
     /// </summary>
     public class AzureTableStorage
-    {        
+    {
         private CloudTable Table { get; set; }
         private CloudStorageAccount StorageAccount { get; set; }
         CloudTableClient TableClient { get; set; }
+
+        /// <summary>
+        /// The number of times to retry a failed cache operation before giving up and throwing an Exception.
+        /// Defaults to 3.
+        /// </summary>
+        public static int MaxRetryAttempts { get; set; }
+
+        /// <summary>
+        /// The number of milliseconds to wait before retrying a failed cache operation.
+        /// Defaults to 0.
+        /// </summary>
+        public static int RetryMillis { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureTableStorage"/> class.
@@ -45,10 +58,13 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <returns>An IEnumerable of items in the partition.</returns>
         public async Task<IEnumerable<T>> GetAll<T>(string partitionKey) where T : TableEntity, ITableStorageEntity, new()
         {
-            TableQuery<T> query = new TableQuery<T>().Where(
+            return await ServiceHelper.RetryAsync<IEnumerable<T>>(async () =>
+            {
+                TableQuery<T> query = new TableQuery<T>().Where(
                 TableQuery.GenerateFilterCondition(
                     "PartitionKey", QueryComparisons.Equal, partitionKey));
-            return await Table.ExecuteQueryAsync<T>(query);
+                return await Table.ExecuteQueryAsync<T>(query);
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
@@ -60,9 +76,12 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <returns></returns>
         public async Task<T> Get<T>(string partitionKey, string rowKey) where T : TableEntity, ITableStorageEntity
         {
-            TableOperation operation = TableOperation.Retrieve<T>(partitionKey, rowKey);
-            TableResult results = await Table.ExecuteAsync(operation);
-            return results.Result as T;
+            return await ServiceHelper.RetryAsync<T>(async () =>
+            {
+                TableOperation operation = TableOperation.Retrieve<T>(partitionKey, rowKey);
+                TableResult results = await Table.ExecuteAsync(operation);
+                return results.Result as T;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
@@ -72,27 +91,33 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="item">The item to insert.</param>
         public async Task Insert<T>(T item) where T : TableEntity, ITableStorageEntity
         {
-            TableOperation operation = TableOperation.Insert(item);
-            await Table.ExecuteAsync(operation);
+            await ServiceHelper.RetryAsync<int>(async () =>
+            {
+                TableOperation operation = TableOperation.Insert(item);
+                await Table.ExecuteAsync(operation);
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
         /// Inserts a list of items into the current table.
+        /// Batch operations are limited to items with the same partition key.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="items">The items to insert.</param>
         public async Task Insert<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
-            TableBatchOperation operation = new TableBatchOperation();
-            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
+            await ServiceHelper.RetryAsync<int>(async () =>
             {
+                TableBatchOperation operation = new TableBatchOperation();
                 operation.Clear();
-                foreach (TableEntity item in batch)
+                foreach (T item in items)
                 {
                     operation.Insert(item);
                 }
                 await Table.ExecuteBatchAsync(operation);
-            }
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
@@ -102,31 +127,36 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="item">The item to replace.</param>
         public async Task Replace<T>(T item) where T : TableEntity, ITableStorageEntity
         {
-            item.ETag = "*";
-            TableOperation operation = TableOperation.Replace(item);            
-            await Table.ExecuteAsync(operation);
+            await ServiceHelper.RetryAsync<int>(async () =>
+            {
+                item.ETag = "*";
+                TableOperation operation = TableOperation.Replace(item);
+                await Table.ExecuteAsync(operation);
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
         /// Replaces a list of items into the current table.
+        /// Batch operations are limited to items with the same partition key.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="items">The items to replace.</param>
         public async Task Replace<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
-            TableBatchOperation operation = new TableBatchOperation();
-            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
+            await ServiceHelper.RetryAsync<int>(async () =>
             {
-                operation.Clear();
-                foreach (TableEntity item in batch)
+                TableBatchOperation operation = new TableBatchOperation();
+                foreach (T item in items)
                 {
                     item.ETag = "*";
                     operation.Replace(item);
                 }
                 await Table.ExecuteBatchAsync(operation);
-            }
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
-       
+
         /// <summary>
         /// Merges the specified item into the current table.
         /// </summary>
@@ -134,29 +164,35 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="item">The item to merge.</param>
         public async Task Merge<T>(T item) where T : TableEntity, ITableStorageEntity
         {
-            item.ETag = "*";
-            TableOperation operation = TableOperation.Merge(item);            
-            await Table.ExecuteAsync(operation);
+            await ServiceHelper.RetryAsync<int>(async () =>
+            {
+                item.ETag = "*";
+                TableOperation operation = TableOperation.Merge(item);
+                await Table.ExecuteAsync(operation);
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
         /// Merges a list of items into the current table.
+        /// Batch operations are limited to items with the same partition key.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The items to merge.</param>
         public async Task Merge<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
-            TableBatchOperation operation = new TableBatchOperation();
-            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
+            await ServiceHelper.RetryAsync<int>(async () =>
             {
-                operation.Clear();
-                foreach (TableEntity item in batch)
+                TableBatchOperation operation = new TableBatchOperation();
+                foreach (T item in items)
                 {
                     item.ETag = "*";
                     operation.Merge(item);
                 }
+
                 await Table.ExecuteBatchAsync(operation);
-            }
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
@@ -166,27 +202,33 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="item">The item to insert or replace.</param>
         public async Task InsertOrReplace<T>(T item) where T : TableEntity, ITableStorageEntity
         {
-            TableOperation operation = TableOperation.InsertOrReplace(item);
-            await Table.ExecuteAsync(operation);
+            await ServiceHelper.RetryAsync<int>(async () =>
+            {
+                TableOperation operation = TableOperation.InsertOrReplace(item);
+                await Table.ExecuteAsync(operation);
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
         /// Inserts or Replaces a list of items into the current table.
+        /// Batch operations are limited to items with the same partition key.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="items">The items to insert or replace.</param>
         public async Task InsertOrReplace<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
-            TableBatchOperation operation = new TableBatchOperation();
-            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
+            await ServiceHelper.RetryAsync<int>(async () =>
             {
-                operation.Clear();
-                foreach (TableEntity item in batch)
+                TableBatchOperation operation = new TableBatchOperation();
+                foreach (T item in items)
                 {
                     operation.InsertOrReplace(item);
                 }
+
                 await Table.ExecuteBatchAsync(operation);
-            }
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
@@ -196,27 +238,32 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="item">The item to insert or merge.</param>
         public async Task InsertOrMerge<T>(T item) where T : TableEntity, ITableStorageEntity
         {
-            TableOperation operation = TableOperation.InsertOrMerge(item);
-            await Table.ExecuteAsync(operation);
+            await ServiceHelper.RetryAsync<int>(async () =>
+            {
+                TableOperation operation = TableOperation.InsertOrMerge(item);
+                await Table.ExecuteAsync(operation);
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
         /// Inserts or Merges a list of items into the current table.
+        /// Batch operations are limited to items with the same partition key.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="items">The items to insert or merge.</param>
         public async Task InsertOrMerge<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
-            TableBatchOperation operation = new TableBatchOperation();
-            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
+            await ServiceHelper.RetryAsync<int>(async () =>
             {
-                operation.Clear();
-                foreach (TableEntity item in batch)
+                TableBatchOperation operation = new TableBatchOperation();
+                foreach (T item in items)
                 {
                     operation.InsertOrMerge(item);
                 }
                 await Table.ExecuteBatchAsync(operation);
-            }
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>
@@ -233,22 +280,23 @@ namespace KS.PizzaEmpire.Services.Storage
 
         /// <summary>
         /// Deletes a list of items from the current table.
+        /// Batch operations are limited to items with the same partition key.
         /// </summary>
         /// <typeparam name="T">DTO that inherits from TableEntity</typeparam>
         /// <param name="item">The items to delete.</param>
         public async Task Delete<T>(IEnumerable<T> items) where T : TableEntity, ITableStorageEntity
         {
-            TableBatchOperation operation = new TableBatchOperation();
-            foreach (IGrouping<string, T> batch in items.GroupBy(i => i.PartitionKey))
+            await ServiceHelper.RetryAsync<int>(async () =>
             {
-                operation.Clear();
-                foreach (TableEntity item in batch)
+                TableBatchOperation operation = new TableBatchOperation();
+                foreach (TableEntity item in items)
                 {
                     item.ETag = "*";
                     operation.Delete(item);
                 }
                 await Table.ExecuteBatchAsync(operation);
-            }
+                return 1;
+            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
         }
 
         /// <summary>

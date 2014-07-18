@@ -12,7 +12,7 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
         // GET api/values
         public async Task<IEnumerable<string>> Get()
         {
-            IGamePlayerDataProvider provider = new CachedTableStoreGamePlayerDataProvider();
+            IGamePlayerDataProvider provider = new ConfigurableGamePlayerDataProvider();
 
             GamePlayer player = await provider.Get("KevinSmeltzer");
 
