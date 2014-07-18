@@ -35,9 +35,11 @@ namespace KS.PizzaEmpire.Services.Caching
                         if (instance == null)
                         {
                             instance = new RedisCache();
-                            instance.CacheSerializer = new BinaryFormatSerializer();
-                            instance.MaxRetryAttempts = 3;
-                            instance.RetryMillis = 0;
+                            instance.CacheSerializer = new ProtoBufSerializer();
+                            instance.ConnectionString = Microsoft.WindowsAzure.CloudConfigurationManager.GetSetting("RedisCacheConnectionString");
+                            instance.MaxRetryAttempts = ServiceHelper.IntValueFromConfig("RedisCacheMaxRetryAttempts");
+                            instance.RetryMillis = ServiceHelper.IntValueFromConfig("RedisCacheRetryMillis");
+                            instance.ThrottleMillis = ServiceHelper.IntValueFromConfig("RedisCacheThrottleMillis");
                         }
                     }
                 }
@@ -81,15 +83,18 @@ namespace KS.PizzaEmpire.Services.Caching
 
         /// <summary>
         /// The number of times to retry a failed cache operation before giving up and throwing an Exception.
-        /// Defaults to 3.
         /// </summary>
         public int MaxRetryAttempts { get; set; }
 
         /// <summary>
         /// The number of milliseconds to wait before retrying a failed cache operation.
-        /// Defaults to 0.
         /// </summary>
         public int RetryMillis { get; set; }
+
+        /// <summary>
+        /// The number of milliseconds to wait before performing a cache operation.
+        /// </summary>
+        public int ThrottleMillis { get; set; }
         
         /// <summary>.
         /// Returns an instance of type T from the cache
@@ -108,7 +113,7 @@ namespace KS.PizzaEmpire.Services.Caching
                     return default(T);
                 }
                 return CacheSerializer.Deserialize<T>(value);
-            }, RetryMillis, MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
        
         /// <summary>
@@ -124,7 +129,7 @@ namespace KS.PizzaEmpire.Services.Caching
                 IDatabase cache = Connection.GetDatabase();
                 await cache.StringSetAsync(key, CacheSerializer.Serialize(value), ts, when, flags);
                 return 1;
-            }, RetryMillis, MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -142,7 +147,7 @@ namespace KS.PizzaEmpire.Services.Caching
                     await cache.KeyDeleteAsync(key);
                 }
                 return 1;
-            }, RetryMillis, MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
     }
 }

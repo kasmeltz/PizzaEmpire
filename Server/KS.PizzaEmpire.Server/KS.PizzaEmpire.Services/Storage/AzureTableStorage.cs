@@ -19,22 +19,29 @@ namespace KS.PizzaEmpire.Services.Storage
 
         /// <summary>
         /// The number of times to retry a failed cache operation before giving up and throwing an Exception.
-        /// Defaults to 3.
         /// </summary>
-        public static int MaxRetryAttempts { get; set; }
+        public int MaxRetryAttempts { get; set; }
 
         /// <summary>
         /// The number of milliseconds to wait before retrying a failed cache operation.
-        /// Defaults to 0.
         /// </summary>
-        public static int RetryMillis { get; set; }
+        public int RetryMillis { get; set; }
+
+        /// <summary>
+        /// The number of milliseconds to wait before performing a cache operation.
+        /// </summary>
+        public int ThrottleMillis { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureTableStorage"/> class.
         /// </summary>
         /// <param name="TableName">Name of the table.</param>
-        public AzureTableStorage(string connectionString)
+        public AzureTableStorage()
         {
+            MaxRetryAttempts = ServiceHelper.IntValueFromConfig("AzureTableStorageMaxRetryAttempts");
+            RetryMillis = ServiceHelper.IntValueFromConfig("AzureTableStorageRetryMillis");
+            ThrottleMillis = ServiceHelper.IntValueFromConfig("AzureTableStorageThrottleMillis");
+            string connectionString = Microsoft.WindowsAzure.CloudConfigurationManager.GetSetting("AzureTableStorageConnectionString");
             StorageAccount = CloudStorageAccount.Parse(connectionString);
             TableClient = StorageAccount.CreateCloudTableClient();
         }
@@ -64,7 +71,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 TableQuery.GenerateFilterCondition(
                     "PartitionKey", QueryComparisons.Equal, partitionKey));
                 return await Table.ExecuteQueryAsync<T>(query);
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -81,7 +88,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 TableOperation operation = TableOperation.Retrieve<T>(partitionKey, rowKey);
                 TableResult results = await Table.ExecuteAsync(operation);
                 return results.Result as T;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -96,7 +103,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 TableOperation operation = TableOperation.Insert(item);
                 await Table.ExecuteAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -117,7 +124,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 }
                 await Table.ExecuteBatchAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -133,7 +140,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 TableOperation operation = TableOperation.Replace(item);
                 await Table.ExecuteAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -154,7 +161,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 }
                 await Table.ExecuteBatchAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -170,7 +177,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 TableOperation operation = TableOperation.Merge(item);
                 await Table.ExecuteAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -192,7 +199,7 @@ namespace KS.PizzaEmpire.Services.Storage
 
                 await Table.ExecuteBatchAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -207,7 +214,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 TableOperation operation = TableOperation.InsertOrReplace(item);
                 await Table.ExecuteAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -228,7 +235,7 @@ namespace KS.PizzaEmpire.Services.Storage
 
                 await Table.ExecuteBatchAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -243,7 +250,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 TableOperation operation = TableOperation.InsertOrMerge(item);
                 await Table.ExecuteAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -263,7 +270,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 }
                 await Table.ExecuteBatchAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -273,9 +280,13 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <param name="item">The item to delete.</param>
         public async Task Delete<T>(T item) where T : TableEntity, ITableStorageEntity
         {
-            item.ETag = "*";
-            TableOperation operation = TableOperation.Delete(item);
-            await Table.ExecuteAsync(operation);
+            await ServiceHelper.RetryAsync<int>(async () =>
+            {
+                item.ETag = "*";
+                TableOperation operation = TableOperation.Delete(item);
+                await Table.ExecuteAsync(operation);
+                return 1;
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>
@@ -296,7 +307,7 @@ namespace KS.PizzaEmpire.Services.Storage
                 }
                 await Table.ExecuteBatchAsync(operation);
                 return 1;
-            }, AzureTableStorage.RetryMillis, AzureTableStorage.MaxRetryAttempts);
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>

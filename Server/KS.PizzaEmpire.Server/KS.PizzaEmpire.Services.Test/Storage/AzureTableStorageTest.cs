@@ -48,7 +48,7 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         private async Task TestInitializeMethodAsync()
         {
             Storage = new AzureTableStorage(
-                "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1;");
+                );
             await Storage.SetTable("players");
             await Storage.DeleteTable();
         }

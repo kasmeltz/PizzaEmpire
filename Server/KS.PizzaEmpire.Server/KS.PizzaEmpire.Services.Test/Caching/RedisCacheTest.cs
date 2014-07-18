@@ -33,7 +33,6 @@ namespace KS.PizzaEmpire.Services.Test.Caching
                 Name = "Kevin",
                 Number = 5
             };
-            RedisCache.Instance.ConnectionString = "localhost:6379";
             RedisCache.Instance.CacheSerializer = new ProtoBufSerializer();
             RedisCache.Instance.RetryMillis = 5000;
 
