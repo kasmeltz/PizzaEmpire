@@ -21,6 +21,21 @@ namespace KS.PizzaEmpire.Business.Logic
 
         #region ILogicEntity
 
+         /// <summary>
+        /// The CacheKey for this item
+        /// </summary>
+        public string CacheKey
+        {
+            get
+            {
+                return "GP" + UniqueKey;
+            }
+        }
+
+        #endregion
+
+        #region IToCacheEntity
+
         /// <summary>
         /// Returns a new instance of the appropriate ICacheEntity with cloned data.
         /// </summary>
@@ -29,6 +44,10 @@ namespace KS.PizzaEmpire.Business.Logic
         {
             return GamePlayerCacheable.From(this);
         }
+
+        #endregion 
+
+        #region IToTableStorageEntity
 
         /// <summary>
         /// Returns a new instance of the appropriate ITableStorageEntity with cloned data.
@@ -51,6 +70,8 @@ namespace KS.PizzaEmpire.Business.Logic
         public static GamePlayer From(GamePlayerTableStorage item)
         {
             GamePlayer clone = new GamePlayer();
+            clone.UniqueKey = item.UniqueKey;
+
             return clone;
         }
 
@@ -62,6 +83,8 @@ namespace KS.PizzaEmpire.Business.Logic
         public static GamePlayer From(GamePlayerCacheable item)
         {
             GamePlayer clone = new GamePlayer();
+            clone.UniqueKey = item.UniqueKey;
+
             return clone;
         }
 

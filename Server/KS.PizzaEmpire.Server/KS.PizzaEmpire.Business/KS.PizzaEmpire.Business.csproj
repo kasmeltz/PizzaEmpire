@@ -70,7 +70,7 @@
     <Compile Include="Cache\GamePlayerCacheable.cs" />
     <Compile Include="Cache\ICacheEntity.cs" />
     <Compile Include="Conversion\IToCacheEntity.cs" />
-    <Compile Include="Conversion\IToLogiEntity.cs" />
+    <Compile Include="Conversion\IToLogicEntity.cs" />
     <Compile Include="Conversion\IToTableStorageEntity.cs" />
     <Compile Include="Logic\GamePlayer.cs" />
     <Compile Include="Logic\ILogicEntity.cs" />

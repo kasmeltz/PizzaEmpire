@@ -11,7 +11,7 @@ namespace KS.PizzaEmpire.Business.Cache
     /// </summary>
     [ProtoContract]
     [Serializable]
-    public class GamePlayerCacheable : ICacheEntity, IToLogiEntity, IToTableStorageEntity
+    public class GamePlayerCacheable : ICacheEntity, IToLogicEntity, IToTableStorageEntity
     {       
         /// <summary>
         /// Creates a new instance of the GamePlayerCacheable class.
@@ -23,7 +23,7 @@ namespace KS.PizzaEmpire.Business.Cache
         /// </summary>
         [ProtoMember(1)]
         public string UniqueKey { get; set; }
-
+        
         #region ICacheEntity
 
         /// <summary>
@@ -56,6 +56,8 @@ namespace KS.PizzaEmpire.Business.Cache
         public static GamePlayerCacheable From(GamePlayerTableStorage item)
         {
             GamePlayerCacheable clone = new GamePlayerCacheable();
+            clone.UniqueKey = item.UniqueKey;
+
             return clone;
         }
 
@@ -67,6 +69,8 @@ namespace KS.PizzaEmpire.Business.Cache
         public static GamePlayerCacheable From(GamePlayer item)
         {
             GamePlayerCacheable clone = new GamePlayerCacheable();
+            clone.UniqueKey = item.UniqueKey;
+
             return clone;
         }
 

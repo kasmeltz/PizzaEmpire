@@ -5,6 +5,6 @@ namespace KS.PizzaEmpire.Business.Cache
     /// Interface to mark classes that are storable in the cache.
     /// </summary>
     public interface ICacheEntity
-    {
+    {        
     }
 }

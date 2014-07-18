@@ -1,4 +1,5 @@
-﻿using KS.PizzaEmpire.Business.Logic;
+﻿using KS.PizzaEmpire.Business.Cache;
+using KS.PizzaEmpire.Business.Logic;
 using KS.PizzaEmpire.DataAccess.DataProvider;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,18 +13,19 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
         // GET api/values
         public async Task<IEnumerable<string>> Get()
         {
-            IGamePlayerDataProvider provider = new ConfigurableGamePlayerDataProvider();
-
-            GamePlayer player = await provider.Get("KevinSmeltzer");
+            GamePlayer player = new GamePlayer { UniqueKey = "KevinSmeltzer" };
+            player = await ConfigurableDataProvider.Instance.Get<GamePlayer, GamePlayerCacheable>(player);
 
             if (player == null)
             {
                 player = new GamePlayer { UniqueKey = "KevinSmeltzer" };
+                await ConfigurableDataProvider.Instance.Save(player);
+                return new string[] { "New", player.UniqueKey };
             }
-
-            await provider.Save(player);
-
-            return new string[] { player.UniqueKey };
+            else
+            {
+                return new string[] { "From Data", player.UniqueKey };
+            }                        
         }
 
         // GET api/values/5

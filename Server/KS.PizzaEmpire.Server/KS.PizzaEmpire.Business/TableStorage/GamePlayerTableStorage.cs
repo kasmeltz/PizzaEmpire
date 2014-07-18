@@ -8,7 +8,7 @@ namespace KS.PizzaEmpire.Business.TableStorage
     /// <summary>
     /// Represents the state for a player of the game as stored in table storage.
     /// </summary>
-    public class GamePlayerTableStorage : TableEntity, ITableStorageEntity, IToCacheEntity, IToLogiEntity
+    public class GamePlayerTableStorage : TableEntity, ITableStorageEntity, IToCacheEntity, IToLogicEntity
     {
         /// <summary>
         /// Creates a new instance of the GamePlayerTableStorage class.
@@ -75,6 +75,8 @@ namespace KS.PizzaEmpire.Business.TableStorage
         public static GamePlayerTableStorage From(GamePlayerCacheable item)
         {
             GamePlayerTableStorage clone = new GamePlayerTableStorage();
+            clone.UniqueKey = item.UniqueKey;
+
             return clone;
         }
 
@@ -86,6 +88,8 @@ namespace KS.PizzaEmpire.Business.TableStorage
         public static GamePlayerTableStorage From(GamePlayer item)
         {
             GamePlayerTableStorage clone = new GamePlayerTableStorage();
+            clone.UniqueKey = item.UniqueKey;
+
             return clone;
         }
 

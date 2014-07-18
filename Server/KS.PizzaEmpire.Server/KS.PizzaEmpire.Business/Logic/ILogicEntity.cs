@@ -6,5 +6,9 @@ namespace KS.PizzaEmpire.Business.Logic
     /// </summary>
     public interface ILogicEntity
     {
+        /// <summary>
+        /// The CacheKey for this item
+        /// </summary>
+        string CacheKey { get; }
     }
 }
