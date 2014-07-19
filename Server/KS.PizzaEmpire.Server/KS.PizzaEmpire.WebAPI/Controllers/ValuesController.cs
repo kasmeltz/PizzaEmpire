@@ -1,5 +1,7 @@
 ﻿using KS.PizzaEmpire.Business.Cache;
 using KS.PizzaEmpire.Business.Logic;
+using KS.PizzaEmpire.Business.StorageInformation;
+using KS.PizzaEmpire.Business.TableStorage;
 using KS.PizzaEmpire.DataAccess.DataProvider;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,23 +15,36 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
         // GET api/values
         public async Task<IEnumerable<string>> Get()
         {
-            GamePlayer player = new GamePlayer { UniqueKey = "KevinSmeltzer" };
-            player = await ConfigurableDataProvider.Instance.Get<GamePlayer, GamePlayerCacheable>(player);
+            GamePlayerStorageInformation storageInfo = new GamePlayerStorageInformation("kasmeltz@lakeheadu.ca");
+            GamePlayer player = await ConfigurableDataProvider.Instance
+                .Get<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(storageInfo);
 
             if (player == null)
             {
-                player = new GamePlayer { UniqueKey = "KevinSmeltzer" };
-                await ConfigurableDataProvider.Instance.Save(player);
-                return new string[] { "New", player.UniqueKey };
+                player = new GamePlayer();
+                player.Coins = 1000;
+                player.Coupons = 5;
+                player.StorageInformation = storageInfo;
+                await ConfigurableDataProvider.Instance
+                    .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player);
             }
-            else
+
+            return new string[] 
             {
-                return new string[] { "From Data", player.UniqueKey };
-            }                        
+                player.StorageInformation.UniqueKey, 
+                player.StorageInformation.CacheKey, 
+                player.StorageInformation.TableName, 
+                player.StorageInformation.PartitionKey,
+                player.StorageInformation.RowKey,
+                player.StorageInformation.FromCache.ToString(),
+                player.StorageInformation.FromTableStorage.ToString(),
+                player.Coins.ToString(), 
+                player.Coupons.ToString(), 
+            };
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public string Get(string uniqueKey)
         {
             return "value";
         }

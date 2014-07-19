@@ -1,14 +1,13 @@
-﻿using KS.PizzaEmpire.Business;
-using KS.PizzaEmpire.Business.Cache;
+﻿using KS.PizzaEmpire.Business.Cache;
 using KS.PizzaEmpire.Business.Conversion;
 using KS.PizzaEmpire.Business.Logic;
+using KS.PizzaEmpire.Business.StorageInformation;
 using KS.PizzaEmpire.Business.TableStorage;
+using KS.PizzaEmpire.Services;
 using KS.PizzaEmpire.Services.Caching;
 using KS.PizzaEmpire.Services.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KS.PizzaEmpire.DataAccess.DataProvider
@@ -41,6 +40,7 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
                             instance = new ConfigurableDataProvider();
                             instance.UseCache = true;
                             instance.UseTableStorage = true;
+                            instance.CacheDuration = ServiceHelper.IntValueFromConfig("DataProviderCacheDuration");
                         }
                     }
                 }
@@ -64,7 +64,6 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
             }
         }
 
-
         /// <summary>
         /// Whether or not to use Table Storage
         /// </summary>
@@ -80,14 +79,49 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
                 _useTableStorage = value;
             }
         }
-       
+
         /// <summary>
-        /// Gets a GamePlayer from the cache
+        /// The length of time to store an item in the cache
+        /// </summary>
+        public int CacheDuration { get; set; }
+
+        /// <summary>
+        /// Gets an item from Table Storage
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public async Task<ILogicEntity> GetFromCache<T, K>(T searchItem)
-            where T : ILogicEntity, IToCacheEntity
+        public async Task<ILogicEntity> GetFromTableStorage<T, K>(IStorageInformation storageInfo)
+            where T : ILogicEntity
+            where K : TableEntity, ITableStorageEntity, IToLogicEntity
+        {
+            if (!_useTableStorage)
+            {
+                return default(T);
+            }
+
+            AzureTableStorage storage = new AzureTableStorage();
+            await storage.SetTable(storageInfo.TableName);
+
+            K storageItem = await storage.Get<K>(storageInfo.PartitionKey, storageInfo.RowKey);
+            if (storageItem == null)
+            {
+                return default(T);
+            }
+
+            storageInfo.FromTableStorage = true;
+            ILogicEntity item = storageItem.ToLogicEntity();
+            item.StorageInformation = storageInfo;
+
+            return item;
+        }
+
+        /// <summary>
+        /// Gets an item from the Redis Ccache
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<ILogicEntity> GetFromCache<T, K>(IStorageInformation storageInfo)
+            where T : ILogicEntity
             where K : ICacheEntity, IToLogicEntity
         {
             if (!_useCache)
@@ -95,85 +129,112 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
                 return default(T);
             }
 
-            K cachedItem = await RedisCache.Instance.Get<K>(searchItem.CacheKey);
+            K cachedItem = await RedisCache.Instance.Get<K>(storageInfo.CacheKey);
             if (cachedItem == null)
             {
                 return default(T);
             }
 
-            return cachedItem.ToLogicEntity();
+            storageInfo.FromCache = true;
+            ILogicEntity item = cachedItem.ToLogicEntity();
+            item.StorageInformation = storageInfo;
+
+            return item;
         }
 
         /// <summary>
         /// Retrieves the persistent data for a game player from the data store.
         /// </summary>
         /// <param name="key">The unique key of the game player whose data is requested</param>
-        /// <returns>A GamePlayer instance representing the persistent data associated with the 
-        /// game player</returns>
-        public async Task<T> Get<T, K>(T searchItem)
+        /// <returns>An ILogicEntity instance representing the persistent data requested</returns>
+        public async Task<T> Get<T, K, V>(IStorageInformation storageInfo)
             where T : ILogicEntity, IToCacheEntity
             where K : ICacheEntity, IToLogicEntity
+            where V : TableEntity, ITableStorageEntity, IToLogicEntity
         {
-            T item = (T)await GetFromCache<T,K>(searchItem);
+            T item = (T)await GetFromCache<T, K>(storageInfo);
 
             if (item == null)
             {
-                 AzureTableStorage storage = new AzureTableStorage();
-                 //await storage.SetTable(searchItem.TableName);
-                /*
-                string cacheKey = "GP" + key;
-                GamePlayer player = await RedisCache.Instance.Get<GamePlayer>(cacheKey);
-                if (player == null)
+                item = (T)await GetFromTableStorage<T, V>(storageInfo);
+                if (item != null)
                 {
-                    AzureTableStorage storage = 
-                            new AzureTableStorage(
-                                "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1;");
-                    await storage.SetTable("GamePlayer");
-                    player = await storage.Get<GamePlayer>(GamePlayerTableStorage.AutoPartitionKey(key), key);                
-                    if (player == null)
-                    {
-                        return null;
-                    }
-                    await RedisCache.Instance.Set(cacheKey, player, TimeSpan.FromHours(24));
+                    await SaveToCache<T, K>(item);
                 }
-
-                return player;
-                */
             }
 
-                return item;
+            return item;
         }
 
         /// <summary>
-        /// Saves the data for a game player to the persitent data store.
+        /// Saves an item to the Table Storage
         /// </summary>
-        /// <param name="player">The GamePlayer instance to save.</param>
-        /// <returns>This is an async method</returns>
-        public async Task Save(GamePlayer player)
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task SaveToTableStorage<T, K>(T item)
+            where T : ILogicEntity, IToTableStorageEntity
+            where K : TableEntity, ITableStorageEntity
         {
-            /*
-            string cacheKey = "GP" + player.UniqueKey;
-            await RedisCache.Instance.Set(cacheKey, player, TimeSpan.FromHours(6));
-             */
+            if (!_useTableStorage)
+            {
+                return;
+            }
+
+            AzureTableStorage storage = new AzureTableStorage();
+            await storage.SetTable(item.StorageInformation.TableName);
+            await storage.InsertOrReplace<K>((K)item.ToTableStorageEntity());
         }
 
         /// <summary>
-        /// Sets the data for the provided game player to active or inactive
+        /// Saves an item to the Redis Cache
         /// </summary>
-        /// <param name="player">The GamePlayer instance to set active or inactive</param>
-        /// <param name="active">True for active, false for inactive</param>
-        /// <returns>This is an async method</returns>
-        public async Task SetInactive(GamePlayer player)
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task SaveToCache<T, K>(T item)
+            where T : ILogicEntity, IToCacheEntity
+            where K : ICacheEntity
         {
-            /*
-            string cacheKey = "GP" + player.UniqueKey;
-            AzureTableStorage storage =
-                       new AzureTableStorage(
-                           "UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://127.0.0.1;");
-            await storage.SetTable("GamePlayer");
-            await storage.InsertOrReplace(player);
-            await RedisCache.Instance.Delete(cacheKey);
-             * */
+            if (!_useCache)
+            {
+                return;
+            }
+
+            await RedisCache.Instance
+                .Set<K>(item.StorageInformation.CacheKey,
+                (K)item.ToCacheEntity(), TimeSpan.FromSeconds(CacheDuration));
+        }
+
+        /// <summary>
+        /// Saves the data for an ILogicEntity to the persitent data store.
+        /// </summary>
+        /// <param name="player">The ILogicEntity instance to save.</param>
+        /// <returns>This is an async method</returns>
+        public async Task Save<T, K, V>(T item)
+            where T : ILogicEntity, IToCacheEntity, IToTableStorageEntity
+            where K : ICacheEntity
+            where V : TableEntity, ITableStorageEntity
+        {
+            await SaveToCache<T,K>(item);
+            await SaveToTableStorage<T,V>(item);            
+        }
+
+        /// <summary>
+        /// Informs the data proivder that the provided item is no longer being actively used
+        /// </summary>
+        /// <param name="Item"></param>
+        /// <returns></returns>
+        public async Task SetInactive<T, K, V>(T item)
+            where T : ILogicEntity, IToTableStorageEntity
+            where K : ICacheEntity
+            where V : TableEntity, ITableStorageEntity
+        {
+            if (!_useCache)
+            {
+                return;
+            }
+
+            await SaveToTableStorage<T, V>(item);   
+            await RedisCache.Instance.Delete<K>(item.StorageInformation.CacheKey);
         }
     }
 }

@@ -11,30 +11,20 @@ namespace KS.PizzaEmpire.Business.Cache
     /// </summary>
     [ProtoContract]
     [Serializable]
-    public class GamePlayerCacheable : ICacheEntity, IToLogicEntity, IToTableStorageEntity
+    public class GamePlayerCacheable : ICacheEntity, IToLogicEntity
     {       
         /// <summary>
         /// Creates a new instance of the GamePlayerCacheable class.
         /// </summary>
         public GamePlayerCacheable() { }
 
-        /// <summary>
-        /// A unique identifier for this Game Player across the application
-        /// </summary>
         [ProtoMember(1)]
-        public string UniqueKey { get; set; }
-        
-        #region ICacheEntity
+        public int Coins { get; set; }
+        [ProtoMember(2)]
+        public int Coupons { get; set; }
 
-        /// <summary>
-        /// Returns a new instance of the appropriate ITableStorageEntity with cloned data.
-        /// </summary>
-        /// <returns></returns>
-        public ITableStorageEntity ToTableStorageEntity()
-        {
-            return GamePlayerTableStorage.From(this);
-        }
-
+        #region IToLogicEntity
+       
         /// <summary>
         /// Returns a new instance of the appropriate ILogicEntity with cloned data.
         /// </summary>
@@ -47,20 +37,7 @@ namespace KS.PizzaEmpire.Business.Cache
         #endregion
 
         #region Cloners
-
-        /// <summary>
-        /// Generates a new GamePlayerCacheable instance from a GamePlayerTableStorage instance.
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public static GamePlayerCacheable From(GamePlayerTableStorage item)
-        {
-            GamePlayerCacheable clone = new GamePlayerCacheable();
-            clone.UniqueKey = item.UniqueKey;
-
-            return clone;
-        }
-
+       
         /// <summary>
         /// Generates a new GamePlayerCacheable instance from a GamePlayer instance.
         /// </summary>
@@ -69,7 +46,8 @@ namespace KS.PizzaEmpire.Business.Cache
         public static GamePlayerCacheable From(GamePlayer item)
         {
             GamePlayerCacheable clone = new GamePlayerCacheable();
-            clone.UniqueKey = item.UniqueKey;
+            clone.Coins = item.Coins;
+            clone.Coupons = item.Coupons;
 
             return clone;
         }

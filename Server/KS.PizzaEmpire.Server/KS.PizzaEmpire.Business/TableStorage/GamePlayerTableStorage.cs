@@ -8,7 +8,7 @@ namespace KS.PizzaEmpire.Business.TableStorage
     /// <summary>
     /// Represents the state for a player of the game as stored in table storage.
     /// </summary>
-    public class GamePlayerTableStorage : TableEntity, ITableStorageEntity, IToCacheEntity, IToLogicEntity
+    public class GamePlayerTableStorage : TableEntity, ITableStorageEntity, IToLogicEntity
     {
         /// <summary>
         /// Creates a new instance of the GamePlayerTableStorage class.
@@ -16,44 +16,11 @@ namespace KS.PizzaEmpire.Business.TableStorage
         public GamePlayerTableStorage()
         { }
 
-        /// <summary>
-        /// Returns a parition key for table storage from the provided key
-        /// </summary>
-        /// <returns></returns>
-        public static string AutoPartitionKey(string key)
-        {
-            return key.Substring(0, 2);
-        }
-        
-        /// <summary>
-        /// A unique identifier for this Game Player across the application
-        /// </summary>
-        private string _uniqueKey;
-        public string UniqueKey
-        {
-            get
-            {
-                return _uniqueKey;
-            }
-            set
-            {
-                _uniqueKey = value;
-                PartitionKey = AutoPartitionKey(_uniqueKey);
-                RowKey = _uniqueKey;
-            }
-        }
+        public int Coins { get; set; }
+        public int Coupons { get; set; }
 
-        #region ITableStorage
-
-        /// <summary>
-        /// Returns a new instance of the appropriate ICacheEntity with cloned data.
-        /// </summary>
-        /// <returns></returns>
-        public ICacheEntity ToCacheEntity()
-        {
-            return GamePlayerCacheable.From(this);
-        }
-
+        #region IToLogicEntity
+       
         /// <summary>
         /// Returns a new instance of the appropriate ILogicEntity with cloned data.
         /// </summary>
@@ -63,23 +30,10 @@ namespace KS.PizzaEmpire.Business.TableStorage
             return GamePlayer.From(this);
         }
 
-        #endregion ITableStorage
+        #endregion
 
         #region Cloners
-
-        /// <summary>
-        /// Generates a new GamePlayerTableStorage instance from a GamePlayerCacheable instance.
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public static GamePlayerTableStorage From(GamePlayerCacheable item)
-        {
-            GamePlayerTableStorage clone = new GamePlayerTableStorage();
-            clone.UniqueKey = item.UniqueKey;
-
-            return clone;
-        }
-
+       
         /// <summary>
         /// Generates a new GamePlayerTableStorage instance from a GamePlayer instance.
         /// </summary>
@@ -88,7 +42,10 @@ namespace KS.PizzaEmpire.Business.TableStorage
         public static GamePlayerTableStorage From(GamePlayer item)
         {
             GamePlayerTableStorage clone = new GamePlayerTableStorage();
-            clone.UniqueKey = item.UniqueKey;
+            clone.PartitionKey = item.StorageInformation.PartitionKey;
+            clone.RowKey = item.StorageInformation.RowKey;
+            clone.Coins = item.Coins;
+            clone.Coupons = item.Coupons;
 
             return clone;
         }

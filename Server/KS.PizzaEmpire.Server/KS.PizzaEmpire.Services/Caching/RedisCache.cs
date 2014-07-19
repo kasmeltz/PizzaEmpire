@@ -102,7 +102,8 @@ namespace KS.PizzaEmpire.Services.Caching
         /// <typeparam name="T">The data type of the item that is stored in the cache.</typeparam>
         /// <param name="key">The key of the item in the cache.</param>
         /// <returns>The item from the cache.</returns>
-        public async Task<T> Get<T>(string key, CommandFlags flags = CommandFlags.None) where T : ICacheEntity
+        public async Task<T> Get<T>(string key, CommandFlags flags = CommandFlags.None) 
+            where T : ICacheEntity
         {
             return await ServiceHelper.RetryAsync<T>(async () =>
             {
@@ -122,7 +123,8 @@ namespace KS.PizzaEmpire.Services.Caching
         /// <param name="key">The key of the item in the cache.</param>
         /// <param name="value">The item tio store</param>
         public async Task Set<T>(string key, T value,
-            TimeSpan ts, When when = When.Always, CommandFlags flags = CommandFlags.None) where T : ICacheEntity
+            TimeSpan ts, When when = When.Always, CommandFlags flags = CommandFlags.None) 
+            where T : ICacheEntity
         {
             await ServiceHelper.RetryAsync<int>(async () =>
             {
@@ -137,7 +139,8 @@ namespace KS.PizzaEmpire.Services.Caching
         /// </summary>
         /// <param name="key">The key to remove</param>
         /// <returns></returns>
-        public async Task Delete<T>(string key, CommandFlags flags = CommandFlags.None)where T : ICacheEntity
+        public async Task Delete<T>(string key, CommandFlags flags = CommandFlags.None) 
+            where T : ICacheEntity
         {
             await ServiceHelper.RetryAsync<int>(async () =>
             {

@@ -1,5 +1,6 @@
 ﻿using KS.PizzaEmpire.Business.Cache;
 using KS.PizzaEmpire.Business.Conversion;
+using KS.PizzaEmpire.Business.StorageInformation;
 using KS.PizzaEmpire.Business.TableStorage;
 
 namespace KS.PizzaEmpire.Business.Logic
@@ -15,24 +16,12 @@ namespace KS.PizzaEmpire.Business.Logic
         public GamePlayer() { }
 
         /// <summary>
-        /// A unique identifier for this Game Player across the application
+        /// The information fow how this entity should be stored in different types of storage
         /// </summary>
-        public string UniqueKey { get; set; }
+        public IStorageInformation StorageInformation { get; set; }
 
-        #region ILogicEntity
-
-         /// <summary>
-        /// The CacheKey for this item
-        /// </summary>
-        public string CacheKey
-        {
-            get
-            {
-                return "GP" + UniqueKey;
-            }
-        }
-
-        #endregion
+        public int Coins { get; set; }
+        public int Coupons { get; set; }
 
         #region IToCacheEntity
 
@@ -70,7 +59,6 @@ namespace KS.PizzaEmpire.Business.Logic
         public static GamePlayer From(GamePlayerTableStorage item)
         {
             GamePlayer clone = new GamePlayer();
-            clone.UniqueKey = item.UniqueKey;
 
             return clone;
         }
@@ -83,7 +71,6 @@ namespace KS.PizzaEmpire.Business.Logic
         public static GamePlayer From(GamePlayerCacheable item)
         {
             GamePlayer clone = new GamePlayer();
-            clone.UniqueKey = item.UniqueKey;
 
             return clone;
         }

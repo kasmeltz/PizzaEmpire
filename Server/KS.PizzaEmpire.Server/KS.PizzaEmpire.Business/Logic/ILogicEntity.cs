@@ -1,4 +1,5 @@
 ﻿
+using KS.PizzaEmpire.Business.StorageInformation;
 namespace KS.PizzaEmpire.Business.Logic
 {
     /// <summary>
@@ -6,9 +7,6 @@ namespace KS.PizzaEmpire.Business.Logic
     /// </summary>
     public interface ILogicEntity
     {
-        /// <summary>
-        /// The CacheKey for this item
-        /// </summary>
-        string CacheKey { get; }
+        IStorageInformation StorageInformation { get; set; }
     }
 }
