@@ -204,7 +204,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\Version 1\ValuesV1Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -214,6 +214,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utility\APIVersionControllerSelector.cs" />
     <Compile Include="Utility\WebAPIUtility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +276,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KS.PizzaEmpire.GameLogic\KS.PizzaEmpire.GameLogic.csproj">
+      <Project>{08b464fa-cc66-4680-8e1a-370aaa7848e5}</Project>
+      <Name>KS.PizzaEmpire.GameLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KS.PizzaEmpire.Business\KS.PizzaEmpire.Business.csproj">
       <Project>{4da809fd-8d3c-470f-8608-04da00f89554}</Project>
       <Name>KS.PizzaEmpire.Business</Name>

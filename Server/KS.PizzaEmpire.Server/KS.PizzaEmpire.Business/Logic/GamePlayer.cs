@@ -59,6 +59,8 @@ namespace KS.PizzaEmpire.Business.Logic
         public static GamePlayer From(GamePlayerTableStorage item)
         {
             GamePlayer clone = new GamePlayer();
+            clone.Coins = item.Coins;
+            clone.Coupons = item.Coupons;
 
             return clone;
         }
@@ -71,6 +73,8 @@ namespace KS.PizzaEmpire.Business.Logic
         public static GamePlayer From(GamePlayerCacheable item)
         {
             GamePlayer clone = new GamePlayer();
+            clone.Coins = item.Coins;
+            clone.Coupons = item.Coupons;
 
             return clone;
         }

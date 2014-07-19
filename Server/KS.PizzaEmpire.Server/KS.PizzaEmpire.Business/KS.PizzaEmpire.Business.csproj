@@ -72,6 +72,9 @@
     <Compile Include="Conversion\IToCacheEntity.cs" />
     <Compile Include="Conversion\IToLogicEntity.cs" />
     <Compile Include="Conversion\IToTableStorageEntity.cs" />
+    <Compile Include="Network\IAPIEntity.cs" />
+    <Compile Include="Result\ErrorCodes.cs" />
+    <Compile Include="Result\Result.cs" />
     <Compile Include="StorageInformation\BaseStorageInformation.cs" />
     <Compile Include="StorageInformation\GamePlayerStorageInformation.cs" />
     <Compile Include="StorageInformation\IStorageInformation.cs" />

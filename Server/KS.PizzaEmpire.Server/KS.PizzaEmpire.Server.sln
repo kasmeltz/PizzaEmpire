@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.Services.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.DataAccess", "KS.PizzaEmpire.DataAccess\KS.PizzaEmpire.DataAccess.csproj", "{C76389D4-B828-448F-A610-7E2A9A5AF025}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.GameLogic", "KS.PizzaEmpire.GameLogic\KS.PizzaEmpire.GameLogic.csproj", "{08B464FA-CC66-4680-8E1A-370AAA7848E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{C76389D4-B828-448F-A610-7E2A9A5AF025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C76389D4-B828-448F-A610-7E2A9A5AF025}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C76389D4-B828-448F-A610-7E2A9A5AF025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B464FA-CC66-4680-8E1A-370AAA7848E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B464FA-CC66-4680-8E1A-370AAA7848E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B464FA-CC66-4680-8E1A-370AAA7848E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B464FA-CC66-4680-8E1A-370AAA7848E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

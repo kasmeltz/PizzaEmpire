@@ -1,5 +1,7 @@
-﻿using KS.PizzaEmpire.Business.Cache;
+﻿using GameLogic.GamePlayerLogic;
+using KS.PizzaEmpire.Business.Cache;
 using KS.PizzaEmpire.Business.Logic;
+using KS.PizzaEmpire.Business.Result;
 using KS.PizzaEmpire.Business.StorageInformation;
 using KS.PizzaEmpire.Business.TableStorage;
 using KS.PizzaEmpire.DataAccess.DataProvider;
@@ -10,7 +12,7 @@ using System.Web.Http;
 namespace KS.PizzaEmpire.WebAPI.Controllers
 {
     //[Authorize]
-    public class ValuesController : ApiController
+    public class ValuesV1Controller : ApiController
     {
         // GET api/values
         public async Task<IEnumerable<string>> Get()
@@ -21,9 +23,7 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
 
             if (player == null)
             {
-                player = new GamePlayer();
-                player.Coins = 1000;
-                player.Coupons = 5;
+                player = GamePlayerManager.CreateNewGamePlayer();
                 player.StorageInformation = storageInfo;
                 await ConfigurableDataProvider.Instance
                     .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player);
@@ -43,10 +43,25 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
             };
         }
 
-        // GET api/values/5
-        public string Get(string uniqueKey)
+        // GET api/values/key
+        [System.Web.Http.HttpGet]
+        [AcceptVerbs("GET")]
+        public async Task<Result<GamePlayer>> Get(string id)
         {
-            return "value";
+            GamePlayerStorageInformation storageInfo = new GamePlayerStorageInformation(id.ToString());
+            GamePlayer player = await ConfigurableDataProvider.Instance
+                .Get<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(storageInfo);
+
+            if (player == null)
+            {
+                player = GamePlayerManager.CreateNewGamePlayer();
+                player.StorageInformation = storageInfo;
+                await ConfigurableDataProvider.Instance
+                    .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player);
+            }
+
+            //player.StorageInformation = null;
+            return new Result<GamePlayer> { ErrorCode = ErrorCodes.ERROR_OK, Item = player };
         }
 
         // POST api/values

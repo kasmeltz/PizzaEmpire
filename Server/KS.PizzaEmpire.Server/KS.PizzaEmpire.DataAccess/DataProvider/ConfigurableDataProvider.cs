@@ -99,20 +99,28 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
                 return default(T);
             }
 
-            AzureTableStorage storage = new AzureTableStorage();
-            await storage.SetTable(storageInfo.TableName);
-
-            K storageItem = await storage.Get<K>(storageInfo.PartitionKey, storageInfo.RowKey);
-            if (storageItem == null)
+            try
             {
+                AzureTableStorage storage = new AzureTableStorage();
+                await storage.SetTable(storageInfo.TableName);
+
+                K storageItem = await storage.Get<K>(storageInfo.PartitionKey, storageInfo.RowKey);
+                if (storageItem == null)
+                {
+                    return default(T);
+                }
+
+                storageInfo.FromTableStorage = true;
+                ILogicEntity item = storageItem.ToLogicEntity();
+                item.StorageInformation = storageInfo;
+
+                return item;
+            }
+            catch (Exception)
+            {
+                //@ TODO what bahevior do we want if we are unable to get item from Table Storage?
                 return default(T);
             }
-
-            storageInfo.FromTableStorage = true;
-            ILogicEntity item = storageItem.ToLogicEntity();
-            item.StorageInformation = storageInfo;
-
-            return item;
         }
 
         /// <summary>
@@ -129,17 +137,25 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
                 return default(T);
             }
 
-            K cachedItem = await RedisCache.Instance.Get<K>(storageInfo.CacheKey);
-            if (cachedItem == null)
+            try
             {
+                K cachedItem = await RedisCache.Instance.Get<K>(storageInfo.CacheKey);
+                if (cachedItem == null)
+                {
+                    return default(T);
+                }
+
+                storageInfo.FromCache = true;
+                ILogicEntity item = cachedItem.ToLogicEntity();
+                item.StorageInformation = storageInfo;
+
+                return item;
+            }
+            catch (Exception)
+            {
+                //@ TODO what bahevior do we want if we are unable to get item from the cache?
                 return default(T);
             }
-
-            storageInfo.FromCache = true;
-            ILogicEntity item = cachedItem.ToLogicEntity();
-            item.StorageInformation = storageInfo;
-
-            return item;
         }
 
         /// <summary>
@@ -180,9 +196,16 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
                 return;
             }
 
-            AzureTableStorage storage = new AzureTableStorage();
-            await storage.SetTable(item.StorageInformation.TableName);
-            await storage.InsertOrReplace<K>((K)item.ToTableStorageEntity());
+            try
+            {
+                AzureTableStorage storage = new AzureTableStorage();
+                await storage.SetTable(item.StorageInformation.TableName);
+                await storage.InsertOrReplace<K>((K)item.ToTableStorageEntity());
+            }
+            catch (Exception)
+            {
+                //@ TODO what bahevior do we want if we are unable to save to table storage?
+            }
         }
 
         /// <summary>
@@ -199,9 +222,16 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
                 return;
             }
 
-            await RedisCache.Instance
-                .Set<K>(item.StorageInformation.CacheKey,
-                (K)item.ToCacheEntity(), TimeSpan.FromSeconds(CacheDuration));
+            try
+            {
+                await RedisCache.Instance
+                    .Set<K>(item.StorageInformation.CacheKey,
+                    (K)item.ToCacheEntity(), TimeSpan.FromSeconds(CacheDuration));
+            }
+            catch (Exception)
+            {
+                //@ TODO what bahevior do we want if we are unable to save to the cache?
+            }
         }
 
         /// <summary>
