@@ -109,7 +109,7 @@ namespace KS.PizzaEmpire.Services.Caching
             {
                 IDatabase cache = Connection.GetDatabase();
                 RedisValue value = await cache.StringGetAsync(key, flags);
-                if (value.IsNullOrEmpty)
+                if (value.IsNull)
                 {
                     return default(T);
                 }
