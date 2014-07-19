@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace KS.PizzaEmpire.Services
@@ -24,7 +25,10 @@ namespace KS.PizzaEmpire.Services
 
             if (currentAttempt > maxAttempts)
             {
-                // @TODO Log fact that max attempts failed
+                Trace.TraceError("An error occured while attempting to perform an action on a service\n" + 
+                    "No more attempts!\n" + 
+                    currentException.Message + "\n" + currentException.StackTrace);
+
                 throw currentException;
             }
 
@@ -34,7 +38,9 @@ namespace KS.PizzaEmpire.Services
             }
             catch (Exception e)
             {
-                // @TODO Log Exception
+                Trace.TraceError("An error occured while attempting to perform an action on a service\n" + 
+                    "Attempt number " + currentAttempt + "\n" + e.Message + "\n" + e.StackTrace);
+
                 currentException = e;
             }
 

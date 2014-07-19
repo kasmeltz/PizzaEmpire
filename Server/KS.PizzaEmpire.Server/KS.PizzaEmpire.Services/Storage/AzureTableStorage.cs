@@ -53,8 +53,12 @@ namespace KS.PizzaEmpire.Services.Storage
         /// <returns></returns>
         public async Task SetTable(string tableName)
         {
-            Table = TableClient.GetTableReference(tableName);
-            await Table.CreateIfNotExistsAsync();
+            await ServiceHelper.RetryAsync<int>(async () =>
+            {
+                Table = TableClient.GetTableReference(tableName);
+                await Table.CreateIfNotExistsAsync();
+                return 1;
+            }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
 
         /// <summary>

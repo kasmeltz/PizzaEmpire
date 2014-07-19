@@ -60,7 +60,6 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
                     .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player);
             }
 
-            //player.StorageInformation = null;
             return new Result<GamePlayer> { ErrorCode = ErrorCodes.ERROR_OK, Item = player };
         }
 
