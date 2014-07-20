@@ -28,7 +28,7 @@ namespace KS.PizzaEmpire.Business.Cache
         [ProtoMember(4)]
         public int Level { get; set; }
         [ProtoMember(5)]
-        public Dictionary<int, bool> BuildableItems { get; set; }
+        public Dictionary<int, int> BuildableItems { get; set; }
         [ProtoMember(6)]
         public Dictionary<int, int> Equipment { get; set; }       
 

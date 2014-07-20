@@ -22,6 +22,8 @@ namespace KS.PizzaEmpire.Business.Logic
         public int ItemCode { get; set; }
         public string Name { get; set; }
         public int CoinCost { get; set; }
+        public int Quantity { get; set; }
+        public int Experience { get; set; }
         public int BuildSeconds { get; set; }
         public int CouponCost { get; set; }
         public int SpeedUpCoupons { get; set; }
@@ -53,6 +55,8 @@ namespace KS.PizzaEmpire.Business.Logic
             clone.ItemCode = item.ItemCode;
             clone.Name = item.Name;
             clone.CoinCost = item.CoinCost;
+            clone.Quantity = item.Quantity;
+            clone.Experience = item.Experience;
             clone.BuildSeconds = item.BuildSeconds;
             clone.CouponCost = item.CouponCost;
             clone.SpeedUpCoupons = item.SpeedUpCoupons;

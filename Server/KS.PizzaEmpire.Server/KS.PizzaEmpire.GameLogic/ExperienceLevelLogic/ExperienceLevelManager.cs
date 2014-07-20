@@ -95,16 +95,33 @@ namespace GameLogic.ExperienceLevelLogic
                 ExperienceRequired = 0,
                 NewBuildableItems = new List<int>
                 {
-                    (int)BuildableItemEnum.White_Flour, 
-                    (int)BuildableItemEnum.Salt, 
-                    (int)BuildableItemEnum.Yeast, 
+                    (int)BuildableItemEnum.White_Flour,
+                    (int)BuildableItemEnum.Salt,
+                    (int)BuildableItemEnum.Yeast,
                     (int)BuildableItemEnum.Olive_Oil
                 },
                 NewEquipment = new List<int>
                 {
-                    (int)EquipmentEnum.Fridge,
                     (int)EquipmentEnum.Phone,
-                    (int)EquipmentEnum.Delivery_Truck,
+                    (int)EquipmentEnum.Delivery_Truck
+                }
+            };
+            exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
+            exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());
+
+            exl = new ExperienceLevel
+            {
+                Level = 2,
+                ExperienceRequired = 100,
+                NewBuildableItems = new List<int>
+                {
+                    (int)BuildableItemEnum.Basil,
+                    (int)BuildableItemEnum.Pepper,
+                    (int)BuildableItemEnum.Tomatoes,
+                },
+                NewEquipment = new List<int>
+                {
+                    (int)EquipmentEnum.Fridge
                 }
             };
             exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());

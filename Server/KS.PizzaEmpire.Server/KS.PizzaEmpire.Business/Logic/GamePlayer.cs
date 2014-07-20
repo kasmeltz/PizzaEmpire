@@ -27,7 +27,7 @@ namespace KS.PizzaEmpire.Business.Logic
         public int Coupons { get; set; }
         public int Experience { get; set; }
         public int Level { get; set; }
-        public Dictionary<int, bool> BuildableItems { get; set; }
+        public Dictionary<int, int> BuildableItems { get; set; }
         public Dictionary<int, int> Equipment { get; set; }
 
         #region IToCacheEntity
@@ -73,7 +73,7 @@ namespace KS.PizzaEmpire.Business.Logic
 
             using (MemoryStream memoryStream = new MemoryStream(item.BuildableItemsSerialized))
             {
-                clone.BuildableItems = Serializer.Deserialize<Dictionary<int, bool>>(memoryStream);
+                clone.BuildableItems = Serializer.Deserialize<Dictionary<int, int>>(memoryStream);
             }
 
             using (MemoryStream memoryStream = new MemoryStream(item.EquipmentSerialized))

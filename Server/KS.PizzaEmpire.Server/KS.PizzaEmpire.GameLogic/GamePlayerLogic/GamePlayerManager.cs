@@ -24,7 +24,7 @@ namespace GameLogic.GamePlayerLogic
             player.Coupons = 5;
             player.Experience = 0;
 
-            player.BuildableItems = new Dictionary<int, bool>();
+            player.BuildableItems = new Dictionary<int, int>();
             player.Equipment = new Dictionary<int, int>();
 
             SetLevel(player, 1);
@@ -53,7 +53,7 @@ namespace GameLogic.GamePlayerLogic
             {
                 if (!player.BuildableItems.ContainsKey(bi))
                 {
-                    player.BuildableItems[bi] = true;
+                    player.BuildableItems[bi] = -1;
                 }
             }
 

@@ -1,6 +1,4 @@
-﻿using GameLogic.GamePlayerLogic;
-using GameLogic.ItemLogic;
-using KS.PizzaEmpire.Business.Cache;
+﻿using KS.PizzaEmpire.Business.Cache;
 using KS.PizzaEmpire.Business.Common;
 using KS.PizzaEmpire.Business.Logic;
 using KS.PizzaEmpire.Business.Result;
@@ -12,19 +10,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace KS.PizzaEmpire.WebAPI.Controllers
+namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 {
-    //[Authorize]
-    public class ValuesV1Controller : ApiController
+    public class GamePlayerV1Controller : ApiController
     {
-        // GET api/values
+        // GET api/gameplayer
         public void Get()
-        {          
+        {
         }
 
-        // GET api/values/key
-        [System.Web.Http.HttpGet]
-        [AcceptVerbs("GET")]
+        // GET api/gameplayer/5
         public async Task<Result> Get(string id)
         {
             try
@@ -35,10 +30,7 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
 
                 if (player == null)
                 {
-                    player = GamePlayerManager.CreateNewGamePlayer();
-                    player.StorageInformation = storageInfo;
-                    await ConfigurableDataProvider.Instance
-                        .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player);
+                    return new Result { ErrorCode = ErrorCodes.ERROR_RETRIEVING_ACCOUNT };
                 }
 
                 return new Result { ErrorCode = ErrorCodes.ERROR_OK, Item = player };
@@ -49,17 +41,17 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
             }
         }
 
-        // POST api/values
+        // POST api/gameplayer
         public void Post([FromBody]string value)
         {
         }
 
-        // PUT api/values/5
+        // PUT api/gameplayer/5
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/gameplayer/5
         public void Delete(int id)
         {
         }

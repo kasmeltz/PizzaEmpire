@@ -127,6 +127,8 @@ namespace GameLogic.ItemLogic
                     ItemCode = (int)en,
                     BuildSeconds = 120,
                     CoinCost = 50,
+                    Quantity = 3,
+                    Experience = 50,
                     CouponCost = 0,
                     SpeedUpCoupons = 1,
                     Name = en.ToString().Replace("_", " ")
