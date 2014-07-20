@@ -45,6 +45,9 @@ namespace KS.PizzaEmpire.Business.TableStorage
         {
             BuildableItemTableStorage clone = new BuildableItemTableStorage();
 
+            clone.PartitionKey = item.StorageInformation.PartitionKey;
+            clone.RowKey = item.StorageInformation.RowKey;
+
             clone.ItemCode = item.ItemCode;
             clone.Name = item.Name;
             clone.CoinCost = item.CoinCost;

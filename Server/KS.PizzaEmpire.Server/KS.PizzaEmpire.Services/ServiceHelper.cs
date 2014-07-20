@@ -21,7 +21,10 @@ namespace KS.PizzaEmpire.Services
         public static async Task<T> RetryAsync<T>(Func<Task<T>> fn, int retryMillis, int maxAttempts,
             int throttleMillis = 0, int currentAttempt = 0, Exception currentException = null)
         {
-            await Task.Delay(throttleMillis);
+            if (currentAttempt == 0 && throttleMillis > 0)
+            { 
+                await Task.Delay(throttleMillis);
+            }
 
             if (currentAttempt > maxAttempts)
             {
@@ -44,7 +47,11 @@ namespace KS.PizzaEmpire.Services
                 currentException = e;
             }
 
-            await Task.Delay(retryMillis);
+            if (retryMillis > 0)
+            {
+                await Task.Delay(retryMillis);
+            }
+
             return await RetryAsync<T>(fn, retryMillis, maxAttempts, throttleMillis, ++currentAttempt, currentException);
         }
         
