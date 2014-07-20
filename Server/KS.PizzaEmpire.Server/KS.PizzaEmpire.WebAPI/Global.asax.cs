@@ -1,7 +1,9 @@
-﻿using KS.PizzaEmpire.Services;
+﻿using GameLogic.Items;
+using KS.PizzaEmpire.Services;
 using KS.PizzaEmpire.Services.Caching;
 using KS.PizzaEmpire.Services.Serialization;
 using KS.PizzaEmpire.Services.Storage;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -13,6 +15,8 @@ namespace KS.PizzaEmpire.WebAPI
     {
         protected void Application_Start()
         {
+            Task.WaitAll(ItemManager.Instance.Initialize());
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

@@ -47,17 +47,16 @@ namespace KS.PizzaEmpire.Services.Test.Storage
 
         private async Task TestInitializeMethodAsync()
         {
-            Storage = new AzureTableStorage(
-                );
-            await Storage.SetTable("players");
+            Storage = new AzureTableStorage();
+            await Storage.SetTable("BuildableItem");
             await Storage.DeleteTable();
+            await Storage.SetTable("BuildableItem");
         }
 
         [TestMethod]
         public async Task TestAzureTableStorageGet()
         {
             // Arrange
-            await Storage.SetTable("players");
             await Storage.Insert<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
             { 
                 RowKey = "Kevin", 
@@ -77,7 +76,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageGetAll()
         {
             // Arrange
-            await Storage.SetTable("players");
             await Storage.Insert<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
             {
                 RowKey = "Kevin",
@@ -114,7 +112,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageInsertMultiple()
         {
             // Arrange
-            await Storage.SetTable("players");
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();          
             players.Add(new AzureTableStorageTestEntity
             {
@@ -148,7 +145,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageReplace()
         {
             // Arrange
-            await Storage.SetTable("players");
             await Storage.Insert<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
             {
                 RowKey = "Kevin",
@@ -176,7 +172,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageReplaceMultiple()
         {
             // Arrange
-            await Storage.SetTable("players");
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
@@ -223,7 +218,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageMerge()
         {
             // Arrange
-            await Storage.SetTable("players");
             await Storage.Insert<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
             {
                 RowKey = "Kevin",
@@ -250,7 +244,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageMergeMultiple()
         {
             // Arrange
-            await Storage.SetTable("players");
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
@@ -303,7 +296,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageInsertOrReplace()
         {
             // Arrange
-            await Storage.SetTable("players");
             await Storage.InsertOrReplace<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
             {
                 RowKey = "Kevin",
@@ -331,7 +323,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageInsertOrReplaceMultiple()
         {
             // Arrange
-            await Storage.SetTable("players");
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
@@ -379,7 +370,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageInsertOrMerge()
         {
             // Arrange
-            await Storage.SetTable("players");
             await Storage.InsertOrMerge<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
             {
                 RowKey = "Kevin",
@@ -406,7 +396,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageInsertOrMergeMultiple()
         {
             // Arrange
-            await Storage.SetTable("players");
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
@@ -459,7 +448,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageDelete()
         {
             // Arrange
-            await Storage.SetTable("players");
             await Storage.Insert<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
             {
                 RowKey = "Kevin",
@@ -484,7 +472,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageDeleteMultiple()
         {
             // Arrange
-            await Storage.SetTable("players");
             List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             await Storage.InsertOrReplace<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
             {

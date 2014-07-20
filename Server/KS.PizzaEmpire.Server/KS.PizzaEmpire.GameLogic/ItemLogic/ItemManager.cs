@@ -39,16 +39,23 @@ namespace GameLogic.Items
                         if (instance == null)
                         {
                             instance = new ItemManager();
-
-                            // @TODO need to decide on how to get item definitions
-                            // into table storage in the first place
-                            instance.BuildItemDefintiions().Wait();
-                            instance.LoadItemDefinitions().Wait();
                         }
                     }
                 }
                 return instance;
             }
+        }
+
+        /// <summary>
+        /// Initializes the item manager.
+        /// </summary>
+        /// <returns></returns>
+        public async Task Initialize()
+        {
+            // @TODO need to decide on how to get item definitions
+            // into table storage in the first place
+            await BuildItemDefintiions();
+            await LoadItemDefinitions();
         }
 
         /// <summary>
@@ -104,12 +111,9 @@ namespace GameLogic.Items
 
             AzureTableStorage storage = new AzureTableStorage();            
             await storage.SetTable("BuildableItem");
-
-            /*
             await storage.DeleteTable();
             await storage.SetTable("BuildableItem");
             await storage.InsertOrReplace<BuildableItemTableStorage>(buildableItems);         
-            */
         }
     }
 }

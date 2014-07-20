@@ -19,7 +19,7 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
         // GET api/values
         public async Task<IEnumerable<BuildableItem>> Get()
         {
-            ItemManager instance = ItemManager.Instance;
+            ItemManager instance = ItemManager.Instance;            
             Dictionary<int, BuildableItem> dict = instance.BuildableItems;
             IEnumerable<BuildableItem> items = dict.Values;
 
