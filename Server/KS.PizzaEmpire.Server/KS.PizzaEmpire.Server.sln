@@ -24,6 +24,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.DataAccess",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.GameLogic", "KS.PizzaEmpire.GameLogic\KS.PizzaEmpire.GameLogic.csproj", "{08B464FA-CC66-4680-8E1A-370AAA7848E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.Business.Test", "KS.PizzaEmpire.Business.Test\KS.PizzaEmpire.Business.Test.csproj", "{A01FA806-14D7-4B19-80C9-1F609C64BD0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.DataAccess.Test", "KS.PizzaEmpire.DataAccess.Test\KS.PizzaEmpire.DataAccess.Test.csproj", "{3BCF965C-B7CC-4384-8D33-48E57D73B695}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KS.PizzaEmpire.GameLogic.Test", "KS.PizzaEmpire.GameLogic.Test\KS.PizzaEmpire.GameLogic.Test.csproj", "{19764563-68E7-457D-8773-1B4D6874DE66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +64,18 @@ Global
 		{08B464FA-CC66-4680-8E1A-370AAA7848E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08B464FA-CC66-4680-8E1A-370AAA7848E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08B464FA-CC66-4680-8E1A-370AAA7848E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A01FA806-14D7-4B19-80C9-1F609C64BD0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A01FA806-14D7-4B19-80C9-1F609C64BD0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A01FA806-14D7-4B19-80C9-1F609C64BD0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A01FA806-14D7-4B19-80C9-1F609C64BD0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BCF965C-B7CC-4384-8D33-48E57D73B695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BCF965C-B7CC-4384-8D33-48E57D73B695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BCF965C-B7CC-4384-8D33-48E57D73B695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BCF965C-B7CC-4384-8D33-48E57D73B695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19764563-68E7-457D-8773-1B4D6874DE66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19764563-68E7-457D-8773-1B4D6874DE66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19764563-68E7-457D-8773-1B4D6874DE66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19764563-68E7-457D-8773-1B4D6874DE66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

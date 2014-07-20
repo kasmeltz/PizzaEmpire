@@ -20,6 +20,7 @@ namespace KS.PizzaEmpire.GameLogic.ItemLogic
         Pizza_Assmebly,
         Fridge,
         Computer,
-        Customer_Table
+        Customer_Table,
+        Soda_Machine
     }
 }

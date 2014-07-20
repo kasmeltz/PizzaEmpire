@@ -1,4 +1,5 @@
-﻿using GameLogic.Items;
+﻿using GameLogic.ExperienceLevelLogic;
+using GameLogic.ItemLogic;
 using KS.PizzaEmpire.Services;
 using KS.PizzaEmpire.Services.Caching;
 using KS.PizzaEmpire.Services.Serialization;
@@ -16,6 +17,7 @@ namespace KS.PizzaEmpire.WebAPI
         protected void Application_Start()
         {
             Task.WaitAll(ItemManager.Instance.Initialize());
+            Task.WaitAll(ExperienceLevelManager.Instance.Initialize());
 
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);

@@ -2,6 +2,9 @@
 using KS.PizzaEmpire.Business.Conversion;
 using KS.PizzaEmpire.Business.StorageInformation;
 using KS.PizzaEmpire.Business.TableStorage;
+using ProtoBuf;
+using System.Collections.Generic;
+using System.IO;
 
 namespace KS.PizzaEmpire.Business.Logic
 {
@@ -22,6 +25,10 @@ namespace KS.PizzaEmpire.Business.Logic
 
         public int Coins { get; set; }
         public int Coupons { get; set; }
+        public int Experience { get; set; }
+        public int Level { get; set; }
+        public Dictionary<int, bool> BuildableItems { get; set; }
+        public Dictionary<int, int> Equipment { get; set; }
 
         #region IToCacheEntity
 
@@ -61,6 +68,18 @@ namespace KS.PizzaEmpire.Business.Logic
             GamePlayer clone = new GamePlayer();
             clone.Coins = item.Coins;
             clone.Coupons = item.Coupons;
+            clone.Experience = item.Experience;
+            clone.Level = item.Level;
+
+            using (MemoryStream memoryStream = new MemoryStream(item.BuildableItemsSerialized))
+            {
+                clone.BuildableItems = Serializer.Deserialize<Dictionary<int, bool>>(memoryStream);
+            }
+
+            using (MemoryStream memoryStream = new MemoryStream(item.EquipmentSerialized))
+            {
+                clone.Equipment = Serializer.Deserialize<Dictionary<int, int>>(memoryStream);
+            }
 
             return clone;
         }
@@ -75,7 +94,11 @@ namespace KS.PizzaEmpire.Business.Logic
             GamePlayer clone = new GamePlayer();
             clone.Coins = item.Coins;
             clone.Coupons = item.Coupons;
-
+            clone.Experience = item.Experience;
+            clone.Level = item.Level;
+            clone.BuildableItems = item.BuildableItems;
+            clone.Equipment = item.Equipment;
+           
             return clone;
         }
 

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace GameLogic.Items
+namespace GameLogic.ItemLogic
 {
     /// <summary>
     /// Represents an item that handles the game logic for items
@@ -78,7 +78,14 @@ namespace GameLogic.Items
                 BuildableItems[item.ItemCode] = 
                     (BuildableItem)item.ToLogicEntity();
             }
+        }
 
+        /// <summary>
+        /// Load the Recipes
+        /// </summary>
+        public async Task LoadRecipes()
+        {
+            AzureTableStorage storage = new AzureTableStorage();
             await storage.SetTable("Recipe");
 
             IEnumerable<RecipeTableStorage> recipes =
@@ -101,7 +108,7 @@ namespace GameLogic.Items
         public async Task LoadItemDefinitions()
         {
             await LoadBuildableItems();
-            //LoadRecipes();
+            await LoadRecipes();
         }
 
         /// <summary>
@@ -143,17 +150,477 @@ namespace GameLogic.Items
         {
             List<RecipeTableStorage> recs = new List<RecipeTableStorage>();
             Recipe re;
-            ItemQuantity iq;
 
             re = new Recipe
             {                
+                ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                EquipmentCode = (int)EquipmentEnum.Cheese_Grater,  
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Mozzarella_Cheese,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
                 ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
-                EquipmentCode = (int)EquipmentEnum.Dough_Mixer,  
+                EquipmentCode = (int)EquipmentEnum.Dough_Mixer,
                 Ingredients = new List<ItemQuantity>
                 {
                     new ItemQuantity
                     {
                         ItemCode = (int)BuildableItemEnum.White_Flour,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Salt,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Olive_Oil,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Yeast,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Cola_Soda,
+                EquipmentCode = (int)EquipmentEnum.Soda_Machine,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Cola_Syrup,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Citrus_Soda,
+                EquipmentCode = (int)EquipmentEnum.Soda_Machine,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Citrus_Syrup,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Sliced_Pepperoni,
+                EquipmentCode = (int)EquipmentEnum.Meat_Slicer,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pepperoni,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Sliced_Ham,
+                EquipmentCode = (int)EquipmentEnum.Meat_Slicer,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Ham,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                EquipmentCode = (int)EquipmentEnum.Cooking_Range,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Tomatoes,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basil,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pepper,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Sliced_Pineapple,
+                EquipmentCode = (int)EquipmentEnum.Vegetable_Slicer,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pineapple,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Cheese_Pizza_S,
+                EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pizza_Box_S,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Cheese_Pizza_M,
+                EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pizza_Box_M,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Cheese_Pizza_L,
+                EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pizza_Box_L,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Pepperoni_Pizza_S,
+                EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Sliced_Pepperoni,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pizza_Box_S,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Pepperoni_Pizza_M,
+                EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Sliced_Pepperoni,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pizza_Box_M,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Pepperoni_Pizza_L,
+                EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Sliced_Pepperoni,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pizza_Box_L,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Hawaiin_Pizza_S,
+                EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Sliced_Ham,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Sliced_Pineapple,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pizza_Box_S,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Hawaiin_Pizza_M,
+                EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Sliced_Ham,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Sliced_Pineapple,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pizza_Box_M,
+                        Quantity = 1
+                    }
+                }
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Hawaiin_Pizza_L,
+                EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
+                Ingredients = new List<ItemQuantity>
+                {
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Sliced_Ham,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Sliced_Pineapple,
+                        Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                        ItemCode = (int)BuildableItemEnum.Pizza_Box_L,
                         Quantity = 1
                     }
                 }

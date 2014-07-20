@@ -1,5 +1,5 @@
 ﻿using GameLogic.GamePlayerLogic;
-using GameLogic.Items;
+using GameLogic.ItemLogic;
 using KS.PizzaEmpire.Business.Cache;
 using KS.PizzaEmpire.Business.Common;
 using KS.PizzaEmpire.Business.Logic;
@@ -7,6 +7,7 @@ using KS.PizzaEmpire.Business.Result;
 using KS.PizzaEmpire.Business.StorageInformation;
 using KS.PizzaEmpire.Business.TableStorage;
 using KS.PizzaEmpire.DataAccess.DataProvider;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -29,21 +30,28 @@ namespace KS.PizzaEmpire.WebAPI.Controllers
         // GET api/values/key
         [System.Web.Http.HttpGet]
         [AcceptVerbs("GET")]
-        public async Task<Result<GamePlayer>> Get(string id)
-        {           
-            GamePlayerStorageInformation storageInfo = new GamePlayerStorageInformation(id.ToString());
-            GamePlayer player = await ConfigurableDataProvider.Instance
-                .Get<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(storageInfo);
-
-            if (player == null)
+        public async Task<Result> Get(string id)
+        {
+            try
             {
-                player = GamePlayerManager.CreateNewGamePlayer();
-                player.StorageInformation = storageInfo;
-                await ConfigurableDataProvider.Instance
-                    .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player);
-            }
+                GamePlayerStorageInformation storageInfo = new GamePlayerStorageInformation(id.ToString());
+                GamePlayer player = await ConfigurableDataProvider.Instance
+                    .Get<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(storageInfo);
 
-            return new Result<GamePlayer> { ErrorCode = ErrorCodes.ERROR_OK, Item = player };
+                if (player == null)
+                {
+                    player = GamePlayerManager.CreateNewGamePlayer();
+                    player.StorageInformation = storageInfo;
+                    await ConfigurableDataProvider.Instance
+                        .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player);
+                }
+
+                return new Result { ErrorCode = ErrorCodes.ERROR_OK, Item = player };
+            }
+            catch (Exception)
+            {
+                return new Result { ErrorCode = ErrorCodes.ERROR_RETRIEVING_ACCOUNT };
+            }
         }
 
         // POST api/values

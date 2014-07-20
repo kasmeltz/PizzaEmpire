@@ -14,7 +14,7 @@ namespace KS.PizzaEmpire.Business.Logic
     public class Recipe : ILogicEntity, IToTableStorageEntity
     {
         /// <summary>
-        /// Creates a new instance of the BuildableItem class.
+        /// Creates a new instance of the Recipe class.
         /// </summary>
         public Recipe() { }
 

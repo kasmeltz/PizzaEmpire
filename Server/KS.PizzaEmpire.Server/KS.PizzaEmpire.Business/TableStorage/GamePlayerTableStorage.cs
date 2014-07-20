@@ -2,6 +2,8 @@
 using KS.PizzaEmpire.Business.Conversion;
 using KS.PizzaEmpire.Business.Logic;
 using Microsoft.WindowsAzure.Storage.Table;
+using ProtoBuf;
+using System.IO;
 
 namespace KS.PizzaEmpire.Business.TableStorage
 {
@@ -18,6 +20,10 @@ namespace KS.PizzaEmpire.Business.TableStorage
 
         public int Coins { get; set; }
         public int Coupons { get; set; }
+        public int Experience { get; set; }
+        public int Level { get; set; }
+        public byte[] BuildableItemsSerialized { get; set; }
+        public byte[] EquipmentSerialized { get; set; }
 
         #region IToLogicEntity
        
@@ -46,6 +52,20 @@ namespace KS.PizzaEmpire.Business.TableStorage
             clone.RowKey = item.StorageInformation.RowKey;
             clone.Coins = item.Coins;
             clone.Coupons = item.Coupons;
+            clone.Experience = item.Experience;
+            clone.Level = item.Level;
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                Serializer.Serialize(memoryStream, item.BuildableItems);
+                clone.BuildableItemsSerialized = memoryStream.ToArray();
+            }
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                Serializer.Serialize(memoryStream, item.Equipment);
+                clone.EquipmentSerialized = memoryStream.ToArray();
+            }
 
             return clone;
         }

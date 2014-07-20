@@ -14,7 +14,7 @@ namespace KS.PizzaEmpire.Business.TableStorage
     public class RecipeTableStorage : TableEntity, ITableStorageEntity, IToLogicEntity
     {
         /// <summary>
-        /// Creates a new instance of the Recipe class.
+        /// Creates a new instance of the RecipeTableStorage class.
         /// </summary>
         public RecipeTableStorage() { }
 
@@ -22,8 +22,6 @@ namespace KS.PizzaEmpire.Business.TableStorage
         public int EquipmentCode { get; set; }
         public byte[] IngredientsSerialized { get; set; }
         
-        //public List<ItemQuantityTableStorage> Ingredients { get; set; }
-
         #region IToLogicEntity
        
         /// <summary>

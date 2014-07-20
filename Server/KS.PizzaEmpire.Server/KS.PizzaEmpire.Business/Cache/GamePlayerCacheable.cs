@@ -3,6 +3,7 @@ using KS.PizzaEmpire.Business.Logic;
 using KS.PizzaEmpire.Business.TableStorage;
 using ProtoBuf;
 using System;
+using System.Collections.Generic;
 
 namespace KS.PizzaEmpire.Business.Cache
 {
@@ -22,6 +23,14 @@ namespace KS.PizzaEmpire.Business.Cache
         public int Coins { get; set; }
         [ProtoMember(2)]
         public int Coupons { get; set; }
+        [ProtoMember(3)]
+        public int Experience { get; set; }
+        [ProtoMember(4)]
+        public int Level { get; set; }
+        [ProtoMember(5)]
+        public Dictionary<int, bool> BuildableItems { get; set; }
+        [ProtoMember(6)]
+        public Dictionary<int, int> Equipment { get; set; }       
 
         #region IToLogicEntity
        
@@ -48,6 +57,10 @@ namespace KS.PizzaEmpire.Business.Cache
             GamePlayerCacheable clone = new GamePlayerCacheable();
             clone.Coins = item.Coins;
             clone.Coupons = item.Coupons;
+            clone.Experience = item.Experience;
+            clone.Level = item.Level;
+            clone.BuildableItems = item.BuildableItems;
+            clone.Equipment = item.Equipment;
 
             return clone;
         }
