@@ -1,33 +1,32 @@
 ﻿using KS.PizzaEmpire.Business.Conversion;
 using KS.PizzaEmpire.Business.StorageInformation;
 using KS.PizzaEmpire.Business.TableStorage;
+using System.Collections.Generic;
+using System.IO;
+using ProtoBuf;
 
 namespace KS.PizzaEmpire.Business.Logic
 {
     /// <summary>
-    /// Represents an item that can be built in the game
+    /// Represents a Recipe that determines what is required to build an item
+    /// in the game logic.
     /// </summary>
-    public class BuildableItem : ILogicEntity, IToTableStorageEntity
+    public class Recipe : ILogicEntity, IToTableStorageEntity
     {
         /// <summary>
         /// Creates a new instance of the BuildableItem class.
         /// </summary>
-        public BuildableItem() { }
+        public Recipe() { }
 
         /// <summary>
         /// The information fow how this entity should be stored in different types of storage
         /// </summary>
         public IStorageInformation StorageInformation { get; set; }
-
+       
         public int ItemCode { get; set; }
-        public string Name { get; set; }
-        public int CoinCost { get; set; }
-        public int BuildSeconds { get; set; }
-        public int CouponCost { get; set; }
-        public int SpeedUpCoupons { get; set; }
-
-        public Recipe Recipe { get; set; }
-
+        public int EquipmentCode { get; set; }
+        public List<ItemQuantity> Ingredients { get; set; }
+        
         #region IToTableStorageEntity
 
         /// <summary>
@@ -36,27 +35,27 @@ namespace KS.PizzaEmpire.Business.Logic
         /// <returns></returns>
         public ITableStorageEntity ToTableStorageEntity()
         {
-            return BuildableItemTableStorage.From(this);
+            return RecipeTableStorage.From(this);
         }
 
         #endregion
 
         /// <summary>
-        /// Generates a new BuildableItem instance from a BuildableItemTableStorage instance.
+        /// Generates a new Recipe instance from a RecipeTableStorage instance.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static BuildableItem From(BuildableItemTableStorage item)
+        public static Recipe From(RecipeTableStorage item)
         {
-            BuildableItem clone = new BuildableItem();
+            Recipe clone = new Recipe();
 
             clone.ItemCode = item.ItemCode;
-            clone.Name = item.Name;
-            clone.CoinCost = item.CoinCost;
-            clone.BuildSeconds = item.BuildSeconds;
-            clone.CouponCost = item.CouponCost;
-            clone.SpeedUpCoupons = item.SpeedUpCoupons;
+            clone.EquipmentCode = item.EquipmentCode;
 
+            using (MemoryStream memoryStream = new MemoryStream(item.IngredientsSerialized))
+            {
+                clone.Ingredients = Serializer.Deserialize<List<ItemQuantity>>(memoryStream);
+            }
             return clone;
         }
     }

@@ -1,6 +1,9 @@
 ﻿
 namespace KS.PizzaEmpire.GameLogic.ItemLogic
 {
+    /// <summary>
+    /// Represnts a list of all of the buildable items in the game
+    /// </summary>
     public enum BuildableItemEnum
     {
         White_Flour = 0,

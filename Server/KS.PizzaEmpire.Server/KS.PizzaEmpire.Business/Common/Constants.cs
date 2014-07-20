@@ -1,5 +1,5 @@
 ﻿
-namespace KS.PizzaEmpire.Business.Result
+namespace KS.PizzaEmpire.Business.Common
 {
     public class Constants
     {

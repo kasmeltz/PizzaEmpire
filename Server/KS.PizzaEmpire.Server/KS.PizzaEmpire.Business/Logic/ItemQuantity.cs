@@ -1,32 +1,30 @@
 ﻿using KS.PizzaEmpire.Business.Conversion;
 using KS.PizzaEmpire.Business.StorageInformation;
 using KS.PizzaEmpire.Business.TableStorage;
+using ProtoBuf;
 
 namespace KS.PizzaEmpire.Business.Logic
 {
     /// <summary>
-    /// Represents an item that can be built in the game
+    /// Represents an item quanity as used by the game logic
     /// </summary>
-    public class BuildableItem : ILogicEntity, IToTableStorageEntity
+    [ProtoContract]
+    public class ItemQuantity : ILogicEntity, IToTableStorageEntity
     {
         /// <summary>
         /// Creates a new instance of the BuildableItem class.
         /// </summary>
-        public BuildableItem() { }
+        public ItemQuantity() { }
 
         /// <summary>
         /// The information fow how this entity should be stored in different types of storage
         /// </summary>
         public IStorageInformation StorageInformation { get; set; }
-
+        
+        [ProtoMember(1)]
         public int ItemCode { get; set; }
-        public string Name { get; set; }
-        public int CoinCost { get; set; }
-        public int BuildSeconds { get; set; }
-        public int CouponCost { get; set; }
-        public int SpeedUpCoupons { get; set; }
-
-        public Recipe Recipe { get; set; }
+        [ProtoMember(2)]
+        public int Quantity { get; set; }
 
         #region IToTableStorageEntity
 
@@ -36,28 +34,25 @@ namespace KS.PizzaEmpire.Business.Logic
         /// <returns></returns>
         public ITableStorageEntity ToTableStorageEntity()
         {
-            return BuildableItemTableStorage.From(this);
+            return ItemQuantityTableStorage.From(this);
         }
 
         #endregion
 
         /// <summary>
-        /// Generates a new BuildableItem instance from a BuildableItemTableStorage instance.
+        /// Generates a new ItemQuantity instance from a ItemQuantityTableStorage instance.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static BuildableItem From(BuildableItemTableStorage item)
+        public static ItemQuantity From(ItemQuantityTableStorage item)
         {
-            BuildableItem clone = new BuildableItem();
+            ItemQuantity clone = new ItemQuantity();
 
             clone.ItemCode = item.ItemCode;
-            clone.Name = item.Name;
-            clone.CoinCost = item.CoinCost;
-            clone.BuildSeconds = item.BuildSeconds;
-            clone.CouponCost = item.CouponCost;
-            clone.SpeedUpCoupons = item.SpeedUpCoupons;
+            clone.Quantity = item.Quantity;
 
             return clone;
         }
+
     }
 }

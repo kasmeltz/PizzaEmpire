@@ -87,6 +87,7 @@
     <Compile Include="Caching\RedisCacheTest.cs" />
     <Compile Include="Serialization\BinaryFormatSerializerTest.cs" />
     <Compile Include="Serialization\ProtoBufSerializerTest.cs" />
+    <Compile Include="Storage\LucifureTableStorageTest.cs" />
     <Compile Include="Storage\AzureTableStorageTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

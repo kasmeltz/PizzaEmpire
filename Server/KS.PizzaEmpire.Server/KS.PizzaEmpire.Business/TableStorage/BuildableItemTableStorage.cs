@@ -37,7 +37,7 @@ namespace KS.PizzaEmpire.Business.TableStorage
         #region Cloners
        
         /// <summary>
-        /// Generates a new GamePlayerTableStorage instance from a GamePlayer instance.
+        /// Generates a new BuildableItemTableStorage instance from a BuildableItem instance.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>

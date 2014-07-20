@@ -12,7 +12,7 @@ namespace KS.PizzaEmpire.Services.Test.Storage
     /// Simple data class that will be used to test the
     /// AzureTableStorage class.
     /// </summary>
-    public class AzureTableStorageTestEntity : TableEntity, ITableStorageEntity
+    public class LucifureTableStorageTestEntity : TableEntity, ITableStorageEntity
     {
         private string _name;
         public string Name
@@ -35,9 +35,9 @@ namespace KS.PizzaEmpire.Services.Test.Storage
     /// Unit tests for the AzureTableStorage class
     /// </summary>
     [TestClass]
-    public class AzureTableStorageTest
+    public class LucifureTableStoarageTest
     {
-        protected AzureTableStorage Storage;
+        protected LucifureTableStorage Storage;
 
         [TestInitialize]
         public void TestInitializeMethod()
@@ -47,30 +47,29 @@ namespace KS.PizzaEmpire.Services.Test.Storage
 
         private async Task TestInitializeMethodAsync()
         {
-            Storage = new AzureTableStorage();
-            await Storage.SetTable("BuildableItem");
-            await Storage.DeleteTable();
-            await Storage.SetTable("BuildableItem");
+            Storage = new LucifureTableStorage();
         }
 
         [TestMethod]
         public async Task TestAzureTableStorageGet()
         {
             // Arrange
-            await Storage.Insert<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
+            await Storage.Insert<LucifureTableStorageTestEntity>(new LucifureTableStorageTestEntity
             { 
                 RowKey = "Kevin", 
                 Name = "Kevin"
             });
 
             // Act
-            AzureTableStorageTestEntity player = await Storage.Get<AzureTableStorageTestEntity>("Ke", "Kevin");
+            LucifureTableStorageTestEntity player = await Storage.Get<LucifureTableStorageTestEntity>("Ke", "Kevin");
 
             // Assert
             Assert.AreEqual("Ke", player.PartitionKey);
             Assert.AreEqual("Kevin", player.RowKey);
             Assert.AreEqual("Kevin", player.Name);
         }
+
+        /*
 
         [TestMethod]
         public async Task TestAzureTableStorageGetAll()
@@ -515,5 +514,6 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             players = (await Storage.GetAll<AzureTableStorageTestEntity>("Ka")).ToList();
             Assert.AreEqual(0, players.Count);
         }
+         * */
     }
 }

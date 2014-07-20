@@ -1,5 +1,5 @@
-﻿
-using KS.PizzaEmpire.Business.Result;
+﻿using KS.PizzaEmpire.Business.Common;
+
 namespace KS.PizzaEmpire.Business.StorageInformation
 {
     /// <summary>
