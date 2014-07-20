@@ -200,6 +200,12 @@ namespace KS.PizzaEmpire.DataAccess.DataProvider
             {
                 AzureTableStorage storage = new AzureTableStorage();
                 await storage.SetTable(item.StorageInformation.TableName);
+
+                //@ TODO What we really want here is lazy saving of information from
+                // the cache to the Table Storage layer. The question is how to design this?
+                // The following is safest - just write to the table storage every time 
+                // we write to the cache. The goal is to make it more effiicent while
+                // still ensuring safety
                 await storage.InsertOrReplace<K>((K)item.ToTableStorageEntity());
             }
             catch (Exception)

@@ -12,9 +12,9 @@ namespace KS.PizzaEmpire.Business.StorageInformation
         /// provided Unique Key
         /// </summary>
         /// <param name="uniqueKey"></param>
-        public GamePlayerStorageInformation(string uniqueKey)
+        public GamePlayerStorageInformation(string uniqueKey) 
+            : base(uniqueKey)
         {
-            UniqueKey = uniqueKey;
             TableName = "GamePlayer";
             PartitionKey = uniqueKey.Substring(0,2);
             RowKey = uniqueKey;

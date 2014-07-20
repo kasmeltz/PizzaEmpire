@@ -74,14 +74,18 @@
     <Compile Include="Conversion\IToLogicEntity.cs" />
     <Compile Include="Conversion\IToTableStorageEntity.cs" />
     <Compile Include="API\IAPIEntity.cs" />
+    <Compile Include="Logic\BuildableItem.cs" />
+    <Compile Include="Result\Constants.cs" />
     <Compile Include="Result\ErrorCodes.cs" />
     <Compile Include="Result\Result.cs" />
     <Compile Include="StorageInformation\BaseStorageInformation.cs" />
+    <Compile Include="StorageInformation\BuildableItemStorageInformation.cs" />
     <Compile Include="StorageInformation\GamePlayerStorageInformation.cs" />
     <Compile Include="StorageInformation\IStorageInformation.cs" />
     <Compile Include="Logic\GamePlayer.cs" />
     <Compile Include="Logic\ILogicEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableStorage\BuildableItemTableStorage.cs" />
     <Compile Include="TableStorage\GamePlayerTableStorage.cs" />
     <Compile Include="TableStorage\ITableStorageEntity.cs" />
   </ItemGroup>

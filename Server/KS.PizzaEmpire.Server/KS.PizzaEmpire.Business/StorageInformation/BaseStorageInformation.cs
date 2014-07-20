@@ -5,8 +5,18 @@ namespace KS.PizzaEmpire.Business.StorageInformation
     /// The base implementation of an item that contains information
     /// about various storage settings
     /// </summary>
-    public class BaseStorageInformation : IStorageInformation
+    public abstract class BaseStorageInformation : IStorageInformation
     {
+        /// <summary>
+        /// Creates a new instance of the BuildableItemStorageInformation class with the
+        /// provided Unique Key
+        /// </summary>
+        /// <param name="uniqueKey"></param>
+        public BaseStorageInformation(string uniqueKey)
+        {
+            UniqueKey = uniqueKey;
+        }
+
         /// <summary>
         /// A unique key for this item
         /// </summary>
