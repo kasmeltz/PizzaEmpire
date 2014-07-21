@@ -1,5 +1,4 @@
-﻿using KS.PizzaEmpire.Business.Cache;
-using KS.PizzaEmpire.Business.Conversion;
+﻿using KS.PizzaEmpire.Business.Conversion;
 using KS.PizzaEmpire.Business.Logic;
 using Microsoft.WindowsAzure.Storage.Table;
 using ProtoBuf;
@@ -15,8 +14,7 @@ namespace KS.PizzaEmpire.Business.TableStorage
         /// <summary>
         /// Creates a new instance of the GamePlayerTableStorage class.
         /// </summary>
-        public GamePlayerTableStorage()
-        { }
+        public GamePlayerTableStorage() { }
 
         public int Coins { get; set; }
         public int Coupons { get; set; }
@@ -24,6 +22,7 @@ namespace KS.PizzaEmpire.Business.TableStorage
         public int Level { get; set; }
         public byte[] BuildableItemsSerialized { get; set; }
         public byte[] EquipmentSerialized { get; set; }
+        public byte[] DelayedItemsSerialized { get; set; }
 
         #region IToLogicEntity
        
@@ -65,6 +64,12 @@ namespace KS.PizzaEmpire.Business.TableStorage
             {
                 Serializer.Serialize(memoryStream, item.Equipment);
                 clone.EquipmentSerialized = memoryStream.ToArray();
+            }
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                Serializer.Serialize(memoryStream, item.DelayedItems);
+                clone.DelayedItemsSerialized = memoryStream.ToArray();
             }
 
             return clone;

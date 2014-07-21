@@ -29,6 +29,7 @@ namespace KS.PizzaEmpire.Business.Logic
         public int Level { get; set; }
         public Dictionary<int, int> BuildableItems { get; set; }
         public Dictionary<int, int> Equipment { get; set; }
+        public List<DelayedItem> DelayedItems { get; set; }
 
         #region IToCacheEntity
 
@@ -81,6 +82,16 @@ namespace KS.PizzaEmpire.Business.Logic
                 clone.Equipment = Serializer.Deserialize<Dictionary<int, int>>(memoryStream);
             }
 
+            using (MemoryStream memoryStream = new MemoryStream(item.DelayedItemsSerialized))
+            {
+                clone.DelayedItems = Serializer.Deserialize<List<DelayedItem>>(memoryStream);
+            }
+
+            if (clone.DelayedItems == null)
+            { 
+                clone.DelayedItems = new List<DelayedItem>();
+            }
+
             return clone;
         }
 
@@ -98,6 +109,12 @@ namespace KS.PizzaEmpire.Business.Logic
             clone.Level = item.Level;
             clone.BuildableItems = item.BuildableItems;
             clone.Equipment = item.Equipment;
+            clone.DelayedItems = item.DelayedItems;
+
+            if (clone.DelayedItems == null)
+            {
+                clone.DelayedItems = new List<DelayedItem>();
+            }
            
             return clone;
         }

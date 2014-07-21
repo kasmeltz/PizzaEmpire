@@ -30,7 +30,9 @@ namespace KS.PizzaEmpire.Business.Cache
         [ProtoMember(5)]
         public Dictionary<int, int> BuildableItems { get; set; }
         [ProtoMember(6)]
-        public Dictionary<int, int> Equipment { get; set; }       
+        public Dictionary<int, int> Equipment { get; set; }
+        [ProtoMember(7)]
+        public List<DelayedItem> DelayedItems { get; set; }
 
         #region IToLogicEntity
        
@@ -61,6 +63,7 @@ namespace KS.PizzaEmpire.Business.Cache
             clone.Level = item.Level;
             clone.BuildableItems = item.BuildableItems;
             clone.Equipment = item.Equipment;
+            clone.DelayedItems = item.DelayedItems;
 
             return clone;
         }

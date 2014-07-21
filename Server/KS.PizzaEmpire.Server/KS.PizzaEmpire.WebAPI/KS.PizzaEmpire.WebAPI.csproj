@@ -207,6 +207,8 @@
     <Compile Include="Controllers\Version 1\BuildableItemV1Controller.cs" />
     <Compile Include="Controllers\Version 1\ExperienceLevelV1Controller.cs" />
     <Compile Include="Controllers\Version 1\GamePlayerV1Controller.cs" />
+    <Compile Include="Controllers\Version 1\FinishWorkV1Controller.cs" />
+    <Compile Include="Controllers\Version 1\StartWorkV1Controller.cs" />
     <Compile Include="Controllers\Version 1\ValuesV1Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

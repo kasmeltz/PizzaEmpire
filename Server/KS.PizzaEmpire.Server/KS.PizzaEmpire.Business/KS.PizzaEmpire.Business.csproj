@@ -75,6 +75,7 @@
     <Compile Include="Conversion\IToTableStorageEntity.cs" />
     <Compile Include="API\IAPIEntity.cs" />
     <Compile Include="Logic\BuildableItem.cs" />
+    <Compile Include="Logic\DelayedItem.cs" />
     <Compile Include="Logic\ExperienceLevel.cs" />
     <Compile Include="Logic\ItemQuantity.cs" />
     <Compile Include="Logic\Recipe.cs" />

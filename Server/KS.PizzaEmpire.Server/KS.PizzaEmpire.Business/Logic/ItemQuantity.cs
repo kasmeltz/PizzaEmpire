@@ -12,7 +12,7 @@ namespace KS.PizzaEmpire.Business.Logic
     public class ItemQuantity
     {
         /// <summary>
-        /// Creates a new instance of the BuildableItem class.
+        /// Creates a new instance of the ItemQuantity class.
         /// </summary>
         public ItemQuantity() { }
 
