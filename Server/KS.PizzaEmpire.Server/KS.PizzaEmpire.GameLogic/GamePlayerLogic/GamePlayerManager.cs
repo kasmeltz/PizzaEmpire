@@ -69,6 +69,41 @@ namespace GameLogic.GamePlayerLogic
         }
 
         /// <summary>
+        /// Returns true if the equipment has room to do work.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="equipmentCode"></param>
+        /// <returns></returns>
+        public static bool CheckEquipmentHasSpace(GamePlayer player, int equipmentCode)
+        {
+            if (!player.Equipment.ContainsKey(equipmentCode))
+            {
+                Trace.TraceError("Attempt to start work for an item without proper equipment");
+                throw new ArgumentException();
+            }
+
+            // @ TODO replace with real equipment capacity once we add this data to the game
+            int capacity = 1;
+            // @ TODO replace with real equipment capacity once we add this data to the game
+
+            int currentWork = 0;
+
+            foreach (DelayedItem item in player.DelayedItems)
+            {
+                BuildableItem bi = ItemManager.Instance.BuildableItems[item.ItemCode];
+                if (bi.Recipe != null)
+                {
+                    if (bi.Recipe.EquipmentCode == equipmentCode)
+                    {
+                        currentWork++;
+                    }
+                }
+            }
+
+            return currentWork < capacity;
+        }
+
+        /// <summary>
         /// Starts a player doing delayed work if all conditions pass.
         /// </summary>
         /// <param name="player"></param>
@@ -89,7 +124,7 @@ namespace GameLogic.GamePlayerLogic
             }
 
             BuildableItem bi = ItemManager.Instance.BuildableItems[itemCode];
-            
+
             if (bi.CoinCost > player.Coins)
             {
                 Trace.TraceError("Attempt to start work for an item with insufficient coins");
@@ -104,24 +139,27 @@ namespace GameLogic.GamePlayerLogic
 
             if (bi.Recipe != null)
             {
-                if (!player.Equipment.ContainsKey(bi.Recipe.EquipmentCode))
+                if (CheckEquipmentHasSpace(player, bi.Recipe.EquipmentCode))
                 {
-                    Trace.TraceError("Attempt to start work for an item without proper equipment");
+                    Trace.TraceError("Attempt to start work but the equipment is full");
                     throw new ArgumentException();
                 }
-                
-                foreach(ItemQuantity ingred in bi.Recipe.Ingredients)
-                {
-                    if (!player.BuildableItems.ContainsKey(ingred.ItemCode))
-                    {
-                        Trace.TraceError("Attempt to start work for an item without proper ingredients");
-                        throw new ArgumentException();
-                    }
 
-                    if (player.BuildableItems[ingred.ItemCode] < ingred.Quantity)
+                if (bi.Recipe.Ingredients != null)
+                {
+                    foreach (ItemQuantity ingred in bi.Recipe.Ingredients)
                     {
-                        Trace.TraceError("Attempt to start work for an item with insufficient ingredients");
-                        throw new ArgumentException();
+                        if (!player.BuildableItems.ContainsKey(ingred.ItemCode))
+                        {
+                            Trace.TraceError("Attempt to start work for an item without proper ingredients");
+                            throw new ArgumentException();
+                        }
+
+                        if (player.BuildableItems[ingred.ItemCode] < ingred.Quantity)
+                        {
+                            Trace.TraceError("Attempt to start work for an item with insufficient ingredients");
+                            throw new ArgumentException();
+                        }
                     }
                 }
             }

@@ -2,8 +2,6 @@
 using KS.PizzaEmpire.Services.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Storage.Table;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace KS.PizzaEmpire.Services.Test.Storage

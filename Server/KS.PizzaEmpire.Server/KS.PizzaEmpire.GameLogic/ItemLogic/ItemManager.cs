@@ -154,6 +154,102 @@ namespace GameLogic.ItemLogic
             Recipe re;
 
             re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Basil,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Citrus_Syrup,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Cola_Syrup,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Ham,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Olive_Oil,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Pepper,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Pepperoni,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Pineapple,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Salt,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Tomatoes,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+          
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.White_Flour,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
+            {
+                ItemCode = (int)BuildableItemEnum.Yeast,
+                EquipmentCode = (int)EquipmentEnum.Delivery_Truck
+            };
+            re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+            recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+            re = new Recipe
             {                
                 ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
                 EquipmentCode = (int)EquipmentEnum.Cheese_Grater,  
