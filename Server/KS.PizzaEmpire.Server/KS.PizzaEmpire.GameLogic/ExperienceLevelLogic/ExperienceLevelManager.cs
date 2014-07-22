@@ -4,7 +4,6 @@
     using Business.Logic;
     using Business.StorageInformation;
     using Business.TableStorage;
-    using GameLogic.ItemLogic;
     using Services.Storage;
     using System;
     using System.Collections.Generic;
@@ -52,7 +51,7 @@
         /// <returns></returns>
         public async Task Initialize()
         {
-            // @TODO need to decide on how to get item definitions
+            // @TODO need to decide on how to get experience level definitions
             // into table storage in the first place
             await StoreExperienceLevelDefintiions();
             await LoadExperienceLevelDefinitions();
@@ -92,18 +91,6 @@
             {
                 Level = 1,
                 ExperienceRequired = 0,
-                NewBuildableItems = new List<int>
-                {
-                    (int)BuildableItemEnum.White_Flour,
-                    (int)BuildableItemEnum.Salt,
-                    (int)BuildableItemEnum.Yeast,
-                    (int)BuildableItemEnum.Olive_Oil
-                },
-                NewEquipment = new List<int>
-                {
-                    (int)EquipmentEnum.Phone,
-                    (int)EquipmentEnum.Delivery_Truck
-                }
             };
             exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
             exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());
@@ -111,17 +98,7 @@
             exl = new ExperienceLevel
             {
                 Level = 2,
-                ExperienceRequired = 100,
-                NewBuildableItems = new List<int>
-                {
-                    (int)BuildableItemEnum.Basil,
-                    (int)BuildableItemEnum.Pepper,
-                    (int)BuildableItemEnum.Tomatoes,
-                },
-                NewEquipment = new List<int>
-                {
-                    (int)EquipmentEnum.Fridge
-                }
+                ExperienceRequired = 100,               
             };
             exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
             exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());

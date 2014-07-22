@@ -40,11 +40,6 @@
         [TestInitialize]
         public void TestInitializeMethod()
         {
-            Task.WaitAll(TestInitializeMethodAsync());
-        }
-
-        private async Task TestInitializeMethodAsync()
-        {
             Storage = new LucifureTableStorage();
         }
 

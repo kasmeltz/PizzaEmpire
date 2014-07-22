@@ -4,25 +4,28 @@
     using Logic;
     using Microsoft.WindowsAzure.Storage.Table;
     using ProtoBuf;
-    using System.Collections.Generic;
     using System.IO;
 
     /// <summary>
-    /// Represents a ExperienceLevel that determines how players level up
-    /// as stored in table storage.
+    /// Represents the state for a player of the game as stored in table storage.
     /// </summary>
-    public class ExperienceLevelTableStorage : TableEntity, ITableStorageEntity, IToLogicEntity
+    public class ExperienceLevelTableStorage  : TableEntity, ITableStorageEntity, IToLogicEntity
     {
         /// <summary>
-        /// Creates a new instance of the ExperienceLevelTableStorage class.
+        /// Creates a new instance of the GamePlayerTableStorage class.
         /// </summary>
         public ExperienceLevelTableStorage() { }
 
+        /// <summary>
+        /// The level represnted by this item
+        /// </summary>
         public int Level { get; set; }
+
+        /// <summary>
+        /// The experience required to achieve the level
+        /// </summary>
         public int ExperienceRequired { get; set; }
-        public byte[] NewEquipmentSerialized { get; set; }
-        public byte[] NewBuildableItemsSerialized { get; set; }
-        
+
         #region IToLogicEntity
        
         /// <summary>
@@ -39,31 +42,18 @@
         #region Cloners
        
         /// <summary>
-        /// Generates a new RecipeTableStorage instance from a Recipe instance.
+        /// Generates a new GamePlayerTableStorage instance from a GamePlayer instance.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static ExperienceLevelTableStorage From(ExperienceLevel item)
+        public static ExperienceLevelTableStorage From(ExperienceLevel other)
         {
             ExperienceLevelTableStorage clone = new ExperienceLevelTableStorage();
+            clone.PartitionKey = other.StorageInformation.PartitionKey;
+            clone.RowKey = other.StorageInformation.RowKey;
 
-            clone.PartitionKey = item.StorageInformation.PartitionKey;
-            clone.RowKey = item.StorageInformation.RowKey;
-
-            clone.Level = item.Level;
-            clone.ExperienceRequired = item.ExperienceRequired;
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                Serializer.Serialize(memoryStream, item.NewEquipment);
-                clone.NewEquipmentSerialized = memoryStream.ToArray();
-            }
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                Serializer.Serialize(memoryStream, item.NewBuildableItems);
-                clone.NewBuildableItemsSerialized = memoryStream.ToArray();
-            }
+            clone.Level = other.Level;
+            clone.ExperienceRequired = other.ExperienceRequired;
 
             return clone;
         }

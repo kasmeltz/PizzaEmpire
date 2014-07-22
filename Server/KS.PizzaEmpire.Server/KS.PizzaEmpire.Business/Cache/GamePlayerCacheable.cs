@@ -18,21 +18,42 @@
         /// </summary>
         public GamePlayerCacheable() { }
 
+        /// <summary>
+        /// The number of coins owned by the player
+        /// </summary>
         [ProtoMember(1)]
         public int Coins { get; set; }
+
+        /// <summary>
+        /// The number of coupons owned by the player
+        /// </summary>
         [ProtoMember(2)]
         public int Coupons { get; set; }
+
+        /// <summary>
+        /// The current experience of the player
+        /// </summary>
         [ProtoMember(3)]
         public int Experience { get; set; }
+
+        /// <summary>
+        /// The players current level
+        /// </summary>
         [ProtoMember(4)]
         public int Level { get; set; }
-        [ProtoMember(5)]
-        public Dictionary<int, int> BuildableItems { get; set; }
-        [ProtoMember(6)]
-        public Dictionary<int, int> Equipment { get; set; }
-        [ProtoMember(7)]
-        public List<DelayedItem> DelayedItems { get; set; }
 
+        /// <summary>
+        /// The players inventory of items
+        /// </summary>
+        [ProtoMember(5)]
+        public Dictionary<BuildableItemEnum, int> BuildableItems { get; set; }
+
+        /// <summary>
+        /// The work in progress for the player
+        /// </summary>
+        [ProtoMember(6)]
+        public List<WorkItem> WorkItems { get; set; }
+     
         #region IToLogicEntity
 
         /// <summary>
@@ -61,8 +82,7 @@
             clone.Experience = item.Experience;
             clone.Level = item.Level;
             clone.BuildableItems = item.BuildableItems;
-            clone.Equipment = item.Equipment;
-            clone.DelayedItems = item.DelayedItems;
+            clone.WorkItems = item.WorkItems;
 
             return clone;
         }

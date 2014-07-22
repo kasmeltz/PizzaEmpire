@@ -1,8 +1,5 @@
 ﻿namespace KS.PizzaEmpire.Business.Logic
 {
-    using Conversion;
-    using StorageInformation;
-    using TableStorage;
     using ProtoBuf;
 
     /// <summary>
@@ -17,7 +14,7 @@
         public ItemQuantity() { }
 
         [ProtoMember(1)]
-        public int ItemCode { get; set; }
+        public BuildableItemEnum ItemCode { get; set; }
         [ProtoMember(2)]
         public int Quantity { get; set; }
     }

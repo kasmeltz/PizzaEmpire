@@ -1,4 +1,4 @@
-﻿namespace KS.PizzaEmpire.GameLogic.ItemLogic
+﻿namespace KS.PizzaEmpire.Business.Logic
 {
     /// <summary>
     /// Represnts a list of all of the buildable items in the game
@@ -37,6 +37,21 @@
         Pepperoni_Pizza_L,
         Hawaiin_Pizza_S,
         Hawaiin_Pizza_M,
-        Hawaiin_Pizza_L
+        Hawaiin_Pizza_L,
+        Phone_L1,
+        Delivery_Truck_L1,
+        Motorcycle_L1,
+        Cash_Register_L1,
+        Pizza_Oven_L1,
+        Cooking_Range_L1,
+        Vegetable_Slicer_L1,
+        Cheese_Grater_L1,
+        Meat_Slicer_L1,
+        Dough_Mixer_L1,
+        Pizza_Assmebly_L1,
+        Fridge_L1,
+        Computer_L1,
+        Customer_Seating_L1,
+        Soda_Machine_L1
     }
 }

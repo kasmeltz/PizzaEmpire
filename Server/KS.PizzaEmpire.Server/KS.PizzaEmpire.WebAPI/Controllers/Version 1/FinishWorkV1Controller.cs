@@ -34,7 +34,7 @@
                     return new Result { ErrorCode = ErrorCodes.ERROR_RETRIEVING_ACCOUNT };
                 }
 
-                List<DelayedItem> items = GamePlayerManager.FinishWork(player);
+                List<WorkItem> items = GamePlayerManager.FinishWork(player);
 
                 if (items.Count > 0)
                 {

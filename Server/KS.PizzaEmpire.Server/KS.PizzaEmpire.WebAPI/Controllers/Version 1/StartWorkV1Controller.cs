@@ -23,8 +23,9 @@
         public async Task<Result> Get(string id)
         {
             string[] parts = id.Split(new string[] { "@@" }, StringSplitOptions.RemoveEmptyEntries);
-            string playerKey = parts[0];
-            int itemCode = Int32.Parse(parts[1]);
+            string playerKey = parts[0];            
+            int workType = Int32.Parse(parts[1]);
+            int itemCode = Int32.Parse(parts[2]);
 
             try
             {
@@ -37,7 +38,7 @@
                     return new Result { ErrorCode = ErrorCodes.ERROR_RETRIEVING_ACCOUNT };
                 }
 
-                DelayedItem item = GamePlayerManager.StartWork(player, itemCode);
+                WorkItem item = GamePlayerManager.StartWork(player, (BuildableItemEnum)itemCode);
 
                 if (item != null)
                 {

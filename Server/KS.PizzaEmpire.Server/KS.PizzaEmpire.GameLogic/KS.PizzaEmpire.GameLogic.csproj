@@ -64,8 +64,6 @@
   <ItemGroup>
     <Compile Include="ExperienceLevelLogic\ExperienceLevelManager.cs" />
     <Compile Include="GamePlayerLogic\GamePlayerManager.cs" />
-    <Compile Include="ItemLogic\EquipmentEnum.cs" />
-    <Compile Include="ItemLogic\BuildableItemEnum.cs" />
     <Compile Include="ItemLogic\ItemManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

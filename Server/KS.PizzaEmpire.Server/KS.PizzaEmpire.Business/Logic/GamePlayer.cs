@@ -23,13 +23,35 @@
         /// </summary>
         public IStorageInformation StorageInformation { get; set; }
 
+        /// <summary>
+        /// The number of coins owned by the player
+        /// </summary>
         public int Coins { get; set; }
+
+        /// <summary>
+        /// The number of coupons owned by the player
+        /// </summary>
         public int Coupons { get; set; }
+
+        /// <summary>
+        /// The current experience of the player
+        /// </summary>
         public int Experience { get; set; }
+
+        /// <summary>
+        /// The players current level
+        /// </summary>
         public int Level { get; set; }
-        public Dictionary<int, int> BuildableItems { get; set; }
-        public Dictionary<int, int> Equipment { get; set; }
-        public List<DelayedItem> DelayedItems { get; set; }
+
+        /// <summary>
+        /// The players inventory of items
+        /// </summary>
+        public Dictionary<BuildableItemEnum, int> BuildableItems { get; set; }
+
+        /// <summary>
+        /// The work in progress for the player
+        /// </summary>
+        public List<WorkItem> WorkItems { get; set; }
 
         #region IToCacheEntity
 
@@ -64,32 +86,27 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public static GamePlayer From(GamePlayerTableStorage item)
+        public static GamePlayer From(GamePlayerTableStorage other)
         {
             GamePlayer clone = new GamePlayer();
-            clone.Coins = item.Coins;
-            clone.Coupons = item.Coupons;
-            clone.Experience = item.Experience;
-            clone.Level = item.Level;
+            clone.Coins = other.Coins;
+            clone.Coupons = other.Coupons;
+            clone.Experience = other.Experience;
+            clone.Level = other.Level;
 
-            using (MemoryStream memoryStream = new MemoryStream(item.BuildableItemsSerialized))
+            using (MemoryStream memoryStream = new MemoryStream(other.BuildableItemsSerialized))
             {
-                clone.BuildableItems = Serializer.Deserialize<Dictionary<int, int>>(memoryStream);
+                clone.BuildableItems = Serializer.Deserialize<Dictionary<BuildableItemEnum, int>>(memoryStream);
             }
 
-            using (MemoryStream memoryStream = new MemoryStream(item.EquipmentSerialized))
+            using (MemoryStream memoryStream = new MemoryStream(other.WorkItemsSerialized))
             {
-                clone.Equipment = Serializer.Deserialize<Dictionary<int, int>>(memoryStream);
+                clone.WorkItems = Serializer.Deserialize<List<WorkItem>>(memoryStream);
             }
 
-            using (MemoryStream memoryStream = new MemoryStream(item.DelayedItemsSerialized))
+            if (clone.WorkItems == null)
             {
-                clone.DelayedItems = Serializer.Deserialize<List<DelayedItem>>(memoryStream);
-            }
-
-            if (clone.DelayedItems == null)
-            {
-                clone.DelayedItems = new List<DelayedItem>();
+                clone.WorkItems = new List<WorkItem>();
             }
 
             return clone;
@@ -108,12 +125,11 @@
             clone.Experience = item.Experience;
             clone.Level = item.Level;
             clone.BuildableItems = item.BuildableItems;
-            clone.Equipment = item.Equipment;
-            clone.DelayedItems = item.DelayedItems;
+            clone.WorkItems = item.WorkItems;
 
-            if (clone.DelayedItems == null)
+            if (clone.WorkItems == null)
             {
-                clone.DelayedItems = new List<DelayedItem>();
+                clone.WorkItems = new List<WorkItem>();
             }
 
             return clone;

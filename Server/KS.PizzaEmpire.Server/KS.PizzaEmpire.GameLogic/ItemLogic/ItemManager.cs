@@ -21,7 +21,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public Dictionary<int, BuildableItem> BuildableItems;
+        public Dictionary<BuildableItemEnum, BuildableItem> BuildableItems;
 
         private ItemManager() { }
 
@@ -63,7 +63,7 @@
         /// </summary>
         public async Task LoadBuildableItems()
         {
-            BuildableItems = new Dictionary<int, BuildableItem>();
+            BuildableItems = new Dictionary<BuildableItemEnum, BuildableItem>();
 
             AzureTableStorage storage = new AzureTableStorage();
             await storage.SetTable("BuildableItem");
@@ -74,40 +74,17 @@
 
             foreach(BuildableItemTableStorage item in items)
             {
-                BuildableItems[item.ItemCode] = 
+                BuildableItems[(BuildableItemEnum)item.ItemCode] = 
                     (BuildableItem)item.ToLogicEntity();
             }
         }
-
-        /// <summary>
-        /// Load the Recipes
-        /// </summary>
-        public async Task LoadRecipes()
-        {
-            AzureTableStorage storage = new AzureTableStorage();
-            await storage.SetTable("Recipe");
-
-            IEnumerable<RecipeTableStorage> recipes =
-                await storage.GetAll<RecipeTableStorage>(
-                    "Version" + Constants.APPLICATION_VERSION);
-
-            foreach (RecipeTableStorage recipe in recipes)
-            {
-                if (BuildableItems.ContainsKey(recipe.ItemCode))
-                {
-                    BuildableItem bi = BuildableItems[recipe.ItemCode];
-                    bi.Recipe = (Recipe)recipe.ToLogicEntity();
-                }
-            }
-        }
-
+      
         /// <summary>
         /// Load the item definitions 
         /// </summary>
         public async Task LoadItemDefinitions()
         {
-            await LoadBuildableItems();
-            await LoadRecipes();
+            await LoadBuildableItems();            
         }
 
         /// <summary>
@@ -123,17 +100,21 @@
             {
                 bi = new BuildableItem
                 {
-                    ItemCode = (int)en,
-                    BuildSeconds = 120,
-                    CoinCost = 50,
-                    Quantity = 3,
-                    Experience = 50,
-                    CouponCost = 0,
+                    ItemCode = en,
+                    RequiredLevel = 1,
+                    CoinCost = 1,
+                    Capacity = 1,
+                    BaseProduction = 1,
+                    ProductionMultiplier = 1,
+                    Experience = 1,
+                    BuildSeconds = 1,
+                    CouponCost = 1,
                     SpeedUpCoupons = 1,
-                    Name = en.ToString().Replace("_", " ")
+                    SpeedUpSeconds = 1,
+                    RequiredItems = new List<ItemQuantity>()
                 };
                 bi.StorageInformation = new BuildableItemStorageInformation(bi.ItemCode.ToString());
-                buildableItems.Add((BuildableItemTableStorage)bi.ToTableStorageEntity());          
+                buildableItems.Add((BuildableItemTableStorage)bi.ToTableStorageEntity());
             }
 
             AzureTableStorage storage = new AzureTableStorage();
@@ -143,6 +124,8 @@
             await storage.InsertOrReplace<BuildableItemTableStorage>(buildableItems);
         }
 
+        /*
+
         /// <summary>
         /// A way to get the items into the table storage for now.
         /// @ TO DO Figure out how we actually want to do this
@@ -150,9 +133,9 @@
         public async Task StoreRecipes()
         {
             List<RecipeTableStorage> recs = new List<RecipeTableStorage>();
-            Recipe re;
+            RequiredItem re;
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Basil,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -160,7 +143,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Citrus_Syrup,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -168,7 +151,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Cola_Syrup,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -176,7 +159,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Ham,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -184,7 +167,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Olive_Oil,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -192,7 +175,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Pepper,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -200,7 +183,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Pepperoni,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -208,7 +191,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Pineapple,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -216,7 +199,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Salt,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -224,7 +207,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Tomatoes,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -232,7 +215,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
           
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.White_Flour,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -240,7 +223,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Yeast,
                 EquipmentCode = (int)EquipmentEnum.Delivery_Truck
@@ -248,7 +231,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {                
                 ItemCode = (int)BuildableItemEnum.Grated_Mozzarella_Cheese,
                 EquipmentCode = (int)EquipmentEnum.Cheese_Grater,  
@@ -264,7 +247,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.White_Pizza_Dough,
                 EquipmentCode = (int)EquipmentEnum.Dough_Mixer,
@@ -295,7 +278,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Cola_Soda,
                 EquipmentCode = (int)EquipmentEnum.Soda_Machine,
@@ -311,7 +294,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Citrus_Soda,
                 EquipmentCode = (int)EquipmentEnum.Soda_Machine,
@@ -327,7 +310,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Sliced_Pepperoni,
                 EquipmentCode = (int)EquipmentEnum.Meat_Slicer,
@@ -343,7 +326,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Sliced_Ham,
                 EquipmentCode = (int)EquipmentEnum.Meat_Slicer,
@@ -359,7 +342,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Basic_Pizza_Sauce,
                 EquipmentCode = (int)EquipmentEnum.Cooking_Range,
@@ -385,7 +368,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Sliced_Pineapple,
                 EquipmentCode = (int)EquipmentEnum.Vegetable_Slicer,
@@ -401,7 +384,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Cheese_Pizza_S,
                 EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
@@ -432,7 +415,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Cheese_Pizza_M,
                 EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
@@ -463,7 +446,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Cheese_Pizza_L,
                 EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
@@ -494,7 +477,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Pepperoni_Pizza_S,
                 EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
@@ -530,7 +513,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Pepperoni_Pizza_M,
                 EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
@@ -566,7 +549,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Pepperoni_Pizza_L,
                 EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
@@ -602,7 +585,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Hawaiin_Pizza_S,
                 EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
@@ -643,7 +626,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Hawaiin_Pizza_M,
                 EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
@@ -684,7 +667,7 @@
             re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
             recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
 
-            re = new Recipe
+            re = new RequiredItem
             {
                 ItemCode = (int)BuildableItemEnum.Hawaiin_Pizza_L,
                 EquipmentCode = (int)EquipmentEnum.Pizza_Oven,
@@ -731,6 +714,7 @@
             await storage.SetTable("Recipe");
             await storage.InsertOrReplace<RecipeTableStorage>(recs);
         }
+         * */
 
         /// <summary>
         /// A way to get the items into the table storage for now.
@@ -738,8 +722,7 @@
         /// </summary>
         public async Task StoreItemDefintiions()
         {
-            await StoreBuildableItems();
-            await StoreRecipes();      
+            await StoreBuildableItems();    
         }
     }
 }

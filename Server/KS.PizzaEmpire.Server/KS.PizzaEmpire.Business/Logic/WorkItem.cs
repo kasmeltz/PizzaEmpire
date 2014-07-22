@@ -4,21 +4,19 @@
     using System;
 
     /// <summary>
-    /// Represents an item that is added to the player after some length of time
+    /// Represents ongoing work that will produce some finished item(s) after some length of time
     /// as used by the game logic.
     /// </summary>
     [ProtoContract]
-    public class DelayedItem
+    public class WorkItem
     {
         /// <summary>
-        /// Creates a new instance of the DelayedItem class.
+        /// Creates a new instance of the WorkItem class.
         /// </summary>
-        public DelayedItem() { }
+        public WorkItem() { }
 
         [ProtoMember(1)]
-        public int ItemCode { get; set; }
-        [ProtoMember(2)]
-        public int EquipmentCode { get; set; }
+        public BuildableItemEnum ItemCode { get; set; }
         [ProtoMember(3)]
         public DateTime FinishTime { get; set; }
     }
