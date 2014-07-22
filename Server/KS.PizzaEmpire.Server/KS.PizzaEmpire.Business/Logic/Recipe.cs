@@ -1,12 +1,12 @@
-﻿using KS.PizzaEmpire.Business.Conversion;
-using KS.PizzaEmpire.Business.StorageInformation;
-using KS.PizzaEmpire.Business.TableStorage;
-using System.Collections.Generic;
-using System.IO;
-using ProtoBuf;
-
-namespace KS.PizzaEmpire.Business.Logic
+﻿namespace KS.PizzaEmpire.Business.Logic
 {
+    using Conversion;
+    using ProtoBuf;
+    using StorageInformation;
+    using System.Collections.Generic;
+    using System.IO;
+    using TableStorage;
+
     /// <summary>
     /// Represents a Recipe that determines what is required to build an item
     /// in the game logic.

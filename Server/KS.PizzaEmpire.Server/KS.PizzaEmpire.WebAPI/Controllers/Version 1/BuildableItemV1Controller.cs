@@ -1,10 +1,10 @@
-﻿using GameLogic.ItemLogic;
-using KS.PizzaEmpire.Business.Logic;
-using System.Collections.Generic;
-using System.Web.Http;
-
-namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
+﻿namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 {
+    using Business.Logic;
+    using GameLogic.ItemLogic;
+    using System.Collections.Generic;
+    using System.Web.Http;
+
     public class BuildableItemV1Controller : ApiController
     {
         // GET api/buildableitem
@@ -15,7 +15,7 @@ namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 
         // GET api/buildableitem/5
         public void Get(string id)
-        {            
+        {
         }
 
         // POST api/buildableitem

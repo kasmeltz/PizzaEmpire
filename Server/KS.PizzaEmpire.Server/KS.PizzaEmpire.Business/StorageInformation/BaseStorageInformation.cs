@@ -1,5 +1,4 @@
-﻿
-namespace KS.PizzaEmpire.Business.StorageInformation
+﻿namespace KS.PizzaEmpire.Business.StorageInformation
 {
     /// <summary>
     /// The base implementation of an item that contains information

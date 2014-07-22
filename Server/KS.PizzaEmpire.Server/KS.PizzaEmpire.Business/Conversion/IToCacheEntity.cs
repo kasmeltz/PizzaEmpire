@@ -1,7 +1,7 @@
-﻿using KS.PizzaEmpire.Business.Cache;
-
-namespace KS.PizzaEmpire.Business.Conversion
+﻿namespace KS.PizzaEmpire.Business.Conversion
 {
+    using KS.PizzaEmpire.Business.Cache;
+
     /// <summary>
     /// Defines an item that can be converted into a cache entity.
     /// </summary>

@@ -1,10 +1,10 @@
-﻿using KS.PizzaEmpire.Services.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage.Table;
-using ProtoBuf;
-
-namespace KS.PizzaEmpire.Services.Test.Serialization
+﻿namespace KS.PizzaEmpire.Services.Test.Serialization
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.WindowsAzure.Storage.Table;
+    using ProtoBuf;
+    using Services.Serialization;
+
     /// <summary>
     /// Simple data class that will be used to test the
     /// ProtoBufSerializer class.
@@ -28,7 +28,8 @@ namespace KS.PizzaEmpire.Services.Test.Serialization
         public void TestProtoBufSerializerSerialize()
         {
             // Arrange
-            ProtoBufSerializerTestEntity entity = new ProtoBufSerializerTestEntity{
+            ProtoBufSerializerTestEntity entity = new ProtoBufSerializerTestEntity
+            {
                 PartitionKey = "KE",
                 RowKey = "Hello",
                 Name = "Kevin",
@@ -49,7 +50,7 @@ namespace KS.PizzaEmpire.Services.Test.Serialization
             Assert.AreEqual(105, b[5]);
             Assert.AreEqual(110, b[6]);
             Assert.AreEqual(16, b[7]);
-            Assert.AreEqual(5, b[8]);        
+            Assert.AreEqual(5, b[8]);
         }
 
         [TestMethod]

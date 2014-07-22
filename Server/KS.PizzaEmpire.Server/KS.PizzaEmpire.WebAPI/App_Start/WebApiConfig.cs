@@ -1,11 +1,11 @@
-﻿using KS.PizzaEmpire.WebAPI.Utility;
-using Microsoft.Owin.Security.OAuth;
-using System.Web.Http;
-using System.Web.Http.Dispatcher;
-using System.Linq;
-
-namespace KS.PizzaEmpire.WebAPI
+﻿namespace KS.PizzaEmpire.WebAPI
 {
+    using KS.PizzaEmpire.WebAPI.Utility;
+    using Microsoft.Owin.Security.OAuth;
+    using System.Linq;
+    using System.Web.Http;
+    using System.Web.Http.Dispatcher;
+
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)

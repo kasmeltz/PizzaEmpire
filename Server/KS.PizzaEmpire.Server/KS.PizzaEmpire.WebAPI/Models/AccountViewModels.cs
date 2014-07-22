@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace KS.PizzaEmpire.WebAPI.Models
+﻿namespace KS.PizzaEmpire.WebAPI.Models
 {
+    using System;
+    using System.Collections.Generic;
+
     // Models returned by AccountController actions.
 
     public class ExternalLoginViewModel

@@ -1,11 +1,11 @@
-﻿using KS.PizzaEmpire.Business.TableStorage;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services.Storage
+﻿namespace KS.PizzaEmpire.Services.Storage
 {
+    using Business.TableStorage;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Table;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// A simple wrapper class for using Azure Table Storage.
     /// Batch operations are limited to items with the same partition key.

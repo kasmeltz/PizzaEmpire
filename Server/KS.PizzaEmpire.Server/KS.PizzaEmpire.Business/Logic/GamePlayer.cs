@@ -1,13 +1,13 @@
-﻿using KS.PizzaEmpire.Business.Cache;
-using KS.PizzaEmpire.Business.Conversion;
-using KS.PizzaEmpire.Business.StorageInformation;
-using KS.PizzaEmpire.Business.TableStorage;
-using ProtoBuf;
-using System.Collections.Generic;
-using System.IO;
-
-namespace KS.PizzaEmpire.Business.Logic
+﻿namespace KS.PizzaEmpire.Business.Logic
 {
+    using Cache;
+    using Conversion;
+    using ProtoBuf;
+    using StorageInformation;
+    using System.Collections.Generic;
+    using System.IO;
+    using TableStorage;
+
     /// <summary>
     /// Represents the state for a player of the game as used in the game logic.
     /// </summary>
@@ -42,7 +42,7 @@ namespace KS.PizzaEmpire.Business.Logic
             return GamePlayerCacheable.From(this);
         }
 
-        #endregion 
+        #endregion
 
         #region IToTableStorageEntity
 
@@ -88,7 +88,7 @@ namespace KS.PizzaEmpire.Business.Logic
             }
 
             if (clone.DelayedItems == null)
-            { 
+            {
                 clone.DelayedItems = new List<DelayedItem>();
             }
 
@@ -115,7 +115,7 @@ namespace KS.PizzaEmpire.Business.Logic
             {
                 clone.DelayedItems = new List<DelayedItem>();
             }
-           
+
             return clone;
         }
 

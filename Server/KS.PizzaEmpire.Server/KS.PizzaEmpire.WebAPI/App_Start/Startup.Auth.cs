@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
-using Owin;
-using KS.PizzaEmpire.WebAPI.Providers;
-
-namespace KS.PizzaEmpire.WebAPI
+﻿namespace KS.PizzaEmpire.WebAPI
 {
+    using WebAPI.Providers;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.Owin;
+    using Microsoft.Owin.Security.Cookies;
+    using Microsoft.Owin.Security.OAuth;
+    using Owin;
+    using System;
+
     public partial class Startup
     {
         static Startup()

@@ -1,7 +1,7 @@
-﻿using KS.PizzaEmpire.Business.TableStorage;
-
-namespace KS.PizzaEmpire.Business.Conversion
+﻿namespace KS.PizzaEmpire.Business.Conversion
 {
+    using TableStorage;
+
     /// <summary>
     /// Defines an item that can be converted into a table storage entity.
     /// </summary>

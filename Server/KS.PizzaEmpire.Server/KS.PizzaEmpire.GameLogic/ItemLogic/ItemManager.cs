@@ -1,16 +1,15 @@
-﻿using KS.PizzaEmpire.Business.Common;
-using KS.PizzaEmpire.Business.Logic;
-using KS.PizzaEmpire.Business.StorageInformation;
-using KS.PizzaEmpire.Business.TableStorage;
-using KS.PizzaEmpire.GameLogic.ItemLogic;
-using KS.PizzaEmpire.Services.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GameLogic.ItemLogic
+﻿namespace KS.PizzaEmpire.GameLogic.ItemLogic
 {
+    using Business.Common;
+    using Business.Logic;
+    using Business.StorageInformation;
+    using Business.TableStorage;
+    using Services.Storage;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Represents an item that handles the game logic for items
     /// </summary>

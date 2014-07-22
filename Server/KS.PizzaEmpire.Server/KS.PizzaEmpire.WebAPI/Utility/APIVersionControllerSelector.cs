@@ -1,18 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Dispatcher;
-
-namespace KS.PizzaEmpire.WebAPI.Utility
+﻿namespace KS.PizzaEmpire.WebAPI.Utility
 {
+    using System;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Dispatcher;
+
     /// <summary>
     /// Represents an item that selects the appropriate controller based on the API version
     /// in the Accept Header of the request.
     /// </summary>
     public class APIVersionControllerSelector : DefaultHttpControllerSelector
-    {        
+    {
         /// <summary>
         /// Creates a new instance of an APIVersionControllerSelector with the
         /// provided HttpConfiguration
@@ -55,9 +55,9 @@ namespace KS.PizzaEmpire.WebAPI.Utility
         /// <returns></returns>
         public override HttpControllerDescriptor SelectController(HttpRequestMessage request)
         {
-            var controllers = GetControllerMapping();  
-            var routeData = request.GetRouteData(); 
-            var controllerName = routeData.Values["controller"].ToString(); 
+            var controllers = GetControllerMapping();
+            var routeData = request.GetRouteData();
+            var controllerName = routeData.Values["controller"].ToString();
             HttpControllerDescriptor controllerDescriptor;
             var version = GetVersionFromAcceptHeaderVersion(request);
             var versionedControllerName = string.Concat(controllerName, "V", version);
@@ -66,8 +66,8 @@ namespace KS.PizzaEmpire.WebAPI.Utility
             {
                 return controllerDescriptor;
             }
- 
-            return null; 
+
+            return null;
         }
     }
 }

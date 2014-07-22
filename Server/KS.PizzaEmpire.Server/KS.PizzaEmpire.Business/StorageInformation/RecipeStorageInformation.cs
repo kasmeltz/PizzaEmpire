@@ -1,7 +1,7 @@
-﻿using KS.PizzaEmpire.Business.Common;
-
-namespace KS.PizzaEmpire.Business.StorageInformation
+﻿namespace KS.PizzaEmpire.Business.StorageInformation
 {
+    using Common;
+
     /// <summary>
     /// Represents in item that contains information about storing an 
     /// Recipe entity in various types of storage.

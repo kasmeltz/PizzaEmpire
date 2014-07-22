@@ -1,13 +1,13 @@
-﻿using KS.PizzaEmpire.Business.Cache;
-using KS.PizzaEmpire.Services.Caching;
-using KS.PizzaEmpire.Services.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ProtoBuf;
-using System;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services.Test.Caching
+﻿namespace KS.PizzaEmpire.Services.Test.Caching
 {
+    using Business.Cache;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using ProtoBuf;
+    using Services.Caching;
+    using Services.Serialization;
+    using System;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Simple data class that will be used to test the
     /// RedisCache class.

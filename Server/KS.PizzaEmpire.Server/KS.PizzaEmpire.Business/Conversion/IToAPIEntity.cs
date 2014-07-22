@@ -1,7 +1,7 @@
-﻿using KS.PizzaEmpire.Business.API;
-
-namespace KS.PizzaEmpire.Business.Conversion
+﻿namespace KS.PizzaEmpire.Business.Conversion
 {
+    using KS.PizzaEmpire.Business.API;
+
     /// <summary>
     /// Defines an item that can be converted into an API entity.
     /// </summary>

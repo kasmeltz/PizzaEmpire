@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Web.Http;
-using System.Web.Http.Description;
-using KS.PizzaEmpire.WebAPI.Areas.HelpPage.Models;
-
 namespace KS.PizzaEmpire.WebAPI.Areas.HelpPage
 {
+    using KS.PizzaEmpire.WebAPI.Areas.HelpPage.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net.Http.Headers;
+    using System.Web.Http;
+    using System.Web.Http.Description;
+
     public static class HelpPageConfigurationExtensions
     {
         private const string ApiModelPrefix = "MS_HelpPageApiModel_";

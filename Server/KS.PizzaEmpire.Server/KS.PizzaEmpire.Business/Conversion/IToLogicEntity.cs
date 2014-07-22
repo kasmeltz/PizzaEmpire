@@ -1,7 +1,7 @@
-﻿using KS.PizzaEmpire.Business.Logic;
-
-namespace KS.PizzaEmpire.Business.Conversion
+﻿namespace KS.PizzaEmpire.Business.Conversion
 {
+    using Logic;
+
     /// <summary>
     /// Defines an item that can be converted into a logic entity.
     /// </summary>

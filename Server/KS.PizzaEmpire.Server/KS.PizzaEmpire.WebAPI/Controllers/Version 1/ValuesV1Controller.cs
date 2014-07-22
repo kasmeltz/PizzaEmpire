@@ -1,25 +1,23 @@
-﻿using GameLogic.GamePlayerLogic;
-using GameLogic.ItemLogic;
-using KS.PizzaEmpire.Business.Cache;
-using KS.PizzaEmpire.Business.Common;
-using KS.PizzaEmpire.Business.Logic;
-using KS.PizzaEmpire.Business.Result;
-using KS.PizzaEmpire.Business.StorageInformation;
-using KS.PizzaEmpire.Business.TableStorage;
-using KS.PizzaEmpire.DataAccess.DataProvider;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web.Http;
-
-namespace KS.PizzaEmpire.WebAPI.Controllers
+﻿namespace KS.PizzaEmpire.WebAPI.Controllers
 {
+    using Business.Cache;
+    using Business.Common;
+    using Business.Logic;
+    using Business.Result;
+    using Business.StorageInformation;
+    using Business.TableStorage;
+    using DataAccess.DataProvider;
+    using GameLogic.GamePlayerLogic;
+    using System;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+
     //[Authorize]
     public class ValuesV1Controller : ApiController
     {
         // GET api/values
         public void Get()
-        {          
+        {
         }
 
         // GET api/values/key

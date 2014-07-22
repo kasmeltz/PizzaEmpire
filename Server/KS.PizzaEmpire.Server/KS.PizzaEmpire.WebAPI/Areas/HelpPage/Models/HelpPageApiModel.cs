@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Net.Http.Headers;
-using System.Web.Http.Description;
-
 namespace KS.PizzaEmpire.WebAPI.Areas.HelpPage.Models
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Net.Http.Headers;
+    using System.Web.Http.Description;
+
     /// <summary>
     /// The model that represents an API displayed on the help page.
     /// </summary>

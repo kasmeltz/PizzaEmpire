@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services.Serialization
+﻿namespace KS.PizzaEmpire.Services.Serialization
 {
+    using System.IO;
+    using System.Runtime.Serialization.Formatters.Binary;
+
     /// <summary>
     /// Represents an item that uses a BinaryFormatter to serialize 
     /// and deserialize objects to and from byte streams.

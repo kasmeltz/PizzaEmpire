@@ -1,11 +1,11 @@
-﻿using KS.PizzaEmpire.Business.TableStorage;
-using KS.PizzaEmpire.Services.Storage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage.Table;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services.Test.Storage
+﻿namespace KS.PizzaEmpire.Services.Test.Storage
 {
+    using Business.TableStorage;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.WindowsAzure.Storage.Table;
+    using Services.Storage;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Simple data class that will be used to test the
     /// AzureTableStorage class.
@@ -53,8 +53,8 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         {
             // Arrange
             await Storage.Insert<LucifureTableStorageTestEntity>(new LucifureTableStorageTestEntity
-            { 
-                RowKey = "Kevin", 
+            {
+                RowKey = "Kevin",
                 Name = "Kevin"
             });
 

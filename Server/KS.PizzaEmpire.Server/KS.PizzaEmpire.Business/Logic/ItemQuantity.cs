@@ -1,10 +1,10 @@
-﻿using KS.PizzaEmpire.Business.Conversion;
-using KS.PizzaEmpire.Business.StorageInformation;
-using KS.PizzaEmpire.Business.TableStorage;
-using ProtoBuf;
-
-namespace KS.PizzaEmpire.Business.Logic
+﻿namespace KS.PizzaEmpire.Business.Logic
 {
+    using Conversion;
+    using StorageInformation;
+    using TableStorage;
+    using ProtoBuf;
+
     /// <summary>
     /// Represents an item quanity as used by the game logic
     /// </summary>

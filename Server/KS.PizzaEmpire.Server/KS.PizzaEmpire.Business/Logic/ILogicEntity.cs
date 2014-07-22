@@ -1,7 +1,7 @@
-﻿using KS.PizzaEmpire.Business.StorageInformation;
-
-namespace KS.PizzaEmpire.Business.Logic
+﻿namespace KS.PizzaEmpire.Business.Logic
 {
+    using StorageInformation;
+
     /// <summary>
     /// Interface to mark classes that are used for business logic.
     /// </summary>

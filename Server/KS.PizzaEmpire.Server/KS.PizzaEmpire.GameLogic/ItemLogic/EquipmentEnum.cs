@@ -1,5 +1,4 @@
-﻿
-namespace KS.PizzaEmpire.GameLogic.ItemLogic
+﻿namespace KS.PizzaEmpire.GameLogic.ItemLogic
 {
     /// <summary>
     /// Represents a list of all of the Equipment in the game

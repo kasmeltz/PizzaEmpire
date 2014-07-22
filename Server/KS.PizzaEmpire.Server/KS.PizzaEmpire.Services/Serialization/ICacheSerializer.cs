@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services.Serialization
+﻿namespace KS.PizzaEmpire.Services.Serialization
 {
     /// <summary>
     /// Defines an interface for a cache serializer

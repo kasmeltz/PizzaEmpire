@@ -1,16 +1,16 @@
-﻿using KS.PizzaEmpire.Services.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
-namespace KS.PizzaEmpire.Services.Test.Serialization
+﻿namespace KS.PizzaEmpire.Services.Test.Serialization
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Services.Serialization;
+    using System;
+
     /// <summary>
     /// Simple data class that will be used to test the
     /// BinaryFormatSerializer class.
     /// </summary>
     [Serializable]
     public class BinaryFormatSerializerTestEntity
-    {        
+    {
         public string Name { get; set; }
         public int? Number { get; set; }
     }

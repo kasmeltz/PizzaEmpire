@@ -1,17 +1,17 @@
-﻿using KS.PizzaEmpire.Business.Cache;
-using KS.PizzaEmpire.Business.Conversion;
-using KS.PizzaEmpire.Business.Logic;
-using KS.PizzaEmpire.Business.StorageInformation;
-using KS.PizzaEmpire.Business.TableStorage;
-using KS.PizzaEmpire.Services;
-using KS.PizzaEmpire.Services.Caching;
-using KS.PizzaEmpire.Services.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
-using System;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.DataAccess.DataProvider
+﻿namespace KS.PizzaEmpire.DataAccess.DataProvider
 {
+    using Business.Cache;
+    using Business.Conversion;
+    using Business.Logic;
+    using Business.StorageInformation;
+    using Business.TableStorage;
+    using Microsoft.WindowsAzure.Storage.Table;
+    using Services;
+    using Services.Caching;
+    using Services.Storage;
+    using System;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Represents an item that will provide persistant data about
     /// the game world using a combination of data techniques that can

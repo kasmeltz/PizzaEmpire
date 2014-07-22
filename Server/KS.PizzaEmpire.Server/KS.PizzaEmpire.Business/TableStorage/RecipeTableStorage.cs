@@ -1,12 +1,12 @@
-﻿using KS.PizzaEmpire.Business.Conversion;
-using KS.PizzaEmpire.Business.Logic;
-using Microsoft.WindowsAzure.Storage.Table;
-using ProtoBuf;
-using System.Collections.Generic;
-using System.IO;
-
-namespace KS.PizzaEmpire.Business.TableStorage
+﻿namespace KS.PizzaEmpire.Business.TableStorage
 {
+    using Conversion;
+    using Logic;
+    using Microsoft.WindowsAzure.Storage.Table;
+    using ProtoBuf;
+    using System.Collections.Generic;
+    using System.IO;
+
     /// <summary>
     /// Represents a Recipe that determines what is required to build an item
     /// as stored in table storage.

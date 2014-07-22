@@ -1,11 +1,11 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services.Storage
+﻿namespace KS.PizzaEmpire.Services.Storage
 {
+    using Microsoft.WindowsAzure.Storage.Table;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Extension methods for Cloud Table
     /// </summary>

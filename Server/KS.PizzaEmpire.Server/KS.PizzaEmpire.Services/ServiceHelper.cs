@@ -1,10 +1,10 @@
-﻿using Microsoft.WindowsAzure;
-using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services
+﻿namespace KS.PizzaEmpire.Services
 {
+    using Microsoft.WindowsAzure;
+    using System;
+    using System.Diagnostics;
+    using System.Threading.Tasks;
+
     public class ServiceHelper
     {
         /// <summary>

@@ -1,10 +1,10 @@
-﻿using GameLogic.ExperienceLevelLogic;
-using KS.PizzaEmpire.Business.Logic;
-using System.Collections.Generic;
-using System.Web.Http;
-
-namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
+﻿namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 {
+    using GameLogic.ExperienceLevelLogic;
+    using Business.Logic;
+    using System.Collections.Generic;
+    using System.Web.Http;
+
     public class ExperienceLevelV1Controller : ApiController
     {
         // GET api/experiencelevel
@@ -15,7 +15,7 @@ namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 
         // GET api/experiencelevel/5
         public void Get(string id)
-        {            
+        {
         }
 
         // POST api/experiencelevel

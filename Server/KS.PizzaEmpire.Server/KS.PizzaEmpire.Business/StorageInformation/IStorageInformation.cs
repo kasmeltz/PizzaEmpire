@@ -1,5 +1,4 @@
-﻿
-namespace KS.PizzaEmpire.Business.StorageInformation
+﻿namespace KS.PizzaEmpire.Business.StorageInformation
 {
     /// <summary>
     /// Represents in item that contains information about storing an 

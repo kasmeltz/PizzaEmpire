@@ -1,12 +1,12 @@
-﻿using KS.PizzaEmpire.Business.Conversion;
-using KS.PizzaEmpire.Business.StorageInformation;
-using KS.PizzaEmpire.Business.TableStorage;
-using ProtoBuf;
-using System.Collections.Generic;
-using System.IO;
-
-namespace KS.PizzaEmpire.Business.Logic
+﻿namespace KS.PizzaEmpire.Business.Logic
 {
+    using Conversion;
+    using ProtoBuf;
+    using StorageInformation;
+    using System.Collections.Generic;
+    using System.IO;
+    using TableStorage;
+
     /// <summary>
     /// Represents a ExperienceLevel that determines how players level up
     /// in the game logic.

@@ -1,9 +1,9 @@
-﻿using KS.PizzaEmpire.Business.Conversion;
-using KS.PizzaEmpire.Business.StorageInformation;
-using KS.PizzaEmpire.Business.TableStorage;
-
-namespace KS.PizzaEmpire.Business.Logic
+﻿namespace KS.PizzaEmpire.Business.Logic
 {
+    using Conversion;
+    using StorageInformation;
+    using TableStorage;
+
     /// <summary>
     /// Represents an item that can be built in the game
     /// </summary>

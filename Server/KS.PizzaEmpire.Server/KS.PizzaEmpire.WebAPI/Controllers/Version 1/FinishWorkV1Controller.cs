@@ -1,18 +1,18 @@
-﻿using GameLogic.GamePlayerLogic;
-using KS.PizzaEmpire.Business.Cache;
-using KS.PizzaEmpire.Business.Common;
-using KS.PizzaEmpire.Business.Logic;
-using KS.PizzaEmpire.Business.Result;
-using KS.PizzaEmpire.Business.StorageInformation;
-using KS.PizzaEmpire.Business.TableStorage;
-using KS.PizzaEmpire.DataAccess.DataProvider;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web.Http;
-
-namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
+﻿namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 {
+    using Business.Cache;
+    using Business.Common;
+    using Business.Logic;
+    using Business.Result;
+    using Business.StorageInformation;
+    using Business.TableStorage;
+    using DataAccess.DataProvider;
+    using GameLogic.GamePlayerLogic;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+
     public class FinishWorkV1Controller : ApiController
     {
         // GET api/finishwork
@@ -22,7 +22,7 @@ namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 
         // GET api/finishwork/5
         public async Task<Result> Get(string id)
-        {           
+        {
             try
             {
                 GamePlayerStorageInformation storageInfo = new GamePlayerStorageInformation(id);

@@ -1,13 +1,9 @@
-﻿using KS.PizzaEmpire.DataAccess.DataProvider;
-using KS.PizzaEmpire.Services;
-using KS.PizzaEmpire.Services.Caching;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace KS.PizzaEmpire.WebAPI.Utility
+﻿namespace KS.PizzaEmpire.WebAPI.Utility
 {
+    using KS.PizzaEmpire.DataAccess.DataProvider;
+    using KS.PizzaEmpire.Services;
+    using KS.PizzaEmpire.Services.Caching;
+
     public class WebAPIUtility
     {
 

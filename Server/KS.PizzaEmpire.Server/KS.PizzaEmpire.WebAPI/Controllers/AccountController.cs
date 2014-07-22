@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using System.Web.Http.ModelBinding;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
-using KS.PizzaEmpire.WebAPI.Models;
-using KS.PizzaEmpire.WebAPI.Providers;
-using KS.PizzaEmpire.WebAPI.Results;
-
-namespace KS.PizzaEmpire.WebAPI.Controllers
+﻿namespace KS.PizzaEmpire.WebAPI.Controllers
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.Owin.Security;
+    using Microsoft.Owin.Security.Cookies;
+    using Microsoft.Owin.Security.OAuth;
+    using Models;
+    using Providers;
+    using Results;
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Security.Claims;
+    using System.Security.Cryptography;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Http;
+    using System.Web.Http.ModelBinding;
+
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController

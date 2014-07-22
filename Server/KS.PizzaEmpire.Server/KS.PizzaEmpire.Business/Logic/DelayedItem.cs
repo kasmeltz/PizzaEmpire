@@ -1,8 +1,8 @@
-﻿using ProtoBuf;
-using System;
-
-namespace KS.PizzaEmpire.Business.Logic
+﻿namespace KS.PizzaEmpire.Business.Logic
 {
+    using ProtoBuf;
+    using System;
+
     /// <summary>
     /// Represents an item that is added to the player after some length of time
     /// as used by the game logic.
@@ -10,7 +10,7 @@ namespace KS.PizzaEmpire.Business.Logic
     [ProtoContract]
     public class DelayedItem
     {
-         /// <summary>
+        /// <summary>
         /// Creates a new instance of the DelayedItem class.
         /// </summary>
         public DelayedItem() { }

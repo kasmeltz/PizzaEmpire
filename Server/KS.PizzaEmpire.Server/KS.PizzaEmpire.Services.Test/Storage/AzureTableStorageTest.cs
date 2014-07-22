@@ -1,13 +1,13 @@
-﻿using KS.PizzaEmpire.Business.TableStorage;
-using KS.PizzaEmpire.Services.Storage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage.Table;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services.Test.Storage
+﻿namespace KS.PizzaEmpire.Services.Test.Storage
 {
+    using Business.TableStorage;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.WindowsAzure.Storage.Table;
+    using Services.Storage;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Simple data class that will be used to test the
     /// AzureTableStorage class.
@@ -58,8 +58,8 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         {
             // Arrange
             await Storage.Insert<AzureTableStorageTestEntity>(new AzureTableStorageTestEntity
-            { 
-                RowKey = "Kevin", 
+            {
+                RowKey = "Kevin",
                 Name = "Kevin"
             });
 
@@ -112,7 +112,7 @@ namespace KS.PizzaEmpire.Services.Test.Storage
         public async Task TestAzureTableStorageInsertMultiple()
         {
             // Arrange
-            List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();          
+            List<AzureTableStorageTestEntity> players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",
@@ -149,7 +149,7 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             {
                 RowKey = "Kevin",
                 Name = "Kevin",
-                Number = 1                
+                Number = 1
             });
 
             // Act
@@ -478,7 +478,7 @@ namespace KS.PizzaEmpire.Services.Test.Storage
                 RowKey = "Kevin",
                 Name = "Kevin"
             });
-            
+
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",
@@ -491,7 +491,7 @@ namespace KS.PizzaEmpire.Services.Test.Storage
             });
             await Storage.InsertOrReplace<AzureTableStorageTestEntity>(players);
 
-            players = new List<AzureTableStorageTestEntity>();           
+            players = new List<AzureTableStorageTestEntity>();
             players.Add(new AzureTableStorageTestEntity
             {
                 RowKey = "Kathy",

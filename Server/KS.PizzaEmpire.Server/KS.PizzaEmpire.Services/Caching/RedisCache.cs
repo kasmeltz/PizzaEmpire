@@ -1,11 +1,11 @@
-﻿using KS.PizzaEmpire.Business.Cache;
-using KS.PizzaEmpire.Services.Serialization;
-using StackExchange.Redis;
-using System;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services.Caching
+﻿namespace KS.PizzaEmpire.Services.Caching
 {
+    using Business.Cache;
+    using Services.Serialization;
+    using StackExchange.Redis;
+    using System;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Represents an item that can communicate with a Redis Cache for
     /// storing and retrieving items.
@@ -67,7 +67,7 @@ namespace KS.PizzaEmpire.Services.Caching
                 if (connection == null || !connection.IsConnected)
                 {
                     connection = ConnectionMultiplexer.
-                        Connect(ConnectionString);                            
+                        Connect(ConnectionString);
                 }
                 return connection;
             }
@@ -95,14 +95,14 @@ namespace KS.PizzaEmpire.Services.Caching
         /// The number of milliseconds to wait before performing a cache operation.
         /// </summary>
         public int ThrottleMillis { get; set; }
-        
+
         /// <summary>.
         /// Returns an instance of type T from the cache
         /// </summary>
         /// <typeparam name="T">The data type of the item that is stored in the cache.</typeparam>
         /// <param name="key">The key of the item in the cache.</param>
         /// <returns>The item from the cache.</returns>
-        public async Task<T> Get<T>(string key, CommandFlags flags = CommandFlags.None) 
+        public async Task<T> Get<T>(string key, CommandFlags flags = CommandFlags.None)
             where T : ICacheEntity
         {
             return await ServiceHelper.RetryAsync<T>(async () =>
@@ -116,14 +116,14 @@ namespace KS.PizzaEmpire.Services.Caching
                 return CacheSerializer.Deserialize<T>(value);
             }, RetryMillis, MaxRetryAttempts, ThrottleMillis);
         }
-       
+
         /// <summary>
         /// Stores an item in the cache.
         /// </summary>
         /// <param name="key">The key of the item in the cache.</param>
         /// <param name="value">The item tio store</param>
         public async Task Set<T>(string key, T value,
-            TimeSpan ts, When when = When.Always, CommandFlags flags = CommandFlags.None) 
+            TimeSpan ts, When when = When.Always, CommandFlags flags = CommandFlags.None)
             where T : ICacheEntity
         {
             await ServiceHelper.RetryAsync<int>(async () =>
@@ -139,7 +139,7 @@ namespace KS.PizzaEmpire.Services.Caching
         /// </summary>
         /// <param name="key">The key to remove</param>
         /// <returns></returns>
-        public async Task Delete<T>(string key, CommandFlags flags = CommandFlags.None) 
+        public async Task Delete<T>(string key, CommandFlags flags = CommandFlags.None)
             where T : ICacheEntity
         {
             await ServiceHelper.RetryAsync<int>(async () =>

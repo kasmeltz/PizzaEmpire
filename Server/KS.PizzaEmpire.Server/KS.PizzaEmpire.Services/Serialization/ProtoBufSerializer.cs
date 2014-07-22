@@ -1,13 +1,8 @@
-﻿using ProtoBuf;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KS.PizzaEmpire.Services.Serialization
+﻿namespace KS.PizzaEmpire.Services.Serialization
 {
+    using ProtoBuf;
+    using System.IO;
+
     /// <summary>
     /// Represents an item that uses a ProtoBuf to serialize 
     /// and deserialize objects to and from byte streams.

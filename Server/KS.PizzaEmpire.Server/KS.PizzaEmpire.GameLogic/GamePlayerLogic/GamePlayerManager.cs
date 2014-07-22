@@ -1,13 +1,13 @@
-﻿using GameLogic.ExperienceLevelLogic;
-using GameLogic.ItemLogic;
-using KS.PizzaEmpire.Business.Common;
-using KS.PizzaEmpire.Business.Logic;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
-namespace GameLogic.GamePlayerLogic
+﻿namespace KS.PizzaEmpire.GameLogic.GamePlayerLogic
 {
+    using GameLogic.ExperienceLevelLogic;
+    using GameLogic.ItemLogic;
+    using Business.Common;
+    using Business.Logic;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
     /// <summary>
     /// Represents the game logic that has to do with Game Players
     /// </summary>

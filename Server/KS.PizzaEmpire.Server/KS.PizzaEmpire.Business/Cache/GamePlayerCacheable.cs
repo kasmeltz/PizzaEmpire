@@ -1,19 +1,18 @@
-﻿using KS.PizzaEmpire.Business.Conversion;
-using KS.PizzaEmpire.Business.Logic;
-using KS.PizzaEmpire.Business.TableStorage;
-using ProtoBuf;
-using System;
-using System.Collections.Generic;
-
-namespace KS.PizzaEmpire.Business.Cache
+﻿namespace KS.PizzaEmpire.Business.Cache
 {
+    using Conversion;
+    using Logic;
+    using ProtoBuf;
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents the state for a player of the game as stored in the cache.
     /// </summary>
     [ProtoContract]
     [Serializable]
     public class GamePlayerCacheable : ICacheEntity, IToLogicEntity
-    {       
+    {
         /// <summary>
         /// Creates a new instance of the GamePlayerCacheable class.
         /// </summary>
@@ -35,7 +34,7 @@ namespace KS.PizzaEmpire.Business.Cache
         public List<DelayedItem> DelayedItems { get; set; }
 
         #region IToLogicEntity
-       
+
         /// <summary>
         /// Returns a new instance of the appropriate ILogicEntity with cloned data.
         /// </summary>
@@ -48,7 +47,7 @@ namespace KS.PizzaEmpire.Business.Cache
         #endregion
 
         #region Cloners
-       
+
         /// <summary>
         /// Generates a new GamePlayerCacheable instance from a GamePlayer instance.
         /// </summary>

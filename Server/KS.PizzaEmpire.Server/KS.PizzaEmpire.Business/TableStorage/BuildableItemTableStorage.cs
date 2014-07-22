@@ -1,9 +1,9 @@
-﻿using KS.PizzaEmpire.Business.Conversion;
-using KS.PizzaEmpire.Business.Logic;
-using Microsoft.WindowsAzure.Storage.Table;
-
-namespace KS.PizzaEmpire.Business.TableStorage
+﻿namespace KS.PizzaEmpire.Business.TableStorage
 {
+    using Conversion;
+    using Logic;
+    using Microsoft.WindowsAzure.Storage.Table;
+
     /// <summary>
     /// Represents the data for a buildable item as stored in table storage.
     /// </summary>

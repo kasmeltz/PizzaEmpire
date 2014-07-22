@@ -1,10 +1,10 @@
-using System;
-using System.Web.Http;
-using System.Web.Mvc;
-using KS.PizzaEmpire.WebAPI.Areas.HelpPage.Models;
-
 namespace KS.PizzaEmpire.WebAPI.Areas.HelpPage.Controllers
 {
+    using Models;
+    using System;
+    using System.Web.Http;
+    using System.Web.Mvc;
+
     /// <summary>
     /// The controller that will handle requests for the help page.
     /// </summary>

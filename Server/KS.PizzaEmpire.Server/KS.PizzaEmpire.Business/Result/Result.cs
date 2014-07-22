@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace KS.PizzaEmpire.Business.Result
+﻿namespace KS.PizzaEmpire.Business.Result
 {
     /// <summary>
     /// Represnts an item that captures information about the result of an operation

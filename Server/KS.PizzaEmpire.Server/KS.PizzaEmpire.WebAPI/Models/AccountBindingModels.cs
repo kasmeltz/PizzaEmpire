@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
-
-namespace KS.PizzaEmpire.WebAPI.Models
+﻿namespace KS.PizzaEmpire.WebAPI.Models
 {
+    using Newtonsoft.Json;
+    using System.ComponentModel.DataAnnotations;
+
     // Models used as parameters to AccountController actions.
 
     public class AddExternalLoginBindingModel
