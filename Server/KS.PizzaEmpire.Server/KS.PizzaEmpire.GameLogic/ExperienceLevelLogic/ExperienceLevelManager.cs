@@ -103,6 +103,22 @@
             exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
             exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());
 
+            exl = new ExperienceLevel
+            {
+                Level = 3,
+                ExperienceRequired = 300,
+            };
+            exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
+            exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());
+
+            exl = new ExperienceLevel
+            {
+                Level = 4,
+                ExperienceRequired = 700,
+            };
+            exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
+            exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());
+
             AzureTableStorage storage = new AzureTableStorage();
             await storage.SetTable("ExperienceLevel");
             await storage.DeleteTable();

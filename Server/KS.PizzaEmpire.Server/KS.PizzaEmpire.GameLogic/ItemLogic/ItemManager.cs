@@ -96,26 +96,168 @@
             List<BuildableItemTableStorage> buildableItems = new List<BuildableItemTableStorage>();
             BuildableItem bi;
 
-            foreach(var en in Enum.GetValues(typeof(BuildableItemEnum)).Cast<BuildableItemEnum>())
+            bi = new BuildableItem
             {
-                bi = new BuildableItem
+                ItemCode = BuildableItemEnum.White_Flour,
+                RequiredLevel = 1,
+                CoinCost = 50,
+                Capacity = 0,
+                BaseProduction = 1,
+                MaxQuantity = 20,
+                IsConsumable = true,
+                ProductionMultiplier = 1,
+                Experience = 100,
+                BuildSeconds = 60,
+                CouponCost = 0,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60,
+                RequiredItems = new List<ItemQuantity>
                 {
-                    ItemCode = en,
-                    RequiredLevel = 1,
-                    CoinCost = 1,
-                    Capacity = 1,
-                    BaseProduction = 1,
-                    ProductionMultiplier = 1,
-                    Experience = 1,
-                    BuildSeconds = 1,
-                    CouponCost = 1,
-                    SpeedUpCoupons = 1,
-                    SpeedUpSeconds = 1,
-                    RequiredItems = new List<ItemQuantity>()
-                };
-                bi.StorageInformation = new BuildableItemStorageInformation(bi.ItemCode.ToString());
-                buildableItems.Add((BuildableItemTableStorage)bi.ToTableStorageEntity());
-            }
+                    new ItemQuantity 
+                    {
+                         ItemCode = BuildableItemEnum.Delivery_Truck_L1,
+                         Quantity = 1
+                    }
+                }
+            };
+            bi.StorageInformation = new BuildableItemStorageInformation(bi.ItemCode.ToString());
+            buildableItems.Add((BuildableItemTableStorage)bi.ToTableStorageEntity());
+
+            bi = new BuildableItem
+            {
+                ItemCode = BuildableItemEnum.Yeast,
+                RequiredLevel = 2,
+                CoinCost = 50,
+                Capacity = 0,
+                BaseProduction = 1,
+                MaxQuantity = 20,
+                IsConsumable = true,
+                ProductionMultiplier = 1,
+                Experience = 100,
+                BuildSeconds = 60,
+                CouponCost = 0,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60,
+                RequiredItems = new List<ItemQuantity>
+                {
+                    new ItemQuantity 
+                    {
+                         ItemCode = BuildableItemEnum.Delivery_Truck_L1,
+                         Quantity = 1
+                    }
+                }
+            };
+            bi.StorageInformation = new BuildableItemStorageInformation(bi.ItemCode.ToString());
+            buildableItems.Add((BuildableItemTableStorage)bi.ToTableStorageEntity());
+
+            bi = new BuildableItem
+            {
+                ItemCode = BuildableItemEnum.Salt,
+                RequiredLevel = 2,
+                CoinCost = 50,
+                Capacity = 0,
+                BaseProduction = 1,
+                MaxQuantity = 20,
+                IsConsumable = true,
+                ProductionMultiplier = 1,
+                Experience = 100,
+                BuildSeconds = 60,
+                CouponCost = 0,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60,
+                RequiredItems = new List<ItemQuantity>
+                {
+                    new ItemQuantity 
+                    {
+                         ItemCode = BuildableItemEnum.Delivery_Truck_L1,
+                         Quantity = 1
+                    }
+                }
+            };
+            bi.StorageInformation = new BuildableItemStorageInformation(bi.ItemCode.ToString());
+            buildableItems.Add((BuildableItemTableStorage)bi.ToTableStorageEntity());
+           
+            bi = new BuildableItem
+            {
+                ItemCode = BuildableItemEnum.White_Pizza_Dough,
+                RequiredLevel = 2,
+                CoinCost = 50,
+                Capacity = 0,
+                BaseProduction = 1,
+                MaxQuantity = 20,
+                IsConsumable = true,
+                ProductionMultiplier = 1,
+                Experience = 100,
+                BuildSeconds = 60,
+                CouponCost = 0,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60,
+                RequiredItems = new List<ItemQuantity>
+                {
+                    new ItemQuantity 
+                    {
+                         ItemCode = BuildableItemEnum.White_Flour,
+                         Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                         ItemCode = BuildableItemEnum.Salt,
+                         Quantity = 1
+                    },
+                    new ItemQuantity
+                    {
+                         ItemCode = BuildableItemEnum.Yeast,
+                         Quantity = 1
+                    
+                    },
+                    new ItemQuantity 
+                    {
+                         ItemCode = BuildableItemEnum.Dough_Mixer_L1,
+                         Quantity = 1
+                    }
+                }
+            };
+            bi.StorageInformation = new BuildableItemStorageInformation(bi.ItemCode.ToString());
+            buildableItems.Add((BuildableItemTableStorage)bi.ToTableStorageEntity());
+
+            bi = new BuildableItem
+            {
+                ItemCode = BuildableItemEnum.Delivery_Truck_L1,
+                RequiredLevel = 1,
+                CoinCost = 50,
+                Capacity = 2,
+                BaseProduction = 1,
+                MaxQuantity = 1,
+                IsConsumable = false,
+                ProductionMultiplier = 1,
+                Experience = 100,
+                BuildSeconds = 60,
+                CouponCost = 0,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60
+            };
+            bi.StorageInformation = new BuildableItemStorageInformation(bi.ItemCode.ToString());
+            buildableItems.Add((BuildableItemTableStorage)bi.ToTableStorageEntity());
+
+
+            bi = new BuildableItem
+            {
+                ItemCode = BuildableItemEnum.Dough_Mixer_L1,
+                RequiredLevel = 1,
+                CoinCost = 50,
+                Capacity = 2,
+                BaseProduction = 1,
+                MaxQuantity = 1,
+                IsConsumable = false,
+                ProductionMultiplier = 1,
+                Experience = 100,
+                BuildSeconds = 60,
+                CouponCost = 0,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60
+            };
+            bi.StorageInformation = new BuildableItemStorageInformation(bi.ItemCode.ToString());
+            buildableItems.Add((BuildableItemTableStorage)bi.ToTableStorageEntity());
 
             AzureTableStorage storage = new AzureTableStorage();
             await storage.SetTable("BuildableItem");

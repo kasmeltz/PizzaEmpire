@@ -47,6 +47,16 @@
         public double ProductionMultiplier { get; set; }
 
         /// <summary>
+        /// The maximum number of this item the player can own
+        /// </summary>
+        public int MaxQuantity { get; set; }
+
+        /// <summary>
+        /// Whether the item is consumed if required for other items
+        /// </summary>
+        public bool IsConsumable { get; set; }
+
+        /// <summary>
         /// The experience gained when this item is built
         /// </summary>
         public int Experience { get; set; }
@@ -109,6 +119,8 @@
             clone.Capacity = other.Capacity;
             clone.BaseProduction = other.BaseProduction;
             clone.ProductionMultiplier = other.ProductionMultiplier;
+            clone.MaxQuantity = other.MaxQuantity;
+            clone.IsConsumable = other.IsConsumable;
             clone.Experience = other.Experience;
             clone.BuildSeconds = other.BuildSeconds;
             clone.CouponCost = other.CouponCost;

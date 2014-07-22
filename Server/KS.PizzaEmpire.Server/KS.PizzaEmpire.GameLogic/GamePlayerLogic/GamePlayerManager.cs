@@ -26,6 +26,8 @@
             player.Experience = 0;
 
             player.BuildableItems = new Dictionary<BuildableItemEnum, int>();
+            player.BuildableItems[BuildableItemEnum.Delivery_Truck_L1] = 1;
+
             player.WorkItems = new List<WorkItem>();
             SetLevel(player, 1);
 
@@ -67,7 +69,7 @@
                 {
                     ExperienceLevel exl = ExperienceLevelManager.Instance
                         .ExperienceLevels[player.Level + 1];
-                    if (player.Experience > exl.ExperienceRequired)
+                    if (player.Experience >= exl.ExperienceRequired)
                     {
                         SetLevel(player, player.Level + 1);
                         levelUp = true;
@@ -151,15 +153,9 @@
                 Trace.TraceError("Attempt to start work for an item with insufficient coupons");
                 throw new ArgumentException();
             }
-
+           
             if (bi.RequiredItems != null)
-            {                
-                if (!DoesPlayerHaveCapacity(player, itemCode))
-                {
-                    Trace.TraceError("Attempt to start work but the equipment is full");
-                    throw new ArgumentException();
-                }
-
+            {                               
                 foreach (ItemQuantity itemQuantity in bi.RequiredItems)
                 {
                     if (!player.BuildableItems.ContainsKey(itemQuantity.ItemCode))
@@ -174,9 +170,49 @@
                         throw new ArgumentException();
                     }
                 }
+
+                if (!DoesPlayerHaveCapacity(player, itemCode))
+                {
+                    Trace.TraceError("Attempt to start work but the equipment is full");
+                    throw new ArgumentException();
+                }
+            }
+
+            if (player.BuildableItems.ContainsKey(itemCode))
+            {
+                if (player.BuildableItems[itemCode] >= bi.MaxQuantity)
+                {
+                    Trace.TraceError("Attempt to start work for an item that the player can't hold more of.");
+                    throw new ArgumentException();
+                }
             }
 
             return true;
+        }
+
+        /// <summary>
+        ///  Deducts the resources required to build an item from the player
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="itemCode"></param>
+        public static void DeductResources(GamePlayer player, BuildableItemEnum itemCode)
+        {
+            BuildableItem bi = ItemManager.Instance.BuildableItems[itemCode];
+
+            if (bi.RequiredItems != null)
+            {
+                foreach (ItemQuantity requiredItem in bi.RequiredItems)
+                {
+                    BuildableItem ri = ItemManager.Instance.BuildableItems[requiredItem.ItemCode];
+                    if (ri.IsConsumable)
+                    {
+                        player.BuildableItems[requiredItem.ItemCode] -= requiredItem.Quantity;                        
+                    }
+                }
+            }
+
+            player.Coins -= bi.CoinCost;
+            player.Coupons -= bi.CouponCost;
         }
 
         /// <summary>
@@ -193,19 +229,9 @@
                 return null;
             }
 
+            DeductResources(player, itemCode);
+
             BuildableItem bi = ItemManager.Instance.BuildableItems[itemCode];
-
-            // If we get here then the work can actually be started!
-            if (bi.RequiredItems != null)
-            {
-                foreach (ItemQuantity requiredItem in bi.RequiredItems)
-                {
-                    player.BuildableItems[requiredItem.ItemCode] -= requiredItem.Quantity;
-                }
-            }
-
-            player.Coins -= bi.CoinCost;
-            player.Coupons -= bi.CouponCost;
 
             WorkItem workItem = new WorkItem
             {   
@@ -242,7 +268,13 @@
                 }
             }
 
-            player.BuildableItems[item.ItemCode] += (int)production;
+            int count = player.BuildableItems[item.ItemCode];
+            count += (int)production;
+            if (count > bi.MaxQuantity)
+            {
+                count = bi.MaxQuantity;
+            }
+            player.BuildableItems[item.ItemCode] = count;
 
             AddExperience(player, bi.Experience);
         }

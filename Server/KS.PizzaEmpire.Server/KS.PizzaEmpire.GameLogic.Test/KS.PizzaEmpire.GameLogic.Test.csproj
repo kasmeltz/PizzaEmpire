@@ -50,7 +50,21 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="GamePlayerLogic\GamePlayerManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KS.PizzaEmpire.Business\KS.PizzaEmpire.Business.csproj">
+      <Project>{4da809fd-8d3c-470f-8608-04da00f89554}</Project>
+      <Name>KS.PizzaEmpire.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KS.PizzaEmpire.GameLogic\KS.PizzaEmpire.GameLogic.csproj">
+      <Project>{08b464fa-cc66-4680-8e1a-370aaa7848e5}</Project>
+      <Name>KS.PizzaEmpire.GameLogic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
