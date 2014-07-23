@@ -3,6 +3,7 @@
     using Business.Logic;
     using GameLogic.ItemLogic;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     public class BuildableItemV1Controller : ApiController
@@ -19,8 +20,9 @@
         }
 
         // POST api/buildableitem
-        public void Post([FromBody]string value)
+        public async Task<string> Post(string id)
         {
+            return "hello " + id;
         }
 
         // PUT api/buildableitem/5
