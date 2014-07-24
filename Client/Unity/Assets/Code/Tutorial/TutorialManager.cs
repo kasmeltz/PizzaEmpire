@@ -38,18 +38,28 @@
 	
 		public void Initialize()
 		{
-			stages = new TutorialStage[1];
+			stages = new TutorialStage[2];
+			TutorialStage stage;
+			TutorialGUI gui;
+			int cs = 0;
 			
 			// tutorial stage 0
-			stages[0] = new TutorialStage();
-			GamePlayerStateCheck stateCheck = new GamePlayerStateCheck();
-			ItemQuantity quantity = new ItemQuantity {
-			 	ItemCode = BuildableItemEnum.White_Pizza_Dough };			 	
-			stateCheck.ItemsGreaterThan = new ItemQuantity[] { quantity };
-			stages[0].PlayerStateCheck = stateCheck;
-			TutorialGUI gui = new TutorialGUI();
-			gui.Text = "Awesome!";
-			stages[0].GUI = gui;
+			// INTRO
+			stage = new TutorialStage();
+			gui = new TutorialGUI();
+			gui.Text = "Hey kiddo, it’s your Uncle Louie, how’s it going? I see the old man left you his restaurant. You know he never did manage to make something of this place, but I have faith in you, kid.";
+			gui.ShowNextButton = true;
+			stage.GUI = gui;
+			stages[cs++] = stage;
+			
+			// tutorial stage 1
+			// INTRO
+			stage = new TutorialStage();
+			gui = new TutorialGUI();
+			gui.Text = "Don’t worry, I’ll help show you the ropes, so you can build the biggest pizza empire in this city!";
+			gui.ShowNextButton = true;
+			stage.GUI = gui;
+			stages[cs++] = stage;
 			
 			currentStageIndex = 0;
 			currentStage = stages[0];
@@ -412,11 +422,25 @@
 		/// </summary>
 		public void TryAdvance(GamePlayer player, GUIEvent guiEvent)
 		{
+			if (currentStage.GUI != null && currentStage.GUI.ShowNextButton)
+			{
+				return;
+			}
+			
 			if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.IsTrue(player)) &&
 				(currentStage.GUIEventCheck == null || currentStage.GUIEventCheck.IsSame(guiEvent)))
-				{
-					currentStageIndex++;
-				}
+			{
+				Advance();
+			}
+		}
+		
+		/// <summary>
+		/// Advance to the next stage in the tutorial
+		/// </summary>
+		public void Advance()
+		{
+			currentStageIndex++;
+
 			if (currentStageIndex >= stages.Length) {
 				allDone = true;
 			} else {
@@ -439,8 +463,16 @@
 			if (currentStage.GUI == null) {
 				return;
 			}
-	
-			GUI.Box (new Rect (10, 10, 600, 90), currentStage.GUI.Text);//messages[currentMessage], currentStyle);
+				
+			GUI.Box (new Rect (10, 10, 600, 90), currentStage.GUI.Text, GUIGameObject.CurrentStyle);
+			
+			if (currentStage.GUI.ShowNextButton)
+			{
+			 	if (GUI.Button(new Rect(490,70, 100,20), "Next"))
+			 	{
+					Advance();
+			 	}
+			}
 		}			
 	}
 }

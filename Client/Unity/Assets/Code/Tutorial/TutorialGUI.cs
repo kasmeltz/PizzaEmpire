@@ -7,5 +7,6 @@
 	public class TutorialGUI 
 	{	
 		public string Text { get; set; }
+		public bool ShowNextButton { get; set; }
 	}
 }
