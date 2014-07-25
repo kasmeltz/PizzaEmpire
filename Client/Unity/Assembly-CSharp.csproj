@@ -54,6 +54,15 @@
      <Compile Include="Assets\Code\GamePlayer.cs" />
      <Compile Include="Assets\Code\GamePlayerStateCheck.cs" />
      <Compile Include="Assets\Code\ItemQuantity.cs" />
+     <Compile Include="Assets\Code\LitJson\IJsonWrapper.cs" />
+     <Compile Include="Assets\Code\LitJson\JsonData.cs" />
+     <Compile Include="Assets\Code\LitJson\JsonException.cs" />
+     <Compile Include="Assets\Code\LitJson\JsonMapper.cs" />
+     <Compile Include="Assets\Code\LitJson\JsonReader.cs" />
+     <Compile Include="Assets\Code\LitJson\JsonWriter.cs" />
+     <Compile Include="Assets\Code\LitJson\Lexer.cs" />
+     <Compile Include="Assets\Code\LitJson\ParserToken.cs" />
+     <Compile Include="Assets\Code\Result.cs" />
      <Compile Include="Assets\Code\Tutorial\TutorialManager.cs" />
      <Compile Include="Assets\Code\Tutorial\TutorialStage.cs" />
      <None Include="Assets\Resources\Text\unclelouie.txt" />

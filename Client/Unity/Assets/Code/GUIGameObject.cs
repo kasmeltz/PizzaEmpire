@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using KS.PizzaEmpire.Unity;
+using LitJson;
 
 public class GUIGameObject : MonoBehaviour {
 	
@@ -11,6 +12,8 @@ public class GUIGameObject : MonoBehaviour {
 	
 	public static Texture2D IconCheckMark { get; protected set; }
 	public static Texture2D IconMoreText { get; protected set; }
+	
+	private WWW www;
 	
 	void Start()
 	{
@@ -25,6 +28,10 @@ public class GUIGameObject : MonoBehaviour {
 		
 		if (GUI.Button(new Rect(Screen.width - 65, 400, 45, 45), GUIGameObject.IconCheckMark))
 		{
+			if (www == null)
+			{
+				www = new WWW("http://localhost:65023/api/gameplayer/kevin");
+			}
 			GUIEvent gevent = new GUIEvent{ Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap };
 						
 			if (!TutorialManager.Instance.IsFinished)
@@ -33,6 +40,27 @@ public class GUIGameObject : MonoBehaviour {
 					new GUIEvent { Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap });
 			}
 		}
+		
+		if (www != null)
+		{
+			if (www.isDone)
+			{
+				print (www.text);
+				
+				//Result<GamePlayer> result = JsonMapper.ToObject<Result<GamePlayer>>(www.text);
+				
+				//print (result);
+				/*string gString = JsonMapper.ToJson(player);
+			
+			print (gString);
+			
+			GamePlayer other = JsonMapper.ToObject<GamePlayer>(gString);
+			
+			print (other + " " + other.Coins);
+			
+			*/
+			}
+		}		
 	}
 	
 	public void DrawButton(GUIEvent guiEvent, Action fn)
