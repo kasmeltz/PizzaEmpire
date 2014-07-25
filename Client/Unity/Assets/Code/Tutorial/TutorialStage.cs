@@ -15,7 +15,7 @@
 	
 		public Action Render { get; set; }
 		public GamePlayerStateCheck PlayerStateCheck { get; set; }
-		public GUIEventCheck GUIEventCheck { get; set; }
+		public GUIEvent GUIEvent { get; set; }
 		public bool ShowNextButton { get; set; }
 	}
 }

@@ -13,12 +13,14 @@
 		private TutorialStage currentStage;
 		private string[] sayings;
 	
-		private bool allDone = false;
+		public bool IsFinished { get; protected set; }
 	
 		private TutorialManager() {
 			TextAsset unclelouie = Resources.Load("Text/unclelouie") as TextAsset;
 			sayings = unclelouie.text.Split('\n');
 		}
+		
+		private Texture2D louie = Resources.Load("Graphics/UI/Characters/louie0") as Texture2D;
 		
 		/// <summary>
 		/// Provides the Singleton instance of the RedisCache
@@ -34,6 +36,7 @@
 						if (instance == null)
 						{
 							instance = new TutorialManager();
+							instance.IsFinished = false;
 						}
 					}
 				}
@@ -47,12 +50,13 @@
 		/// <param name="index">Index.</param>
 		public void RenderTutorialText(int index)
 		{
-			GUI.Box (new Rect (10, 10, Screen.width - 10, 100), sayings[index], GUIGameObject.CurrentStyle);
-		}
+			GUI.Box (new Rect (10, 10, Screen.width - 20, 100), 
+				sayings[index], GUIGameObject.CurrentStyle);			
+		}			
 	
 		public void Initialize()
 		{
-			stages = new TutorialStage[4];
+			stages = new TutorialStage[6];
 			TutorialStage stage;
 			int cs = 0;
 			
@@ -60,6 +64,7 @@
 			stage.ShowNextButton = true;
 			stage.Render = () => {
 				RenderTutorialText(0);
+				GUI.DrawTexture(new Rect(10, 100, 400, 375), louie, ScaleMode.ScaleToFit, true, 1);
 			};
 			stages[cs++] = stage;
 			
@@ -67,6 +72,7 @@
 			stage.ShowNextButton = true;
 			stage.Render = () => {
 				RenderTutorialText(1);
+				GUI.DrawTexture(new Rect(10, 100, 400, 375), louie, ScaleMode.ScaleToFit, true, 1);
 			};
 			stages[cs++] = stage;
 			
@@ -74,6 +80,7 @@
 			stage.ShowNextButton = true;
 			stage.Render = () => {
 				RenderTutorialText(2);
+				GUI.DrawTexture(new Rect(10, 100, 400, 375), louie, ScaleMode.ScaleToFit, true, 1);
 			};
 			stages[cs++] = stage;
 			
@@ -81,6 +88,20 @@
 			stage.ShowNextButton = true;
 			stage.Render = () => {
 				RenderTutorialText(3);
+				GUI.DrawTexture(new Rect(10, 100, 400, 375), louie, ScaleMode.ScaleToFit, true, 1);
+			};
+			stages[cs++] = stage;
+			
+			stage = new TutorialStage();
+			stage.GUIEvent = new GUIEvent { 
+				Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap };
+			stages[cs++] = stage;
+			
+			stage = new TutorialStage();
+			stage.ShowNextButton = true;
+			stage.Render = () => {
+				RenderTutorialText(4);
+				GUI.DrawTexture(new Rect(10, 100, 400, 375), louie, ScaleMode.ScaleToFit, true, 1);
 			};
 			stages[cs++] = stage;
 			
@@ -96,10 +117,11 @@
 			if (currentStage.ShowNextButton)
 			{
 				return;
-			}
+			}								
+		
 			
 			if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.IsTrue(player)) &&
-				(currentStage.GUIEventCheck == null || currentStage.GUIEventCheck.IsSame(guiEvent)))
+				(currentStage.GUIEvent == null || currentStage.GUIEvent.IsSame(guiEvent)))
 			{
 				Advance();
 			}
@@ -111,9 +133,9 @@
 		public void Advance()
 		{
 			currentStageIndex++;
-
+			
 			if (currentStageIndex >= stages.Length) {
-				allDone = true;
+				IsFinished = true;
 			} else {
 				currentStage = stages[currentStageIndex];
 			}
@@ -123,13 +145,13 @@
 		/// Called when the tutorial manager should update
 		/// and render
 		/// </summary>
-		public void OnGUI(GamePlayer player, GUIEvent guiEvent)
+		public void OnGUI(GamePlayer player)
 		{
-			if (allDone) {
+			if (IsFinished) {
 				return;
 			}
 	
-			TryAdvance(player, guiEvent);
+			TryAdvance(player, GUIEvent.Empty);
 	
 			if (currentStage.Render != null)
 			{
@@ -138,7 +160,8 @@
 			
 			if (currentStage.ShowNextButton)
 			{
-				if (GUI.Button(new Rect(Screen.width - 55, 55, 45, 45), GUIGameObject.IconMoreText))
+				if (GUI.Button(new Rect(Screen.width - 65, 55, 45, 45), 
+					GUIGameObject.IconMoreText, GUIGameObject.CurrentStyle))
 			 	{
 					Advance();
 			 	}

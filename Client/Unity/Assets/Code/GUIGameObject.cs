@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 using KS.PizzaEmpire.Unity;
 
@@ -18,11 +19,35 @@ public class GUIGameObject : MonoBehaviour {
 	}
 	
 	void OnGUI () 
-	{
+	{		
 		InitStyles();
-		GUIEvent guiEvent = new GUIEvent();
+		TutorialManager.Instance.OnGUI(player);
 		
-		TutorialManager.Instance.OnGUI(player, guiEvent);			
+		if (GUI.Button(new Rect(Screen.width - 65, 400, 45, 45), GUIGameObject.IconCheckMark))
+		{
+			GUIEvent gevent = new GUIEvent{ Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap };
+						
+			if (!TutorialManager.Instance.IsFinished)
+			{
+				TutorialManager.Instance.TryAdvance(player,
+					new GUIEvent { Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap });
+			}
+		}
+	}
+	
+	public void DrawButton(GUIEvent guiEvent, Action fn)
+	{
+		if (GUI.Button(new Rect(Screen.width - 55, 55, 45, 45), GUIGameObject.IconMoreText))
+		{
+			if (!TutorialManager.Instance.IsFinished)
+			{
+				TutorialManager.Instance.TryAdvance(player, guiEvent);
+			}			
+			if (fn != null)
+			{
+				fn();
+			}
+		}
 	}
 	
 	public static GUIStyle CurrentStyle = null;
@@ -38,7 +63,7 @@ public class GUIGameObject : MonoBehaviour {
 		CurrentStyle.normal.background = MakeTex( 2, 2, new Color( 1f, 1f, 0.7f, 1f ) );
 		CurrentStyle.normal.textColor = new Color(0.3f, 0.1f, 0.1f, 1);	
 		CurrentStyle.font = Resources.Load("Graphics/Fonts/arvo") as Font;
-		CurrentStyle.wordWrap = true;
+		CurrentStyle.wordWrap = true;		
 		
 		IconCheckMark = Resources.Load("Graphics/UI/Misc/icon-checkmark") as Texture2D;
 		IconMoreText = Resources.Load("Graphics/UI/Misc/icon-moretext") as Texture2D;

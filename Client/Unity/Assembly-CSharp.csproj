@@ -49,7 +49,6 @@
      <Compile Include="Assets\Code\BuildableItemEnum.cs" />
      <Compile Include="Assets\Code\GUIElementEnum.cs" />
      <Compile Include="Assets\Code\GUIEvent.cs" />
-     <Compile Include="Assets\Code\GUIEventCheck.cs" />
      <Compile Include="Assets\Code\GUIEventEnum.cs" />
      <Compile Include="Assets\Code\GUIGameObject.cs" />
      <Compile Include="Assets\Code\GamePlayer.cs" />
