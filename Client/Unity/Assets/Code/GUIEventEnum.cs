@@ -6,6 +6,7 @@
 	public enum GUIEventEnum 
 	{	
 		None,
-		Tap	 
+		Tap,
+		Wipe
 	}
 }

@@ -9,6 +9,7 @@ public class GUIGameObject : MonoBehaviour {
 	protected int currentMessage = 0;
 	protected List<string> messages;
 	protected GamePlayer player;
+	protected GamePlayerStateCheck stateCheck = new GamePlayerStateCheck();
 	
 	public static Texture2D IconCheckMark { get; protected set; }
 	public static Texture2D IconMoreText { get; protected set; }
@@ -24,7 +25,8 @@ public class GUIGameObject : MonoBehaviour {
 	
 	void Start()
 	{
-		TutorialManager.Instance.Initialize ();
+		ItemManager.Instance.Initialize();
+		TutorialManager.Instance.Initialize ();		
 		
 		ServerCommunicator.Instance.Communicate(ServerActionEnum.GetPlayer,
 			(ServerCommunication com) => 
@@ -61,15 +63,18 @@ public class GUIGameObject : MonoBehaviour {
 		
 		TutorialManager.Instance.OnGUI(player);
 		
-		if (GUI.Button(new Rect(Screen.width - 65, 400, 45, 45), GUIGameObject.IconCheckMark))
-		{		
-			ServerCommunicator.Instance.Communicate(
-				ServerActionEnum.StartWork, (int)BuildableItemEnum.White_Flour,
-				(ServerCommunication com) => 
-	        	{
-					WorkItem workStarted = ServerCommunicator.Instance.ParseResponse<WorkItem>(com);
-					player.WorkItems.Add(workStarted);						
-				}, OnServerError);
+		if (stateCheck.CanBuildItem(player, BuildableItemEnum.White_Flour))
+		{
+			if (GUI.Button(new Rect(Screen.width - 65, 400, 45, 45), GUIGameObject.IconCheckMark))
+			{		
+				ServerCommunicator.Instance.Communicate(
+					ServerActionEnum.StartWork, (int)BuildableItemEnum.White_Flour,
+					(ServerCommunication com) => 
+		        	{
+						WorkItem workStarted = ServerCommunicator.Instance.ParseResponse<WorkItem>(com);
+						player.WorkItems.Add(workStarted);						
+					}, OnServerError);
+			}
 		}		
 		
 		GUI.TextArea(new Rect(0,0,50, 20), player.Coins.ToString());
@@ -79,16 +84,15 @@ public class GUIGameObject : MonoBehaviour {
 		GUI.TextArea(new Rect(200,0,50, 20), player.BuildableItems.Count.ToString());
 		GUI.TextArea(new Rect(250,0,50, 20), player.WorkItems.Count.ToString());
 		
-		
-		/*
-			GUIEvent gevent = new GUIEvent{ Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap };
+		if (GUI.Button(new Rect(Screen.width - 65, 450, 45, 45), GUIGameObject.IconCheckMark))
+		{		
+			GUIEvent gevent = new GUIEvent{ Element = GUIElementEnum.TableCloth, GEvent = GUIEventEnum.Wipe };
 						
 			if (!TutorialManager.Instance.IsFinished)
 			{
-				TutorialManager.Instance.TryAdvance(player,
-					new GUIEvent { Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap });
+				TutorialManager.Instance.TryAdvance(player,gevent);
 			}
-			*/			
+		}						
 	}
 	
 	public void DrawButton(GUIEvent guiEvent, Action fn)

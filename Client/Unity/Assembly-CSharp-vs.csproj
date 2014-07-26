@@ -50,9 +50,11 @@
      <Compile Include="Assets\Code\GUIEvent.cs" />
      <Compile Include="Assets\Code\GUIEventEnum.cs" />
      <Compile Include="Assets\Code\GUIGameObject.cs" />
+     <Compile Include="Assets\Code\GameLogic\BuildablItem.cs" />
      <Compile Include="Assets\Code\GameLogic\BuildableItemEnum.cs" />
      <Compile Include="Assets\Code\GameLogic\GamePlayer.cs" />
      <Compile Include="Assets\Code\GameLogic\GamePlayerStateCheck.cs" />
+     <Compile Include="Assets\Code\GameLogic\ItemManager.cs" />
      <Compile Include="Assets\Code\GameLogic\ItemQuantity.cs" />
      <Compile Include="Assets\Code\GameLogic\WorkItem.cs" />
      <Compile Include="Assets\Code\LitJson\IJsonWrapper.cs" />

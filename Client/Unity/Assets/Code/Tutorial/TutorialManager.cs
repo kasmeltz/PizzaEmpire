@@ -1,6 +1,7 @@
 ﻿namespace KS.PizzaEmpire.Unity
 {	
 	using System;
+	using System.Collections.Generic;
 	using UnityEngine;
 	
 	public enum LouieExpression
@@ -19,7 +20,7 @@
 		private static volatile TutorialManager instance;
 		private static object syncRoot = new object();
 		
-		private TutorialStage[] stages;
+		private List<TutorialStage> stages;
 		private int currentStageIndex;
 		private TutorialStage currentStage;
 		private string[] sayings;
@@ -29,6 +30,7 @@
 		private TutorialManager() {
 			TextAsset unclelouie = Resources.Load("Text/unclelouie") as TextAsset;
 			sayings = unclelouie.text.Split('\n');
+			stages = new List<TutorialStage>();
 			textRect = new Rect(0,0,0,0);
 			louieRect = new Rect(0,0,0,0);	
 		}			
@@ -106,10 +108,8 @@
 	
 		public void Initialize()
 		{
-			stages = new TutorialStage[7];
 			TutorialStage stage;
 			GamePlayerStateCheck stateCheck = null;
-			int cs = 0;
 			
 			stage = new TutorialStage();
 			stage.ShowNextButton = true;
@@ -117,7 +117,7 @@
 				RenderTutorialText(0);
 				DrawLouie(LouieExpression.Normal);
 			};
-			stages[cs++] = stage;
+			stages.Add(stage);
 			
 			stage = new TutorialStage();
 			stage.ShowNextButton = true;
@@ -125,7 +125,7 @@
 				RenderTutorialText(1);
 				DrawLouie(LouieExpression.Surprised);
 			};
-			stages[cs++] = stage;
+			stages.Add(stage);
 			
 			stage = new TutorialStage();
 			stage.ShowNextButton = true;
@@ -133,7 +133,7 @@
 				RenderTutorialText(2);
 				DrawLouie(LouieExpression.Surprised_Arm_Raised);
 			};
-			stages[cs++] = stage;
+			stages.Add(stage);
 			
 			stage = new TutorialStage();
 			stage.Render = () => {
@@ -145,7 +145,7 @@
 			stateCheck.WorkItemsInProgress[0] =
 				new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, Quantity = 1 };
 			stage.PlayerStateCheck = stateCheck;
-			stages[cs++] = stage;
+			stages.Add(stage);
 			
 			stage = new TutorialStage();
 			stage.ShowNextButton = true;
@@ -153,7 +153,7 @@
 				RenderTutorialText(4);
 				DrawLouie(LouieExpression.Excited_Happy_Thumbs_Up);
 			};
-			stages[cs++] = stage;
+			stages.Add(stage);
 			
 			stage = new TutorialStage();
 			stage.ShowNextButton = true;
@@ -161,16 +161,48 @@
 				RenderTutorialText(5);
 				DrawLouie(LouieExpression.Surprised_Eye_Pop);
 			};
-			stages[cs++] = stage;
+			stages.Add(stage);
 			
 			stage = new TutorialStage();
-			stage.ShowNextButton = true;
 			stage.Render = () => {
 				RenderTutorialText(6);
 				DrawLouie(LouieExpression.Surprised_Negative);
 			};
-			stages[cs++] = stage;
+			stage.GUIEvent = new GUIEvent { GEvent = GUIEventEnum.Wipe, Element = GUIElementEnum.TableCloth };
+			stages.Add(stage);
 			
+			stage = new TutorialStage();
+			stage.ShowNextButton = true;
+			stage.Render = () => {
+				RenderTutorialText(7);
+				DrawLouie(LouieExpression.Surprised_Arm_Raised);
+			};
+			stages.Add(stage);
+			
+			stage = new TutorialStage();
+			stage.ShowNextButton = true;
+			stage.Render = () => {
+				RenderTutorialText(8);
+				DrawLouie(LouieExpression.Surprised_Arm_Raised);
+			};
+			stages.Add(stage);
+			
+			stage = new TutorialStage();
+			stage.ShowNextButton = true;
+			stage.Render = () => {
+				RenderTutorialText(9);
+				DrawLouie(LouieExpression.Surprised_Arm_Raised);
+			};
+			stages.Add(stage);
+			
+			stage = new TutorialStage();
+			stage.ShowNextButton = true;
+			stage.Render = () => {
+				RenderTutorialText(10);
+				DrawLouie(LouieExpression.Surprised_Arm_Raised);
+			};
+			stages.Add(stage);
+						
 			currentStageIndex = 0;
 			currentStage = stages[0];			
 		}
@@ -185,8 +217,16 @@
 				return;
 			}				
 			
-			Debug.Log(currentStage.PlayerStateCheck);
-			Debug.Log(currentStage.PlayerStateCheck.CheckAll(player));
+			if (currentStage.PlayerStateCheck != null)
+			{
+				Debug.Log(currentStage.PlayerStateCheck);
+				Debug.Log(currentStage.PlayerStateCheck.CheckAll(player));
+			}
+			if (currentStage.GUIEvent != null)
+			{
+				Debug.Log(currentStage.GUIEvent);
+				Debug.Log(currentStage.GUIEvent.IsSame(guiEvent));
+			}				
 			
 			if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.CheckAll(player)) &&
 				(currentStage.GUIEvent == null || currentStage.GUIEvent.IsSame(guiEvent)))
@@ -202,7 +242,7 @@
 		{
 			currentStageIndex++;
 			
-			if (currentStageIndex >= stages.Length) {
+			if (currentStageIndex >= stages.Count) {
 				IsFinished = true;
 			} else {
 				currentStage = stages[currentStageIndex];

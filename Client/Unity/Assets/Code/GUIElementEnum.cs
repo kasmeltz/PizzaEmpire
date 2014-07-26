@@ -6,6 +6,7 @@
 	public enum GUIElementEnum
 	{
 		None,
-    	IconCheckMark
+    	IconCheckMark,
+    	TableCloth
 	}	
 }
