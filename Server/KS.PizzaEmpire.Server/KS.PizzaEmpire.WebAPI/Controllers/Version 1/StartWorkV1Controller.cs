@@ -19,13 +19,12 @@
         {
         }
 
-        // GET api/startwork/5
+        // GET api/startwork/uniqueKey@@itemCode
         public async Task<Result> Get(string id)
         {
             string[] parts = id.Split(new string[] { "@@" }, StringSplitOptions.RemoveEmptyEntries);
             string playerKey = parts[0];            
-            int workType = Int32.Parse(parts[1]);
-            int itemCode = Int32.Parse(parts[2]);
+            int itemCode = Int32.Parse(parts[1]);
 
             try
             {

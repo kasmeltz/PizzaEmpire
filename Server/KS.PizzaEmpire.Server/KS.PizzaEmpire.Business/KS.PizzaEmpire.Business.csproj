@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\GamePlayerAPI.cs" />
     <Compile Include="Cache\GamePlayerCacheable.cs" />
     <Compile Include="Cache\ICacheEntity.cs" />
     <Compile Include="Conversion\IToAPIEntity.cs" />

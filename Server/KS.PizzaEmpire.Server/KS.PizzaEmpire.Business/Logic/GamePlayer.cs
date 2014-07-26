@@ -2,6 +2,7 @@
 {
     using Cache;
     using Conversion;
+    using KS.PizzaEmpire.Business.API;
     using ProtoBuf;
     using StorageInformation;
     using System.Collections.Generic;
@@ -11,7 +12,7 @@
     /// <summary>
     /// Represents the state for a player of the game as used in the game logic.
     /// </summary>
-    public class GamePlayer : ILogicEntity, IToTableStorageEntity, IToCacheEntity
+    public class GamePlayer : ILogicEntity, IToTableStorageEntity, IToCacheEntity, IToAPIEntity
     {
         /// <summary>
         /// Creates a new instance of the GamePlayer class.
@@ -52,6 +53,19 @@
         /// The work in progress for the player
         /// </summary>
         public List<WorkItem> WorkItems { get; set; }
+
+        #region IToAPIEntity
+
+        /// <summary>
+        /// Returns a new instance of the appropriate IToAPIEntity with cloned data.
+        /// </summary>
+        /// <returns></returns>
+        public IAPIEntity ToAPIEntity()
+        {
+            return GamePlayerAPI.From(this);
+        }
+
+        #endregion
 
         #region IToCacheEntity
 

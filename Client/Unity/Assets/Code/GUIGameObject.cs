@@ -13,25 +13,65 @@ public class GUIGameObject : MonoBehaviour {
 	public static Texture2D IconCheckMark { get; protected set; }
 	public static Texture2D IconMoreText { get; protected set; }
 	
-	private WWW www;
+	public static bool IsError = false;
+	public static string ErrorMessage = "";
 	
 	void Start()
 	{
-		player = new GamePlayer();
 		TutorialManager.Instance.Initialize ();
+		
+		ServerCommunicator.Instance.Communicate((ServerCommunication com) => 
+		{
+			player = ServerCommunicator.Instance.ParseResponse<GamePlayer>(com);			
+			if (com.Error != ServerErrorEnum.ERROR_OK)
+			{
+				IsError = true;
+				ErrorMessage = com.ErrorMessage;
+			}
+		}, ServerActionEnum.GetPlayer);
+	}
+	
+	public void DrawError()
+	{
+		GUI.Box (new Rect(50, 150, Screen.width - 100, Screen.height - 300), 
+	        ErrorMessage, GUIGameObject.CurrentStyle);
+	}	
+	
+	void Update()
+	{
+		ServerCommunicator.Instance.Update();
 	}
 	
 	void OnGUI () 
 	{		
 		InitStyles();
+		
+		if (IsError)
+		{
+			DrawError();
+			return;
+		}
+		
+		/*
+		if (www != null)
+		{
+			player = ParseResponse<GamePlayer>(www);
+		}
+		*/
+				
+		if (player == null)
+		{
+			return;
+		}
+		
 		TutorialManager.Instance.OnGUI(player);
 		
 		if (GUI.Button(new Rect(Screen.width - 65, 400, 45, 45), GUIGameObject.IconCheckMark))
-		{
-			if (www == null)
-			{
-				www = new WWW("http://localhost:65023/api/gameplayer/kevin");
-			}
+		{		
+			/*
+			www = new WWW(ServerCommunicate.URL("gameplayer"), (int)BuildableItemEnum.White_Flour);
+			*/
+		
 			GUIEvent gevent = new GUIEvent{ Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap };
 						
 			if (!TutorialManager.Instance.IsFinished)
@@ -39,28 +79,15 @@ public class GUIGameObject : MonoBehaviour {
 				TutorialManager.Instance.TryAdvance(player,
 					new GUIEvent { Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap });
 			}
-		}
-		
-		if (www != null)
-		{
-			if (www.isDone)
-			{
-				print (www.text);
-				
-				//Result<GamePlayer> result = JsonMapper.ToObject<Result<GamePlayer>>(www.text);
-				
-				//print (result);
-				/*string gString = JsonMapper.ToJson(player);
-			
-			print (gString);
-			
-			GamePlayer other = JsonMapper.ToObject<GamePlayer>(gString);
-			
-			print (other + " " + other.Coins);
-			
-			*/
-			}
 		}		
+		
+		GUI.TextArea(new Rect(0,0,50, 20), player.Coins.ToString());
+		GUI.TextArea(new Rect(50,0,50, 20), player.Coupons.ToString());
+		GUI.TextArea(new Rect(100,0,50, 20), player.Level.ToString());
+		GUI.TextArea(new Rect(150,0,50, 20), player.Experience.ToString());
+		GUI.TextArea(new Rect(200,0,50, 20), player.BuildableItems.Count.ToString());
+		GUI.TextArea(new Rect(250,0,50, 20), player.WorkItems.Count.ToString());
+		
 	}
 	
 	public void DrawButton(GUIEvent guiEvent, Action fn)
@@ -91,6 +118,7 @@ public class GUIGameObject : MonoBehaviour {
 		CurrentStyle.normal.background = MakeTex( 2, 2, new Color( 1f, 1f, 0.7f, 1f ) );
 		CurrentStyle.normal.textColor = new Color(0.3f, 0.1f, 0.1f, 1);	
 		CurrentStyle.font = Resources.Load("Graphics/Fonts/arvo") as Font;
+		CurrentStyle.alignment = TextAnchor.MiddleCenter;
 		CurrentStyle.wordWrap = true;		
 		
 		IconCheckMark = Resources.Load("Graphics/UI/Misc/icon-checkmark") as Texture2D;

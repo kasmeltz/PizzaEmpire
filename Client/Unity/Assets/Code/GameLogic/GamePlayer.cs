@@ -1,5 +1,6 @@
 ﻿namespace KS.PizzaEmpire.Unity
-{	
+{		
+	using LitJson;	
 	using System.Collections.Generic;
 	
 	/// <summary>
@@ -11,12 +12,7 @@
 		/// Creates a new instance of the GamePlayer class.
 		/// </summary>
 		public GamePlayer() { }
-		
-		/// <summary>
-		/// The information fow how this entity should be stored in different types of storage
-		/// </summary>
-		public object StorageInformation { get; set; }
-		
+				
 		/// <summary>
 		/// The number of coins owned by the player
 		/// </summary>
@@ -40,11 +36,11 @@
 		/// <summary>
 		/// The players inventory of items
 		/// </summary>
-		public Dictionary<BuildableItemEnum, int> BuildableItems { get; set; }
+		public Dictionary<string, int> BuildableItems { get; set; }
 		
 		/// <summary>
 		/// The work in progress for the player
 		/// </summary>
-		public List<int> WorkItems { get; set; }		
+		public List<WorkItem> WorkItems { get; set; }
 	}
 }

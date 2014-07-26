@@ -32,7 +32,7 @@
                     return new Result { ErrorCode = ErrorCodes.ERROR_RETRIEVING_ACCOUNT };
                 }
 
-                return new Result { ErrorCode = ErrorCodes.ERROR_OK, Item = player };
+                return new Result { ErrorCode = ErrorCodes.ERROR_OK, Item = player.ToAPIEntity() };
             }
             catch (Exception)
             {

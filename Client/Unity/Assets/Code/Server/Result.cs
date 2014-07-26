@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Represnts an item that captures information about the result of an operation
 	/// </summary>    
-	public class Result<T>
+	public class Result
 	{
 		/// <summary>
 		/// Creates an empty instance of the Result class
@@ -18,6 +18,6 @@
 		/// <summary>
 		/// The item associated with the opertaion
 		/// </summary>
-		public T Item { get; set; }
+		public object Item { get; set; }
 	}
 }
