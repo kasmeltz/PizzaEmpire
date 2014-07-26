@@ -106,8 +106,9 @@
 	
 		public void Initialize()
 		{
-			stages = new TutorialStage[8];
+			stages = new TutorialStage[7];
 			TutorialStage stage;
+			GamePlayerStateCheck stateCheck = null;
 			int cs = 0;
 			
 			stage = new TutorialStage();
@@ -135,17 +136,15 @@
 			stages[cs++] = stage;
 			
 			stage = new TutorialStage();
-			stage.ShowNextButton = true;
 			stage.Render = () => {
 				RenderTutorialText(3);
 				DrawLouie(LouieExpression.Excited_Happy);
-
-						};
-			stages[cs++] = stage;
-			
-			stage = new TutorialStage();
-			stage.GUIEvent = new GUIEvent { 
-				Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap };
+			};
+			stateCheck = new GamePlayerStateCheck();
+			stateCheck.WorkItemsInProgress = new ItemQuantity[1];
+			stateCheck.WorkItemsInProgress[0] =
+				new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, Quantity = 1 };
+			stage.PlayerStateCheck = stateCheck;
 			stages[cs++] = stage;
 			
 			stage = new TutorialStage();
@@ -184,10 +183,12 @@
 			if (currentStage.ShowNextButton)
 			{
 				return;
-			}								
-		
+			}				
 			
-			if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.IsTrue(player)) &&
+			Debug.Log(currentStage.PlayerStateCheck);
+			Debug.Log(currentStage.PlayerStateCheck.CheckAll(player));
+			
+			if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.CheckAll(player)) &&
 				(currentStage.GUIEvent == null || currentStage.GUIEvent.IsSame(guiEvent)))
 			{
 				Advance();

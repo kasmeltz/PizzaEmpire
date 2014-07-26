@@ -1,5 +1,7 @@
 ﻿namespace KS.PizzaEmpire.Unity
 {	
+	using System.Collections.Generic;
+	
 	/// <summary>
 	/// Represents an item that returns true or false
 	/// depending if the state of a passed in GamePlayer
@@ -13,6 +15,44 @@
 		public GamePlayerStateCheck() { }
 	
 		public ItemQuantity[] ItemsGreaterThan;
+		public ItemQuantity[] WorkItemsInProgress;
+		
+		/// <summary>
+		/// Checks the work items in progress.
+		/// </summary>
+		/// <param name="player">Player.</param>
+		public bool CheckWorkItemsInProgress(GamePlayer player)
+		{
+			Dictionary<BuildableItemEnum, int> playerWis = new Dictionary<BuildableItemEnum, int>();
+			foreach(WorkItem playerWi in player.WorkItems)
+			{
+				if (!playerWis.ContainsKey(playerWi.ItemCode))
+				{
+					playerWis[playerWi.ItemCode] = 1;
+				}
+				else
+				{
+					playerWis[playerWi.ItemCode]++;
+				}
+			}
+			
+			if (WorkItemsInProgress != null)
+			{
+				foreach(ItemQuantity checkWi in WorkItemsInProgress)
+				{
+					if (!playerWis.ContainsKey(checkWi.ItemCode))
+					{
+						return false;
+					}
+					if (playerWis[checkWi.ItemCode] != checkWi.Quantity)
+					{
+						return false;
+					}
+				}					
+			}
+			
+			return true;
+		}
 		
 		/// <summary>
 		/// Returns true if the given GamePlayer stats matches the criteria contained
@@ -20,10 +60,11 @@
 		/// </summary>
 		/// <returns><c>true</c>, if state matches, <c>false</c> otherwise.</returns>
 		/// <param name="player">The persistent player data.</param>
-		public bool IsTrue(GamePlayer player)
+		public bool CheckAll(GamePlayer player)
 		{
-			bool shouldAdvance = false;
+			bool shouldAdvance = true;
 			
+			shouldAdvance = CheckWorkItemsInProgress(player);			
 			
 			return shouldAdvance;
 		}

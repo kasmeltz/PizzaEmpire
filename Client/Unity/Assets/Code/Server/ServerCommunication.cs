@@ -12,6 +12,7 @@
 		public object Data { get; set; }
 		public WWW Request { get; set; }
 		public Action<ServerCommunication> OnComplete { get; set; }
+		public Action<ServerCommunication> OnError { get; set; }
 		public object Response { get; set; }
 		public ServerErrorEnum Error { get; set; }
 		public string ErrorMessage { get; set; }

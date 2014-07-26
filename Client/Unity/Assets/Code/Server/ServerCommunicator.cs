@@ -23,7 +23,7 @@
 		{
 			serverURL = "http://localhost:65023/api/";
 			stringBuilder = new StringBuilder();
-			PlayerKey = "kevin";
+			PlayerKey = "kevin1";
 			communications = new List<ServerCommunication>();		
 			toRemove = new List<int>();
 		}			
@@ -75,12 +75,12 @@
 		/// Parses the response from a ServerCommunication object.
 		/// </summary>
 		/// <returns>The response in JsonData form or null if error.</returns>
-		/// <param name="communication">The ServerCommunication communication whose response should be parsed</param>
-		public T ParseResponse<T>(ServerCommunication communication)
+		/// <param name="com">The ServerCommunication whose response should be parsed</param>
+		public T ParseResponse<T>(ServerCommunication com)
 		{
 			T response = default(T);
 			
-			WWW www = communication.Request;			
+			WWW www = com.Request;			
 			JsonData data = JsonMapper.ToObject(www.text);					
 			int ec =(int)data["ErrorCode"];
 			if (ec == (int)ServerErrorEnum.ERROR_OK)
@@ -92,8 +92,13 @@
 			}
 			else
 			{
-				communication.Error = (ServerErrorEnum)ec;
-				communication.ErrorMessage = GetErrorString(communication.Error);							
+				com.Error = (ServerErrorEnum)ec;
+				com.ErrorMessage = GetErrorString(com.Error);	
+				
+				if (com.OnError != null)
+				{
+					com.OnError(com);
+				}						
 			}			
 			
 			return response;
@@ -148,9 +153,9 @@
 		/// </summary>
 		/// <param name="fn">The function to perform when the request is received</param>
 		/// <param name="action">The action to perform</param>
-		public void Communicate(Action<ServerCommunication> fn, ServerActionEnum action)
+		public void Communicate(ServerActionEnum serverAction, Action<ServerCommunication> onComplete, Action<ServerCommunication> onError)
 		{
-			Communicate(fn, action, null);
+			Communicate(serverAction, null, onComplete, onError);
 		}		
 		
 		/// <summary>
@@ -159,13 +164,14 @@
 		/// <param name="onComplete">The function to perform when the request is received</param>
 		/// <param name="serverAction">The action to perform</param>
 		/// <param name="data">The data to send to the server</param>
-		public void Communicate(Action<ServerCommunication> onComplete, ServerActionEnum serverAction, object data)
+		public void Communicate(ServerActionEnum serverAction, object data, Action<ServerCommunication> onComplete, Action<ServerCommunication> onError)
 		{
 			ServerCommunication com = new ServerCommunication();
 			com.ServerAction = serverAction;
 			com.Data = data;
 			com.Request = new UnityEngine.WWW(URL(serverAction,data));
 			com.OnComplete = onComplete;
+			com.OnError = onError;
 			communications.Add(com);
 			Debug.Log(com.Request.url);
 		}		
@@ -183,11 +189,17 @@
 				{				
 					if (!string.IsNullOrEmpty(com.Request.error)) 
 					{
+						Debug.Log(com.Request.error);
 						com.Error = ServerErrorEnum.CONNECTION_ERROR;
-						com.ErrorMessage = GetErrorString(ServerErrorEnum.CONNECTION_ERROR);
+						com.ErrorMessage = GetErrorString(ServerErrorEnum.CONNECTION_ERROR);						
+						if (com.OnError != null)
+						{
+							com.OnError(com);
+						}
 					}
 					else
 					{
+						Debug.Log(com.Request.text);
 						if (com.OnComplete != null)
 						{
 							com.OnComplete(com);
@@ -197,7 +209,7 @@
 				}
 			}
 			
-			for(int j = toRemove.Count - 1;j > 0;j--)
+			for(int j = toRemove.Count - 1;j >= 0;j--)
 			{
 				communications.RemoveAt(toRemove[j]);
 			}

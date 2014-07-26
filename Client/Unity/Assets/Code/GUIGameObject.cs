@@ -13,22 +13,24 @@ public class GUIGameObject : MonoBehaviour {
 	public static Texture2D IconCheckMark { get; protected set; }
 	public static Texture2D IconMoreText { get; protected set; }
 	
-	public static bool IsError = false;
-	public static string ErrorMessage = "";
+	public bool IsError = false;
+	public string ErrorMessage = "";
+	
+	protected void OnServerError(ServerCommunication com)
+	{
+		IsError = true;
+		ErrorMessage = com.ErrorMessage;
+	}
 	
 	void Start()
 	{
 		TutorialManager.Instance.Initialize ();
 		
-		ServerCommunicator.Instance.Communicate((ServerCommunication com) => 
-		{
-			player = ServerCommunicator.Instance.ParseResponse<GamePlayer>(com);			
-			if (com.Error != ServerErrorEnum.ERROR_OK)
+		ServerCommunicator.Instance.Communicate(ServerActionEnum.GetPlayer,
+			(ServerCommunication com) => 
 			{
-				IsError = true;
-				ErrorMessage = com.ErrorMessage;
-			}
-		}, ServerActionEnum.GetPlayer);
+				player = ServerCommunicator.Instance.ParseResponse<GamePlayer>(com);			
+			}, OnServerError);
 	}
 	
 	public void DrawError()
@@ -51,14 +53,7 @@ public class GUIGameObject : MonoBehaviour {
 			DrawError();
 			return;
 		}
-		
-		/*
-		if (www != null)
-		{
-			player = ParseResponse<GamePlayer>(www);
-		}
-		*/
-				
+						
 		if (player == null)
 		{
 			return;
@@ -68,17 +63,13 @@ public class GUIGameObject : MonoBehaviour {
 		
 		if (GUI.Button(new Rect(Screen.width - 65, 400, 45, 45), GUIGameObject.IconCheckMark))
 		{		
-			/*
-			www = new WWW(ServerCommunicate.URL("gameplayer"), (int)BuildableItemEnum.White_Flour);
-			*/
-		
-			GUIEvent gevent = new GUIEvent{ Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap };
-						
-			if (!TutorialManager.Instance.IsFinished)
-			{
-				TutorialManager.Instance.TryAdvance(player,
-					new GUIEvent { Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap });
-			}
+			ServerCommunicator.Instance.Communicate(
+				ServerActionEnum.StartWork, (int)BuildableItemEnum.White_Flour,
+				(ServerCommunication com) => 
+	        	{
+					WorkItem workStarted = ServerCommunicator.Instance.ParseResponse<WorkItem>(com);
+					player.WorkItems.Add(workStarted);						
+				}, OnServerError);
 		}		
 		
 		GUI.TextArea(new Rect(0,0,50, 20), player.Coins.ToString());
@@ -88,6 +79,16 @@ public class GUIGameObject : MonoBehaviour {
 		GUI.TextArea(new Rect(200,0,50, 20), player.BuildableItems.Count.ToString());
 		GUI.TextArea(new Rect(250,0,50, 20), player.WorkItems.Count.ToString());
 		
+		
+		/*
+			GUIEvent gevent = new GUIEvent{ Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap };
+						
+			if (!TutorialManager.Instance.IsFinished)
+			{
+				TutorialManager.Instance.TryAdvance(player,
+					new GUIEvent { Element = GUIElementEnum.IconCheckMark, GEvent = GUIEventEnum.Tap });
+			}
+			*/			
 	}
 	
 	public void DrawButton(GUIEvent guiEvent, Action fn)
