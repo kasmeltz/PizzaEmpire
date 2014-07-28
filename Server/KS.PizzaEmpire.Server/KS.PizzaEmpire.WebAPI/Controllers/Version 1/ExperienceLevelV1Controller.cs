@@ -1,7 +1,7 @@
 ﻿namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 {
+    using Common.BusinessObjects;
     using GameLogic.ExperienceLevelLogic;
-    using Business.Logic;
     using System.Collections.Generic;
     using System.Web.Http;
 

@@ -73,6 +73,10 @@
       <Project>{4da809fd-8d3c-470f-8608-04da00f89554}</Project>
       <Name>KS.PizzaEmpire.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KS.PizzaEmpire.Common\KS.PizzaEmpire.Common.csproj">
+      <Project>{002afa5c-8d13-4567-8730-498af485a1cb}</Project>
+      <Name>KS.PizzaEmpire.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KS.PizzaEmpire.Services\KS.PizzaEmpire.Services.csproj">
       <Project>{5ceb82ef-5ea5-44e2-9ce2-36c30a8d4791}</Project>
       <Name>KS.PizzaEmpire.Services</Name>

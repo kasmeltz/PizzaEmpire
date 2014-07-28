@@ -1,10 +1,9 @@
 ﻿namespace KS.PizzaEmpire.DataAccess.DataProvider
 {
     using Business.Cache;
-    using Business.Conversion;
-    using Business.Logic;
     using Business.StorageInformation;
     using Business.TableStorage;
+    using Common.BusinessObjects;
     using Microsoft.WindowsAzure.Storage.Table;
     using Services;
     using Services.Caching;
@@ -90,9 +89,9 @@
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public async Task<ILogicEntity> GetFromTableStorage<T, K>(IStorageInformation storageInfo)
-            where T : ILogicEntity
-            where K : TableEntity, ITableStorageEntity, IToLogicEntity
+        public async Task<IBusinessObjectEntity> GetFromTableStorage<T, K>(IStorageInformation storageInfo)
+            where T : IBusinessObjectEntity
+            where K : TableEntity, ITableStorageEntity
         {
             if (!_useTableStorage)
             {
@@ -110,9 +109,8 @@
                     return default(T);
                 }
 
-                storageInfo.FromTableStorage = true;
-                ILogicEntity item = storageItem.ToLogicEntity();
-                item.StorageInformation = storageInfo;
+                storageInfo.FoundInTableStorage = true;
+                IBusinessObjectEntity item = storageInfo.FromTableStorage(storageItem);
 
                 return item;
             }
@@ -128,9 +126,9 @@
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public async Task<ILogicEntity> GetFromCache<T, K>(IStorageInformation storageInfo)
-            where T : ILogicEntity
-            where K : ICacheEntity, IToLogicEntity
+        public async Task<IBusinessObjectEntity> GetFromCache<T, K>(IStorageInformation storageInfo)
+            where T : IBusinessObjectEntity
+            where K : ICacheEntity
         {
             if (!_useCache)
             {
@@ -145,9 +143,8 @@
                     return default(T);
                 }
 
-                storageInfo.FromCache = true;
-                ILogicEntity item = cachedItem.ToLogicEntity();
-                item.StorageInformation = storageInfo;
+                storageInfo.FoundInCache = true;
+                IBusinessObjectEntity item = storageInfo.FromCache(cachedItem);
 
                 return item;
             }
@@ -164,9 +161,9 @@
         /// <param name="key">The unique key of the game player whose data is requested</param>
         /// <returns>An ILogicEntity instance representing the persistent data requested</returns>
         public async Task<T> Get<T, K, V>(IStorageInformation storageInfo)
-            where T : ILogicEntity, IToCacheEntity
-            where K : ICacheEntity, IToLogicEntity
-            where V : TableEntity, ITableStorageEntity, IToLogicEntity
+            where T : IBusinessObjectEntity
+            where K : ICacheEntity
+            where V : TableEntity, ITableStorageEntity
         {
             T item = (T)await GetFromCache<T, K>(storageInfo);
 
@@ -175,7 +172,7 @@
                 item = (T)await GetFromTableStorage<T, V>(storageInfo);
                 if (item != null)
                 {
-                    await SaveToCache<T, K>(item);
+                    await SaveToCache<T, K>(item, storageInfo);
                 }
             }
 
@@ -187,8 +184,8 @@
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public async Task SaveToTableStorage<T, K>(T item)
-            where T : ILogicEntity, IToTableStorageEntity
+        public async Task SaveToTableStorage<T, K>(T item, IStorageInformation storageInfo)
+            where T : IBusinessObjectEntity
             where K : TableEntity, ITableStorageEntity
         {
             if (!_useTableStorage)
@@ -199,14 +196,14 @@
             try
             {
                 AzureTableStorage storage = new AzureTableStorage();
-                await storage.SetTable(item.StorageInformation.TableName);
+                await storage.SetTable(storageInfo.TableName);
 
                 //@ TODO What we really want here is lazy saving of information from
                 // the cache to the Table Storage layer. The question is how to design this?
                 // The following is safest - just write to the table storage every time 
                 // we write to the cache. The goal is to make it more effiicent while
                 // still ensuring safety
-                await storage.InsertOrReplace<K>((K)item.ToTableStorageEntity());
+                await storage.InsertOrReplace<K>((K)storageInfo.ToTableStorage(item));
             }
             catch (Exception)
             {
@@ -219,8 +216,8 @@
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public async Task SaveToCache<T, K>(T item)
-            where T : ILogicEntity, IToCacheEntity
+        public async Task SaveToCache<T, K>(T item, IStorageInformation storageInfo)
+            where T : IBusinessObjectEntity
             where K : ICacheEntity
         {
             if (!_useCache)
@@ -231,8 +228,8 @@
             try
             {
                 await RedisCache.Instance
-                    .Set<K>(item.StorageInformation.CacheKey,
-                    (K)item.ToCacheEntity(), TimeSpan.FromSeconds(CacheDuration));
+                    .Set<K>(storageInfo.CacheKey,
+                    (K)storageInfo.ToCache(item), TimeSpan.FromSeconds(CacheDuration));
             }
             catch (Exception)
             {
@@ -245,13 +242,23 @@
         /// </summary>
         /// <param name="player">The ILogicEntity instance to save.</param>
         /// <returns>This is an async method</returns>
-        public async Task Save<T, K, V>(T item)
-            where T : ILogicEntity, IToCacheEntity, IToTableStorageEntity
+        public async Task Save<T, K, V>(T item, IStorageInformation storageInfo)
+            where T : IBusinessObjectEntity
             where K : ICacheEntity
             where V : TableEntity, ITableStorageEntity
         {
-            await SaveToCache<T,K>(item);
-            await SaveToTableStorage<T,V>(item);            
+            try
+            {
+                await SaveToCache<T, K>(item, storageInfo);
+            }
+            catch
+            {
+                Task.WaitAll(RedisCache.Instance.Delete<K>(storageInfo.CacheKey));
+            }
+            finally
+            {
+                Task.WaitAll(SaveToTableStorage<T, V>(item, storageInfo));
+            }
         }
 
         /// <summary>
@@ -259,8 +266,8 @@
         /// </summary>
         /// <param name="Item"></param>
         /// <returns></returns>
-        public async Task SetInactive<T, K, V>(T item)
-            where T : ILogicEntity, IToTableStorageEntity
+        public async Task SetInactive<T, K, V>(T item, IStorageInformation storageInfo)
+            where T : IBusinessObjectEntity
             where K : ICacheEntity
             where V : TableEntity, ITableStorageEntity
         {
@@ -269,8 +276,16 @@
                 return;
             }
 
-            await SaveToTableStorage<T, V>(item);   
-            await RedisCache.Instance.Delete<K>(item.StorageInformation.CacheKey);
+            try
+            {
+                await SaveToTableStorage<T, V>(item, storageInfo);
+                await RedisCache.Instance.Delete<K>(storageInfo.CacheKey);
+            }
+            catch
+            {
+                // @ TO DO WHAT TO DO IF TABLE STORAGE FAILS?
+                // AT LEAST DON'T REMOVE IT FROM CACHE .. AND THEN PANIC!
+            }
         }
     }
 }

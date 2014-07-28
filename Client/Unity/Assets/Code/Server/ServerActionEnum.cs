@@ -6,6 +6,8 @@
 	public enum ServerActionEnum
 	{
 		None = 0,
+		GetBuildableItems,
+		GetExperienceLevels,
 		CreatePlayer,
 		GetPlayer,
 		StartWork,

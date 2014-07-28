@@ -208,7 +208,7 @@
     <Compile Include="Controllers\Version 1\GamePlayerV1Controller.cs" />
     <Compile Include="Controllers\Version 1\FinishWorkV1Controller.cs" />
     <Compile Include="Controllers\Version 1\StartWorkV1Controller.cs" />
-    <Compile Include="Controllers\Version 1\ValuesV1Controller.cs" />
+    <Compile Include="Controllers\Version 1\CreatePlayerV1Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -277,6 +277,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KS.PizzaEmpire.Common\KS.PizzaEmpire.Common.csproj">
+      <Project>{002afa5c-8d13-4567-8730-498af485a1cb}</Project>
+      <Name>KS.PizzaEmpire.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KS.PizzaEmpire.GameLogic\KS.PizzaEmpire.GameLogic.csproj">
       <Project>{08b464fa-cc66-4680-8e1a-370aaa7848e5}</Project>
       <Name>KS.PizzaEmpire.GameLogic</Name>

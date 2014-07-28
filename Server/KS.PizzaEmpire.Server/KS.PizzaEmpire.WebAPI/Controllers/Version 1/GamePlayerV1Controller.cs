@@ -1,12 +1,11 @@
 ﻿namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 {
     using Business.Cache;
-    using Business.Common;
-    using Business.Logic;
-    using Business.Result;
     using Business.StorageInformation;
     using Business.TableStorage;
+    using Common.BusinessObjects;
     using DataAccess.DataProvider;
+    using Common;
     using System;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -29,14 +28,14 @@
 
                 if (player == null)
                 {
-                    return new Result { ErrorCode = ErrorCodes.ERROR_RETRIEVING_ACCOUNT };
+                    return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT };
                 }
 
-                return new Result { ErrorCode = ErrorCodes.ERROR_OK, Item = player.ToAPIEntity() };
+                return new Result { ErrorCode = ErrorCode.ERROR_OK, Item = player };
             }
             catch (Exception)
             {
-                return new Result { ErrorCode = ErrorCodes.ERROR_RETRIEVING_ACCOUNT };
+                return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT };
             }
         }
 

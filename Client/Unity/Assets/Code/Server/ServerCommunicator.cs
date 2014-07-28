@@ -23,7 +23,7 @@
 		{
 			serverURL = "http://localhost:65023/api/";
 			stringBuilder = new StringBuilder();
-			PlayerKey = "kevin1";
+			PlayerKey = "kevin";
 			communications = new List<ServerCommunication>();		
 			toRemove = new List<int>();
 		}			
@@ -114,14 +114,18 @@
 			{
 				case ServerActionEnum.None:
 					return string.Empty;
+				case ServerActionEnum.GetBuildableItems:
+					return "buildableitem";
+				case ServerActionEnum.GetExperienceLevels:
+					return "experiencelevel";
 				case ServerActionEnum.CreatePlayer:
-					return "createplayer";
+					return "createplayer/" + PlayerKey;
 				case ServerActionEnum.GetPlayer:
-					return "gameplayer";
+					return "gameplayer/" + PlayerKey;
 				case ServerActionEnum.StartWork:
-					return "startwork";
+					return "startwork/" + PlayerKey;
 				case ServerActionEnum.FinishWork:
-					return "finishWork";
+					return "finishwork/" + PlayerKey;
 				default:
 					return string.Empty;
 			}
@@ -138,8 +142,6 @@
 			stringBuilder.Remove(0, stringBuilder.Length);
 			stringBuilder.Append(serverURL);
 			stringBuilder.Append(api);
-			stringBuilder.Append("/");
-			stringBuilder.Append(PlayerKey);
 			if (data != null)
 			{
 				stringBuilder.Append("@@");

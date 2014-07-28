@@ -1,7 +1,9 @@
 ﻿namespace KS.PizzaEmpire.Unity
 {	
+	using System;
 	using System.Collections.Generic;
 	using UnityEngine;
+	using Common.BusinessObjects;
 	
 	/// <summary>
 	/// Represents an item that returns true or false
@@ -16,122 +18,7 @@
 		public GamePlayerStateCheck() { }
 	
 		public ItemQuantity[] ItemsGreaterThan;
-		public ItemQuantity[] WorkItemsInProgress;
-
-		/// <summary>
-		/// Returns true if the player has the capacity to start hhe item.
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="itemCode"></param>
-		/// <returns></returns>
-		public bool DoesPlayerHaveCapacity(GamePlayer player, BuildableItemEnum itemCode)
-		{
-			BuildableItem capacityItem = null;
-			
-			BuildableItem bi = ItemManager.Instance.BuildableItems[itemCode];
-			foreach (ItemQuantity iq in bi.RequiredItems)
-			{
-				BuildableItem ri = ItemManager.Instance.BuildableItems[iq.ItemCode];
-				if (ri.Capacity > 0)
-				{
-					capacityItem = ri;
-					break;
-				}
-			}
-			
-			if (capacityItem == null)
-			{
-				return true;
-			}
-			
-			int inUse = 0;
-			foreach (WorkItem wi in player.WorkItems)
-			{
-				BuildableItem wbi = ItemManager.Instance.BuildableItems[wi.ItemCode];
-				foreach(ItemQuantity iq in wbi.RequiredItems)
-				{
-					if (iq.ItemCode == capacityItem.ItemCode)
-					{
-						inUse++;
-					}
-				}
-			}
-			
-			return inUse < capacityItem.Capacity;
-		}
-						
-		/// <summary>
-		/// Returns true if the player can build the specific item.
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="item"></param>
-		/// <returns></returns>
-		public bool CanBuildItem(GamePlayer player, BuildableItemEnum itemCode)
-		{            		
-			if (!ItemManager.Instance.BuildableItems.ContainsKey(itemCode))
-			{
-				Debug.Log("Attempt to start work for a non existant item");
-				return false;
-			}
-			
-			BuildableItem bi = ItemManager.Instance.BuildableItems[itemCode];
-			
-			if (player.Level < bi.RequiredLevel)
-			{
-				Debug.Log("Attempt to start work for an item not availble to a player");
-				return false;
-			}
-			
-			if (bi.CoinCost > player.Coins)
-			{
-				Debug.Log("Attempt to start work for an item with insufficient coins");
-				return false;
-			}
-			
-			if (bi.CouponCost > player.Coupons)
-			{
-				Debug.Log("Attempt to start work for an item with insufficient coupons");
-				return false;
-			}
-			
-			if (bi.RequiredItems != null)
-			{                               
-				foreach (ItemQuantity itemQuantity in bi.RequiredItems)
-				{
-					string sic = ((int)itemQuantity.ItemCode).ToString();
-			
-					if (!player.BuildableItems.ContainsKey(sic))
-					{
-						Debug.Log("Attempt to start work for an item without proper ingredients");
-						return false;
-					}
-					
-					if (player.BuildableItems[sic] < itemQuantity.Quantity)
-					{
-						Debug.Log("Attempt to start work for an item with insufficient ingredients");
-						return false;
-					}
-				}
-				
-				if (!DoesPlayerHaveCapacity(player, itemCode))
-				{
-					Debug.Log("Attempt to start work but the equipment is full");
-					return false;
-				}
-			}
-			
-			string ic = ((int)itemCode).ToString();			
-			if (player.BuildableItems.ContainsKey(ic))
-			{
-				if (player.BuildableItems[ic] >= bi.MaxQuantity)
-				{
-					Debug.Log("Attempt to start work for an item that the player can't hold more of.");
-					return false;
-				}
-			}
-			
-			return true;
-		}
+		public ItemQuantity[] WorkItemsInProgress;		   
 		
 		/// <summary>
 		/// Checks the work items in progress.

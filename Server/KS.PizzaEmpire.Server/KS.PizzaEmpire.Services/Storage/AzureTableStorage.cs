@@ -42,7 +42,6 @@
             ThrottleMillis = ServiceHelper.IntValueFromConfig("AzureTableStorageThrottleMillis");
             string connectionString = Microsoft.WindowsAzure.CloudConfigurationManager.GetSetting("AzureTableStorageConnectionString");
             StorageAccount = CloudStorageAccount.Parse(connectionString);
-            TableClient = StorageAccount.CreateCloudTableClient();
         }
 
         /// <summary>
@@ -54,6 +53,7 @@
         {
             await ServiceHelper.RetryAsync<int>(async () =>
             {
+                TableClient = StorageAccount.CreateCloudTableClient();
                 Table = TableClient.GetTableReference(tableName);
                 await Table.CreateIfNotExistsAsync();
                 return 1;

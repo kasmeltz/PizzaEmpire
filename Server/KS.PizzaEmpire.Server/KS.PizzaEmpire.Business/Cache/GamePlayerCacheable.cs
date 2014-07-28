@@ -1,7 +1,7 @@
 ﻿namespace KS.PizzaEmpire.Business.Cache
 {
-    using Conversion;
-    using Logic;
+    using Common.BusinessObjects;
+    using KS.PizzaEmpire.Business.ProtoSerializable;
     using ProtoBuf;
     using System;
     using System.Collections.Generic;
@@ -11,7 +11,7 @@
     /// </summary>
     [ProtoContract]
     [Serializable]
-    public class GamePlayerCacheable : ICacheEntity, IToLogicEntity
+    public class GamePlayerCacheable : ICacheEntity
     {
         /// <summary>
         /// Creates a new instance of the GamePlayerCacheable class.
@@ -52,41 +52,6 @@
         /// The work in progress for the player
         /// </summary>
         [ProtoMember(6)]
-        public List<WorkItem> WorkItems { get; set; }
-     
-        #region IToLogicEntity
-
-        /// <summary>
-        /// Returns a new instance of the appropriate ILogicEntity with cloned data.
-        /// </summary>
-        /// <returns></returns>
-        public ILogicEntity ToLogicEntity()
-        {
-            return GamePlayer.From(this);
-        }
-
-        #endregion
-
-        #region Cloners
-
-        /// <summary>
-        /// Generates a new GamePlayerCacheable instance from a GamePlayer instance.
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public static GamePlayerCacheable From(GamePlayer item)
-        {
-            GamePlayerCacheable clone = new GamePlayerCacheable();
-            clone.Coins = item.Coins;
-            clone.Coupons = item.Coupons;
-            clone.Experience = item.Experience;
-            clone.Level = item.Level;
-            clone.BuildableItems = item.BuildableItems;
-            clone.WorkItems = item.WorkItems;
-
-            return clone;
-        }
-
-        #endregion
+        public List<WorkItemProtoBuf> WorkItems { get; set; }     
     }
 }

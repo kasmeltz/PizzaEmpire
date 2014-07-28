@@ -1,16 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\GameLogic\ItemManager.cs">
-    <Files>
-      <File FileName="Assets\Code\Tutorial\TutorialManager.cs" Line="14" Column="25" />
-      <File FileName="Assets\Code\GUIGameObject.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\GUIElementEnum.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\GUIEventEnum.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\GameLogic\GamePlayer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\GameLogic\GamePlayerStateCheck.cs" Line="29" Column="16" />
-      <File FileName="Assets\Code\GameLogic\ItemManager.cs" Line="227" Column="1" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

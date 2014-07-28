@@ -1,4 +1,7 @@
-﻿namespace KS.PizzaEmpire.Business.StorageInformation
+﻿using KS.PizzaEmpire.Business.Cache;
+using KS.PizzaEmpire.Business.TableStorage;
+using KS.PizzaEmpire.Common.BusinessObjects;
+namespace KS.PizzaEmpire.Business.StorageInformation
 {
     /// <summary>
     /// Represents in item that contains information about storing an 
@@ -34,11 +37,39 @@
         /// <summary>
         /// Whether this item was found in the cache
         /// </summary>
-        bool FromCache { get; set; }
+        bool FoundInCache { get; set; }
 
         /// <summary>
         /// Whether this item was found in table storage
         /// </summary>
-        bool FromTableStorage { get; set; }
+        bool FoundInTableStorage { get; set; }
+
+        /// <summary>
+        /// Translates an ICacheEntity to an IBusinessObjectEntity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        IBusinessObjectEntity FromCache(ICacheEntity entity);
+
+        /// <summary>
+        /// Translates an ITableStorageEntity to an IBusinessObjectEntity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        IBusinessObjectEntity FromTableStorage(ITableStorageEntity entity);
+
+        /// <summary>
+        /// Translates an IBusinessObjectEntity to an ICacheEntity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        ICacheEntity ToCache(IBusinessObjectEntity entity);
+
+        /// <summary>
+        /// Translates an IBusinessObjectEntity to an ITableStorageEntity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        ITableStorageEntity ToTableStorage(IBusinessObjectEntity entity);
     }
 }

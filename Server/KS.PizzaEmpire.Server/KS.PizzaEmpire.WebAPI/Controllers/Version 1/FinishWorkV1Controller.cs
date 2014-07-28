@@ -1,13 +1,12 @@
 ﻿namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 {
     using Business.Cache;
-    using Business.Common;
-    using Business.Logic;
-    using Business.Result;
     using Business.StorageInformation;
     using Business.TableStorage;
     using DataAccess.DataProvider;
-    using GameLogic.GamePlayerLogic;
+    using Common;
+    using Common.BusinessObjects;
+    using Common.GameLogic;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -31,22 +30,24 @@
 
                 if (player == null)
                 {
-                    return new Result { ErrorCode = ErrorCodes.ERROR_RETRIEVING_ACCOUNT };
+                    return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT };
                 }
 
-                List<WorkItem> items = GamePlayerManager.FinishWork(player);
+                DateTime now = DateTime.UtcNow;
+                List<WorkItem> items = GamePlayerLogic.Instance.FinishWork(player, now);
 
-                if (items.Count > 0)
+                if (player.StateChanged)
                 {
+                    player.StateChanged = false;
                     await ConfigurableDataProvider.Instance
-                        .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player);
+                        .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player, storageInfo);
                 }
 
-                return new Result { ErrorCode = ErrorCodes.ERROR_OK, Item = items };
+                return new Result { ErrorCode = ErrorCode.ERROR_OK, Item = now };
             }
             catch (Exception ex)
             {
-                return new Result { ErrorCode = ErrorCodes.ERROR_RETRIEVING_ACCOUNT, Item = ex.Message };
+                return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT, Item = ex.Message };
             }
         }
 

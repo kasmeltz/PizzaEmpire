@@ -46,25 +46,13 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Code\GUIElementEnum.cs" />
-     <Compile Include="Assets\Code\GUIEvent.cs" />
-     <Compile Include="Assets\Code\GUIEventEnum.cs" />
-     <Compile Include="Assets\Code\GUIGameObject.cs" />
-     <Compile Include="Assets\Code\GameLogic\BuildablItem.cs" />
-     <Compile Include="Assets\Code\GameLogic\BuildableItemEnum.cs" />
-     <Compile Include="Assets\Code\GameLogic\GamePlayer.cs" />
+     <Compile Include="Assets\Code\GUI\GUIElementEnum.cs" />
+     <Compile Include="Assets\Code\GUI\GUIEvent.cs" />
+     <Compile Include="Assets\Code\GUI\GUIEventEnum.cs" />
+     <Compile Include="Assets\Code\GUI\GUIGameObject.cs" />
+     <Compile Include="Assets\Code\GameLogic\ExperienceLevelManager.cs" />
      <Compile Include="Assets\Code\GameLogic\GamePlayerStateCheck.cs" />
      <Compile Include="Assets\Code\GameLogic\ItemManager.cs" />
-     <Compile Include="Assets\Code\GameLogic\ItemQuantity.cs" />
-     <Compile Include="Assets\Code\GameLogic\WorkItem.cs" />
-     <Compile Include="Assets\Code\LitJson\IJsonWrapper.cs" />
-     <Compile Include="Assets\Code\LitJson\JsonData.cs" />
-     <Compile Include="Assets\Code\LitJson\JsonException.cs" />
-     <Compile Include="Assets\Code\LitJson\JsonMapper.cs" />
-     <Compile Include="Assets\Code\LitJson\JsonReader.cs" />
-     <Compile Include="Assets\Code\LitJson\JsonWriter.cs" />
-     <Compile Include="Assets\Code\LitJson\Lexer.cs" />
-     <Compile Include="Assets\Code\LitJson\ParserToken.cs" />
      <Compile Include="Assets\Code\Server\Result.cs" />
      <Compile Include="Assets\Code\Server\ServerActionEnum.cs" />
      <Compile Include="Assets\Code\Server\ServerCommunication.cs" />
@@ -73,6 +61,9 @@
      <Compile Include="Assets\Code\Tutorial\TutorialManager.cs" />
      <Compile Include="Assets\Code\Tutorial\TutorialStage.cs" />
      <None Include="Assets\Resources\Text\unclelouie.txt" />
+ <Reference Include="KS.PizzaEmpire.Common">
+ <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity/Assets/Code/DLLs/KS.PizzaEmpire.Common.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

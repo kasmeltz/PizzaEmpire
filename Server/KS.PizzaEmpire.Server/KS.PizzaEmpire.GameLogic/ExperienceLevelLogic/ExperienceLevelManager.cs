@@ -1,9 +1,9 @@
 ﻿namespace KS.PizzaEmpire.GameLogic.ExperienceLevelLogic
 {
-    using Business.Common;
-    using Business.Logic;
     using Business.StorageInformation;
     using Business.TableStorage;
+    using Common.BusinessObjects;
+    using Common;
     using Services.Storage;
     using System;
     using System.Collections.Generic;
@@ -73,8 +73,9 @@
 
             foreach (ExperienceLevelTableStorage item in items)
             {
-                ExperienceLevels[item.Level] =
-                    (ExperienceLevel)item.ToLogicEntity();
+                ExperienceLevelStorageInformation storageInfo = new 
+                    ExperienceLevelStorageInformation(item.Level.ToString());
+                ExperienceLevels[item.Level] = (ExperienceLevel)storageInfo.FromTableStorage(item);
             }
         }
 
@@ -86,44 +87,45 @@
         {
             List<ExperienceLevelTableStorage> exls = new List<ExperienceLevelTableStorage>();
             ExperienceLevel exl;
+            ExperienceLevelStorageInformation storageInfo;
 
             exl = new ExperienceLevel
             {
                 Level = 1,
                 ExperienceRequired = 0,
             };
-            exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
-            exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());
+            storageInfo = new ExperienceLevelStorageInformation(exl.Level.ToString());
+            exls.Add((ExperienceLevelTableStorage)storageInfo.ToTableStorage(exl));
 
             exl = new ExperienceLevel
             {
                 Level = 2,
                 ExperienceRequired = 100,               
             };
-            exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
-            exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());
+            storageInfo = new ExperienceLevelStorageInformation(exl.Level.ToString());
+            exls.Add((ExperienceLevelTableStorage)storageInfo.ToTableStorage(exl));
 
             exl = new ExperienceLevel
             {
                 Level = 3,
                 ExperienceRequired = 300,
             };
-            exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
-            exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());
+            storageInfo = new ExperienceLevelStorageInformation(exl.Level.ToString());
+            exls.Add((ExperienceLevelTableStorage)storageInfo.ToTableStorage(exl));
 
             exl = new ExperienceLevel
             {
                 Level = 4,
                 ExperienceRequired = 700,
             };
-            exl.StorageInformation = new ExperienceLevelStorageInformation(exl.Level.ToString());
-            exls.Add((ExperienceLevelTableStorage)exl.ToTableStorageEntity());
+            storageInfo = new ExperienceLevelStorageInformation(exl.Level.ToString());
+            exls.Add((ExperienceLevelTableStorage)storageInfo.ToTableStorage(exl));
 
             AzureTableStorage storage = new AzureTableStorage();
             await storage.SetTable("ExperienceLevel");
             await storage.DeleteTable();
             await storage.SetTable("ExperienceLevel");
-            await storage.InsertOrReplace<ExperienceLevelTableStorage>(exls);
+            await storage.InsertOrReplace<ExperienceLevelTableStorage>(exls);             
         }
     }
 }
