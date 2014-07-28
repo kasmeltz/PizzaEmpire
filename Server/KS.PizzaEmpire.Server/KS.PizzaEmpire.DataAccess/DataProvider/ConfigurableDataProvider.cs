@@ -255,10 +255,8 @@
             {
                 Task.WaitAll(RedisCache.Instance.Delete<K>(storageInfo.CacheKey));
             }
-            finally
-            {
-                Task.WaitAll(SaveToTableStorage<T, V>(item, storageInfo));
-            }
+
+            await SaveToTableStorage<T, V>(item, storageInfo);
         }
 
         /// <summary>

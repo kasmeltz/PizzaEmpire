@@ -9,6 +9,7 @@
     using System;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using KS.PizzaEmpire.Common.APITransfer;
 
     public class GamePlayerV1Controller : ApiController
     {
@@ -31,7 +32,8 @@
                     return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT };
                 }
 
-                return new Result { ErrorCode = ErrorCode.ERROR_OK, Item = player };
+                GamePlayerAPIMorph morph = new GamePlayerAPIMorph();
+                return new Result { ErrorCode = ErrorCode.ERROR_OK, Item = morph.ToAPIFormat(player) };
             }
             catch (Exception)
             {

@@ -7,6 +7,7 @@
     using Common.BusinessObjects;
     using Common.GameLogic;
     using DataAccess.DataProvider;
+    using KS.PizzaEmpire.Common.APITransfer;
     using System;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -38,7 +39,8 @@
                         .Save<GamePlayer, GamePlayerCacheable, GamePlayerTableStorage>(player, storageInfo);
                 }
 
-                return new Result { ErrorCode = ErrorCode.ERROR_OK, Item = player };
+                GamePlayerAPIMorph morph = new GamePlayerAPIMorph();
+                return new Result { ErrorCode = ErrorCode.ERROR_OK, Item = morph.ToAPIFormat(player) };
             }
             catch (Exception)
             {

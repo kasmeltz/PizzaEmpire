@@ -251,17 +251,14 @@
 		}
 	
 		/// <summary>
-		/// Called when the tutorial manager should update
-		/// and render
+		/// Called when the tutorial manager should render
 		/// </summary>
 		public void OnGUI(GamePlayer player)
 		{
 			if (IsFinished) {
 				return;
-			}
-	
-			TryAdvance(player, GUIEvent.Empty);
-	
+			}			
+		
 			if (currentStage.Render != null)
 			{
 				currentStage.Render();
@@ -276,5 +273,17 @@
 			 	}
 			}
 		}			
+		
+		/// <summary>
+		/// Called when the tutorial manager should update
+		/// </summary>
+		public void Update(GamePlayer player)
+		{
+			if (IsFinished) {
+				return;
+			}			
+						
+			TryAdvance(player, GUIEvent.Empty);
+		}
 	}
 }

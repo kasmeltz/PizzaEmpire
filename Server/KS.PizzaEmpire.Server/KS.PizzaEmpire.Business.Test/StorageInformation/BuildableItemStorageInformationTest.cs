@@ -106,7 +106,7 @@
             Assert.AreEqual(0, ts.CouponCost);
             Assert.AreEqual(1, ts.SpeedUpCoupons);
             Assert.AreEqual(60, ts.SpeedUpSeconds);
-            Assert.AreEqual(18, ts.RequiredItemsSerialized.Length);
+            Assert.AreEqual(18, ts.RequiredItemsSerialized.Length);            
         }
 
         [TestMethod]

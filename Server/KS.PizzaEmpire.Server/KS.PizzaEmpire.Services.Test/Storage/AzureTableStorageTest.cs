@@ -1,12 +1,15 @@
 ﻿namespace KS.PizzaEmpire.Services.Test.Storage
 {
     using Business.TableStorage;
+    using Business.StorageInformation;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.WindowsAzure.Storage.Table;
     using Services.Storage;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using KS.PizzaEmpire.Common.BusinessObjects;
+    using KS.PizzaEmpire.Common.GameLogic;
 
     /// <summary>
     /// Simple data class that will be used to test the
@@ -48,9 +51,9 @@
         private async Task TestInitializeMethodAsync()
         {
             Storage = new AzureTableStorage();
-            await Storage.SetTable("BuildableItem");
+            await Storage.SetTable("GamePlayer");
             await Storage.DeleteTable();
-            await Storage.SetTable("BuildableItem");
+            await Storage.SetTable("GamePlayer");
         }
 
         [TestMethod]
@@ -514,6 +517,25 @@
 
             players = (await Storage.GetAll<AzureTableStorageTestEntity>("Ka")).ToList();
             Assert.AreEqual(0, players.Count);
+        }
+
+        [TestMethod]
+        public async Task TestSaveGamePlayer()
+        {
+            GamePlayerStorageInformation storageInfo = new GamePlayerStorageInformation("test123");
+            GamePlayer player = new GamePlayer();
+            player.Coins = 1000;
+            player.Coupons = 5;
+            player.Experience = 0;
+            player.Level = 1;
+            player.BuildableItems = new Dictionary<BuildableItemEnum, int>();
+            player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1] = 1;
+            player.BuildableItems[BuildableItemEnum.Restaurant_Storage] = 1;
+            player.WorkItems = new List<WorkItem>();            
+
+            AzureTableStorage storage = new AzureTableStorage();
+            await storage.SetTable(storageInfo.TableName);
+            await storage.InsertOrReplace<GamePlayerTableStorage>((GamePlayerTableStorage)storageInfo.ToTableStorage(player));
         }
     }
 }

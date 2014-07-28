@@ -1,7 +1,9 @@
 ﻿namespace KS.PizzaEmpire.Common.APITransfer
 {
     using BusinessObjects;
+    using System;
     using System.Collections.Generic;
+    using System.Text;
 
     /// <summary>
     /// Class that can morph GamePlayer objects to and from a dto format
@@ -23,7 +25,16 @@
             clone.Experience = item.Experience;
             clone.Level = item.Level;
 
-            clone.BuildableItems = "";
+            StringBuilder sb = new StringBuilder();
+            foreach(KeyValuePair<BuildableItemEnum, int> kvp in item.BuildableItems)
+            {
+                sb.Append((int)kvp.Key);
+                sb.Append(":");
+                sb.Append(kvp.Value);
+                sb.Append(":");
+            }
+            sb.Remove(sb.Length - 1, 1);
+            clone.BuildableItems = sb.ToString();
 
             clone.WorkItems = item.WorkItems;
 
@@ -46,6 +57,12 @@
             clone.Level = item.Level;
 
             clone.BuildableItems = new Dictionary<BuildableItemEnum, int>();
+            string[] items = item.BuildableItems.Split(':');
+            for (int i = 0; i < items.Length; i += 2)
+            {
+                BuildableItemEnum bie = (BuildableItemEnum)Int32.Parse(items[i]);
+                clone.BuildableItems[bie] = Int32.Parse(items[i + 1]);
+            }
 
             clone.WorkItems = item.WorkItems;
 
