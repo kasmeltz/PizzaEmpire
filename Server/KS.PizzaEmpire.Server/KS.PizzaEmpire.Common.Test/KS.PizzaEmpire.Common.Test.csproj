@@ -52,13 +52,12 @@
   <ItemGroup>
     <Compile Include="APITransfer\GamePlayerAPIMorphTest.cs" />
     <Compile Include="GameLogic\GamePlayerLogicTest.cs" />
+    <Compile Include="LitJSON\LitJsonTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\ExperienceLevelHelperTest.cs" />
     <Compile Include="Utility\BuildableItemHelperTest.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="LitsJSON\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\KS.PizzaEmpire.Common\KS.PizzaEmpire.Common.csproj">
       <Project>{002afa5c-8d13-4567-8730-498af485a1cb}</Project>

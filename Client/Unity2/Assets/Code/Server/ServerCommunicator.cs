@@ -87,7 +87,7 @@
 			{
 				data = data["Item"];
 				string json = JsonMapper.ToJson(data);
-				Debug.Log(json);
+				Debug.Log(DateTime.Now + ":" + json);
 				response = JsonMapper.ToObject<T>(json);
 			}
 			else
@@ -175,7 +175,7 @@
 			com.OnComplete = onComplete;
 			com.OnError = onError;
 			communications.Add(com);
-			Debug.Log(com.Request.url);
+			Debug.Log(DateTime.Now + ":" + com.Request.url);
 		}		
 		
 		/// <summary>
@@ -191,7 +191,7 @@
 				{				
 					if (!string.IsNullOrEmpty(com.Request.error)) 
 					{
-						Debug.Log(com.Request.error);
+                        Debug.Log(DateTime.Now + ":" + com.Request.error);
 						com.Error = ServerErrorEnum.CONNECTION_ERROR;
 						com.ErrorMessage = GetErrorString(ServerErrorEnum.CONNECTION_ERROR);						
 						if (com.OnError != null)
@@ -201,7 +201,7 @@
 					}
 					else
 					{
-						Debug.Log(com.Request.text);
+                        Debug.Log(DateTime.Now + ":" + com.Request.text);
 						if (com.OnComplete != null)
 						{
 							com.OnComplete(com);

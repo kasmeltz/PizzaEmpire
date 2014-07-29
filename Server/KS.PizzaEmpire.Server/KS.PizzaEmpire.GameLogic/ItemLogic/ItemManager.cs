@@ -134,7 +134,7 @@
                 IsImmediate = false,
                 IsWorkSubtracted = false,
                 Experience = 100,
-                BuildSeconds = 60,
+                BuildSeconds = 10,
                 CouponCost = 0,
                 SpeedUpCoupons = 1,
                 SpeedUpSeconds = 60,

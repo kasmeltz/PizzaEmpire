@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Server\ServerCommunicator.cs">
+    <Files>
+      <File FileName="Assets\Code\Events\FinishedWorkChecker.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Server\ServerCommunicator.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\GUI\GUIGameObject.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\GameLogic\GamePlayerStateCheck.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Tutorial\TutorialManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Tutorial\TutorialStage.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -18,12 +18,12 @@ public class GUIGameObject : MonoBehaviour {
 	public static Texture2D IconCheckMark { get; protected set; }
 	public static Texture2D IconMoreText { get; protected set; }
 	
-	public bool IsError = false;
-	public string ErrorMessage = "";
-	
-	float checkWorkDone = 0;
-	
-	protected void OnServerError(ServerCommunication com)
+    protected FinishedWorkChecker workChecker;
+
+    public static bool IsError = false;
+    public static string ErrorMessage = "";
+    
+	public static void OnServerError(ServerCommunication com)
 	{
 		IsError = true;
 		ErrorMessage = com.ErrorMessage;
@@ -52,7 +52,8 @@ public class GUIGameObject : MonoBehaviour {
 			{
 				GamePlayerAPI playerAPI = ServerCommunicator.Instance.ParseResponse<GamePlayerAPI>(com);
 				GamePlayerAPIMorph morph = new GamePlayerAPIMorph();
-				player = (GamePlayer)morph.ToBusinessFormat(playerAPI);				
+				player = (GamePlayer)morph.ToBusinessFormat(playerAPI);
+                workChecker = new FinishedWorkChecker(player, 2);
 			}, OnServerError);
 			
 		TutorialManager.Instance.Initialize();
@@ -74,33 +75,7 @@ public class GUIGameObject : MonoBehaviour {
 	{
 		GUI.Box (new Rect(50, 150, Screen.width - 100, Screen.height - 300), 
 	        ErrorMessage, GUIGameObject.CurrentStyle);
-	}	
-	
-	void CheckIfWorkDone()
-	{
-		bool contactServer = false;
-		
-		foreach(WorkItem workItem in player.WorkItems)
-		{
-			if (workItem.FinishTime <= DateTime.UtcNow)
-			{
-				contactServer = true;
-				break;
-			}
-		}
-		
-		if (contactServer)
-		{
-			ServerCommunicator.Instance.Communicate(
-				ServerActionEnum.FinishWork,
-				(ServerCommunication com) => 
-				{
-					DateTime checkTime = ServerCommunicator.Instance.ParseResponse<DateTime>(com);
-					Debug.Log(checkTime);
-					GamePlayerLogic.Instance.FinishWork(player, checkTime);
-				}, OnServerError);
-		}
-	}
+	}			
 	
 	void Update()
 	{
@@ -109,14 +84,9 @@ public class GUIGameObject : MonoBehaviour {
 		if (!IsReady())
 		{
 			return;
-		}			
-				
-		checkWorkDone += Time.deltaTime;
-		if (checkWorkDone > 1)
-		{
-			checkWorkDone = 0;
-			CheckIfWorkDone();
 		}
+
+        workChecker.Update(Time.deltaTime);
 	}
 	
 	void OnGUI () 

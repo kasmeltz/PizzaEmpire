@@ -33,8 +33,9 @@
                     return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT };
                 }
 
-                DateTime now = DateTime.UtcNow;
-                List<WorkItem> items = GamePlayerLogic.Instance.FinishWork(player, now);
+                DateTime[] now = new DateTime[1];  
+                now[0] = DateTime.UtcNow;
+                List<WorkItem> items = GamePlayerLogic.Instance.FinishWork(player, now[0]);
 
                 if (player.StateChanged)
                 {
