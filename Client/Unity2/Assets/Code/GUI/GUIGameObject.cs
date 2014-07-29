@@ -169,11 +169,26 @@ public class GUIGameObject : MonoBehaviour {
 	{
 		ServerCommunicator.Instance.Update();
 
+        float xAxisValue = Input.GetAxis("Horizontal");
+        float yAxisValue = Input.GetAxis("Vertical");
+        if (Camera.current != null)
+        {
+            Camera.current.transform.Translate(new Vector3(xAxisValue, yAxisValue, 0));
+        }
+
         if (!IsLoaded)
 		{
 			return;
 		}
 
+        if (player.StateChanged)
+        {
+            TutorialManager.Instance.Update(player);
+            guiStateManager.UpdateState(player);
+
+            player.StateChanged = false;
+        }
+		
         float dt = Time.deltaTime;
 
         guiStateManager.Update(dt);
@@ -197,15 +212,7 @@ public class GUIGameObject : MonoBehaviour {
 
         guiStateManager.OnGUI();
 		TutorialManager.Instance.OnGUI(player);		
-							
-		if (player.StateChanged)
-		{
-			TutorialManager.Instance.Update(player);
-            guiStateManager.UpdateState(player);
-
-			player.StateChanged = false;
-		}
-		
+									
 		ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(player, BuildableItemEnum.White_Flour);
 		if (ec == ErrorCode.ERROR_OK)
 		{

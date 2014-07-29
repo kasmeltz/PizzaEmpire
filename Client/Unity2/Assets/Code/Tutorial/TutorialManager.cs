@@ -27,6 +27,8 @@
 		private string[] sayings;
 	
 		public bool IsFinished { get; protected set; }
+
+        public AudioClip louieSound;
 	
 		private TutorialManager() {
 			TextAsset unclelouie = Resources.Load("Text/unclelouie") as TextAsset;
@@ -69,7 +71,9 @@
 			for (int i = 0;i < louieTextures.Length;i++)			
 			{
 				louieTextures[i] = Resources.Load("Graphics/UI/Characters/louie" + i) as Texture2D;
-			}										
+			}
+
+            louieSound = Resources.Load("Sounds/louie0") as AudioClip;
 		}
 		
 		/// <summary>
@@ -113,6 +117,10 @@
 			GamePlayerStateCheck stateCheck = null;
 			
 			stage = new TutorialStage();
+            stage.OnStart = () =>
+            {
+                AudioSource.PlayClipAtPoint(louieSound, Vector3.zero);
+            };
 			stage.ShowNextButton = true;
 			stage.Render = () => {
 				RenderTutorialText(0);
@@ -157,6 +165,10 @@
 			stages.Add(stage);
 			
 			stage = new TutorialStage();
+            stage.OnStart = () =>
+            {
+                AudioSource.PlayClipAtPoint(louieSound, Vector3.zero);
+            };
 			stage.ShowNextButton = true;
 			stage.Render = () => {
 				RenderTutorialText(5);
@@ -203,10 +215,32 @@
 				DrawLouie(LouieExpression.Surprised_Arm_Raised);
 			};
 			stages.Add(stage);
-						
-			currentStageIndex = 0;
-			currentStage = stages[0];			
+
+            SetStage(0);					
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        public void SetStage(int index)
+        {
+            currentStageIndex = index;
+
+            if (currentStageIndex >= stages.Count)
+            {
+                IsFinished = true;
+                return;
+            }
+
+            currentStage = stages[currentStageIndex];
+            currentStage = stages[index];
+
+            if (currentStage.OnStart != null)
+            {
+                currentStage.OnStart();
+            }
+        }
 	
 		/// <summary>
 		/// Tries to advance to the next tutorial stage
@@ -232,21 +266,7 @@
 			if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.CheckAll(player)) &&
 				(currentStage.GUIEvent == null || currentStage.GUIEvent.IsSame(guiEvent)))
 			{
-				Advance();
-			}
-		}
-		
-		/// <summary>
-		/// Advance to the next stage in the tutorial
-		/// </summary>
-		public void Advance()
-		{
-			currentStageIndex++;
-			
-			if (currentStageIndex >= stages.Count) {
-				IsFinished = true;
-			} else {
-				currentStage = stages[currentStageIndex];
+                SetStage(currentStageIndex + 1);
 			}
 		}
 	
@@ -269,7 +289,7 @@
 				if (GUI.Button(new Rect(Screen.width - 65, 165, 45, 45), 
 					GUIGameObject.IconMoreText, GUIGameObject.CurrentStyle))
 			 	{
-					Advance();
+                    SetStage(currentStageIndex + 1);
 			 	}
 			}
 		}			
