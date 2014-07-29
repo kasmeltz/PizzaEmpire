@@ -16,16 +16,23 @@
 		/// Initializes a new instance of the <see cref="KS.PizzaEmpire.Unity.GamePlayerStateCheck"/> class.
 		/// </summary>
 		public GamePlayerStateCheck() { }
-	
-		public ItemQuantity[] ItemsGreaterThan;
-		public ItemQuantity[] WorkItemsInProgress;		   
-		
+
+        public ItemQuantity[] ItemsGreaterThan { get; set; }
+        public ItemQuantity[] WorkItemsInProgress { get; set; }
+        public int? RequiredLevel { get; set; }
+
 		/// <summary>
 		/// Checks the work items in progress.
 		/// </summary>
 		/// <param name="player">Player.</param>
 		public bool CheckWorkItemsInProgress(GamePlayer player)
 		{
+            if (WorkItemsInProgress == null || 
+                WorkItemsInProgress.Length == 0)
+            {
+                return true;
+            }
+
 			Dictionary<BuildableItemEnum, int> playerWis = new Dictionary<BuildableItemEnum, int>();
 			foreach(WorkItem playerWi in player.WorkItems)
 			{
@@ -65,11 +72,18 @@
 		/// <param name="player">The persistent player data.</param>
 		public bool CheckAll(GamePlayer player)
 		{
-			bool shouldAdvance = true;
-			
-			shouldAdvance = CheckWorkItemsInProgress(player);			
-			
-			return shouldAdvance;
+            if (!CheckWorkItemsInProgress(player))
+            {
+                return false;
+            }
+
+            if (RequiredLevel.HasValue && 
+                player.Level < RequiredLevel)
+            {
+                return false;
+            }
+
+            return true;
 		}
 	}
 }

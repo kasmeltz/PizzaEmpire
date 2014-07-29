@@ -260,6 +260,22 @@
         }
 
         /// <summary>
+        /// Deelete the data represented by the storage info class
+        /// </summary>
+        /// <param name="player">The ILogicEntity instance to save.</param>
+        /// <returns>This is an async method</returns>
+        public async Task Delete<T, K, V>(T item, IStorageInformation storageInfo)
+            where T : IBusinessObjectEntity
+            where K : ICacheEntity
+            where V : TableEntity, ITableStorageEntity
+        {
+            await RedisCache.Instance.Delete<K>(storageInfo.CacheKey);
+            AzureTableStorage storage = new AzureTableStorage();
+            await storage.SetTable(storageInfo.TableName);
+            await storage.Delete<V>((V)storageInfo.ToTableStorage(item));
+        }
+
+        /// <summary>
         /// Informs the data proivder that the provided item is no longer being actively used
         /// </summary>
         /// <param name="Item"></param>

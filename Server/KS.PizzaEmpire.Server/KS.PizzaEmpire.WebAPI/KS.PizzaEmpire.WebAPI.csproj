@@ -204,6 +204,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Version 1\BuildableItemV1Controller.cs" />
+    <Compile Include="Controllers\Version 1\DeletePlayerV1Controller.cs" />
     <Compile Include="Controllers\Version 1\ExperienceLevelV1Controller.cs" />
     <Compile Include="Controllers\Version 1\GamePlayerV1Controller.cs" />
     <Compile Include="Controllers\Version 1\FinishWorkV1Controller.cs" />

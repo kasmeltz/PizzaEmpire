@@ -19,25 +19,36 @@ public class GUIGameObject : MonoBehaviour {
 	public static Texture2D IconMoreText { get; protected set; }
 	
     protected FinishedWorkChecker workChecker;
+    protected GUIStateManager guiStateManager;
 
     public static bool IsError = false;
     public static string ErrorMessage = "";
+
+    protected int itemsLoaded = 0;
+    protected int itemsToLoad = 0;
+    protected object itemsLoadedLock = new object();
+
+    public bool IsLoaded { get; set; }
     
 	public static void OnServerError(ServerCommunication com)
 	{
 		IsError = true;
 		ErrorMessage = com.ErrorMessage;
 	}
-	
-	void Start()
-	{
+
+    private void Start()
+    {
+        IsLoaded = false;
+
 		ServerCommunicator.Instance.Communicate(ServerActionEnum.GetBuildableItems,
 	        (ServerCommunication com) => 
 	        {
 				ItemManager.Instance.Initialize(com.Request.text);				
 				Debug.Log(ItemManager.Instance.BuildableItems.Count);
 				GamePlayerLogic.Instance.BuildableItems = ItemManager.Instance.BuildableItems;
+                AllItemsLoaded();
 			}, OnServerError);
+        itemsToLoad++;
 		
 		ServerCommunicator.Instance.Communicate(ServerActionEnum.GetExperienceLevels,
 	        (ServerCommunication com) => 
@@ -45,7 +56,9 @@ public class GUIGameObject : MonoBehaviour {
 				ExperienceLevelManager.Instance.Initialize(com.Request.text);
 				Debug.Log(ExperienceLevelManager.Instance.ExperienceLevels.Count);
 				GamePlayerLogic.Instance.ExperienceLevels = ExperienceLevelManager.Instance.ExperienceLevels;
+                AllItemsLoaded();
 			}, OnServerError);
+        itemsToLoad++;
 			
 		ServerCommunicator.Instance.Communicate(ServerActionEnum.GetPlayer,
 			(ServerCommunication com) => 
@@ -53,43 +66,97 @@ public class GUIGameObject : MonoBehaviour {
 				GamePlayerAPI playerAPI = ServerCommunicator.Instance.ParseResponse<GamePlayerAPI>(com);
 				GamePlayerAPIMorph morph = new GamePlayerAPIMorph();
 				player = (GamePlayer)morph.ToBusinessFormat(playerAPI);
-                workChecker = new FinishedWorkChecker(player, 2);
+                AllItemsLoaded();
 			}, OnServerError);
-			
+        itemsToLoad++;
+
+        // this is for the style
+        // that can only be created in the OnGUi method
+        itemsToLoad++;
+
 		TutorialManager.Instance.Initialize();
 	}
-	
-	public bool IsReady()
-	{
-		if (player == null || 
-			GamePlayerLogic.Instance.BuildableItems == null ||
-			GamePlayerLogic.Instance.ExperienceLevels == null )
-		{
-			return false;
-		}			
-		
-		return true;
-	}
+
+    protected void AllItemsLoaded()
+    {
+        lock (itemsLoadedLock)
+        {
+            itemsLoaded++;
+        }
+
+        if (itemsLoaded != itemsToLoad)
+        {
+            return;
+        }
+
+        IsLoaded = true;
+
+        guiStateManager = new GUIStateManager();    
+        workChecker = new FinishedWorkChecker(player, 2);               
+
+        GUIItem togglePanel = new GUIItem(300, 300, 100, 100);
+        GUIState state = new GUIState();
+        state.StateCheck = new GamePlayerStateCheck { RequiredLevel = 2 };
+        togglePanel.State = state;
+        togglePanel.Element = GUIElementEnum.OrderIngredientsWindow;
+        togglePanel.Style = GUIGameObject.CurrentStyle;
+        togglePanel.Render = (gi) =>
+        {
+            GUI.Box(gi.Rectangle, "", gi.Style);
+        };
+
+        GUIItem innerThing = new GUIItem(50, 50, 35, 35);
+        innerThing.Element = GUIElementEnum.IconTomato;
+        innerThing.Style = GUIGameObject.CurrentStyle;
+        innerThing.Render = (gi) =>
+        {
+            if (GUI.Button(gi.Rectangle, GUIGameObject.IconCheckMark, gi.Style))
+            {
+               
+            }
+        };
+
+        togglePanel.AddChild(innerThing);
+
+        GUIItem toggle2Button = new GUIItem(400, 400, 50, 50);
+        toggle2Button.Element = GUIElementEnum.IconTomato;
+        toggle2Button.Style = CurrentStyle;
+        toggle2Button.Render = (gi) =>
+        {
+            if (GUI.Button(gi.Rectangle, GUIGameObject.IconCheckMark, gi.Style))
+            {
+                togglePanel.State.Visible = !togglePanel.State.Visible;
+            }
+        };
+
+        guiStateManager.AddItem(togglePanel);
+        guiStateManager.AddItem(toggle2Button);
+
+        player.StateChanged = true;
+    }                    		
 	
 	public void DrawError()
 	{
 		GUI.Box (new Rect(50, 150, Screen.width - 100, Screen.height - 300), 
 	        ErrorMessage, GUIGameObject.CurrentStyle);
-	}			
-	
-	void Update()
+	}
+
+    private void Update()
 	{
 		ServerCommunicator.Instance.Update();
-		
-		if (!IsReady())
+
+        if (!IsLoaded)
 		{
 			return;
 		}
 
-        workChecker.Update(Time.deltaTime);
+        float dt = Time.deltaTime;
+
+        guiStateManager.Update(dt);
+        workChecker.Update(dt);
 	}
-	
-	void OnGUI () 
+
+    private void OnGUI() 
 	{		
 		InitStyles();
 		
@@ -98,18 +165,20 @@ public class GUIGameObject : MonoBehaviour {
 			DrawError();
 			return;
 		}
-		
-		if (!IsReady())
+
+        if (!IsLoaded)
 		{
 			return;
-		}	
-		
+		}
+
+        guiStateManager.OnGUI();
 		TutorialManager.Instance.OnGUI(player);		
 							
 		if (player.StateChanged)
 		{
-			TutorialManager.Instance.Update(player);				
-			
+			TutorialManager.Instance.Update(player);
+            guiStateManager.UpdateState(player);
+
 			player.StateChanged = false;
 		}
 		
@@ -145,22 +214,7 @@ public class GUIGameObject : MonoBehaviour {
 			}
 		}						
 	}
-	
-	public void DrawButton(GUIEvent guiEvent, Action fn)
-	{
-		if (GUI.Button(new Rect(Screen.width - 55, 55, 45, 45), GUIGameObject.IconMoreText))
-		{
-			if (!TutorialManager.Instance.IsFinished)
-			{
-				TutorialManager.Instance.TryAdvance(player, guiEvent);
-			}			
-			if (fn != null)
-			{
-				fn();
-			}
-		}
-	}
-	
+		
 	public static GUIStyle CurrentStyle = null;
 	
 	private void InitStyles()
@@ -179,9 +233,11 @@ public class GUIGameObject : MonoBehaviour {
 		
 		IconCheckMark = Resources.Load("Graphics/UI/Misc/icon-checkmark") as Texture2D;
 		IconMoreText = Resources.Load("Graphics/UI/Misc/icon-moretext") as Texture2D;
+
+        AllItemsLoaded();
 	}
 		
-	private Texture2D MakeTex( int width, int height, Color col )
+	protected Texture2D MakeTex( int width, int height, Color col )
 	{
 		Color[] pix = new Color[width * height];
 		for( int i = 0; i < pix.Length; ++i )

@@ -7,6 +7,8 @@
 	{
 		None,
     	IconCheckMark,
-    	TableCloth
+    	TableCloth,
+        IconTomato,
+        OrderIngredientsWindow
 	}	
 }
