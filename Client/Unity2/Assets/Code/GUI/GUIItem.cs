@@ -17,7 +17,23 @@
             Rectangle = new Rect(x, y, w, h);
             Children = new Dictionary<GUIElementEnum, GUIItem>();
             State = new GUIState();
+            Offset = new Vector2();
         }
+
+        /// <summary>
+        /// The children items of this item
+        /// </summary>
+        protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }
+
+        /// <summary>
+        /// The items cumulative offset from screen position 0, 0
+        /// </summary>
+        public Vector2 Offset { get; set; }
+
+        /// <summary>
+        /// Can this item be dragged?
+        /// </summary>
+        public bool Draggable { get; set; }
 
         /// <summary>
         /// The element identifier of this item
@@ -40,11 +56,6 @@
         public Rect Rectangle { get; set; }
 
         /// <summary>
-        /// The children items of this item
-        /// </summary>
-        public Dictionary<GUIElementEnum, GUIItem> Children { get; set; }
-
-        /// <summary>
         /// The style for this item
         /// </summary>
         public GUIStyle Style { get; set; }
@@ -54,13 +65,23 @@
         /// </summary>
         public void AddChild(GUIItem item)
         {
+            if (Children.ContainsKey(item.Element))
+            {
+                throw new ArgumentException("This GUI Item already contains an item with this key: " + item.Element);
+            }
+
+            Vector2 offset = item.Offset;
+            offset.x = Offset.x + Rectangle.x;
+            offset.y = Offset.y + Rectangle.y;
+            item.Offset = offset;
+
             Children[item.Element] = item;
         }
 
         /// <summary>
         /// Removes a child from the item
         /// </summary>
-        public void AddChild(GUIElementEnum element)
+        public void RemoveChild(GUIElementEnum element)
         {
             if (Children.ContainsKey(element))
             {
@@ -105,6 +126,39 @@
         }
 
         /// <summary>
+        /// Returns the child at the specified position looking recursively
+        /// through child items
+        /// </summary>
+        /// <param name="element"></param>
+        public GUIItem GetChildNested(float x, float y)
+        {
+            foreach (GUIItem item in Children.Values)
+            {
+                if (!item.State.Visible || !item.State.Available)
+                {
+                    continue;
+                }
+
+                if (x > item.Rectangle.x && x < item.Rectangle.x + item.Rectangle.width &&
+                       y > item.Rectangle.y && y < item.Rectangle.y + item.Rectangle.height)
+                {
+                    if (item.Draggable)
+                    {
+                        return item;
+                    }
+
+                    GUIItem found = item.GetChildNested(x - item.Rectangle.x, y - item.Rectangle.y);
+                    if (found != null)
+                    {
+                        return found;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         ///  Draws the item
         /// </summary>
         public void Draw()
@@ -119,7 +173,10 @@
                 Render(this);
                 foreach (GUIItem item in Children.Values)
                 {
-                    item.Draw();
+                    if (item.State.Available && item.State.Visible)
+                    {
+                        item.Draw();
+                    }
                 }
                 GUI.EndGroup();
             }

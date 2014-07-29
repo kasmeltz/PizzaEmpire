@@ -9,6 +9,7 @@
     	IconCheckMark,
     	TableCloth,
         IconTomato,
+        IconFlour,
         OrderIngredientsWindow
 	}	
 }

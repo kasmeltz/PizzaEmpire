@@ -44,7 +44,6 @@ public class GUIGameObject : MonoBehaviour {
 	        (ServerCommunication com) => 
 	        {
 				ItemManager.Instance.Initialize(com.Request.text);				
-				Debug.Log(ItemManager.Instance.BuildableItems.Count);
 				GamePlayerLogic.Instance.BuildableItems = ItemManager.Instance.BuildableItems;
                 AllItemsLoaded();
 			}, OnServerError);
@@ -54,7 +53,6 @@ public class GUIGameObject : MonoBehaviour {
 	        (ServerCommunication com) => 
 	        {
 				ExperienceLevelManager.Instance.Initialize(com.Request.text);
-				Debug.Log(ExperienceLevelManager.Instance.ExperienceLevels.Count);
 				GamePlayerLogic.Instance.ExperienceLevels = ExperienceLevelManager.Instance.ExperienceLevels;
                 AllItemsLoaded();
 			}, OnServerError);
@@ -92,18 +90,30 @@ public class GUIGameObject : MonoBehaviour {
         IsLoaded = true;
 
         guiStateManager = new GUIStateManager();    
-        workChecker = new FinishedWorkChecker(player, 2);               
+        workChecker = new FinishedWorkChecker(player, 2);
 
-        GUIItem togglePanel = new GUIItem(300, 300, 100, 100);
+        GUIItem bigTogglePanel = new GUIItem(250, 200, 400, 200);
         GUIState state = new GUIState();
         state.StateCheck = new GamePlayerStateCheck { RequiredLevel = 2 };
-        togglePanel.State = state;
+        bigTogglePanel.State = state;
+        bigTogglePanel.Element = GUIElementEnum.OrderIngredientsWindow;
+        bigTogglePanel.Style = GUIGameObject.CurrentStyle;
+        bigTogglePanel.Render = (gi) =>
+        {
+            GUI.Box(gi.Rectangle, "", gi.Style);
+        };
+
+        guiStateManager.AddItem(bigTogglePanel);
+
+        GUIItem togglePanel = new GUIItem(50, 50, 250, 100);
         togglePanel.Element = GUIElementEnum.OrderIngredientsWindow;
         togglePanel.Style = GUIGameObject.CurrentStyle;
         togglePanel.Render = (gi) =>
         {
             GUI.Box(gi.Rectangle, "", gi.Style);
         };
+
+        bigTogglePanel.AddChild(togglePanel);
 
         GUIItem innerThing = new GUIItem(50, 50, 35, 35);
         innerThing.Element = GUIElementEnum.IconTomato;
@@ -118,6 +128,20 @@ public class GUIGameObject : MonoBehaviour {
 
         togglePanel.AddChild(innerThing);
 
+        GUIItem innerThing2 = new GUIItem(150, 50, 35, 35);
+        innerThing2.Draggable = true;
+        innerThing2.Element = GUIElementEnum.IconFlour;
+        innerThing2.Style = GUIGameObject.CurrentStyle;
+        innerThing2.Render = (gi) =>
+        {
+            if (GUI.Button(gi.Rectangle, GUIGameObject.IconCheckMark, gi.Style))
+            {
+
+            }
+        };
+
+        togglePanel.AddChild(innerThing2);
+
         GUIItem toggle2Button = new GUIItem(400, 400, 50, 50);
         toggle2Button.Element = GUIElementEnum.IconTomato;
         toggle2Button.Style = CurrentStyle;
@@ -129,7 +153,7 @@ public class GUIGameObject : MonoBehaviour {
             }
         };
 
-        guiStateManager.AddItem(togglePanel);
+        
         guiStateManager.AddItem(toggle2Button);
 
         player.StateChanged = true;

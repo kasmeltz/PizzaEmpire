@@ -12,6 +12,8 @@
     {
         protected Dictionary<GUIElementEnum, GUIItem> guis { get; set; }
 
+        protected GUIItem FocusedItem { get; set; }
+
         public GUIStateManager()
         {
             guis = new Dictionary<GUIElementEnum, GUIItem>();
@@ -23,8 +25,7 @@
         public void UpdateState(GamePlayer player)
         {
             foreach(GUIItem gui in guis.Values)
-            {
-                Debug.Log(DateTime.Now + ": Updating state for: " + gui);
+            {               
                 gui.State.Update(player);
             }
         }
@@ -35,6 +36,10 @@
         public void Update(float dt)
         {
             HandleTouches();
+            
+            #if UNITY_STANDALONE_WIN
+                HandleMouse();
+            #endif
         }
 
         /// <summary>
@@ -44,17 +49,91 @@
         {
             int fingerCount = 0;
             foreach (Touch touch in Input.touches)
-            {
+            {                
                 if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
+                {
                     fingerCount++;
-                
+                }
             }
 
             if (fingerCount > 0)
             { 
                Debug.Log(DateTime.Now + ": User has " + fingerCount + " finger(s) touching the screen");
-            }        
+            }                        
         }
+
+        /// <summary>
+        /// Focusus the object at the provided location
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void FocusObject(float x, float y)
+        {
+            FocusedItem = null;
+
+            foreach (GUIItem item in guis.Values)
+            {
+                if (!item.State.Visible || !item.State.Available)
+                {
+                    continue;
+                }
+
+                if (x > item.Rectangle.x && x < item.Rectangle.x + item.Rectangle.width &&
+                       y > item.Rectangle.y && y < item.Rectangle.y + item.Rectangle.height)
+                {
+                    if (item.Draggable)
+                    {
+                        FocusedItem = item;
+                        return;
+                    }
+
+                    FocusedItem = item.GetChildNested(x - item.Rectangle.x, y - item.Rectangle.y);
+                    if (FocusedItem != null)
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Drags an item to the absolute screen position specified
+        /// </summary>
+        public void DragItem(GUIItem item, float x, float y)
+        {
+            Rect currentRect = FocusedItem.Rectangle;
+            currentRect.x = x - FocusedItem.Offset.x;
+            currentRect.y = y - FocusedItem.Offset.y;
+            FocusedItem.Rectangle = currentRect;
+        }
+
+        #if UNITY_STANDALONE_WIN
+
+        /// <summary>
+        /// Handle the mouse input
+        /// </summary>
+        public void HandleMouse()
+        {
+            float mx = Input.mousePosition.x;
+            float my = Screen.height- Input.mousePosition.y;
+
+            if (Input.GetMouseButtonDown(0))
+            {              
+                FocusObject(mx, my);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                FocusedItem = null;
+            }
+
+            if (FocusedItem != null)
+            {
+                DragItem(FocusedItem, mx, my);
+            }            
+        }
+
+        #endif
 
         /// <summary>
         /// Adds a GUIItem to the manager
@@ -62,6 +141,10 @@
         /// <param name="item"></param>
         public void AddItem(GUIItem item)
         {
+            if (guis.ContainsKey(item.Element))
+            {
+                throw new ArgumentException("GUI State Manager already contains an item with this key: " + item.Element);
+            }
             guis[item.Element] = item;
         }
 
@@ -117,11 +200,11 @@
         /// </summary>
         public void OnGUI()
         {
-            foreach (GUIItem gui in guis.Values)
+            foreach (GUIItem item in guis.Values)
             {
-                if (gui.State.Available && gui.State.Visible)
+                if (item.State.Available && item.State.Visible)
                 {
-                    gui.Draw();
+                    item.Draw();
                 }
             }
         }
