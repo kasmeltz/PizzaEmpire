@@ -53,6 +53,9 @@
     <Compile Include="BusinessObjects\GamePlayer.cs" />
     <Compile Include="BusinessObjects\IBusinessObjectEntity.cs" />
     <Compile Include="BusinessObjects\ItemQuantity.cs" />
+    <Compile Include="ObjectPool\IResetable.cs" />
+    <Compile Include="ObjectPool\ObjectPoolWithCollectiveReset.cs" />
+    <Compile Include="ObjectPool\ObjectPoolWithReset.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="BusinessObjects\WorkItem.cs" />
     <Compile Include="Constants.cs" />

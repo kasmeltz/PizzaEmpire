@@ -1,7 +1,7 @@
 ﻿namespace KS.PizzaEmpire.Unity
 {
     using Common.GameLogic;
-    using KS.PizzaEmpire.Common.BusinessObjects;
+    using Common.BusinessObjects;
     using System;
     using UnityEngine;
 
@@ -30,6 +30,9 @@
             CheckWorkSeconds = seconds;
         }
 
+        /// <summary>
+        /// Checks if work has been done
+        /// </summary>
         void CheckIfWorkDone()
         {
             if (areCheckingWork)
@@ -65,6 +68,10 @@
             }
         }
 
+        /// <summary>
+        /// Updates the work checker
+        /// </summary>
+        /// <param name="dt"></param>
         public void Update(float dt)
         {
             checkWorkTimer += dt;
