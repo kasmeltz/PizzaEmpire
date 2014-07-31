@@ -67,6 +67,7 @@
      <Compile Include="Assets\Code\Tutorial\LouieExpression.cs" />
      <Compile Include="Assets\Code\Tutorial\TutorialManager.cs" />
      <Compile Include="Assets\Code\Tutorial\TutorialStage.cs" />
+     <Compile Include="Assets\TitleSceneScript.cs" />
      <None Include="Assets\Resources\Text\textureResources.txt" />
      <None Include="Assets\Resources\Text\audioClipResources.txt" />
      <None Include="Assets\Resources\Text\fontResources.txt" />

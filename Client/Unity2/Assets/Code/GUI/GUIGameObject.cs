@@ -28,6 +28,8 @@ public class GUIGameObject : MonoBehaviour {
     
     private bool stylesInitialized = false;
     
+    AsyncOperation resourceCleaner = null;
+    
 	public void SetGlobalError(ServerCommunication com)
 	{
 		CurrentErrorCode = com.Error;
@@ -256,6 +258,11 @@ public class GUIGameObject : MonoBehaviour {
 
         guiStateManager.Update(dt);
         workChecker.Update(dt);
+        
+		if (resourceCleaner == null || resourceCleaner.isDone)
+		{	
+			resourceCleaner = Resources.UnloadUnusedAssets();		
+		}
 	}
 
     private void OnGUI() 
