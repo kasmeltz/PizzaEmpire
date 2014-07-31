@@ -1,9 +1,10 @@
-﻿using KS.PizzaEmpire.Common.BusinessObjects;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-namespace KS.PizzaEmpire.Common.GameLogic
+﻿namespace KS.PizzaEmpire.Common.GameLogic
 {
+    using Common.BusinessObjects;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
     /// <summary>
     /// Methods that represent the game logic around the game player
     /// </summary>
