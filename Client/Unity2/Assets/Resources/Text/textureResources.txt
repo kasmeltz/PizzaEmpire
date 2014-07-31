@@ -1,0 +1,10 @@
+﻿TEXTURE_ICON_TOMATO_LARGE,Graphics/UI/Ingredients/tomatobig
+TEXTURE_ICON_CHECKMARK,Graphics/UI/Misc/icon-checkmark
+TEXTURE_ICON_MORE_TEXT,Graphics/UI/Misc/icon-moretext
+TEXTURE_TUTORIAL_LOUIE_0,Graphics/UI/Characters/louie0
+TEXTURE_TUTORIAL_LOUIE_1,Graphics/UI/Characters/louie1
+TEXTURE_TUTORIAL_LOUIE_2,Graphics/UI/Characters/louie2
+TEXTURE_TUTORIAL_LOUIE_3,Graphics/UI/Characters/louie3
+TEXTURE_TUTORIAL_LOUIE_4,Graphics/UI/Characters/louie4
+TEXTURE_TUTORIAL_LOUIE_5,Graphics/UI/Characters/louie5
+TEXTURE_TUTORIAL_LOUIE_6,Graphics/UI/Characters/louie6

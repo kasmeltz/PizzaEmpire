@@ -13,6 +13,7 @@
         protected float checkWorkTimer { get; set; }
         protected bool areCheckingWork { get; set; }
         protected GamePlayer player { get; set; }
+		protected Action<ServerCommunication> OnError { get; set; }
 
         /// <summary>
         /// The time to wait before testing if any work items are done
@@ -24,10 +25,11 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="seconds"></param>
-        public FinishedWorkChecker(GamePlayer player, int seconds)
+		public FinishedWorkChecker(GamePlayer player, int seconds, Action<ServerCommunication> onError)
         {
             this.player = player;
             CheckWorkSeconds = seconds;
+            OnError = onError;
         }
 
         /// <summary>
@@ -42,8 +44,9 @@
 
             bool contactServer = false;
 
-            foreach (WorkItem workItem in player.WorkItems)
+            for(int i = 0;i < player.WorkItems.Count;i++)
             {
+                WorkItem workItem = player.WorkItems[i];
                 if (workItem.FinishTime <= DateTime.UtcNow)
                 {
                     contactServer = true;
@@ -64,7 +67,7 @@
                         GamePlayerLogic.Instance.FinishWork(player, now[0]);
 
                         areCheckingWork = false;
-                    }, GUIGameObject.OnServerError);
+				}, OnError);
             }
         }
 

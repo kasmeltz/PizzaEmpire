@@ -3,6 +3,8 @@
 	using System;
 	using System.Collections.Generic;
 	using UnityEngine;
+	using Common;
+	using Common.GameLogic;
 	using Common.BusinessObjects;
 	
 	/// <summary>
@@ -20,6 +22,7 @@
         public ItemQuantity[] ItemsGreaterThan { get; set; }
         public ItemQuantity[] WorkItemsInProgress { get; set; }
         public int? RequiredLevel { get; set; }
+        public BuildableItemEnum CanBuildItem { get; set; }
 
 		/// <summary>
 		/// Checks the work items in progress.
@@ -34,32 +37,34 @@
             }
 
 			Dictionary<BuildableItemEnum, int> playerWis = new Dictionary<BuildableItemEnum, int>();
-			foreach(WorkItem playerWi in player.WorkItems)
-			{
-				if (!playerWis.ContainsKey(playerWi.ItemCode))
-				{
-					playerWis[playerWi.ItemCode] = 1;
-				}
-				else
-				{
-					playerWis[playerWi.ItemCode]++;
-				}
-			}
-			
-			if (WorkItemsInProgress != null)
-			{
-				foreach(ItemQuantity checkWi in WorkItemsInProgress)
-				{
-					if (!playerWis.ContainsKey(checkWi.ItemCode))
-					{
-						return false;
-					}
-					if (playerWis[checkWi.ItemCode] < checkWi.Quantity)
-					{
-						return false;
-					}
-				}					
-			}
+            for (int i = 0; i < player.WorkItems.Count; i++)
+                {
+                    WorkItem playerWi = player.WorkItems[i];
+                    if (!playerWis.ContainsKey(playerWi.ItemCode))
+                    {
+                        playerWis[playerWi.ItemCode] = 1;
+                    }
+                    else
+                    {
+                        playerWis[playerWi.ItemCode]++;
+                    }
+                }
+
+            if (WorkItemsInProgress != null)
+            {
+                for (int i = 0; i < WorkItemsInProgress.Length; i++)
+                {
+                    ItemQuantity checkWi = WorkItemsInProgress[i];
+                    if (!playerWis.ContainsKey(checkWi.ItemCode))
+                    {
+                        return false;
+                    }
+                    if (playerWis[checkWi.ItemCode] < checkWi.Quantity)
+                    {
+                        return false;
+                    }
+                }
+            }
 			
 			return true;
 		}
@@ -82,6 +87,15 @@
             {
                 return false;
             }
+            
+			if (CanBuildItem != BuildableItemEnum.None)
+			{
+				if (GamePlayerLogic.Instance.CanBuildItem(player, CanBuildItem) != ErrorCode.ERROR_OK)
+				{
+					return false;
+				}
+				
+			}
 
             return true;
 		}

@@ -1,5 +1,6 @@
 ﻿namespace KS.PizzaEmpire.Unity
 {
+    using KS.PizzaEmpire.Common;
     using System;
     using System.Collections.Generic;
     using UnityEngine;
@@ -24,7 +25,7 @@
         /// The children items of this item
         /// </summary>
         protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }
-
+       
         /// <summary>
         /// The items cumulative offset from screen position 0, 0
         /// </summary>
@@ -61,13 +62,23 @@
         public GUIStyle Style { get; set; }
 
         /// <summary>
+        /// The texture for this item
+        /// </summary>
+        public Texture2D Texture { get; set; }
+        
+        /// <summary>
+        /// The text for this item
+        /// </summary>
+        public string Text { get; set; }
+
+        /// <summary>
         /// Adds a child to an item
         /// </summary>
-        public void AddChild(GUIItem item)
+        public ErrorCode AddChild(GUIItem item)
         {
             if (Children.ContainsKey(item.Element))
             {
-                throw new ArgumentException("This GUI Item already contains an item with this key: " + item.Element);
+                return ErrorCode.ITEM_ALREADY_EXISTS;
             }
 
             Vector2 offset = item.Offset;
@@ -76,6 +87,8 @@
             item.Offset = offset;
 
             Children[item.Element] = item;
+
+            return ErrorCode.ERROR_OK;
         }
 
         /// <summary>
@@ -114,6 +127,7 @@
             {
                 return Children[element];
             }
+            
             foreach (GUIItem child in Children.Values)
             {
                 GUIItem found = child.GetChildNested(element);

@@ -3,9 +3,10 @@
 	using System.Collections.Generic;
 	using Common.BusinessObjects;
 	using Common.Utility;
+    using System;
 	
 	/// <summary>
-	/// Represents an item that handles the game logic for items
+	/// Represents an item that handles the game logic for experience levels
 	/// </summary>
 	public class ExperienceLevelManager
 	{
@@ -20,7 +21,7 @@
 		private ExperienceLevelManager() { }
 		
 		/// <summary>
-		/// Provides the Singleton instance of the RedisCache
+		/// Provides the Singleton instance of the ExperienceManager
 		/// </summary>
 		public static ExperienceLevelManager Instance
 		{
@@ -41,16 +42,20 @@
 		}
 		
 		/// <summary>
-		/// Initializes the item manager.
+		/// Initializes the experience level manager.
 		/// </summary>
 		/// <returns></returns>
 		public void Initialize(string json)
 		{
 			LoadExperienceLevelDefinitions(json);
+
+            json = null;
+
+            GC.Collect();
 		}
 		
 		/// <summary>
-		/// Load the item definitions 
+		/// Load the experience level definitions 
 		/// </summary>
 		public void LoadExperienceLevelDefinitions(string json)
 		{			

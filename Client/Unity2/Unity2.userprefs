@@ -1,15 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\GUI\GUIGameObject.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Server\ServerCommunicator.cs">
     <Files>
-      <File FileName="Assets\Code\GUI\GUIStateManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\GUI\GUIItem.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\GUI\GUIGameObject.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Events\FinishedWorkChecker.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Server\ServerCommunicator.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\GameLogic\GamePlayerStateCheck.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Tutorial\TutorialManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Tutorial\TutorialStage.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\GUI\GUIGameObject.cs" Line="33" Column="22" />
+      <File FileName="Assets\Code\Resources\ResourceManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\GUI\GUIGameObject.cs" Line="327" Column="1" />
+      <File FileName="Assets\Code\Resources\LightweightResourceManager.cs" Line="46" Column="34" />
+      <File FileName="c:\Users\Kevin\Documents\GitHub\PizzaEmpire\Client\Unity2\Assets\Code\Events\FinishedWorkChecker.cs" Line="84" Column="35" />
+      <File FileName="Assets\Code\Server\ServerCommunication.cs" Line="21" Column="2" />
+      <File FileName="Assets\Code\Server\ServerCommunicator.cs" Line="185" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

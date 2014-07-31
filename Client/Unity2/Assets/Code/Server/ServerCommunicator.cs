@@ -5,6 +5,7 @@
 	using System.Text;
 	using UnityEngine;
 	using LitJson;
+	using Common;
 	
 	/// <summary>
 	/// Represents an item that can communicate with the server 
@@ -29,7 +30,7 @@
 		}			
 		
 		/// <summary>
-		/// Provides the Singleton instance of the RedisCache
+		/// Provides the Singleton instance of the ServerCommunicator
 		/// </summary>
 		public static ServerCommunicator Instance
 		{
@@ -56,15 +57,15 @@
 		/// </summary>
 		/// <returns>The error string.</returns>
 		/// <param name="ec">Ec.</param>
-		private string GetErrorString(ServerErrorEnum ec)
+		private string GetErrorString(ErrorCode ec)
 		{
 			switch(ec)
 			{
-				case  ServerErrorEnum.ERROR_OK:
+				case ErrorCode.ERROR_OK:
 					return string.Empty;
-				case ServerErrorEnum.CONNECTION_ERROR:
-					return "There was a problem connection to the server";
-				case ServerErrorEnum.ERROR_RETRIEVING_ACCOUNT:
+				case ErrorCode.CONNECTION_ERROR:
+					return "There was a problem connecting to the server";
+				case ErrorCode.ERROR_RETRIEVING_ACCOUNT:
 					return "There was a problem communicating with the server";
 				default:
 					return string.Empty;
@@ -83,7 +84,7 @@
 			WWW www = com.Request;			
 			JsonData data = JsonMapper.ToObject(www.text);					
 			int ec =(int)data["ErrorCode"];
-			if (ec == (int)ServerErrorEnum.ERROR_OK)
+			if (ec == (int)ErrorCode.ERROR_OK)
 			{
 				data = data["Item"];
 				string json = JsonMapper.ToJson(data);
@@ -92,7 +93,7 @@
 			}
 			else
 			{
-				com.Error = (ServerErrorEnum)ec;
+				com.Error = (ErrorCode)ec;
 				com.ErrorMessage = GetErrorString(com.Error);	
 				
 				if (com.OnError != null)
@@ -192,8 +193,8 @@
 					if (!string.IsNullOrEmpty(com.Request.error)) 
 					{
                         Debug.Log(DateTime.Now + ":" + com.Request.error);
-						com.Error = ServerErrorEnum.CONNECTION_ERROR;
-						com.ErrorMessage = GetErrorString(ServerErrorEnum.CONNECTION_ERROR);						
+						com.Error = ErrorCode.CONNECTION_ERROR;
+						com.ErrorMessage = GetErrorString(ErrorCode.CONNECTION_ERROR);						
 						if (com.OnError != null)
 						{
 							com.OnError(com);

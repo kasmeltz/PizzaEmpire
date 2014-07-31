@@ -1,6 +1,7 @@
 ﻿namespace KS.PizzaEmpire.Unity
 {
     using Common.BusinessObjects;
+    using KS.PizzaEmpire.Common;
     using System;
     using System.Collections.Generic;
     using UnityEngine;
@@ -139,13 +140,15 @@
         /// Adds a GUIItem to the manager
         /// </summary>
         /// <param name="item"></param>
-        public void AddItem(GUIItem item)
+        public ErrorCode AddItem(GUIItem item)
         {
             if (guis.ContainsKey(item.Element))
             {
-                throw new ArgumentException("GUI State Manager already contains an item with this key: " + item.Element);
+                return ErrorCode.ITEM_ALREADY_EXISTS;
             }
             guis[item.Element] = item;
+
+            return ErrorCode.ERROR_OK;
         }
 
         /// <summary>

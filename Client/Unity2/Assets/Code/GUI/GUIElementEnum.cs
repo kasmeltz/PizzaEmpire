@@ -10,6 +10,8 @@
     	TableCloth,
         IconTomato,
         IconFlour,
-        OrderIngredientsWindow
+        OrderIngredientsWindow,
+        IconWipeTable,
+        ErrorWindow
 	}	
 }

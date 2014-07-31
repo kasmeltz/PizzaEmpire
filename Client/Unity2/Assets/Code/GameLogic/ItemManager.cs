@@ -11,7 +11,7 @@
 	public class ItemManager
 	{
 		private static volatile ItemManager instance;
-		private static object syncRoot = new Object();
+        private static object syncRoot = new object();
 		
 		/// <summary>
 		/// 
@@ -21,7 +21,7 @@
 		private ItemManager() { }
 		
 		/// <summary>
-		/// Provides the Singleton instance of the RedisCache
+		/// Provides the Singleton instance of the ItemManager
 		/// </summary>
 		public static ItemManager Instance
 		{
@@ -48,6 +48,10 @@
 		public void Initialize(string json)
 		{
 			LoadItemDefinitions(json);
+
+            json = null;
+
+            GC.Collect();
 		}
 		
 		/// <summary>
