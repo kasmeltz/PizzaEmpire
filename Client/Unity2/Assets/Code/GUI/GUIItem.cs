@@ -29,12 +29,19 @@
             Offset = new Vector2();
             Draggable = DraggableEnum.NONE;
             Droppable = DraggableEnum.NONE;
+            DragHandle = Vector2.zero;
         }
 
         /// <summary>
         /// The children items of this item
         /// </summary>
         protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }
+       
+       	/// <summary>
+       	/// Gets or sets the drag handle.
+       	/// </summary>
+       	/// <value>The drag handle.</value>
+       	public Vector2 DragHandle { get; set; }
        
         /// <summary>
         /// The items cumulative offset from screen position 0, 0
@@ -70,6 +77,11 @@
         /// The Render action for this item
         /// </summary>
         public Action<GUIItem> Render { get; set; }
+
+        /// <summary>
+        /// Called when an appropriate item is dropped on this item
+        /// </summary>
+        public Action<GUIItem, GUIItem> OnDrop { get; set;  }
 
         /// <summary>
         /// The position of this item, with respect to its parent
@@ -164,7 +176,8 @@
         /// through child items
         /// </summary>
         /// <param name="element"></param>
-        public GUIItem GetChildNested(float x, float y)
+        public GUIItem GetVisibleObject(float x, float y, float w, float h,
+        	GUIItem other, Func<GUIItem, GUIItem, bool> condition)
         {
             foreach (GUIItem item in Children.Values)
             {
@@ -173,15 +186,18 @@
                     continue;
                 }
 
-                if (x > item.Rectangle.x && x < item.Rectangle.x + item.Rectangle.width &&
-                       y > item.Rectangle.y && y < item.Rectangle.y + item.Rectangle.height)
+                if (x + w > item.Rectangle.x && x < item.Rectangle.x + item.Rectangle.width &&
+                       y  + h > item.Rectangle.y && y < item.Rectangle.y + item.Rectangle.height)
                 {
-                    if (item.Draggable != DraggableEnum.NONE)
+                    if (condition(item, other))
                     {
                         return item;
                     }
 
-                    GUIItem found = item.GetChildNested(x - item.Rectangle.x, y - item.Rectangle.y);
+                    GUIItem found = item
+                        .GetVisibleObject(x - item.Rectangle.x, y - item.Rectangle.y, w, h, 
+                        	other, condition);
+
                     if (found != null)
                     {
                         return found;
@@ -233,7 +249,12 @@
 			Offset = off;
 			Draggable = other.Draggable;
 			Droppable = other.Droppable;
+			Vector2 drag = DragHandle;
+			drag.x = other.DragHandle.x;
+			drag.y = other.DragHandle.y;
+			DragHandle = drag;
 			DuplicateOnDrag = other.DuplicateOnDrag;
+            OnDrop = other.OnDrop;
 			Element = other.Element;
 			State.CopyFrom(other.State);
 			Render = other.Render;
@@ -259,7 +280,12 @@
 			Offset = off;
 			Draggable = DraggableEnum.NONE;
 			Droppable = DraggableEnum.NONE;
+			Vector2 drag = DragHandle;
+			drag.x = 0;
+			drag.y = 0;
+			DragHandle = drag;
 			DuplicateOnDrag = false;
+            OnDrop = null;
 			Element = GUIElementEnum.None;
 			State.Reset();
 			Render = null;

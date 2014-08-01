@@ -13,7 +13,7 @@
     {
         protected Dictionary<GUIElementEnum, GUIItem> guis { get; set; }
 
-        protected GUIItem FocusedItem { get; set; }
+        protected GUIItem GrabbedItem { get; set; }
 
         public GUIStateManager()
         {
@@ -64,11 +64,34 @@
         }
 
         /// <summary>
-        /// Returns the focusable object at the current location
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="current"></param>
+        /// <returns></returns>
+        public static bool IsDraggable(GUIItem item, GUIItem other)
+        {
+            return (item.Draggable != DraggableEnum.NONE);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="current"></param>
+        /// <returns></returns>
+        public static bool AcceptsDraggable(GUIItem item, GUIItem other)
+        {
+            return (item.Droppable == other.Draggable);
+        }
+
+        /// <summary>
+        /// Returns the object at the current location
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public GUIItem GetFocusedObject(float x, float y)
+        public GUIItem GetVisibleObject(float x, float y, float w, float h,
+        	Func<GUIItem, GUIItem, bool> condition, GUIItem other)
         {			
 			GUIItem found = null;
 			
@@ -79,15 +102,18 @@
                     continue;
                 }
 
-                if (x > item.Rectangle.x && x < item.Rectangle.x + item.Rectangle.width &&
-                       y > item.Rectangle.y && y < item.Rectangle.y + item.Rectangle.height)
+                if (x + w > item.Rectangle.x && x < item.Rectangle.x + item.Rectangle.width &&
+                       y + h > item.Rectangle.y && y < item.Rectangle.y + item.Rectangle.height)
                 {
-                    if (item.Draggable != DraggableEnum.NONE)
+					if (condition(item, other))
                     {
                         return item;
                     }
 
-					found = item.GetChildNested(x - item.Rectangle.x, y - item.Rectangle.y);
+                    found = item
+						.GetVisibleObject(x - item.Rectangle.x, y - item.Rectangle.y, 
+							w, h, other, condition);
+
 					if (found != null)
 					{
 						return found;
@@ -104,27 +130,83 @@
         public void DragItem(GUIItem item, float x, float y)
         {
 			Rect currentRect = item.Rectangle;
-			currentRect.x = x - item.Offset.x;
-			currentRect.y = y - item.Offset.y;
+			currentRect.x = (x - item.Offset.x) - item.DragHandle.x;
+			currentRect.y = (y - item.Offset.y) - item.DragHandle.y;
 			item.Rectangle = currentRect;
         }
         
 		/// <summary>
-		/// Unfocuses the currently focused item
+		/// Releases the currently grabbed item if there is one
 		/// </summary>
-		public void UnFocusItem()
+		public void ReleaseItem()
 		{
-			if (FocusedItem == null)
+			if (GrabbedItem == null)
 			{
 				return;
 			}
 			
-			if (FocusedItem.DuplicateOnDrag)
+			GUIItem dropper = 
+				GetVisibleObject(GrabbedItem.Rectangle.x, GrabbedItem.Rectangle.y, 
+                 	GrabbedItem.Rectangle.width, GrabbedItem.Rectangle.height, 
+					AcceptsDraggable, GrabbedItem);
+					
+			if (dropper == null)
 			{
-				GUIItemFactory.Instance.Pool.Store(FocusedItem);
+				dropper = 
+					GetVisibleObject(GrabbedItem.Rectangle.x, GrabbedItem.Rectangle.y, 
+						GrabbedItem.Rectangle.width, GrabbedItem.Rectangle.height, 
+						AcceptsDraggable, GrabbedItem);
+			}
+					
+			if (dropper != null)
+			{
+				dropper.OnDrop(dropper, GrabbedItem);
+			}
+			
+			if (GrabbedItem.DuplicateOnDrag)
+			{
+				GUIItemFactory.Instance.Pool.Store(GrabbedItem);
 				RemoveItem(GUIElementEnum.CurrentDraggable);
 			}
-			FocusedItem = null;
+			GrabbedItem = null;
+		}
+		
+		/// <summary>
+		/// Attempts to make the item at the provided coordinate 
+		/// the curerntly dragged item
+		/// </summary>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		public void GrabItem(float x, float y)
+		{		
+			GrabbedItem = GetVisibleObject(x - 2, y - 2, 4, 4, IsDraggable, null);
+			if (GrabbedItem != null)
+			{
+				Vector2 dragHandle = GrabbedItem.DragHandle;
+				dragHandle.x = x - (GrabbedItem.Rectangle.x + GrabbedItem.Offset.x);
+				dragHandle.y = y - (GrabbedItem.Rectangle.y + GrabbedItem.Offset.y);
+				GrabbedItem.DragHandle = dragHandle;
+															
+				if (GrabbedItem.DuplicateOnDrag)
+				{
+					GUIItem newItem = GUIItemFactory.Instance.Pool.New();
+					newItem.CopyFrom(GrabbedItem);	
+										
+					Rect rectangle = newItem.Rectangle;
+					rectangle.x = newItem.Offset.x + rectangle.x;
+					rectangle.y = newItem.Offset.y + rectangle.y;
+					newItem.Rectangle = rectangle;
+					
+					Vector2 off = newItem.Offset;
+					off.x = 0;
+					off.y = 0;
+					newItem.Offset = off;
+					
+					guis[GUIElementEnum.CurrentDraggable] = newItem;												
+									
+					GrabbedItem = newItem;
+				}
+			}				
 		}
 		
 		#if UNITY_STANDALONE_WIN
@@ -138,56 +220,18 @@
             float my = Screen.height- Input.mousePosition.y;
 
             if (Input.GetMouseButtonDown(0))
-            {              
-				FocusedItem = GetFocusedObject(mx, my);
-				if (FocusedItem != null)
-				{
-					if (FocusedItem.DuplicateOnDrag)
-					{
-						GUIItem newItem = GUIItemFactory.Instance.Pool.New();
-						newItem.CopyFrom(FocusedItem);	
-						
-						/*
-						Debug.Log("Before FocusedItem: " + FocusedItem.Rectangle);
-						Debug.Log("Before FocusedItem: " + FocusedItem.Offset);
-						
-						Debug.Log("Before newItem: " + newItem.Rectangle);
-						Debug.Log("Before newItem: " + newItem.Offset);
-						*/
-						
-						Rect rectangle = newItem.Rectangle;
-						rectangle.x = newItem.Offset.x + rectangle.x;
-						rectangle.y = newItem.Offset.y + rectangle.y;
-						newItem.Rectangle = rectangle;
-						
-						Vector2 off = newItem.Offset;
-						off.x = 0;
-						off.y = 0;
-						newItem.Offset = off;
-												
-						guis[GUIElementEnum.CurrentDraggable] = newItem;												
-						
-						/*
-						Debug.Log("After FocusedItem: " + FocusedItem.Rectangle);
-						Debug.Log("After FocusedItem: " + FocusedItem.Offset);						
-						
-						Debug.Log("After newItem: " + newItem.Rectangle);
-						Debug.Log("After newItem: " + newItem.Offset);
-						*/
-						
-						FocusedItem = newItem;
-					}
-				}
+            {                
+				GrabItem(mx, my);
 			}
 
             if (Input.GetMouseButtonUp(0))
             {
-            	UnFocusItem();
+            	ReleaseItem();
             }
 
-            if (FocusedItem != null)
+			if (GrabbedItem != null)
             {
-                DragItem(FocusedItem, mx, my);
+				DragItem(GrabbedItem, mx, my);
             }            
         }
 

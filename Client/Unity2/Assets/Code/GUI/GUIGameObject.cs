@@ -117,47 +117,8 @@ public class GUIGameObject : MonoBehaviour {
 		workChecker = new FinishedWorkChecker(player, 2, SetGlobalError);
 
 		GUIState state;
-		
-		/*
-        GUIItem bigTogglePanel = new GUIItem(250, 200, 400, 200);
-        GUIState state = new GUIState();
-        state.StateCheck = new GamePlayerStateCheck { RequiredLevel = 2 };
-        bigTogglePanel.State = state;
-        bigTogglePanel.Element = GUIElementEnum.OrderIngredientsWindow;
-        bigTogglePanel.Style = GUIGameObject.CurrentStyle;
-        bigTogglePanel.Render = (gi) =>
-        {
-            GUI.Box(gi.Rectangle, "", gi.Style);
-        };
-
-        guiStateManager.AddItem(bigTogglePanel);
-*/
-
-		GUIItem togglePanel = new GUIItem(250, 200, 400, 200);
-        togglePanel.Element = GUIElementEnum.OrderIngredientsWindow;
-		togglePanel.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-        togglePanel.Render = (gi) =>
-        {
-            GUI.Box(gi.Rectangle, "", gi.Style);
-        };
-
-		guiStateManager.AddItem(togglePanel);
-
-        GUIItem innerThing = new GUIItem(50, 50, 35, 35);
-        innerThing.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
-        innerThing.Element = GUIElementEnum.IconTomato;
-		innerThing.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-        innerThing.Render = (gi) =>
-        {
-            if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
-            {
-               
-            }
-        };
-
-        togglePanel.AddChild(innerThing);
-
-        GUIItem innerThing2 = new GUIItem(150, 50, 35, 35);
+				
+        GUIItem innerThing2 = new GUIItem(400, 250, 35, 35);
         innerThing2.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
         innerThing2.Draggable =  DraggableEnum.RAW_INGREDIENT;
         innerThing2.DuplicateOnDrag = true;
@@ -171,21 +132,28 @@ public class GUIGameObject : MonoBehaviour {
             }
         };
 
-        togglePanel.AddChild(innerThing2);
-
-        GUIItem toggle2Button = new GUIItem(400, 400, 50, 50);
-        toggle2Button.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
-        toggle2Button.Element = GUIElementEnum.IconTomato;
-		toggle2Button.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-        toggle2Button.Render = (gi) =>
-        {
-            if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
-            {
-                togglePanel.State.Visible = !togglePanel.State.Visible;
-            }
-        };
-                       
-        guiStateManager.AddItem(toggle2Button);
+		guiStateManager.AddItem(innerThing2);
+		
+		GUIItem droppable = new GUIItem(450, 300, 50, 50);
+		droppable.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
+		droppable.Droppable = DraggableEnum.RAW_INGREDIENT;
+		droppable.OnDrop = (i1, i2) =>
+		{
+			Debug.Log("DROPPED!");	
+			Debug.Log(i1);	
+			Debug.Log(i2);	
+		};		
+		droppable.Element = GUIElementEnum.IconTomato;
+		droppable.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
+		droppable.Render = (gi) =>
+		{
+			if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
+			{
+				
+			}
+		};
+		
+		guiStateManager.AddItem(droppable);		    
         
 		GUIItem orderWheat = new GUIItem(Screen.width - 65, 400, 45, 45);
 		orderWheat.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_TOMATO_LARGE);
