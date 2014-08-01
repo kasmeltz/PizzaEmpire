@@ -25,7 +25,7 @@
         private ItemManager() { }
 
         /// <summary>
-        /// Provides the Singleton instance of the RedisCache
+        /// Provides the Singleton instance of the ItemManager
         /// </summary>
         public static ItemManager Instance
         {

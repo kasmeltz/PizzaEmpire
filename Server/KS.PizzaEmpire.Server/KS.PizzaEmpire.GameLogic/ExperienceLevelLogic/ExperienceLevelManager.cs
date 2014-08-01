@@ -25,7 +25,7 @@
         private ExperienceLevelManager() { }
 
         /// <summary>
-        /// Provides the Singleton instance of the RedisCache
+        /// Provides the Singleton instance of the ExperienceLevelManager
         /// </summary>
         public static ExperienceLevelManager Instance
         {
@@ -46,7 +46,7 @@
         }
 
         /// <summary>
-        /// Initializes the item manager.
+        /// Initializes the experience level manager.
         /// </summary>
         /// <returns></returns>
         public async Task Initialize()
@@ -58,7 +58,7 @@
         }
 
         /// <summary>
-        /// Load the item definitions 
+        /// Load the experience level definitions 
         /// </summary>
         public async Task LoadExperienceLevelDefinitions()
         {

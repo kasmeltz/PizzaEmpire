@@ -6,21 +6,27 @@
 	using Common;
 	using Common.GameLogic;
 	using Common.BusinessObjects;
+	using Common.ObjectPool;
+	
 	
 	/// <summary>
 	/// Represents an item that returns true or false
 	/// depending if the state of a passed in GamePlayer
 	/// instance matches the expected state
 	/// </summary>
-	public class GamePlayerStateCheck
+	public class GamePlayerStateCheck : IResetable
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="KS.PizzaEmpire.Unity.GamePlayerStateCheck"/> class.
 		/// </summary>
-		public GamePlayerStateCheck() { }
+		public GamePlayerStateCheck() 
+		{ 
+			ItemsGreaterThan = new List<ItemQuantity>();
+			WorkItemsInProgress = new List<ItemQuantity>();
+		}
 
-        public ItemQuantity[] ItemsGreaterThan { get; set; }
-        public ItemQuantity[] WorkItemsInProgress { get; set; }
+        public List<ItemQuantity> ItemsGreaterThan { get; set; }
+        public List<ItemQuantity> WorkItemsInProgress { get; set; }
         public int? RequiredLevel { get; set; }
         public BuildableItemEnum CanBuildItem { get; set; }
 
@@ -31,7 +37,7 @@
 		public bool CheckWorkItemsInProgress(GamePlayer player)
 		{
             if (WorkItemsInProgress == null || 
-                WorkItemsInProgress.Length == 0)
+                WorkItemsInProgress.Count == 0)
             {
                 return true;
             }
@@ -52,7 +58,7 @@
 
             if (WorkItemsInProgress != null)
             {
-                for (int i = 0; i < WorkItemsInProgress.Length; i++)
+                for (int i = 0; i < WorkItemsInProgress.Count; i++)
                 {
                     ItemQuantity checkWi = WorkItemsInProgress[i];
                     if (!playerWis.ContainsKey(checkWi.ItemCode))
@@ -99,5 +105,41 @@
 
             return true;
 		}
+		
+		/// <summary>
+		/// Copies the state from another instance
+		/// </summary>
+		/// <param name="other">The GamePlayerStateCheck to copy from</param>
+		public void CopyFrom(GamePlayerStateCheck other)
+		{
+			//public List<ItemQuantity> ItemsGreaterThan { get; set; }
+			//public List<ItemQuantity> WorkItemsInProgress { get; set; }
+			ItemsGreaterThan.Clear();
+			for(int i = 0;i < other.ItemsGreaterThan.Count;i++)
+			{
+				ItemsGreaterThan.Add(other.ItemsGreaterThan[i]);
+			}
+			
+			WorkItemsInProgress.Clear();			
+			for(int i = 0;i < other.WorkItemsInProgress.Count;i++)
+			{
+				WorkItemsInProgress.Add(other.WorkItemsInProgress[i]);
+			}
+			
+			RequiredLevel = other.RequiredLevel;
+			CanBuildItem = other.CanBuildItem;
+		}
+		
+		#region IResetable
+		
+		public void Reset()
+		{
+			ItemsGreaterThan.Clear();
+			WorkItemsInProgress.Clear();
+			RequiredLevel = null;
+			CanBuildItem = BuildableItemEnum.None;
+		}
+				
+		#endregion
 	}
 }

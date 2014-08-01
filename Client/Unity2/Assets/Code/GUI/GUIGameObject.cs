@@ -131,10 +131,11 @@ public class GUIGameObject : MonoBehaviour {
         };
 
         guiStateManager.AddItem(bigTogglePanel);
+*/
 
 		GUIItem togglePanel = new GUIItem(250, 200, 400, 200);
         togglePanel.Element = GUIElementEnum.OrderIngredientsWindow;
-        togglePanel.Style = GUIGameObject.CurrentStyle;
+		togglePanel.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
         togglePanel.Render = (gi) =>
         {
             GUI.Box(gi.Rectangle, "", gi.Style);
@@ -145,7 +146,7 @@ public class GUIGameObject : MonoBehaviour {
         GUIItem innerThing = new GUIItem(50, 50, 35, 35);
         innerThing.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
         innerThing.Element = GUIElementEnum.IconTomato;
-        innerThing.Style = GUIGameObject.CurrentStyle;
+		innerThing.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
         innerThing.Render = (gi) =>
         {
             if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
@@ -158,9 +159,10 @@ public class GUIGameObject : MonoBehaviour {
 
         GUIItem innerThing2 = new GUIItem(150, 50, 35, 35);
         innerThing2.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
-        innerThing2.Draggable = true;
+        innerThing2.Draggable =  DraggableEnum.RAW_INGREDIENT;
+        innerThing2.DuplicateOnDrag = true;
         innerThing2.Element = GUIElementEnum.IconFlour;
-        innerThing2.Style = GUIGameObject.CurrentStyle;
+		innerThing2.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
         innerThing2.Render = (gi) =>
         {
             if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
@@ -174,7 +176,7 @@ public class GUIGameObject : MonoBehaviour {
         GUIItem toggle2Button = new GUIItem(400, 400, 50, 50);
         toggle2Button.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
         toggle2Button.Element = GUIElementEnum.IconTomato;
-        toggle2Button.Style = CurrentStyle;
+		toggle2Button.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
         toggle2Button.Render = (gi) =>
         {
             if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
@@ -184,7 +186,6 @@ public class GUIGameObject : MonoBehaviour {
         };
                        
         guiStateManager.AddItem(toggle2Button);
-        */
         
 		GUIItem orderWheat = new GUIItem(Screen.width - 65, 400, 45, 45);
 		orderWheat.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_TOMATO_LARGE);

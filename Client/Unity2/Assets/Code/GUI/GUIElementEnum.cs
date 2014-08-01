@@ -12,6 +12,8 @@
         IconFlour,
         OrderIngredientsWindow,
         IconWipeTable,
-        ErrorWindow
+        ErrorWindow,
+        CurrentDraggable,
+        FullScreemWindow
 	}	
 }

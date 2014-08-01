@@ -16,7 +16,7 @@
         private GamePlayerLogic() { }
 
         /// <summary>
-        /// Provides the Singleton instance of the RedisCache
+        /// Provides the Singleton instance of the GamePlayerLogic
         /// </summary>
         public static GamePlayerLogic Instance
         {

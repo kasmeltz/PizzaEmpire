@@ -17,7 +17,7 @@
 
         public GUIStateManager()
         {
-            guis = new Dictionary<GUIElementEnum, GUIItem>();
+            guis = new Dictionary<GUIElementEnum, GUIItem>();           
         }
         
         /// <summary>
@@ -64,14 +64,14 @@
         }
 
         /// <summary>
-        /// Focusus the object at the provided location
+        /// Returns the focusable object at the current location
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void FocusObject(float x, float y)
-        {
-            FocusedItem = null;
-
+        public GUIItem GetFocusedObject(float x, float y)
+        {			
+			GUIItem found = null;
+			
             foreach (GUIItem item in guis.Values)
             {
                 if (!item.State.Visible || !item.State.Available)
@@ -82,19 +82,20 @@
                 if (x > item.Rectangle.x && x < item.Rectangle.x + item.Rectangle.width &&
                        y > item.Rectangle.y && y < item.Rectangle.y + item.Rectangle.height)
                 {
-                    if (item.Draggable)
+                    if (item.Draggable != DraggableEnum.NONE)
                     {
-                        FocusedItem = item;
-                        return;
+                        return item;
                     }
 
-                    FocusedItem = item.GetChildNested(x - item.Rectangle.x, y - item.Rectangle.y);
-                    if (FocusedItem != null)
-                    {
-                        return;
-                    }
-                }
+					found = item.GetChildNested(x - item.Rectangle.x, y - item.Rectangle.y);
+					if (found != null)
+					{
+						return found;
+					}
+				}
             }
+            
+			return found;
         }
 
         /// <summary>
@@ -102,15 +103,33 @@
         /// </summary>
         public void DragItem(GUIItem item, float x, float y)
         {
-            Rect currentRect = FocusedItem.Rectangle;
-            currentRect.x = x - FocusedItem.Offset.x;
-            currentRect.y = y - FocusedItem.Offset.y;
-            FocusedItem.Rectangle = currentRect;
+			Rect currentRect = item.Rectangle;
+			currentRect.x = x - item.Offset.x;
+			currentRect.y = y - item.Offset.y;
+			item.Rectangle = currentRect;
         }
-
-        #if UNITY_STANDALONE_WIN
-
-        /// <summary>
+        
+		/// <summary>
+		/// Unfocuses the currently focused item
+		/// </summary>
+		public void UnFocusItem()
+		{
+			if (FocusedItem == null)
+			{
+				return;
+			}
+			
+			if (FocusedItem.DuplicateOnDrag)
+			{
+				GUIItemFactory.Instance.Pool.Store(FocusedItem);
+				RemoveItem(GUIElementEnum.CurrentDraggable);
+			}
+			FocusedItem = null;
+		}
+		
+		#if UNITY_STANDALONE_WIN
+		
+		/// <summary>
         /// Handle the mouse input
         /// </summary>
         public void HandleMouse()
@@ -120,12 +139,50 @@
 
             if (Input.GetMouseButtonDown(0))
             {              
-                FocusObject(mx, my);
-            }
+				FocusedItem = GetFocusedObject(mx, my);
+				if (FocusedItem != null)
+				{
+					if (FocusedItem.DuplicateOnDrag)
+					{
+						GUIItem newItem = GUIItemFactory.Instance.Pool.New();
+						newItem.CopyFrom(FocusedItem);	
+						
+						/*
+						Debug.Log("Before FocusedItem: " + FocusedItem.Rectangle);
+						Debug.Log("Before FocusedItem: " + FocusedItem.Offset);
+						
+						Debug.Log("Before newItem: " + newItem.Rectangle);
+						Debug.Log("Before newItem: " + newItem.Offset);
+						*/
+						
+						Rect rectangle = newItem.Rectangle;
+						rectangle.x = newItem.Offset.x + rectangle.x;
+						rectangle.y = newItem.Offset.y + rectangle.y;
+						newItem.Rectangle = rectangle;
+						
+						Vector2 off = newItem.Offset;
+						off.x = 0;
+						off.y = 0;
+						newItem.Offset = off;
+												
+						guis[GUIElementEnum.CurrentDraggable] = newItem;												
+						
+						/*
+						Debug.Log("After FocusedItem: " + FocusedItem.Rectangle);
+						Debug.Log("After FocusedItem: " + FocusedItem.Offset);						
+						
+						Debug.Log("After newItem: " + newItem.Rectangle);
+						Debug.Log("After newItem: " + newItem.Offset);
+						*/
+						
+						FocusedItem = newItem;
+					}
+				}
+			}
 
             if (Input.GetMouseButtonUp(0))
             {
-                FocusedItem = null;
+            	UnFocusItem();
             }
 
             if (FocusedItem != null)

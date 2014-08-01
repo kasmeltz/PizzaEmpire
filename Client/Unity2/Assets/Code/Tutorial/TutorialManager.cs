@@ -132,9 +132,9 @@
                 DrawLouie(LouieExpression.Excited_Happy);
             };
             stateCheck = new GamePlayerStateCheck();
-            stateCheck.WorkItemsInProgress = new ItemQuantity[1];
-            stateCheck.WorkItemsInProgress[0] =
-                new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, Quantity = 1 };
+            stateCheck.WorkItemsInProgress = new List<ItemQuantity>();
+            stateCheck.WorkItemsInProgress.Add (
+                new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, Quantity = 1 });
             stage.PlayerStateCheck = stateCheck;
             stages.Add(stage);
 
@@ -220,9 +220,7 @@
             textRect.x = Screen.width * 0.3f;
             textRect.y = Screen.height * 0.05f;
 
-            GUI.Box(textRect,
-                sayings[index], 
-                LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE));
+            GUI.Box(textRect, sayings[index], Style);
         }
 
         /// <summary>

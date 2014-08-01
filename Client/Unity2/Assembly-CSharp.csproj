@@ -47,11 +47,13 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Code\Events\FinishedWorkChecker.cs" />
+     <Compile Include="Assets\Code\GUI\DraggableEnum.cs" />
      <Compile Include="Assets\Code\GUI\GUIElementEnum.cs" />
      <Compile Include="Assets\Code\GUI\GUIEvent.cs" />
      <Compile Include="Assets\Code\GUI\GUIEventEnum.cs" />
      <Compile Include="Assets\Code\GUI\GUIGameObject.cs" />
      <Compile Include="Assets\Code\GUI\GUIItem.cs" />
+     <Compile Include="Assets\Code\GUI\GUIItemFactory.cs" />
      <Compile Include="Assets\Code\GUI\GUIState.cs" />
      <Compile Include="Assets\Code\GUI\GUIStateManager.cs" />
      <Compile Include="Assets\Code\GameLogic\ExperienceLevelManager.cs" />
