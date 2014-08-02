@@ -46,7 +46,7 @@ public class GUIGameObject : MonoBehaviour {
 	}
 
     private void Start()
-    {
+	{
         IsLoaded = false;
         
 		guiStateManager = new GUIStateManager();  
@@ -116,22 +116,101 @@ public class GUIGameObject : MonoBehaviour {
           
 		workChecker = new FinishedWorkChecker(player, 2, SetGlobalError);
 
+		BuildGUI ();
+
+        player.StateChanged = true;
+    }                    		
+
+	protected void BuildGUI()
+	{
 		GUIState state;
-				
-        GUIItem innerThing2 = new GUIItem(400, 250, 35, 35);
-        innerThing2.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
-        innerThing2.Draggable =  DraggableEnum.RAW_INGREDIENT;
-        innerThing2.DuplicateOnDrag = true;
-        innerThing2.Element = GUIElementEnum.IconFlour;
+		GUIItem ingredientMenu = new GUIItem (0.05f, 0.05f, 0.25f, 0.80f);
+		ingredientMenu.Element = GUIElementEnum.WindowIngredients;
+		ingredientMenu.Style = 
+			LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
+		ingredientMenu.Render = (gi) =>
+		{
+			GUI.Box (gi.Rectangle, gi.Text, gi.Style);
+		};
+
+		ingredientMenu.State.Visible = false;
+		ingredientMenu.State.Available = true;
+
+		guiStateManager.AddItem (ingredientMenu);
+
+		GUIItem phoneIcon = new GUIItem (0.05f, 0.90f, 0.05f, 0.05f);
+		phoneIcon.Element = GUIElementEnum.IconPhone;
+		phoneIcon.Style = 
+			LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
+		phoneIcon.Texture = ResourceManager<Texture2D>.Instance.Load (ResourceEnum.TEXTURE_ICON_PHONE);
+		phoneIcon.Render = (gi) =>
+		{
+			if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
+			{
+				ingredientMenu.State.Visible = !ingredientMenu.State.Visible;
+			}
+		};
+		
+		phoneIcon.State.Visible = true;
+		phoneIcon.State.Available = true;
+		
+		guiStateManager.AddItem (phoneIcon);
+
+		GUIItem flourIngredient = new GUIItem (0.05f, 0.05f, 0.05f, 0.075f);
+		flourIngredient.Texture = 
+			ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WHITE_FLOUR);
+		flourIngredient.Draggable = DraggableEnum.RAW_INGREDIENT;
+		flourIngredient.DuplicateOnDrag = true;
+		flourIngredient.Element = GUIElementEnum.IconFlour;
+		flourIngredient.BuildableItem = BuildableItemEnum.White_Flour;
+		flourIngredient.Render = (gi) =>
+		{
+			GUI.DrawTexture (gi.Rectangle, gi.Texture);
+		};
+
+		ingredientMenu.AddChild (flourIngredient);
+
+		GUIItem ingredientShoppingCart = new GUIItem (0.15f, 0.15f, 0.15f, 0.15f);
+		ingredientShoppingCart.Texture = 
+			ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_SHOPPING_CART);
+		ingredientShoppingCart.Droppable = DraggableEnum.RAW_INGREDIENT;
+		ingredientShoppingCart.Element = GUIElementEnum.IconShoppingCart;
+		ingredientShoppingCart.Render = (gi) =>
+		{
+			GUI.DrawTexture (gi.Rectangle, gi.Texture);
+		};
+		ingredientShoppingCart.OnDrop = (i1, i2) =>
+		{
+			if (i2.BuildableItem != BuildableItemEnum.None)
+			{
+				ServerCommunicator.Instance.Communicate(
+					ServerActionEnum.StartWork, (int)i2.BuildableItem,
+					(ServerCommunication com) => 
+					{
+						//ServerCommunicator.Instance.ParseResponse<WorkItem>(com);
+						GamePlayerLogic.Instance.StartWork(player, i2.BuildableItem);
+					}, SetGlobalError);
+			}
+		};
+		
+		ingredientMenu.AddChild (ingredientShoppingCart);
+
+
+		/*
+		GUIItem innerThing2 = new GUIItem(400, 250, 35, 35);
+		innerThing2.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
+		innerThing2.Draggable =  DraggableEnum.RAW_INGREDIENT;
+		innerThing2.DuplicateOnDrag = true;
+		innerThing2.Element = GUIElementEnum.IconFlour;
 		innerThing2.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-        innerThing2.Render = (gi) =>
-        {
-            if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
-            {
-
-            }
-        };
-
+		innerThing2.Render = (gi) =>
+		{
+			if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
+			{
+				
+			}
+		};
+		
 		guiStateManager.AddItem(innerThing2);
 		
 		GUIItem droppable = new GUIItem(450, 300, 50, 50);
@@ -154,7 +233,7 @@ public class GUIGameObject : MonoBehaviour {
 		};
 		
 		guiStateManager.AddItem(droppable);		    
-        
+		
 		GUIItem orderWheat = new GUIItem(Screen.width - 65, 400, 45, 45);
 		orderWheat.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_TOMATO_LARGE);
 		orderWheat.Element = GUIElementEnum.IconFlour;
@@ -195,10 +274,9 @@ public class GUIGameObject : MonoBehaviour {
 		};
 		
 		guiStateManager.AddItem(wipeTable);			
+		*/
+	}
 
-        player.StateChanged = true;
-    }                    		
-	
     private void Update()
 	{
 		ServerCommunicator.Instance.Update();

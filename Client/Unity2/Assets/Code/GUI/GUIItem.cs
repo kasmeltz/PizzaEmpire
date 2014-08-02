@@ -1,6 +1,7 @@
 ﻿namespace KS.PizzaEmpire.Unity
 {
     using Common;
+	using Common.BusinessObjects;
     using System;
     using System.Collections.Generic;
     using Common.ObjectPool;
@@ -23,6 +24,14 @@
         /// </summary>
         public GUIItem(float x, float y, float w, float h)
         {
+			if (x <= 1 && y <= 1 && w <= 1 && h <= 1 )
+			{
+				x = Screen.width * x;
+				y = Screen.height * y;
+				w = Screen.width * w;
+				h = Screen.height * h;
+			}
+
             Rectangle = new Rect(x, y, w, h);
             Children = new Dictionary<GUIElementEnum, GUIItem>();
             State = new GUIState();
@@ -31,12 +40,18 @@
             Droppable = DraggableEnum.NONE;
             DragHandle = Vector2.zero;
         }
-
+					
         /// <summary>
         /// The children items of this item
         /// </summary>
         protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }
        
+		/// <summary>
+		/// The buildable item this GUI item represents
+		/// </summary>
+		/// <value>The buildable item this GUI item represents</value>
+		public BuildableItemEnum BuildableItem { get; set; }
+
        	/// <summary>
        	/// Gets or sets the drag handle.
        	/// </summary>
@@ -243,6 +258,7 @@
         	{
 				Children.Add(item.Element, item);
         	}			
+			BuildableItem = other.BuildableItem;
 			Vector2 off = Offset;
 			off.x = other.Offset.x;
 			off.y = other.Offset.y;
@@ -274,6 +290,7 @@
 		public void Reset()
 		{
 			Children.Clear();
+			BuildableItem = BuildableItemEnum.None;
 			Vector2 off = Offset;
 			off.x = 0;
 			off.y = 0;

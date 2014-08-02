@@ -8,12 +8,15 @@
 		None,
     	IconCheckMark,
     	TableCloth,
+		IconPhone,
         IconTomato,
         IconFlour,
         OrderIngredientsWindow,
         IconWipeTable,
+		IconShoppingCart,
         ErrorWindow,
         CurrentDraggable,
-        FullScreemWindow
+        FullScreemWindow,
+		WindowIngredients
 	}	
 }

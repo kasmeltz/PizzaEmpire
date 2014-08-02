@@ -64,7 +64,7 @@
                 
                 Debug.Log("Initializing " + typeof(T).ToString() + " asset: " + re + ", " + tokens[1]);
                 
-                ResourceLocations[re] = tokens[1];
+				ResourceLocations[re] = tokens[1].Trim();
                 ResourceCounts[re] = 0;
             }
 
@@ -78,6 +78,7 @@
         /// <returns></returns>
         protected T Load(string path)
         {
+			Debug.Log ("Loading from Resources.Load: " + path);
             return Resources.Load<T>(path);
         }        
 		
@@ -91,11 +92,13 @@
         {
 			if (ResourceCounts[resource] == 0)
             {
+				Debug.Log("Loading for first time!: " + resource);
                 ResourceObjects[resource] = Load(ResourceLocations[resource]);
                 ResourceCounts[resource] = 1;
             }   
             else
             {
+				Debug.Log("Resource already loaded!: " + resource);
                 ResourceCounts[resource]++;
             }
             

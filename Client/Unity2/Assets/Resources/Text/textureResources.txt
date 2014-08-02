@@ -8,3 +8,6 @@ TEXTURE_TUTORIAL_LOUIE_3,Graphics/UI/Characters/louie3
 TEXTURE_TUTORIAL_LOUIE_4,Graphics/UI/Characters/louie4
 TEXTURE_TUTORIAL_LOUIE_5,Graphics/UI/Characters/louie5
 TEXTURE_TUTORIAL_LOUIE_6,Graphics/UI/Characters/louie6
+TEXTURE_WHITE_FLOUR,Graphics/UI/Ingredients/flour
+TEXTURE_SHOPPING_CART,Graphics/UI/Misc/icon-checkmark
+TEXTURE_ICON_PHONE,Graphics/UI/Misc/icon-checkmark
