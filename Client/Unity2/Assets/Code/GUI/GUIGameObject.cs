@@ -132,10 +132,12 @@ public class GUIGameObject : MonoBehaviour
             return;
         }
         
+        /*
         if (ResourceManager<Texture2D>.Instance.LoadingAsync)
         {
         	return;
         }
+        */
 
         IsLoaded = true;
 		

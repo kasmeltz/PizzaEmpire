@@ -26,10 +26,26 @@ namespace KS.PizzaEmpire.Unity
 			: base(x, y, w, h)
 		{
 		}
+		
+		#region GUIItem
 				
 		public override void Render ()
 		{
 			GUI.Box(Rectangle, Text, Style);
 		}
+		
+		public override GUIItem Clone ()
+		{
+			GUIItemBox item = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
+			item.CopyFrom(this);
+			return item;
+		}	
+		
+		public override void Destroy()
+		{
+			GUIItemFactory<GUIItemBox>.Instance.Pool.Store(this);
+		}		
+		
+		#endregion
 	}	
 }

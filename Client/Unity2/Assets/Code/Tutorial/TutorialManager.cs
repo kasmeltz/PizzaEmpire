@@ -93,7 +93,6 @@
 
             TutorialStage stage;
             GamePlayerStateCheck stateCheck = null;
-            int currentText = 0;
 
 			//Hey kiddo, it's your Uncle Louie, how's it going? I see the old man left you in charge of this place. You know he never did manage to make something of this place, but I have faith in you, kid.
             stage = new TutorialStage();

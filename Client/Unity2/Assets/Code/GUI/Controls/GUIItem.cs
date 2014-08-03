@@ -10,7 +10,7 @@
     /// <summary>
     /// Represents an item in the GUI
     /// </summary>
-    public class GUIItem: IResetable
+    public abstract class GUIItem: IResetable
     {
     	public static Color DisabledColor = 
     		new Color(0.65f, 0.65f, 0.65f, 0.65f);
@@ -109,7 +109,7 @@
         /// <summary>
         /// The Render action for this item
         /// </summary>
-        public virtual void Render() {}
+        public abstract void Render();
 
         /// <summary>
         /// Called when an appropriate item is dropped on this item
@@ -350,6 +350,16 @@
 				item.UpdateState(player);
 			}
 		}
+		
+		/// <summary>
+		/// Clone this instance.
+		/// </summary>
+		public abstract GUIItem Clone();
+		
+		/// <summary>
+		/// Destroy this instance.
+		/// </summary>
+		public abstract void Destroy();
 		
 		/// <summary>
 		/// Copies the state from another instance

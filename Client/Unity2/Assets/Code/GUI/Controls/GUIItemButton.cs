@@ -35,6 +35,8 @@ namespace KS.PizzaEmpire.Unity
 		/// <value>The on click.</value>
 		public Action<GUIItem> OnClick { get; set; }
 		
+		#region GUIItem
+				
 		public override void Render ()
 		{
 			if (GUI.Button(Rectangle, Texture, Style))
@@ -42,6 +44,18 @@ namespace KS.PizzaEmpire.Unity
 				OnClick(this);
 			}
 		}
+		
+		public override GUIItem Clone ()
+		{
+			GUIItemButton item = GUIItemFactory<GUIItemButton>.Instance.Pool.New();
+			item.CopyFrom(this);
+			return item;
+		}	
+		
+		public override void Destroy()
+		{
+			GUIItemFactory<GUIItemButton>.Instance.Pool.Store(this);
+		}		
 		
 		/// <summary>
 		/// Copies the state from another instance
@@ -66,5 +80,7 @@ namespace KS.PizzaEmpire.Unity
 			
 			OnClick = null;
 		}
+		
+		#endregion		
 	}	
 }

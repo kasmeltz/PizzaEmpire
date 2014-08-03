@@ -129,7 +129,7 @@
 			
 			if (GrabbedItem.DuplicateOnDrag)
 			{
-				GUIItemFactory.Instance.Pool.Store(GrabbedItem);
+				GrabbedItem.Destroy();
 				RemoveChild(GUIElementEnum.CurrentDraggable);
 			}
 			GrabbedItem = null;
@@ -153,8 +153,7 @@
 															
 				if (GrabbedItem.DuplicateOnDrag)
 				{
-					GUIItem newItem = GUIItemFactory.Instance.Pool.New();
-					newItem.CopyFrom(GrabbedItem);	
+					GUIItem newItem = GrabbedItem.Clone();					
 										
 					Rect rectangle = newItem.Rectangle;
 					rectangle.x = newItem.Offset.x + rectangle.x;
@@ -199,6 +198,16 @@
             }            
         }
 
-        #endif         
+        #endif       
+        
+		#region GUIItem
+		
+		public override void Render () {}
+		
+		public override GUIItem Clone () { return null; }
+		
+		public override void Destroy() {}		
+		
+		#endregion  
     }
 }

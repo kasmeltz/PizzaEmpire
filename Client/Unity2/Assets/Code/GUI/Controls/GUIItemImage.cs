@@ -27,9 +27,25 @@ namespace KS.PizzaEmpire.Unity
 		{
 		}
 		
+		#region GUIItem
+				
 		public override void Render ()
 		{
 			GUI.DrawTexture(Rectangle, Texture);
 		}
+		
+		public override GUIItem Clone ()
+		{
+			GUIItemImage item = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			item.CopyFrom(this);
+			return item;
+		}	
+		
+		public override void Destroy()
+		{
+			GUIItemFactory<GUIItemImage>.Instance.Pool.Store(this);
+		}		
+		
+		#endregion		
 	}	
 }
