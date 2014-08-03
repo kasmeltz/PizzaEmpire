@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Code\Events\FinishedWorkChecker.cs" />
-     <Compile Include="Assets\Code\Events\ProgressBarWhenTapped.cs" />
      <Compile Include="Assets\Code\GUI\Controls\GUIItem.cs" />
      <Compile Include="Assets\Code\GUI\Controls\GUIItemBox.cs" />
      <Compile Include="Assets\Code\GUI\Controls\GUIItemButton.cs" />
@@ -63,16 +62,18 @@
      <Compile Include="Assets\Code\GUI\Layouts\OrderIngredientsWindow.cs" />
      <Compile Include="Assets\Code\GUI\Layouts\RestaurantCommonElements.cs" />
      <Compile Include="Assets\Code\GameLogic\ExperienceLevelManager.cs" />
+     <Compile Include="Assets\Code\GameLogic\GamePlayerManager.cs" />
      <Compile Include="Assets\Code\GameLogic\GamePlayerStateCheck.cs" />
      <Compile Include="Assets\Code\GameLogic\ItemManager.cs" />
+     <Compile Include="Assets\Code\InGameScripts\ProgressBarWhenTapped.cs" />
      <Compile Include="Assets\Code\Resources\LightweightResourceManager.cs" />
      <Compile Include="Assets\Code\Resources\ResourceEnum.cs" />
      <Compile Include="Assets\Code\Resources\ResourceManager.cs" />
+     <Compile Include="Assets\Code\Scenes\TitleSceneScript.cs" />
      <Compile Include="Assets\Code\Server\Result.cs" />
      <Compile Include="Assets\Code\Server\ServerActionEnum.cs" />
      <Compile Include="Assets\Code\Server\ServerCommunication.cs" />
      <Compile Include="Assets\Code\Server\ServerCommunicator.cs" />
-     <Compile Include="Assets\Code\TitleSceneScript.cs" />
      <Compile Include="Assets\Code\Tutorial\LouieExpression.cs" />
      <Compile Include="Assets\Code\Tutorial\TutorialManager.cs" />
      <Compile Include="Assets\Code\Tutorial\TutorialStage.cs" />

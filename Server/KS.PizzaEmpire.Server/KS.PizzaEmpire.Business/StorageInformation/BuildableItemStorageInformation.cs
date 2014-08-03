@@ -60,13 +60,15 @@
             BuildableItemTableStorage other = entity as BuildableItemTableStorage;
 
             BuildableItem clone = new BuildableItem();
-    
+     
             clone.ItemCode = (BuildableItemEnum)other.ItemCode;
             clone.RequiredLevel = other.RequiredLevel;
             clone.CoinCost = other.CoinCost;
+            clone.ProductionItem = (BuildableItemEnum)other.ProductionItem;
             clone.ProductionCapacity = other.ProductionCapacity;
             clone.BaseProduction = other.BaseProduction;
             clone.StorageCapacity = other.StorageCapacity;
+            clone.StorageItem = (BuildableItemEnum)other.StorageItem;
             clone.IsStorage = other.IsStorage;
             clone.IsConsumable = other.IsConsumable;
             clone.IsImmediate = other.IsImmediate;
@@ -105,9 +107,11 @@
             clone.ItemCode = (int)other.ItemCode;
             clone.RequiredLevel = other.RequiredLevel;
             clone.CoinCost = other.CoinCost;
+            clone.ProductionItem = (int)other.ProductionItem;
             clone.ProductionCapacity = other.ProductionCapacity;
             clone.BaseProduction = other.BaseProduction;
             clone.StorageCapacity = other.StorageCapacity;
+            clone.StorageItem = (int)other.StorageItem;
             clone.IsStorage = other.IsStorage;
             clone.IsConsumable = other.IsConsumable;
             clone.IsImmediate = other.IsImmediate;

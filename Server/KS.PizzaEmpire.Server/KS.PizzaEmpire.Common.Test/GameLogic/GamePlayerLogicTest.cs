@@ -592,5 +592,38 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(true, Player.StateChanged);
             Assert.AreEqual(100, Player.Experience);
         }
+
+        [TestMethod]
+        public void TestGetCurrentWorkItemsForProductionItemItemsInProduction()
+        {
+            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
+            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
+
+            List<WorkItem> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
+
+            Assert.AreEqual(2, wis.Count);
+        }
+
+        [TestMethod]
+        public void TestGetCurrentWorkItemsForProductionItemNoItemsInProduction()
+        {
+            List<WorkItem> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
+
+            Assert.AreEqual(0, wis.Count);
+        }
+
+        [TestMethod]
+        public void TestGetPercentageCompleteForWorkItem()
+        {
+            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
+            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
+
+            Player.WorkItems[0].FinishTime = DateTime.UtcNow.AddSeconds(2);
+
+            double ratio = GamePlayerLogic.Instance.GetPercentageCompleteForWorkItem(Player.WorkItems[0]);
+
+            Assert.IsTrue(ratio < 1.2);
+            Assert.IsTrue(ratio > 50.0 / 60.0);
+        }
     }
 }

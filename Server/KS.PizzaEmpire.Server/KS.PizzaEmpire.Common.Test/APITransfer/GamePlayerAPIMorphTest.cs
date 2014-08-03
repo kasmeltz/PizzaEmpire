@@ -2,8 +2,8 @@
 {
     using System;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using KS.PizzaEmpire.Common.BusinessObjects;
-    using KS.PizzaEmpire.Common.APITransfer;
+    using Common.BusinessObjects;
+    using Common.APITransfer;
     using System.Collections.Generic;
 
     [TestClass]

@@ -85,6 +85,7 @@
 					GamePlayerAPI playerAPI = ServerCommunicator.Instance.ParseResponse<GamePlayerAPI>(com);
 					GamePlayerAPIMorph morph = new GamePlayerAPIMorph();
 					player = (GamePlayer)morph.ToBusinessFormat(playerAPI);
+					GamePlayerManager.Instance.LoggedInPlayer = player;
 	                AllItemsLoaded();
 				}, SetGlobalError);
 	        itemsToLoad++;

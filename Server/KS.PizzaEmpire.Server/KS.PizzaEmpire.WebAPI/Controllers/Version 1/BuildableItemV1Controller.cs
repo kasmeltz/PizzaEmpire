@@ -1,6 +1,7 @@
 ﻿namespace KS.PizzaEmpire.WebAPI.Controllers.Version_1
 {
     using KS.PizzaEmpire.Common.BusinessObjects;
+    using KS.PizzaEmpire.Common.Utility;
     using KS.PizzaEmpire.GameLogic.ItemLogic;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -11,7 +12,7 @@
         // GET api/buildableitem
         public IEnumerable<BuildableItem> Get()
         {            
-            return ItemManager.Instance.BuildableItems.Values;
+                return ItemManager.Instance.BuildableItems.Values;
         }
 
         // GET api/buildableitem/5

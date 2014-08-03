@@ -51,6 +51,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="APITransfer\GamePlayerAPIMorphTest.cs" />
+    <Compile Include="APITransfer\BuildableItemAPIMorphTest.cs" />
     <Compile Include="GameLogic\GamePlayerLogicTest.cs" />
     <Compile Include="LitJSON\LitJsonTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

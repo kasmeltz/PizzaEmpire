@@ -452,5 +452,41 @@
             player.TutorialStage = stage;
             player.StateChanged = true;            
         }
+
+        /// <summary>
+        /// Gets the current work items being produced in 
+        /// the supplied production item
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="stage"></param>
+        public List<WorkItem> GetCurrentWorkItemsForProductionItem(GamePlayer player, BuildableItemEnum productionItem)
+        {
+            List<WorkItem> workItems = new List<WorkItem>();
+
+            foreach (WorkItem item in player.WorkItems)
+            {
+                BuildableItem bi = BuildableItems[item.ItemCode];
+                if (bi.ProductionItem == productionItem)
+                {
+                    workItems.Add(item);
+                }
+            }
+
+            return workItems;
+        }
+
+        /// <summary>
+        /// Gets the percentage of work complete for a given work item
+        /// at the current time
+        /// </summary>
+        /// <param name="workItem"></param>
+        /// <returns></returns>
+        public double GetPercentageCompleteForWorkItem(WorkItem workItem)
+        {
+            BuildableItem bi = BuildableItems[workItem.ItemCode];
+            double secondsToGo = workItem.FinishTime.Subtract(DateTime.UtcNow).TotalSeconds;
+            double ratio = 1 - (secondsToGo / (double)bi.BuildSeconds);
+            return Math.Min(1, Math.Max(ratio, 0));
+        }
     }
 }

@@ -2,13 +2,17 @@
 {
 	using UnityEngine;
 	using System;
+	using System.Collections.Generic;
+	using Common.BusinessObjects;
+	using Common.GameLogic;
 	
 	public class ProgressBarWhenTapped : MonoBehaviour 
 	{
 		protected bool isTapped;
 		
-		public GUIElementEnum MyElement = GUIElementEnum.InGameMotorcycle;
+		public GUIElementEnum TappedElement = GUIElementEnum.InGameMotorcycle;
 		public GUIElementEnum ProgressBarElement = GUIElementEnum.ProgressBarDryGoodTruck;
+		public BuildableItemEnum BuildableItem = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1;
 		
 		GUIItemBox guiItemBox;
 		
@@ -24,9 +28,17 @@
 			
 			isTapped = true;
 			
+			GamePlayer player = GamePlayerManager.Instance.LoggedInPlayer;
+			List<WorkItem> workItems = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(player, BuildableItem);
+			foreach(WorkItem wi in workItems)
+			{
+				double ratio = GamePlayerLogic.Instance.GetPercentageCompleteForWorkItem(wi);
+				Debug.Log("Work item for delivery truck!: " + wi.ItemCode + " : " + wi.FinishTime + " : " + ratio);
+			}
+			
 			guiItemBox = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
 			Vector2 screenCoords = Camera.main.WorldToScreenPoint(this.transform.position);
-			guiItemBox.SetRectangle(screenCoords.x, screenCoords.y + 100, 100, 100);
+			guiItemBox.SetRectangle(screenCoords.x, Screen.height - (screenCoords.y + 100), 100, 100);
 			guiItemBox.Element = ProgressBarElement;
 			guiItemBox.Style = 
 				LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
@@ -34,7 +46,7 @@
 			
 			GUIStateManager.Instance.AddChild(guiItemBox);			
 			
-			GUIStateManager.Instance.TapHandled(this.gameObject, MyElement);
+			GUIStateManager.Instance.TapHandled(this.gameObject, TappedElement);
 		}
 		
 		public void UnTapped()
