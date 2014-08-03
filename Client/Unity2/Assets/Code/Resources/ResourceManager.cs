@@ -117,7 +117,8 @@
         public ErrorCode UnLoad(ResourceEnum resource)
         {
 			if (ResourceCounts[resource] == 1)
-            {
+            {     
+				UnityEngine.Object.Destroy(ResourceObjects[resource]);
                 ResourceObjects[resource] = null;
                 Resources.UnloadAsset(ResourceObjects[resource]);
             }

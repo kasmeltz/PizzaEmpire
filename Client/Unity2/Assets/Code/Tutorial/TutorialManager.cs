@@ -78,10 +78,10 @@
 
             moreTextIcon = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_MORE_TEXT);
 
-            moreTextRect.x = Screen.width - 65;
-            moreTextRect.y = 165;
-            moreTextRect.width = 45;
-            moreTextRect.height = 45;
+			moreTextRect.width = Screen.width * 0.05f;
+			moreTextRect.height = Screen.height * 0.075f;
+			moreTextRect.x = Screen.width * 0.92f;
+			moreTextRect.y = Screen.height * 0.32f;
         }
 
         /// <summary>
@@ -93,7 +93,9 @@
 
             TutorialStage stage;
             GamePlayerStateCheck stateCheck = null;
+            int currentText = 0;
 
+			//Hey kiddo, it's your Uncle Louie, how's it going? I see the old man left you in charge of this place. You know he never did manage to make something of this place, but I have faith in you, kid.
             stage = new TutorialStage();
             stage.OnStart = () =>
             {
@@ -107,6 +109,7 @@
             };
             stages.Add(stage);
 
+			//Don't worry, I'll help show you the ropes, so you can build the biggest pizza empire in this city!
             stage = new TutorialStage();
             stage.ShowNextButton = true;
             stage.Render = () =>
@@ -116,6 +119,7 @@
             };
             stages.Add(stage);
 
+			//The first thing we need to do is call the wholesaler and order some flour. You can't make pizza dough without flour, and the dough is the secret to the best tasting pizza!
             stage = new TutorialStage();
             stage.ShowNextButton = true;
             stage.Render = () =>
@@ -125,6 +129,7 @@
             };
             stages.Add(stage);
 
+			//To phone the wholesaler tap on the phone icon. Tap and drag the white flour icon into your shopping cart. Tap the checkmark when you're done.
             stage = new TutorialStage();
             stage.Render = () =>
             {
@@ -138,6 +143,7 @@
             stage.PlayerStateCheck = stateCheck;
             stages.Add(stage);
 
+			//You did good kid. You shouldn't have to wait too long to get your flour, the wholesaler is just around the corner. 
             stage = new TutorialStage();
             stage.OnStart = () =>
             {
@@ -152,7 +158,28 @@
                 DrawLouie(LouieExpression.Excited_Happy_Thumbs_Up);
             };
             stages.Add(stage);
+            
+			//To check how long it will be before your flour arrives, do something.
+			stage = new TutorialStage();
+			stage.ShowNextButton = true;
+			stage.Render = () =>
+			{
+				RenderTutorialText(5);
+				DrawLouie(LouieExpression.Surprised_Arm_Raised);
+			};
+			stages.Add(stage);
 
+			//Excellent! You see I told you it wouldn't be long. Just let me know when it gets here I'll help you unload it.
+			stage = new TutorialStage();
+			stage.ShowNextButton = true;
+			stage.Render = () =>
+			{
+				RenderTutorialText(6);
+				DrawLouie(LouieExpression.Excited_Happy);
+			};
+			stages.Add(stage);
+			
+			//In the meantime it looks like we have some cleaning up to do around here. Look at that table it's filthy! No one will want to eat on a filthy table.
             stage = new TutorialStage();
             stage.OnStart = () =>
             {
@@ -161,38 +188,22 @@
             stage.ShowNextButton = true;
             stage.Render = () =>
             {
-                RenderTutorialText(5);
+                RenderTutorialText(7);
                 DrawLouie(LouieExpression.Surprised_Eye_Pop);
             };
             stages.Add(stage);
 
+			//To clean a table, tap on it and then take the cloth and wipe it.
             stage = new TutorialStage();
             stage.Render = () =>
             {
-                RenderTutorialText(6);
+                RenderTutorialText(8);
                 DrawLouie(LouieExpression.Surprised_Negative);
             };
             stage.GUIEvent = new GUIEvent { GEvent = GUIEventEnum.Wipe, Element = GUIElementEnum.TableCloth };
             stages.Add(stage);
 
-            stage = new TutorialStage();
-            stage.ShowNextButton = true;
-            stage.Render = () =>
-            {
-                RenderTutorialText(7);
-                DrawLouie(LouieExpression.Surprised_Arm_Raised);
-            };
-            stages.Add(stage);
-
-            stage = new TutorialStage();
-            stage.ShowNextButton = true;
-            stage.Render = () =>
-            {
-                RenderTutorialText(8);
-                DrawLouie(LouieExpression.Surprised_Arm_Raised);
-            };
-            stages.Add(stage);
-
+			//Good work! Tables will get dusty over time on their own and customers will also mess them up. Customers won't sit in your restaurant to be served unless the table is clean!
             stage = new TutorialStage();
             stage.ShowNextButton = true;
             stage.Render = () =>
@@ -202,11 +213,32 @@
             };
             stages.Add(stage);
 
+			//I hope you didn't think that that owning a pizza restaurant was going to be all fun and games? It's like my father always said "owning a pizza restaurant is not all fun and games..." 
             stage = new TutorialStage();
             stage.ShowNextButton = true;
             stage.Render = () =>
             {
                 RenderTutorialText(10);
+                DrawLouie(LouieExpression.Surprised_Arm_Raised);
+            };
+            stages.Add(stage);
+
+			//...hmm I forgot the rest.
+            stage = new TutorialStage();
+            stage.ShowNextButton = true;
+            stage.Render = () =>
+            {
+                RenderTutorialText(11);
+                DrawLouie(LouieExpression.Surprised_Arm_Raised);
+            };
+            stages.Add(stage);
+
+			//You need great dough to make great pizza, but the sauce is just as important! If you want to make the best sauce you're going to want fresh tomatoes. Luckily for us, there are local farmers who will deliver right to your restaurant.
+            stage = new TutorialStage();
+            stage.ShowNextButton = true;
+            stage.Render = () =>
+            {
+                RenderTutorialText(12);
                 DrawLouie(LouieExpression.Surprised_Arm_Raised);
             };
             stages.Add(stage);
@@ -255,8 +287,17 @@
         public void FinishTutorial()
         {
             IsFinished = true;
+            
+            // @TO DO Make sure we destroy all objects and clean everything up!
             ResourceManager<Texture2D>.Instance.UnLoad(ResourceEnum.TEXTURE_ICON_MORE_TEXT);
             ResourceManager<AudioClip>.Instance.UnLoad(ResourceEnum.AUDIOCLIP_UNCLELOUIE);
+			ResourceManager<AudioClip>.Instance.UnLoad(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_0);
+			ResourceManager<AudioClip>.Instance.UnLoad(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_1);
+			ResourceManager<AudioClip>.Instance.UnLoad(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_2);
+			ResourceManager<AudioClip>.Instance.UnLoad(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_3);
+			ResourceManager<AudioClip>.Instance.UnLoad(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_4);
+			ResourceManager<AudioClip>.Instance.UnLoad(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_5);
+			ResourceManager<AudioClip>.Instance.UnLoad(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_6);
         }
 
         /// <summary>
