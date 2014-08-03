@@ -11,12 +11,37 @@
     /// </summary>
     public class GUIStateManager : GUIItem
     {
-        protected GUIItem GrabbedItem { get; set; }
-
-        public GUIStateManager() : base(0, 0, Screen.width, Screen.height)
-        {
-        }
-               
+		private static volatile GUIStateManager instance;
+		private static object syncRoot = new object();
+		
+		private GUIStateManager() : base(0, 0, Screen.width, Screen.height)
+		{
+		}
+		
+		/// <summary>
+		/// Provides the Singleton instance of the GUIStateManager
+		/// </summary>
+		public static GUIStateManager Instance
+		{
+			get
+			{
+				if (instance == null)
+				{
+					lock (syncRoot)
+					{
+						if (instance == null)
+						{
+							instance = new GUIStateManager();
+						}
+					}
+				}
+				return instance;
+			}
+		}		
+		
+        /// The currently grabbed item    
+		public GUIItem GrabbedItem { get; protected set; }
+			               
         /// <summary>
         /// Updates the manager every frame
         /// </summary>

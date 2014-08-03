@@ -87,7 +87,7 @@
         /// <summary>
         /// Initializes the tutorial manager instance
         /// </summary>
-        public void Initialize()
+        public void Initialize(GamePlayer player)
         {
             LoadAssets();
 
@@ -139,6 +139,12 @@
             stages.Add(stage);
 
             stage = new TutorialStage();
+            stage.OnStart = () =>
+            {
+				GUIItem window = GUIStateManager.Instance
+					.GetChildNested(GUIElementEnum.OrderIngredientsWindow);				
+				window.Visible = false;
+            };
             stage.ShowNextButton = true;
             stage.Render = () =>
             {
@@ -205,7 +211,7 @@
             };
             stages.Add(stage);
 
-            SetStage(0);
+            SetStage(player.TutorialStage, player);
         }
 
 
@@ -257,7 +263,7 @@
         /// 
         /// </summary>
         /// <param name="index"></param>
-        public void SetStage(int index)
+        public void SetStage(int index, GamePlayer player)
         {
             currentStageIndex = index;
 
@@ -268,7 +274,22 @@
             }
 
             currentStage = stages[currentStageIndex];
-            currentStage = stages[index];
+            currentStage = stages[index];                       
+
+			if (player != null)
+			{
+				if (player.TutorialStage != currentStageIndex)
+				{
+					player.TutorialStage = currentStageIndex;
+					player.StateChanged = true;
+					
+					ServerCommunicator.Instance.Communicate(
+						ServerActionEnum.SetTutorialStage, currentStageIndex,
+						(ServerCommunication com) => 
+						{						
+						}, GUIGameObject.SetGlobalError);
+				}
+			}
 
             if (currentStage.OnStart != null)
             {
@@ -300,7 +321,7 @@
             if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.CheckAll(player)) &&
                 (currentStage.GUIEvent == null || currentStage.GUIEvent.IsSame(guiEvent)))
             {
-                SetStage(currentStageIndex + 1);
+                SetStage(currentStageIndex + 1, player);
             }
         }
 
@@ -323,7 +344,7 @@
             {
                 if (GUI.Button(moreTextRect,moreTextIcon,Style))
                 {
-                    SetStage(currentStageIndex + 1);
+                    SetStage(currentStageIndex + 1, player);
                 }
             }
         }

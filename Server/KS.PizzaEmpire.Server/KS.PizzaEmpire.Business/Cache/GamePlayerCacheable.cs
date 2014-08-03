@@ -52,6 +52,12 @@
         /// The work in progress for the player
         /// </summary>
         [ProtoMember(6)]
-        public List<WorkItemProtoBuf> WorkItems { get; set; }     
+        public List<WorkItemProtoBuf> WorkItems { get; set; }
+
+        /// <summary>
+        /// The player's current tutorial stage
+        /// </summary>
+        [ProtoMember(7)]
+        public int TutorialStage { get; set; }
     }
 }

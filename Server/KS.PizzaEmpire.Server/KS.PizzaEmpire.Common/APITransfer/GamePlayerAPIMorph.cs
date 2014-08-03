@@ -38,6 +38,8 @@
 
             clone.WorkItems = item.WorkItems;
 
+            clone.TutorialStage = item.TutorialStage;
+
             return clone;
         }
 
@@ -65,6 +67,8 @@
             }
 
             clone.WorkItems = item.WorkItems;
+
+            clone.TutorialStage = item.TutorialStage;
 
             return clone;
         }

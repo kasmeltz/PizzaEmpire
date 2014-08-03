@@ -38,7 +38,8 @@
                 {
                     { BuildableItemEnum.White_Flour, 1 }, 
                     { BuildableItemEnum.Dry_Goods_Delivery_Truck_L1, 1 }
-                }
+                },
+                TutorialStage = 10
             };
         }
 
@@ -63,6 +64,7 @@
             Assert.AreEqual(4, cacheable.Level);
             Assert.AreEqual(1, cacheable.WorkItems.Count);
             Assert.AreEqual(2, cacheable.BuildableItems.Count);
+            Assert.AreEqual(10, cacheable.TutorialStage);
         }
 
         [TestMethod]
@@ -77,6 +79,7 @@
             Assert.AreEqual(4, flip.Level);
             Assert.AreEqual(1, flip.WorkItems.Count);
             Assert.AreEqual(2, flip.BuildableItems.Count);
+            Assert.AreEqual(10, flip.TutorialStage);
         }
 
         [TestMethod]
@@ -90,6 +93,7 @@
             Assert.AreEqual(4, ts.Level);
             Assert.AreEqual(17, ts.WorkItemsSerialized.Length);
             Assert.AreEqual(12, ts.BuildableItemsSerialized.Length);
+            Assert.AreEqual(10, ts.TutorialStage);
         }
 
         [TestMethod]
@@ -104,6 +108,7 @@
             Assert.AreEqual(4, flip.Level);
             Assert.AreEqual(1, flip.WorkItems.Count);
             Assert.AreEqual(2, flip.BuildableItems.Count);
+            Assert.AreEqual(10, flip.TutorialStage);
         }        
     }
 }

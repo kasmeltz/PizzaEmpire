@@ -127,6 +127,8 @@
 					return "startwork/" + PlayerKey;
 				case ServerActionEnum.FinishWork:
 					return "finishwork/" + PlayerKey;
+				case ServerActionEnum.SetTutorialStage:
+					return "tutorialstage/" + PlayerKey;
 				default:
 					return string.Empty;
 			}

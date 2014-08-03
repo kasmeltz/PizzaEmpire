@@ -45,6 +45,8 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
             clone.BuildableItems = gp.BuildableItems;
             clone.WorkItems = WorkItemProtoBuf.FromBusiness(gp.WorkItems);
 
+            clone.TutorialStage = gp.TutorialStage;
+
             return clone;
         }
 
@@ -69,6 +71,8 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
             {
                 clone.WorkItems = new List<WorkItem>();
             }
+
+            clone.TutorialStage = item.TutorialStage;
 
             return clone;
         }
@@ -105,6 +109,8 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
             {
                 clone.WorkItems = new List<WorkItem>();
             }
+
+            clone.TutorialStage = other.TutorialStage;
             
             return clone;
         }
@@ -140,6 +146,8 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
                 Serializer.Serialize(memoryStream, wis);
                 clone.WorkItemsSerialized = memoryStream.ToArray();
             }
+
+            clone.TutorialStage = item.TutorialStage;
 
             return clone;
         }

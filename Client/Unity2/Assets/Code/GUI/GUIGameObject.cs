@@ -8,17 +8,11 @@ using KS.PizzaEmpire.Common;
 using KS.PizzaEmpire.Common.APITransfer;
 using LitJson;
 
-public class GUIGameObject : MonoBehaviour {
-	
-	protected int currentMessage = 0;
-	protected List<string> messages;
+public class GUIGameObject : MonoBehaviour 
+{	
 	protected GamePlayer player;
-	protected GamePlayerStateCheck stateCheck = new GamePlayerStateCheck();
 	
     protected FinishedWorkChecker workChecker;
-    protected GUIStateManager guiStateManager;
-
-	public static ErrorCode CurrentErrorCode = ErrorCode.ERROR_OK;
 
     protected int itemsLoaded = 0;
     protected int itemsToLoad = 0;
@@ -29,11 +23,15 @@ public class GUIGameObject : MonoBehaviour {
     private bool stylesInitialized = false;
     
     AsyncOperation resourceCleaner = null;
-    
-	public void SetGlobalError(ServerCommunication com)
+
+	public static ErrorCode CurrentErrorCode = ErrorCode.ERROR_OK;
+	
+	public static void SetGlobalError(ServerCommunication com)
 	{
 		CurrentErrorCode = com.Error;
-		GUIItem errorWindow = guiStateManager.GetChildNested(GUIElementEnum.ErrorWindow);
+		
+		GUIItem errorWindow = GUIStateManager.Instance
+			.GetChildNested(GUIElementEnum.ErrorWindow);			
 		errorWindow.Visible = true;
 		errorWindow.Text = com.ErrorMessage;
 		
@@ -49,9 +47,7 @@ public class GUIGameObject : MonoBehaviour {
 	{
         IsLoaded = false;
         
-		guiStateManager = new GUIStateManager();
-		guiStateManager.Visible = true;
-		guiStateManager.Render = (gi) => {};
+		GUIStateManager.Instance.Render = (gi) => {};
 
 		ServerCommunicator.Instance.Communicate(ServerActionEnum.GetBuildableItems,
 	        (ServerCommunication com) => 
@@ -96,8 +92,6 @@ public class GUIGameObject : MonoBehaviour {
 		resourcesList = Resources.Load<TextAsset>("Text/fontResources");
 		ResourceManager<Font>.Instance.Initialize(resourcesList.text);
 		Resources.UnloadAsset(resourcesList);
-
-		TutorialManager.Instance.Initialize();
 	}
 
     protected void AllItemsLoaded()
@@ -113,10 +107,11 @@ public class GUIGameObject : MonoBehaviour {
         }
 
         IsLoaded = true;
-
+		
+		TutorialManager.Instance.Initialize(player);
         TutorialManager.Instance.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
           
-		workChecker = new FinishedWorkChecker(player, 2, SetGlobalError);
+		workChecker = new FinishedWorkChecker(player, 2);
 
 		BuildGUI ();
 
@@ -125,83 +120,10 @@ public class GUIGameObject : MonoBehaviour {
 
 	protected void BuildGUI()
 	{
-		GamePlayerStateCheck availableCheck;
-		GamePlayerStateCheck enabledCheck;
+		RestaurantCommonElements.Load(player);		
+		OrderIngredientsWindow.Load(player);
+				
 		
-		GUIItem ingredientMenu = new GUIItem (0.05f, 0.05f, 0.25f, 0.80f);
-		ingredientMenu.Element = GUIElementEnum.WindowIngredients;
-		ingredientMenu.Style = 
-			LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-		ingredientMenu.Render = (gi) =>
-		{
-			GUI.Box (gi.Rectangle, gi.Text, gi.Style);
-		};
-
-		ingredientMenu.Visible = false;
-
-		guiStateManager.AddChild(ingredientMenu);
-
-		GUIItem phoneIcon = new GUIItem (0.05f, 0.90f, 0.05f, 0.05f);
-		phoneIcon.Element = GUIElementEnum.IconPhone;
-		phoneIcon.Style = 
-			LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-		phoneIcon.Texture = ResourceManager<Texture2D>.Instance.Load (ResourceEnum.TEXTURE_ICON_PHONE);
-		phoneIcon.Render = (gi) =>
-		{
-			if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
-			{
-				ingredientMenu.Visible = !ingredientMenu.Visible;
-			}
-		};
-		
-		phoneIcon.Visible = true;
-		
-		guiStateManager.AddChild(phoneIcon);
-
-		GUIItem flourIngredient = new GUIItem (0.05f, 0.05f, 0.05f, 0.075f);
-		flourIngredient.Texture = 
-			ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WHITE_FLOUR);
-		flourIngredient.Draggable = DraggableEnum.RAW_INGREDIENT;
-		flourIngredient.DuplicateOnDrag = true;
-		flourIngredient.Element = GUIElementEnum.IconFlour;
-		flourIngredient.BuildableItem = BuildableItemEnum.White_Flour;
-		flourIngredient.Render = (gi) =>
-		{			
-			GUI.DrawTexture (gi.Rectangle, gi.Texture);
-		};
-		enabledCheck = new GamePlayerStateCheck();
-		enabledCheck.Coins = 
-			ItemManager.Instance.BuildableItems[BuildableItemEnum.White_Flour].CoinCost;
-		flourIngredient.EnabledCheck = enabledCheck;
-
-		ingredientMenu.AddChild (flourIngredient);
-
-		GUIItem ingredientShoppingCart = new GUIItem (0.15f, 0.15f, 0.15f, 0.15f);
-		ingredientShoppingCart.Texture = 
-			ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_SHOPPING_CART);
-		ingredientShoppingCart.Droppable = DraggableEnum.RAW_INGREDIENT;
-		ingredientShoppingCart.Element = GUIElementEnum.IconShoppingCart;
-		ingredientShoppingCart.Render = (gi) =>
-		{
-			GUI.DrawTexture (gi.Rectangle, gi.Texture);
-		};
-		ingredientShoppingCart.OnDrop = (i1, i2) =>
-		{
-			if (i2.BuildableItem != BuildableItemEnum.None)
-			{
-				ServerCommunicator.Instance.Communicate(
-					ServerActionEnum.StartWork, (int)i2.BuildableItem,
-					(ServerCommunication com) => 
-					{
-						//ServerCommunicator.Instance.ParseResponse<WorkItem>(com);
-						GamePlayerLogic.Instance.StartWork(player, i2.BuildableItem);
-					}, SetGlobalError);
-			}
-		};
-		
-		ingredientMenu.AddChild (ingredientShoppingCart);
-
-
 		/*
 		GUIItem innerThing2 = new GUIItem(400, 250, 35, 35);
 		innerThing2.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
@@ -282,7 +204,7 @@ public class GUIGameObject : MonoBehaviour {
 		guiStateManager.AddItem(wipeTable);			
 		*/
 		
-		guiStateManager.UpdateState(player);
+		GUIStateManager.Instance.UpdateState(player);
 	}
 
     private void Update()
@@ -304,14 +226,14 @@ public class GUIGameObject : MonoBehaviour {
         if (player.StateChanged)
         {
             TutorialManager.Instance.Update(player);
-            guiStateManager.UpdateState(player);
+			GUIStateManager.Instance.UpdateState(player);
 
             player.StateChanged = false;
         }
 		
         float dt = Time.deltaTime;
 
-        guiStateManager.Update(dt);
+		GUIStateManager.Instance.Update(dt);
         workChecker.Update(dt);
         
 		if (resourceCleaner == null || resourceCleaner.isDone)
@@ -327,7 +249,7 @@ public class GUIGameObject : MonoBehaviour {
 			InitStyles();
 		}
 		
-		guiStateManager.Draw();
+		GUIStateManager.Instance.Draw();
 			
         if (!IsLoaded)
 		{
@@ -374,7 +296,7 @@ public class GUIGameObject : MonoBehaviour {
 		};
 		errorWindow.Visible = false;
 		
-		guiStateManager.AddChild(errorWindow);			
+		GUIStateManager.Instance.AddChild(errorWindow);			
 		
 		stylesInitialized = true;
 

@@ -41,5 +41,10 @@
         /// The work in progress for the player
         /// </summary>
         public byte[] WorkItemsSerialized { get; set; }
+
+        /// <summary>
+        /// The player's current tutorial stage
+        /// </summary>
+        public int TutorialStage { get; set; }
     }
 }

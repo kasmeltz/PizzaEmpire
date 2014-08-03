@@ -54,8 +54,9 @@
      <Compile Include="Assets\Code\GUI\GUIGameObject.cs" />
      <Compile Include="Assets\Code\GUI\GUIItem.cs" />
      <Compile Include="Assets\Code\GUI\GUIItemFactory.cs" />
-     <Compile Include="Assets\Code\GUI\GUIState.cs" />
      <Compile Include="Assets\Code\GUI\GUIStateManager.cs" />
+     <Compile Include="Assets\Code\GUI\Layouts\OrderIngredientsWindow.cs" />
+     <Compile Include="Assets\Code\GUI\Layouts\RestaurantCommonElements.cs" />
      <Compile Include="Assets\Code\GameLogic\ExperienceLevelManager.cs" />
      <Compile Include="Assets\Code\GameLogic\GamePlayerStateCheck.cs" />
      <Compile Include="Assets\Code\GameLogic\ItemManager.cs" />

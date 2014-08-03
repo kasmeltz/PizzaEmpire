@@ -36,7 +36,8 @@
                 {
                     { BuildableItemEnum.White_Flour, 1 }, 
                     { BuildableItemEnum.Dry_Goods_Delivery_Truck_L1, 1 }
-                }
+                },
+                TutorialStage = 10
             };
         }
 
@@ -51,7 +52,8 @@
             Assert.AreEqual(4, playerAPI.Level);
             Assert.AreEqual(1, playerAPI.WorkItems.Count);
             Assert.AreEqual(BuildableItemEnum.White_Flour, playerAPI.WorkItems[0].ItemCode);
-            Assert.AreEqual("1:1:35:1", playerAPI.BuildableItems);           
+            Assert.AreEqual("1:1:35:1", playerAPI.BuildableItems);
+            Assert.AreEqual(10, playerAPI.TutorialStage);
         }
 
         [TestMethod]
@@ -69,6 +71,7 @@
             Assert.AreEqual(2, flip.BuildableItems.Count);
             Assert.AreEqual(1, flip.BuildableItems[BuildableItemEnum.White_Flour]);
             Assert.AreEqual(1, flip.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
+            Assert.AreEqual(10, flip.TutorialStage);
         }
     }
 }

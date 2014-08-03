@@ -25,11 +25,10 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="seconds"></param>
-		public FinishedWorkChecker(GamePlayer player, int seconds, Action<ServerCommunication> onError)
+		public FinishedWorkChecker(GamePlayer player, int seconds)
         {
             this.player = player;
             CheckWorkSeconds = seconds;
-            OnError = onError;
         }
 
         /// <summary>
@@ -67,7 +66,7 @@
                         GamePlayerLogic.Instance.FinishWork(player, now[0]);
 
                         areCheckingWork = false;
-				}, OnError);
+				}, GUIGameObject.SetGlobalError);
             }
         }
 

@@ -295,6 +295,11 @@
         		return;
         	}
 
+			if (Children.Count > 0)
+			{
+				GUI.BeginGroup(Rectangle);
+			}
+			
 			if (!Enabled)
 			{
 				GUI.color = DisabledColor;
@@ -306,8 +311,7 @@
 			}
 						
 			if (Children.Count > 0)
-            {
-                GUI.BeginGroup(Rectangle);
+            {                
                 foreach (GUIItem item in Children.Values)
                 {
 	                item.Draw();

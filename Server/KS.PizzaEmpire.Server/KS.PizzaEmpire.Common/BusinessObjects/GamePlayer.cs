@@ -44,6 +44,11 @@
         public List<WorkItem> WorkItems { get; set; }
 
         /// <summary>
+        /// The player's current tutorial stage
+        /// </summary>
+        public int TutorialStage { get; set; }
+
+        /// <summary>
         /// Whether the state has changed 
         /// </summary>
         public bool StateChanged { get; set; }

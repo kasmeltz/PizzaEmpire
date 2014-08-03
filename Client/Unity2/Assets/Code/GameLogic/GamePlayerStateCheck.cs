@@ -21,15 +21,14 @@
 		/// </summary>
 		public GamePlayerStateCheck() 
 		{ 
-			ItemsGreaterThan = new List<ItemQuantity>();
 			WorkItemsInProgress = new List<ItemQuantity>();
 		}
 
-        public List<ItemQuantity> ItemsGreaterThan { get; set; }
         public List<ItemQuantity> WorkItemsInProgress { get; set; }
         public int? RequiredLevel { get; set; }
         public BuildableItemEnum CanBuildItem { get; set; }
         public int? Coins { get; set; }
+        public int? TutorialStage { get; set; }
 
 		/// <summary>
 		/// Checks the work items in progress.
@@ -111,6 +110,14 @@
 					return false;
 				}
 			}
+			
+			if (TutorialStage.HasValue)
+			{
+				if (player.TutorialStage < TutorialStage)
+				{
+					return false;
+				}
+			}
 
             return true;
 		}
@@ -121,14 +128,6 @@
 		/// <param name="other">The GamePlayerStateCheck to copy from</param>
 		public void CopyFrom(GamePlayerStateCheck other)
 		{
-			//public List<ItemQuantity> ItemsGreaterThan { get; set; }
-			//public List<ItemQuantity> WorkItemsInProgress { get; set; }
-			ItemsGreaterThan.Clear();
-			for(int i = 0;i < other.ItemsGreaterThan.Count;i++)
-			{
-				ItemsGreaterThan.Add(other.ItemsGreaterThan[i]);
-			}
-			
 			WorkItemsInProgress.Clear();			
 			for(int i = 0;i < other.WorkItemsInProgress.Count;i++)
 			{
@@ -138,16 +137,17 @@
 			RequiredLevel = other.RequiredLevel;
 			CanBuildItem = other.CanBuildItem;
 			Coins = other.Coins;
+			TutorialStage = other.TutorialStage;
 		}
 		
 		#region IResetable
 		
 		public void Reset()
 		{
-			ItemsGreaterThan.Clear();
 			WorkItemsInProgress.Clear();
 			RequiredLevel = null;
 			CanBuildItem = BuildableItemEnum.None;
+			TutorialStage = null;
 		}
 				
 		#endregion

@@ -11,6 +11,7 @@
 		CreatePlayer,
 		GetPlayer,
 		StartWork,
-		FinishWork
+		FinishWork,
+		SetTutorialStage
 	}
 }

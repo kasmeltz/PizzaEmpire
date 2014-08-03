@@ -9,7 +9,7 @@ namespace KS.PizzaEmpire.Unity
 		
 		private GUIItemFactory() 
 		{
-			Pool = new ObjectPoolWithReset<GUIItem>(100);
+			Pool = new ObjectPoolWithReset<GUIItem>(20);
 		}
 				
 		/// <summary>

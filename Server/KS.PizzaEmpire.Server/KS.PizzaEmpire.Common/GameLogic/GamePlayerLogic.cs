@@ -435,5 +435,22 @@
             player.StateChanged = true;
             return finishedItems;
         }
+
+        /// <summary>
+        /// Sets the tutorial stage for a player
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="stage"></param>
+        public void SetTutorialStage(GamePlayer player, int stage)
+        {
+            // ignore out of order tutorial stage requests
+            if (stage < player.TutorialStage && stage != 0)
+            {
+                return;
+            }
+
+            player.TutorialStage = stage;
+            player.StateChanged = true;            
+        }
     }
 }

@@ -17,6 +17,5 @@
         ErrorWindow,
         CurrentDraggable,
         FullScreemWindow,
-		WindowIngredients
 	}	
 }

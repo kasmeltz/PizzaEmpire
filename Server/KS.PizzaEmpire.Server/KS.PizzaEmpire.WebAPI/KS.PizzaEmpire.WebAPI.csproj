@@ -208,6 +208,7 @@
     <Compile Include="Controllers\Version 1\ExperienceLevelV1Controller.cs" />
     <Compile Include="Controllers\Version 1\GamePlayerV1Controller.cs" />
     <Compile Include="Controllers\Version 1\FinishWorkV1Controller.cs" />
+    <Compile Include="Controllers\Version 1\TutorialStageV1Controller.cs" />
     <Compile Include="Controllers\Version 1\StartWorkV1Controller.cs" />
     <Compile Include="Controllers\Version 1\CreatePlayerV1Controller.cs" />
     <Compile Include="Global.asax.cs">
