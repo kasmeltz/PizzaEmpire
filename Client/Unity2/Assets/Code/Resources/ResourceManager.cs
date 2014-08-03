@@ -2,9 +2,10 @@
 {
     using KS.PizzaEmpire.Common;
     using System;
+	using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
-
+    
     /// <summary>
     /// Manages the resources used in the game.
     /// This class is used to manage resources that will need to be 
@@ -18,11 +19,25 @@
         private Dictionary<ResourceEnum, string> ResourceLocations {  get; set; }
         private Dictionary<ResourceEnum, int> ResourceCounts { get; set; }
         private Dictionary<ResourceEnum, T> ResourceObjects { get; set; }
+        
+        public int numAsyncLists;
+        
+        /// <summary>
+        /// Returns true if the manager is currently loading 
+        /// resources asynchronously, false otherwise.
+        /// </summary>
+        public bool LoadingAsync 
+        { 
+	        get 
+	        {
+	        	return numAsyncLists == 0;
+	        }
+        }
 
         private static volatile ResourceManager<T> instance;
 		private static object syncRoot = new object();
 
-        private ResourceManager() { }
+		private ResourceManager() { numAsyncLists = 0; }
 		
 		/// <summary>
 		/// Provides the Singleton instance of the ResourceManager
@@ -78,10 +93,10 @@
         /// <returns></returns>
         protected T Load(string path)
         {
-			Debug.Log ("Loading from Resources.Load: " + path);
-            return Resources.Load<T>(path);
+			Debug.Log ("Loading from Resources.Load: " + path);		
+			return Resources.Load<T>(path);
         }        
-		
+               
         /// <summary>
         /// Loads the resource associated with the provided resource enum
         /// </summary>
@@ -106,6 +121,32 @@
 			Debug.Log("Reference count: " + ResourceCounts[resource]);
 			
             return ResourceObjects[resource];
+        }
+        
+        /// <summary>
+        /// Loads the list of resources, yielding between each one.
+        /// </summary>
+        /// <returns>The list.</returns>
+        /// <param name="resources">Resources.</param>
+        public IEnumerator LoadList(List<ResourceEnum> resources)
+        {
+			WaitForEndOfFrame eof = new WaitForEndOfFrame();
+			
+			lock (syncRoot)
+			{
+				numAsyncLists++;
+			}
+			
+        	for (int i = 0;i < resources.Count;i++)
+        	{
+				yield return Load(ResourceLocations[resources[i]]);
+				yield return eof;
+        	}
+        	
+			lock (syncRoot)
+			{
+				numAsyncLists--;
+			}
         }
 
         /// <summary>

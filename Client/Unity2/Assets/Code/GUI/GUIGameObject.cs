@@ -43,8 +43,21 @@ public class GUIGameObject : MonoBehaviour
 		Debug.Log(DateTime.Now + "-------------------------------------------");
 	}
 
-    private void Start()
+	/// <summary>
+	/// Loads a resource list using a coroutine - one resource per frame.
+	/// Use ResourceManager<T>.LoadingAsync to see if loading
+	/// has been completed
+	/// </summary>
+	/// <param name="resources">The list of resources to load</param>
+	/// <typeparam name="T">The type of resources to load.</typeparam>
+	public void LoadResourceList<T>(List<ResourceEnum> resources) 
+		where T : UnityEngine.Object
 	{
+		StartCoroutine(ResourceManager<T>.Instance.LoadList(resources));		
+	}
+	
+    private void Start()
+	{		
         IsLoaded = false;
         
 		GUIStateManager.Instance.Render = (gi) => {};
@@ -92,6 +105,21 @@ public class GUIGameObject : MonoBehaviour
 		resourcesList = Resources.Load<TextAsset>("Text/fontResources");
 		ResourceManager<Font>.Instance.Initialize(resourcesList.text);
 		Resources.UnloadAsset(resourcesList);
+		
+		/*
+		List<ResourceEnum> resourcesToLoad = new List<ResourceEnum>
+		{
+			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_0,
+			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_1,
+			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_2,
+			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_3,
+			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_4,
+			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_5,
+			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_6
+		};
+		
+		LoadResourceList<Texture2D>(resourcesToLoad);
+		*/		
 	}
 
     protected void AllItemsLoaded()
@@ -104,6 +132,11 @@ public class GUIGameObject : MonoBehaviour
         if (itemsLoaded != itemsToLoad)
         {
             return;
+        }
+        
+        if (ResourceManager<Texture2D>.Instance.LoadingAsync)
+        {
+        	return;
         }
 
         IsLoaded = true;
@@ -122,88 +155,7 @@ public class GUIGameObject : MonoBehaviour
 	{
 		RestaurantCommonElements.Load(player);		
 		OrderIngredientsWindow.Load(player);
-				
-		
-		/*
-		GUIItem innerThing2 = new GUIItem(400, 250, 35, 35);
-		innerThing2.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
-		innerThing2.Draggable =  DraggableEnum.RAW_INGREDIENT;
-		innerThing2.DuplicateOnDrag = true;
-		innerThing2.Element = GUIElementEnum.IconFlour;
-		innerThing2.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-		innerThing2.Render = (gi) =>
-		{
-			if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
-			{
-				
-			}
-		};
-		
-		guiStateManager.AddItem(innerThing2);
-		
-		GUIItem droppable = new GUIItem(450, 300, 50, 50);
-		droppable.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
-		droppable.Droppable = DraggableEnum.RAW_INGREDIENT;
-		droppable.OnDrop = (i1, i2) =>
-		{
-			Debug.Log("DROPPED!");	
-			Debug.Log(i1);	
-			Debug.Log(i2);	
-		};		
-		droppable.Element = GUIElementEnum.IconTomato;
-		droppable.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-		droppable.Render = (gi) =>
-		{
-			if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
-			{
-				
-			}
-		};
-		
-		guiStateManager.AddItem(droppable);		    
-		
-		GUIItem orderWheat = new GUIItem(Screen.width - 65, 400, 45, 45);
-		orderWheat.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_TOMATO_LARGE);
-		orderWheat.Element = GUIElementEnum.IconFlour;
-		orderWheat.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-		state = new GUIState();
-		state.StateCheck = new GamePlayerStateCheck { CanBuildItem = BuildableItemEnum.White_Flour };
-		orderWheat.State = state;
-		orderWheat.Render = (gi) =>
-		{
-			if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
-			{		
-				ServerCommunicator.Instance.Communicate(
-					ServerActionEnum.StartWork, (int)BuildableItemEnum.White_Flour,
-					(ServerCommunication com) => 
-					{
-					ServerCommunicator.Instance.ParseResponse<WorkItem>(com);
-					GamePlayerLogic.Instance.StartWork(player, BuildableItemEnum.White_Flour);
-				}, SetGlobalError);
-			}
-		};
-		
-		guiStateManager.AddItem(orderWheat);
-		
-		GUIItem wipeTable = new GUIItem(Screen.width - 65, 450, 45, 45);
-		wipeTable.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);
-		wipeTable.Element = GUIElementEnum.IconWipeTable;
-		wipeTable.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-		wipeTable.Render = (gi) =>
-		{
-			if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
-			{		
-				GUIEvent gevent = new GUIEvent{ Element = GUIElementEnum.TableCloth, GEvent = GUIEventEnum.Wipe };			
-				if (!TutorialManager.Instance.IsFinished)
-				{
-					TutorialManager.Instance.TryAdvance(player,gevent);
-				}
-			}
-		};
-		
-		guiStateManager.AddItem(wipeTable);			
-		*/
-		
+						
 		GUIStateManager.Instance.UpdateState(player);
 	}
 
@@ -243,7 +195,7 @@ public class GUIGameObject : MonoBehaviour
 	}
 
     private void OnGUI() 
-	{		
+	{				
 		if (!stylesInitialized)
 		{
 			InitStyles();
@@ -263,8 +215,7 @@ public class GUIGameObject : MonoBehaviour
 		}
 				
 		TutorialManager.Instance.OnGUI(player);		
-									
-       
+									       
 		GUI.TextArea(new Rect(0,0,50, 20), player.Coins.ToString());
 		GUI.TextArea(new Rect(50,0,50, 20), player.Coupons.ToString());
 		GUI.TextArea(new Rect(100,0,50, 20), player.Level.ToString());
