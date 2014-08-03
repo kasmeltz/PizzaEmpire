@@ -39,6 +39,13 @@
 			}
 		}		
 		
+		/// <summary>
+		/// Can handle up to 20 collisions with the mouse and screen objects per check
+		/// </summary>
+		private Collider2D[] collisions = new Collider2D[20];
+		
+		private GameObject currentlyTapped;
+		
         /// The currently grabbed item    
 		public GUIItem GrabbedItem { get; protected set; }
 			               
@@ -177,18 +184,43 @@
 		/// </summary>
 		public void ScreenMouseRay(float x, float y)
 		{
-			Vector3 vec = new Vector3(x, y, 5f);			
-			Vector2 vec2 = Camera.main.ScreenToWorldPoint(vec);
-			
-			Debug.Log("Mouse to world: "  + vec2);
-			
-			Collider2D[] col = Physics2D.OverlapPointAll(vec2);
+			Vector3 screenPos = new Vector3(x, y, Camera.main.nearClipPlane);			
+			Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);		
+			int collisionCount = Physics2D.OverlapPointNonAlloc(worldPos, collisions);
 						
-			if(col.Length > 0){
-				foreach(Collider2D c in col)
+			if (collisionCount > 0)
+			{
+				for (int i = 0;i < collisionCount;i++)
 				{
-					Debug.Log("Collided with: " + c.collider2D.gameObject.name);
+					GameObject newlyTapped = collisions[i].gameObject;
+					newlyTapped.SendMessage(GUIMessages.Tapped, SendMessageOptions.DontRequireReceiver);			
 				}
+			}
+			else
+			{
+				if (currentlyTapped != null)
+				{
+					currentlyTapped.SendMessage(GUIMessages.UnTapped, SendMessageOptions.DontRequireReceiver);
+				}
+			}
+		}		
+		
+		/// <summary>
+		/// Called when a tap has been handled
+		/// </summary>
+		public void TapHandled(GameObject tapHandler, GUIElementEnum element)
+		{
+			if (currentlyTapped != null && currentlyTapped != tapHandler)
+			{
+				currentlyTapped.SendMessage(GUIMessages.UnTapped, SendMessageOptions.DontRequireReceiver);
+			}
+			
+			currentlyTapped = tapHandler;
+			
+			if (!TutorialManager.Instance.IsFinished)
+			{
+				GUIEvent gEvent = new GUIEvent(element, GUIEventEnum.Tap);
+				TutorialManager.Instance.TryAdvance(gEvent);
 			}
 		}
 		
@@ -204,13 +236,12 @@
 
             if (Input.GetMouseButtonDown(0))
             {                
-				GrabItem(mx, my);				
-				
+				GrabItem(mx, my);
 				if (GrabbedItem == null)
 				{
-					ScreenMouseRay(mx, my);			
-				}
-			}
+					ScreenMouseRay(mx, Screen.height - my);			
+				}				
+			}												
 
             if (Input.GetMouseButtonUp(0))
             {

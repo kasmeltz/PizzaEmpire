@@ -1,27 +1,42 @@
 ﻿namespace KS.PizzaEmpire.Unity
 {
+	/// <summary>	
 	/// Reprents a GUI event
-	public class GUIEvent
+	/// </summary>	
+	public struct GUIEvent	
 	{
-		public GUIElementEnum Element { get; set; }
-		public GUIEventEnum GEvent { get; set; }		
+		public GUIElementEnum Element;
+		public GUIEventEnum GEvent;
+			
 		public static GUIEvent Empty = new GUIEvent { Element = GUIElementEnum.None, GEvent = GUIEventEnum.None };	
 				
 		/// <summary>
-		/// Determines whether the passed in GUI Event matches the 
-		/// details in the instance.
+		/// Initializes a new instance of the <see cref="KS.PizzaEmpire.Unity.GUIEvent"/> struct.
 		/// </summary>
-		public bool IsSame(GUIEvent other)
+		/// <param name="el">The element enum to associate with this event</param>
+		/// <param name="ge">The event enum that this event represents</param>
+		public GUIEvent(GUIElementEnum el, GUIEventEnum ge)
 		{
-			return 	other.Element == Element &&
-					other.GEvent == GEvent;
+			this.Element = el;
+			this.GEvent = ge;
 		}
 		
 		/// <summary>
-		/// Initializes a new instance of the <see cref="KS.PizzaEmpire.Unity.GUIEvent"/> class.
+		/// Equalty operator
 		/// </summary>
-		public GUIEvent()
+		public static bool operator ==(GUIEvent x, GUIEvent y) 
 		{
-		}
+			return 	x.Element == y.Element &&
+				x.GEvent == y.GEvent;
+		}	
+		
+		/// <summary>
+		/// Inequality operator
+		/// </summary>
+		public static bool operator !=(GUIEvent x, GUIEvent y) 
+		{
+			return 	x.Element != y.Element ||
+				x.GEvent != y.GEvent;
+		}		
 	}
 }

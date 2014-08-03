@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Code\Events\FinishedWorkChecker.cs" />
+     <Compile Include="Assets\Code\Events\ProgressBarWhenTapped.cs" />
      <Compile Include="Assets\Code\GUI\Controls\GUIItem.cs" />
      <Compile Include="Assets\Code\GUI\Controls\GUIItemBox.cs" />
      <Compile Include="Assets\Code\GUI\Controls\GUIItemButton.cs" />
@@ -57,6 +58,7 @@
      <Compile Include="Assets\Code\GUI\GUIEventEnum.cs" />
      <Compile Include="Assets\Code\GUI\GUIGameObject.cs" />
      <Compile Include="Assets\Code\GUI\GUIItemFactory.cs" />
+     <Compile Include="Assets\Code\GUI\GUIMessages.cs" />
      <Compile Include="Assets\Code\GUI\GUIStateManager.cs" />
      <Compile Include="Assets\Code\GUI\Layouts\OrderIngredientsWindow.cs" />
      <Compile Include="Assets\Code\GUI\Layouts\RestaurantCommonElements.cs" />
@@ -70,10 +72,10 @@
      <Compile Include="Assets\Code\Server\ServerActionEnum.cs" />
      <Compile Include="Assets\Code\Server\ServerCommunication.cs" />
      <Compile Include="Assets\Code\Server\ServerCommunicator.cs" />
+     <Compile Include="Assets\Code\TitleSceneScript.cs" />
      <Compile Include="Assets\Code\Tutorial\LouieExpression.cs" />
      <Compile Include="Assets\Code\Tutorial\TutorialManager.cs" />
      <Compile Include="Assets\Code\Tutorial\TutorialStage.cs" />
-     <Compile Include="Assets\TitleSceneScript.cs" />
      <Compile Include="Assets\UnityTestTools\Assertions\AssertionComponent.cs" />
      <Compile Include="Assets\UnityTestTools\Assertions\AssertionException.cs" />
      <Compile Include="Assets\UnityTestTools\Assertions\Assertions.cs" />

@@ -17,5 +17,7 @@
         ErrorWindow,
         CurrentDraggable,
         FullScreemWindow,
+		InGameMotorcycle,
+		ProgressBarDryGoodTruck
 	}	
 }

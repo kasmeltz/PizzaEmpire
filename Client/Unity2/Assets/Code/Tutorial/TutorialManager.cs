@@ -20,6 +20,8 @@
         private Rect textRect;
         private Rect moreTextRect;
         private Texture2D moreTextIcon;
+        
+        private GamePlayer player;
 
         public bool IsFinished { get; protected set; }
 
@@ -90,7 +92,8 @@
         public void Initialize(GamePlayer player)
         {
             LoadAssets();
-
+		
+			this.player = player;
             TutorialStage stage;
             GamePlayerStateCheck stateCheck = null;
 
@@ -160,12 +163,12 @@
             
 			//To check how long it will be before your flour arrives, do something.
 			stage = new TutorialStage();
-			stage.ShowNextButton = true;
 			stage.Render = () =>
 			{
 				RenderTutorialText(5);
 				DrawLouie(LouieExpression.Surprised_Arm_Raised);
 			};
+			stage.GUIEvent = new GUIEvent(GUIElementEnum.InGameMotorcycle, GUIEventEnum.Tap);
 			stages.Add(stage);
 
 			//Excellent! You see I told you it wouldn't be long. Just let me know when it gets here I'll help you unload it.
@@ -242,7 +245,7 @@
             };
             stages.Add(stage);
 
-            SetStage(player.TutorialStage, player);
+            SetStage(player.TutorialStage);
         }
 
 
@@ -303,7 +306,7 @@
         /// 
         /// </summary>
         /// <param name="index"></param>
-        public void SetStage(int index, GamePlayer player)
+        public void SetStage(int index)
         {
             currentStageIndex = index;
 
@@ -340,7 +343,7 @@
         /// <summary>
         /// Tries to advance to the next tutorial stage
         /// </summary>
-        public void TryAdvance(GamePlayer player, GUIEvent guiEvent)
+        public void TryAdvance(GUIEvent guiEvent)
         {
             if (currentStage.ShowNextButton)
             {
@@ -352,23 +355,24 @@
                 Debug.Log(currentStage.PlayerStateCheck);
                 Debug.Log(currentStage.PlayerStateCheck.CheckAll(player));
             }
-            if (currentStage.GUIEvent != null)
-            {
-                Debug.Log(currentStage.GUIEvent);
-                Debug.Log(currentStage.GUIEvent.IsSame(guiEvent));
-            }
+            
+            if (currentStage.GUIEvent != GUIEvent.Empty)
+			{
+		        Debug.Log(currentStage.GUIEvent);
+        		Debug.Log(currentStage.GUIEvent == guiEvent);
+        	}
 
             if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.CheckAll(player)) &&
-                (currentStage.GUIEvent == null || currentStage.GUIEvent.IsSame(guiEvent)))
+                (currentStage.GUIEvent == guiEvent))
             {
-                SetStage(currentStageIndex + 1, player);
+                SetStage(currentStageIndex + 1);
             }
         }
 
         /// <summary>
         /// Called when the tutorial manager should render
         /// </summary>
-        public void OnGUI(GamePlayer player)
+        public void OnGUI()
         {
             if (IsFinished)
             {
@@ -384,7 +388,7 @@
             {
                 if (GUI.Button(moreTextRect,moreTextIcon,Style))
                 {
-                    SetStage(currentStageIndex + 1, player);
+                    SetStage(currentStageIndex + 1);
                 }
             }
         }
@@ -392,14 +396,14 @@
         /// <summary>
         /// Called when the tutorial manager should update
         /// </summary>
-        public void Update(GamePlayer player)
+		public void UpdateState()
         {
             if (IsFinished)
             {
                 return;
             }
 
-            TryAdvance(player, GUIEvent.Empty);
+            TryAdvance(GUIEvent.Empty);
         }
     }
 }

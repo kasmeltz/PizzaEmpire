@@ -27,15 +27,7 @@
         /// </summary>
         public GUIItem(float x, float y, float w, float h)
         {
-			if (x <= 1 && y <= 1 && w <= 1 && h <= 1 )
-			{
-				x = Screen.width * x;
-				y = Screen.height * y;
-				w = Screen.width * w;
-				h = Screen.height * h;
-			}
-
-            Rectangle = new Rect(x, y, w, h);
+			SetRectangle(x, y, w, h);
             Children = new Dictionary<GUIElementEnum, GUIItem>();
             Offset = new Vector2();
             Draggable = DraggableEnum.NONE;
@@ -44,12 +36,36 @@
             Available = true;
             Enabled = true;
             Visible = true;
-        }
+        }               
+        
+        /// <summary>
+        /// Sets the rectangle for this item
+		/// <summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="w">The width.</param>
+        /// <param name="h">The height.</param>
+		public void SetRectangle(float x, float y, float w, float h)
+		{
+			if (x <= 1 && y <= 1 && w <= 1 && h <= 1 )
+			{
+				x = Screen.width * x;
+				y = Screen.height * y;
+				w = Screen.width * w;
+				h = Screen.height * h;
+			}			
+			Rectangle = new Rect(x, y, w, h);
+		}
 					
         /// <summary>
         /// The children items of this item
         /// </summary>
-        protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }       
+        protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }    
+        
+        /// <summary>
+        /// Whether the children have been modified
+        /// </summary>
+		public bool ChildrenModified { get; set; }   
 
 		/// <summary>
 		/// The parent of this item
@@ -197,6 +213,8 @@
 
             Children[item.Element] = item;
 
+			ChildrenModified = true;
+			
             return ErrorCode.ERROR_OK;
         }
 
@@ -208,7 +226,8 @@
             if (Children.ContainsKey(element))
             {
                 Children.Remove(element);
-            }            
+				ChildrenModified = true;    
+            }			    
         }
 
         /// <summary>
@@ -439,8 +458,8 @@
 			Texture = null;
 			Text = null;
 			Available = false;
-			Visible = false;
 			Enabled = false;
+			Visible = false;
 			if (AvailableCheck != null)
 			{
 				AvailableCheck.Reset();
