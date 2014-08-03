@@ -33,14 +33,14 @@ public class GUIGameObject : MonoBehaviour {
 	public void SetGlobalError(ServerCommunication com)
 	{
 		CurrentErrorCode = com.Error;
-		GUIItem errorWindow = guiStateManager.GetItem(GUIElementEnum.ErrorWindow);
-		errorWindow.State.Visible = true;
+		GUIItem errorWindow = guiStateManager.GetChildNested(GUIElementEnum.ErrorWindow);
+		errorWindow.Visible = true;
 		errorWindow.Text = com.ErrorMessage;
 		
 		Debug.Log(DateTime.Now + "-------------------------------------------");
 		Debug.Log(DateTime.Now + "Error!");
 		Debug.Log(DateTime.Now + "" + errorWindow.ToString());
-		Debug.Log(DateTime.Now + "" + errorWindow.State.Visible);
+		Debug.Log(DateTime.Now + "" + errorWindow.Visible);
 		Debug.Log(DateTime.Now + errorWindow.Text);
 		Debug.Log(DateTime.Now + "-------------------------------------------");
 	}
@@ -49,7 +49,9 @@ public class GUIGameObject : MonoBehaviour {
 	{
         IsLoaded = false;
         
-		guiStateManager = new GUIStateManager();  
+		guiStateManager = new GUIStateManager();
+		guiStateManager.Visible = true;
+		guiStateManager.Render = (gi) => {};
 
 		ServerCommunicator.Instance.Communicate(ServerActionEnum.GetBuildableItems,
 	        (ServerCommunication com) => 
@@ -123,7 +125,9 @@ public class GUIGameObject : MonoBehaviour {
 
 	protected void BuildGUI()
 	{
-		GUIState state;
+		GamePlayerStateCheck availableCheck;
+		GamePlayerStateCheck enabledCheck;
+		
 		GUIItem ingredientMenu = new GUIItem (0.05f, 0.05f, 0.25f, 0.80f);
 		ingredientMenu.Element = GUIElementEnum.WindowIngredients;
 		ingredientMenu.Style = 
@@ -133,10 +137,9 @@ public class GUIGameObject : MonoBehaviour {
 			GUI.Box (gi.Rectangle, gi.Text, gi.Style);
 		};
 
-		ingredientMenu.State.Visible = false;
-		ingredientMenu.State.Available = true;
+		ingredientMenu.Visible = false;
 
-		guiStateManager.AddItem (ingredientMenu);
+		guiStateManager.AddChild(ingredientMenu);
 
 		GUIItem phoneIcon = new GUIItem (0.05f, 0.90f, 0.05f, 0.05f);
 		phoneIcon.Element = GUIElementEnum.IconPhone;
@@ -147,14 +150,13 @@ public class GUIGameObject : MonoBehaviour {
 		{
 			if (GUI.Button(gi.Rectangle, gi.Texture, gi.Style))
 			{
-				ingredientMenu.State.Visible = !ingredientMenu.State.Visible;
+				ingredientMenu.Visible = !ingredientMenu.Visible;
 			}
 		};
 		
-		phoneIcon.State.Visible = true;
-		phoneIcon.State.Available = true;
+		phoneIcon.Visible = true;
 		
-		guiStateManager.AddItem (phoneIcon);
+		guiStateManager.AddChild(phoneIcon);
 
 		GUIItem flourIngredient = new GUIItem (0.05f, 0.05f, 0.05f, 0.075f);
 		flourIngredient.Texture = 
@@ -164,9 +166,13 @@ public class GUIGameObject : MonoBehaviour {
 		flourIngredient.Element = GUIElementEnum.IconFlour;
 		flourIngredient.BuildableItem = BuildableItemEnum.White_Flour;
 		flourIngredient.Render = (gi) =>
-		{
+		{			
 			GUI.DrawTexture (gi.Rectangle, gi.Texture);
 		};
+		enabledCheck = new GamePlayerStateCheck();
+		enabledCheck.Coins = 
+			ItemManager.Instance.BuildableItems[BuildableItemEnum.White_Flour].CoinCost;
+		flourIngredient.EnabledCheck = enabledCheck;
 
 		ingredientMenu.AddChild (flourIngredient);
 
@@ -275,6 +281,8 @@ public class GUIGameObject : MonoBehaviour {
 		
 		guiStateManager.AddItem(wipeTable);			
 		*/
+		
+		guiStateManager.UpdateState(player);
 	}
 
     private void Update()
@@ -319,7 +327,7 @@ public class GUIGameObject : MonoBehaviour {
 			InitStyles();
 		}
 		
-		guiStateManager.OnGUI();
+		guiStateManager.Draw();
 			
         if (!IsLoaded)
 		{
@@ -364,9 +372,9 @@ public class GUIGameObject : MonoBehaviour {
 		{
 			GUI.Box(gi.Rectangle, gi.Text, gi.Style);
 		};
-		errorWindow.State.Visible = false;
+		errorWindow.Visible = false;
 		
-		guiStateManager.AddItem(errorWindow);			
+		guiStateManager.AddChild(errorWindow);			
 		
 		stylesInitialized = true;
 

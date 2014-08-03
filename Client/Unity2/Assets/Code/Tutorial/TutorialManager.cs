@@ -129,7 +129,7 @@
             stage.Render = () =>
             {
                 RenderTutorialText(3);
-                DrawLouie(LouieExpression.Excited_Happy);
+                //DrawLouie(LouieExpression.Excited_Happy);
             };
             stateCheck = new GamePlayerStateCheck();
             stateCheck.WorkItemsInProgress = new List<ItemQuantity>();

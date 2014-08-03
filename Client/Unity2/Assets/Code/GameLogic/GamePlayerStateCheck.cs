@@ -29,6 +29,7 @@
         public List<ItemQuantity> WorkItemsInProgress { get; set; }
         public int? RequiredLevel { get; set; }
         public BuildableItemEnum CanBuildItem { get; set; }
+        public int? Coins { get; set; }
 
 		/// <summary>
 		/// Checks the work items in progress.
@@ -102,6 +103,14 @@
 				}
 				
 			}
+			
+			if (Coins.HasValue)
+			{
+				if (player.Coins < Coins)
+				{
+					return false;
+				}
+			}
 
             return true;
 		}
@@ -128,6 +137,7 @@
 			
 			RequiredLevel = other.RequiredLevel;
 			CanBuildItem = other.CanBuildItem;
+			Coins = other.Coins;
 		}
 		
 		#region IResetable

@@ -12,6 +12,9 @@
     /// </summary>
     public class GUIItem: IResetable
     {
+    	public static Color DisabledColor = 
+    		new Color(0.65f, 0.65f, 0.65f, 0.65f);
+    	
     	/// <summary>
     	/// Creates a new instance of the GUIItem class
 		/// </summary>
@@ -34,17 +37,25 @@
 
             Rectangle = new Rect(x, y, w, h);
             Children = new Dictionary<GUIElementEnum, GUIItem>();
-            State = new GUIState();
             Offset = new Vector2();
             Draggable = DraggableEnum.NONE;
             Droppable = DraggableEnum.NONE;
             DragHandle = Vector2.zero;
+            Available = true;
+            Enabled = true;
+            Visible = true;
         }
 					
         /// <summary>
         /// The children items of this item
         /// </summary>
-        protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }
+        protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }       
+
+		/// <summary>
+		/// The parent of this item
+		/// </summary>
+		/// <value>The parent of this item</value>
+		protected GUIItem Parent { get; set; }
        
 		/// <summary>
 		/// The buildable item this GUI item represents
@@ -84,10 +95,17 @@
         public GUIElementEnum Element { get; set; }
 
         /// <summary>
-        /// The state of this item
+        /// The state that the game player must be in 
+        /// for this item to be available
         /// </summary>
-        public GUIState State { get; set; }
+        public GamePlayerStateCheck AvailableCheck { get; set; }
 
+		/// <summary>
+		/// The state that the game player must be in
+		/// for this item to be enabled
+		/// </summary>
+		public GamePlayerStateCheck EnabledCheck { get; set; }
+		
         /// <summary>
         /// The Render action for this item
         /// </summary>
@@ -117,7 +135,49 @@
         /// The text for this item
         /// </summary>
         public string Text { get; set; }
+        
+        /// <summary>
+        /// Whether this item is currently available
+        /// </summary>
+        /// <value>True if the item is available, false otherwise</value>
+        public bool Available { get; set; }
 
+		/// <summary>
+		/// Whether this item is currently visible
+		/// </summary>
+		/// <value>True if the item is visible, false otherwise</value>
+		public bool Visible { get; set; }
+		
+		/// <summary>
+		/// Whether the item is currently enabled
+		/// </summary>
+		/// <value>True if the item is enabled, false otherwise</value>
+		public bool Enabled { get; set; }
+		
+		/// <summary>
+		/// Whether this item will be displayed
+		/// </summary>
+		/// <value><c>true</c> if displayed; otherwise, <c>false</c>.</value>
+		public bool Displayed 
+		{ 
+		 	get 
+		 	{
+		 	 	return Available && Visible;
+		 	}
+ 	 	}
+
+		/// <summary>
+		/// Whether this o		/// </summary>
+		/// <value><c>true</c> if traversed; otherwise, <c>false</c>.</value>
+		public bool Traversed
+		{
+			get
+			{
+				return Available && Visible && Enabled;
+			}
+		}
+		
+		
         /// <summary>
         /// Adds a child to an item
         /// </summary>
@@ -127,6 +187,8 @@
             {
                 return ErrorCode.ITEM_ALREADY_EXISTS;
             }
+            
+            item.Parent = this;
 
             Vector2 offset = item.Offset;
             offset.x = Offset.x + Rectangle.x;
@@ -191,12 +253,12 @@
         /// through child items
         /// </summary>
         /// <param name="element"></param>
-        public GUIItem GetVisibleObject(float x, float y, float w, float h,
+        public GUIItem GetItemAt(float x, float y, float w, float h,
         	GUIItem other, Func<GUIItem, GUIItem, bool> condition)
         {
             foreach (GUIItem item in Children.Values)
             {
-                if (!item.State.Visible || !item.State.Available)
+				if (!item.Traversed)
                 {
                     continue;
                 }
@@ -210,7 +272,7 @@
                     }
 
                     GUIItem found = item
-                        .GetVisibleObject(x - item.Rectangle.x, y - item.Rectangle.y, w, h, 
+						.GetItemAt(x - item.Rectangle.x, y - item.Rectangle.y, w, h, 
                         	other, condition);
 
                     if (found != null)
@@ -228,36 +290,75 @@
         /// </summary>
         public void Draw()
         {
-            if (Children.Count == 0)
+        	if (!Displayed)
+        	{
+        		return;
+        	}
+
+			if (!Enabled)
+			{
+				GUI.color = DisabledColor;
+			}			
+			Render(this);
+			if (!Enabled)
+			{
+				GUI.color = Color.white;
+			}
+						
+			if (Children.Count > 0)
             {
-                Render(this);
-            }
-            else
-            {
-                GUI.BeginGroup(Rectangle, Style);
-                Render(this);
+                GUI.BeginGroup(Rectangle);
                 foreach (GUIItem item in Children.Values)
                 {
-                    if (item.State.Available && item.State.Visible)
-                    {
-                        item.Draw();
-                    }
+	                item.Draw();
                 }
                 GUI.EndGroup();
             }
         }
         
-        /// <summary>
-        /// Copies the state from another instance
+		/// <summary>
+		/// Updates the Avaiable and Enabled statii based on the 
+		/// current state of the provided GamePlayer
 		/// </summary>
-        /// <param name="other">The GUIItem to copy from</param>
+		public void UpdateState(GamePlayer player)
+		{
+			Available = true;
+			Enabled = true;
+			
+			if (AvailableCheck != null)
+			{
+				if (!AvailableCheck.CheckAll(player))
+				{
+					Available = false;
+				}
+			}
+			
+			if (EnabledCheck != null)
+			{
+				if (!EnabledCheck.CheckAll(player))
+				{
+					Enabled = false;
+				}
+			}
+			
+			foreach(GUIItem item in Children.Values)
+			{
+				item.UpdateState(player);
+			}
+		}
+		
+		/// <summary>
+		/// Copies the state from another instance
+		/// </summary>
+		/// <param name="other">The GUIItem to copy from</param>
         public void CopyFrom(GUIItem other)
         {
         	Children.Clear();
         	foreach(GUIItem item in other.Children.Values)
         	{
 				Children.Add(item.Element, item);
-        	}			
+        	}		
+        	Parent = other.Parent;	
 			BuildableItem = other.BuildableItem;
 			Vector2 off = Offset;
 			off.x = other.Offset.x;
@@ -272,7 +373,6 @@
 			DuplicateOnDrag = other.DuplicateOnDrag;
             OnDrop = other.OnDrop;
 			Element = other.Element;
-			State.CopyFrom(other.State);
 			Render = other.Render;
 			Rect rectangle = Rectangle;
 			rectangle.x = other.Rectangle.x;
@@ -283,6 +383,17 @@
 			Style = other.Style;
 			Texture = other.Texture;
 			Text = other.Text;
+			Available = other.Available;
+			Visible = other.Visible;
+			Enabled = other.Enabled;
+			if (AvailableCheck != null)
+			{
+				AvailableCheck.CopyFrom(other.AvailableCheck);
+			}
+			if (EnabledCheck != null) 
+			{				
+				EnabledCheck.CopyFrom(other.EnabledCheck);
+			}
         }
         
 		#region IResetable
@@ -290,6 +401,7 @@
 		public void Reset()
 		{
 			Children.Clear();
+			Parent = null;
 			BuildableItem = BuildableItemEnum.None;
 			Vector2 off = Offset;
 			off.x = 0;
@@ -304,7 +416,6 @@
 			DuplicateOnDrag = false;
             OnDrop = null;
 			Element = GUIElementEnum.None;
-			State.Reset();
 			Render = null;
 			Rect rectangle = Rectangle;
 			rectangle.x = 0;
@@ -315,6 +426,17 @@
 			Style = null;
 			Texture = null;
 			Text = null;
+			Available = false;
+			Visible = false;
+			Enabled = false;
+			if (AvailableCheck != null)
+			{
+				AvailableCheck.Reset();
+			}
+			if (EnabledCheck != null)
+			{
+				EnabledCheck.Reset();
+			}
 		}
 		
 		#endregion

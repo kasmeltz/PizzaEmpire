@@ -75,7 +75,7 @@
      <None Include="Assets\Resources\Text\fontResources.txt" />
      <None Include="Assets\Resources\Text\unclelouie.txt" />
  <Reference Include="KS.PizzaEmpire.Common">
- <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/Code/DLLs/KS.PizzaEmpire.Common.dll</HintPath>
+ <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/Code/DLLs/KS.PizzaEmpire.Common.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
