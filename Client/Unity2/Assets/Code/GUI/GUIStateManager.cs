@@ -172,6 +172,26 @@
 			}				
 		}
 		
+		/// <summary>
+		/// Finds all items that the mouse is currently touching
+		/// </summary>
+		public void ScreenMouseRay(float x, float y)
+		{
+			Vector3 vec = new Vector3(x, y, 5f);			
+			Vector2 vec2 = Camera.main.ScreenToWorldPoint(vec);
+			
+			Debug.Log("Mouse to world: "  + vec2);
+			
+			Collider2D[] col = Physics2D.OverlapPointAll(vec2);
+						
+			if(col.Length > 0){
+				foreach(Collider2D c in col)
+				{
+					Debug.Log("Collided with: " + c.collider2D.gameObject.name);
+				}
+			}
+		}
+		
 		#if UNITY_STANDALONE_WIN
 		
 		/// <summary>
@@ -184,7 +204,12 @@
 
             if (Input.GetMouseButtonDown(0))
             {                
-				GrabItem(mx, my);
+				GrabItem(mx, my);				
+				
+				if (GrabbedItem == null)
+				{
+					ScreenMouseRay(mx, my);			
+				}
 			}
 
             if (Input.GetMouseButtonUp(0))

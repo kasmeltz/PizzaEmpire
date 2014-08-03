@@ -102,22 +102,7 @@ public class GUIGameObject : MonoBehaviour
         
 		resourcesList = Resources.Load<TextAsset>("Text/fontResources");
 		ResourceManager<Font>.Instance.Initialize(resourcesList.text);
-		Resources.UnloadAsset(resourcesList);
-		
-		/*
-		List<ResourceEnum> resourcesToLoad = new List<ResourceEnum>
-		{
-			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_0,
-			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_1,
-			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_2,
-			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_3,
-			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_4,
-			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_5,
-			ResourceEnum.TEXTURE_TUTORIAL_LOUIE_6
-		};
-		
-		LoadResourceList<Texture2D>(resourcesToLoad);
-		*/		
+		Resources.UnloadAsset(resourcesList);		
 	}
 
     protected void AllItemsLoaded()
@@ -131,22 +116,15 @@ public class GUIGameObject : MonoBehaviour
         {
             return;
         }
-        
-        /*
-        if (ResourceManager<Texture2D>.Instance.LoadingAsync)
-        {
-        	return;
-        }
-        */
 
         IsLoaded = true;
-		
+	
+		BuildGUI ();
+			
 		TutorialManager.Instance.Initialize(player);
         TutorialManager.Instance.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
           
-		workChecker = new FinishedWorkChecker(player, 2);
-
-		BuildGUI ();
+		workChecker = new FinishedWorkChecker(player, 2);	
 
         player.StateChanged = true;
     }                    		
