@@ -60,8 +60,6 @@ public class GUIGameObject : MonoBehaviour
 	{		
         IsLoaded = false;
         
-		GUIStateManager.Instance.Render = (gi) => {};
-
 		ServerCommunicator.Instance.Communicate(ServerActionEnum.GetBuildableItems,
 	        (ServerCommunication com) => 
 	        {
@@ -237,14 +235,10 @@ public class GUIGameObject : MonoBehaviour
 		LightweightResourceManager<GUIStyle>.Instance
 			.Set(ResourceEnum.GUISTYLE_BASIC_STYLE, style);
 			
-		GUIItem errorWindow = new GUIItem(Screen.width * 0.1f, Screen.height * 0.2f, 
+		GUIItemBox errorWindow = new GUIItemBox(Screen.width * 0.1f, Screen.height * 0.2f, 
 		                                  Screen.width * 0.8f, Screen.height * 0.6f);
 		errorWindow.Element = GUIElementEnum.ErrorWindow;
-		errorWindow.Style = style;
-		errorWindow.Render = (gi) =>
-		{
-			GUI.Box(gi.Rectangle, gi.Text, gi.Style);
-		};
+		errorWindow.Style = style;		
 		errorWindow.Visible = false;
 		
 		GUIStateManager.Instance.AddChild(errorWindow);			

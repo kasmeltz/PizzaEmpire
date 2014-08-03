@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 
 Project("{41B1031D-2E94-A803-3205-FA22B4A3EE0E}") = "Unity2", "Assembly-CSharp.csproj", "{60BD6474-6980-9D55-7945-A77DFD40D7E9}"
 EndProject
+Project("{41B1031D-2E94-A803-3205-FA22B4A3EE0E}") = "Unity2", "Assembly-CSharp-Editor.csproj", "{7F10C8F1-CD01-54D2-7A3B-2457766E025E}"
+EndProject
+Project("{41B1031D-2E94-A803-3205-FA22B4A3EE0E}") = "Unity2", "Assembly-UnityScript.unityproj", "{C038AE25-C8E8-B397-5AC3-B1D13C5C8D97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,11 +17,19 @@ Global
 		{60BD6474-6980-9D55-7945-A77DFD40D7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60BD6474-6980-9D55-7945-A77DFD40D7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60BD6474-6980-9D55-7945-A77DFD40D7E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F10C8F1-CD01-54D2-7A3B-2457766E025E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F10C8F1-CD01-54D2-7A3B-2457766E025E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F10C8F1-CD01-54D2-7A3B-2457766E025E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F10C8F1-CD01-54D2-7A3B-2457766E025E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C038AE25-C8E8-B397-5AC3-B1D13C5C8D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C038AE25-C8E8-B397-5AC3-B1D13C5C8D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C038AE25-C8E8-B397-5AC3-B1D13C5C8D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C038AE25-C8E8-B397-5AC3-B1D13C5C8D97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																	GlobalSection(MonoDevelopProperties) = preSolution
+																																																										GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
