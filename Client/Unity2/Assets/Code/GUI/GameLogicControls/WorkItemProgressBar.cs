@@ -15,9 +15,9 @@ namespace KS.PizzaEmpire.Unity
 		public WorkItemProgressBar()
 			: base ()
 		{
+			Animated = true;
 			MinValue = 0;
 			MaxValue = 1;
-			Animated = true;
 		}			
 		
 		/// <summary>
@@ -30,9 +30,9 @@ namespace KS.PizzaEmpire.Unity
 		public WorkItemProgressBar(float x, float y, float w, float h) 
 			: base(x, y, w, h)
 		{
+			Animated = true;
 			MinValue = 0;
 			MaxValue = 1;
-			Animated = true;		
 		}				
 		
 		/// <summary>
@@ -45,6 +45,8 @@ namespace KS.PizzaEmpire.Unity
 		{
 			Value = (float)GamePlayerLogic.Instance
 				.GetPercentageCompleteForWorkItem(WorkItem);
+			
+			Debug.Log ("Work item progress bar animate: " + Value);
 		}
 						
 		#region GUIItem
@@ -82,6 +84,9 @@ namespace KS.PizzaEmpire.Unity
 		{
 			base.Reset ();
 			
+			Animated = true;
+			MinValue = 0;
+			MaxValue = 1;
 			WorkItem = null;
 		}		
 		

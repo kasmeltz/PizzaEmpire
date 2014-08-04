@@ -19,6 +19,9 @@
         FullScreemWindow,
 		InGameMotorcycle,
 		ProgressBarDryGoodTruck,
-		ProgressBar
+		ProgressBar,
+		TutorialMoreText,
+		TutorialDialogueBox,
+		TutorialLouie
 	}	
 }

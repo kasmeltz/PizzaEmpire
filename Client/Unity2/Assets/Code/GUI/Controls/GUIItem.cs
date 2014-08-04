@@ -27,6 +27,7 @@
         /// </summary>
         public GUIItem(float x, float y, float w, float h)
         {
+			toRemove = new List<GUIElementEnum>();
 			SetRectangle(x, y, w, h, false);
             Children = new Dictionary<GUIElementEnum, GUIItem>();
             Offset = new Vector2();
@@ -79,6 +80,14 @@
         /// The children items of this item
         /// </summary>
         protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }    
+        
+        // set to true when drawing
+		public bool IsDrawing { get; set; }
+		
+		/// <summary>
+		/// A list of items to remove at the end of the draw cycle
+		/// </summary>
+        protected List<GUIElementEnum> toRemove { get; set; }
         
         /// <summary>
         /// Whether the children have been modified
@@ -257,11 +266,30 @@
         /// </summary>
         public void RemoveChild(GUIElementEnum element)
         {
-            if (Children.ContainsKey(element))
-            {
-                Children.Remove(element);
-				ChildrenModified = true;    
+        	if (IsDrawing)
+        	{
+        		toRemove.Add(element);
+        	}
+        	else
+        	{
+	            if (Children.ContainsKey(element))
+	            {
+	                Children.Remove(element);
+					ChildrenModified = true;    
+	            }
             }			    
+        }
+        
+        /// <summary>
+        /// Removes any children in the toremove list
+        /// </summary>
+        protected void RemoveAllChildren()
+        {
+        	for(int i = 0;i < toRemove.Count;i++)
+        	{
+        		RemoveChild(toRemove[i]);
+        	}
+        	toRemove.Clear();
         }
 
         /// <summary>
@@ -366,6 +394,8 @@
         		return;
         	}
 
+			IsDrawing = true;
+			
 			if (IsWorld)
 			{
 				Rectangle = WorldToScreen();
@@ -375,12 +405,7 @@
 			{
 				Animate(dt);
 			}
-			
-			if (Children.Count > 0)
-			{
-				GUI.BeginGroup(Rectangle);
-			}
-			
+						
 			if (!Enabled)
 			{
 				GUI.color = DisabledColor;
@@ -390,15 +415,23 @@
 			{
 				GUI.color = Color.white;
 			}
-						
+				
 			if (Children.Count > 0)
             {                
+				GUI.BeginGroup(Rectangle);
                 foreach (GUIItem item in Children.Values)
                 {
 	                item.Draw(dt);
                 }
                 GUI.EndGroup();
             }
+            
+			IsDrawing = false;
+			
+			if (toRemove.Count > 0)
+			{
+				RemoveAllChildren();
+			}
         }
         
 		/// <summary>
@@ -500,6 +533,7 @@
 		
 		public virtual void Reset()
 		{
+			toRemove.Clear();
 			Children.Clear();
 			Animated = false;
 			IsWorld = false;

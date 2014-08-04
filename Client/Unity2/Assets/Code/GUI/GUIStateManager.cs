@@ -81,6 +81,17 @@
             }                        
         }
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="current"></param>
+		/// <returns></returns>
+		public static bool AnyItem(GUIItem item, GUIItem other)
+		{
+			return true;
+		}
+		
         /// <summary>
         /// 
         /// </summary>
@@ -180,9 +191,9 @@
 		}
 		
 		/// <summary>
-		/// Finds all items that the mouse is currently touching
+		/// Handles game world actions at the given coordinates
 		/// </summary>
-		public void ScreenMouseRay(float x, float y)
+		public void HandleGameWorldTap(float x, float y)
 		{
 			Vector3 screenPos = new Vector3(x, y, Camera.main.nearClipPlane);			
 			Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);		
@@ -224,6 +235,54 @@
 			}
 		}
 		
+		/// <summary>
+		/// Deals with tap events at the specified screen coordinates
+		/// </summary>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		public void HandleTap(float x, float y)
+		{
+			GUIItem anyItem = GetItemAt(x - 2, y - 2, 4, 4, null, AnyItem);
+			
+			if (anyItem == null)
+			{
+				HandleGameWorldTap(x, Screen.height - y);			
+			}
+		}
+				
+		/// <summary>
+		/// Handles the begin of a drag event
+		/// </summary>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		public void HandleDragBegin(float x, float y)
+		{
+			GrabItem(x, y);
+		}
+			
+		/// <summary>
+		/// Handles a drag event at the specified coordinate
+		/// </summary>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		public void HandleDrag(float x, float y)
+		{
+			if (GrabbedItem != null)
+			{
+				DragItem(GrabbedItem, x, y);
+			}  
+		}
+		
+		/// <summary>
+		/// Handles a drag event at the specified coordinate
+		/// </summary>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		public void HandleDragEnd(float x, float y)
+		{
+			ReleaseItem();
+		}
+		
 		#if UNITY_STANDALONE_WIN
 		
 		/// <summary>
@@ -236,22 +295,19 @@
 
             if (Input.GetMouseButtonDown(0))
             {                
-				GrabItem(mx, my);
-				if (GrabbedItem == null)
-				{
-					ScreenMouseRay(mx, Screen.height - my);			
-				}				
+				HandleDragBegin(mx, my);		
 			}												
 
             if (Input.GetMouseButtonUp(0))
             {
-            	ReleaseItem();
+				HandleTap(mx, my);
+				HandleDragEnd(mx, my);            	
             }
 
-			if (GrabbedItem != null)
-            {
-				DragItem(GrabbedItem, mx, my);
-            }            
+			if (Input.GetMouseButton(0))
+			{
+				HandleDrag(mx, my);
+			}          
         }
 
         #endif       

@@ -13,10 +13,8 @@
 		/// </summary>
 		public TutorialStage (){}
 	
-		public Action Render { get; set; }
         public Action OnStart { get; set; }
 		public GamePlayerStateCheck PlayerStateCheck { get; set; }
 		public GUIEvent GUIEvent { get; set; }
-		public bool ShowNextButton { get; set; }
 	}
 }

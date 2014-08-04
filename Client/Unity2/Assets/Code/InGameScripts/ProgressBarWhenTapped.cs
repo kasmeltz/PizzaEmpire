@@ -56,7 +56,7 @@
 			if (workItem != null)
 			{
 				progressBar = GUIItemFactory<WorkItemProgressBar>.Instance.Pool.New();
-				progressBar.SetRectangle(0, 0, 0.2f, 0.05f, false);
+				progressBar.SetRectangle(0.05f, 0.05f, 0.2f, 0.05f, false);
 				progressBar.Element = GUIElementEnum.ProgressBar;
 				progressBar.Style =  
 					LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);

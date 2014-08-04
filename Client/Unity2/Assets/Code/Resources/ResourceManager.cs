@@ -157,18 +157,19 @@
         /// <returns></returns>
         public ErrorCode UnLoad(ResourceEnum resource)
         {
+			Debug.Log("UnLoading " + typeof(T).ToString() + " Item: " + resource);
+			Debug.Log("Reference count: " + ResourceCounts[resource]);			
+			Debug.Log("Object: " + ResourceObjects[resource]);
+						
 			if (ResourceCounts[resource] == 1)
             {     
 				ResourceObjects[resource] = null;
-                Resources.UnloadAsset(ResourceObjects[resource]);
+				UnityEngine.Object.DestroyImmediate(ResourceObjects[resource]);
             }
 
             ResourceCounts[resource]--;
-            
-			Debug.Log("UnLoading " + typeof(T).ToString() + " Item: " + resource + ", " + ResourceObjects[resource]);
-			Debug.Log("Reference count: " + ResourceCounts[resource]);
-
-            if (ResourceCounts[resource] < 0)
+            			
+			if (ResourceCounts[resource] < 0)
             {
                 return ErrorCode.RESOURCE_CALLS_NOT_PAIRED;
             }

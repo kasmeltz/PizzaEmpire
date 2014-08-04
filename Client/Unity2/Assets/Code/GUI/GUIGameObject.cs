@@ -124,7 +124,6 @@
 			BuildGUI ();
 				
 			TutorialManager.Instance.Initialize(player);
-	        TutorialManager.Instance.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
 	          
 			workChecker = new FinishedWorkChecker(player, 2);	
 	
@@ -206,7 +205,7 @@
 				return;
 			}
 					
-			TutorialManager.Instance.OnGUI();		
+			//TutorialManager.Instance.OnGUI();		
 										       
 			GUI.TextArea(new Rect(0,0,50, 20), player.Coins.ToString());
 			GUI.TextArea(new Rect(50,0,50, 20), player.Coupons.ToString());
