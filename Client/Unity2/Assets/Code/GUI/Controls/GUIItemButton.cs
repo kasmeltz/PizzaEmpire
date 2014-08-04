@@ -10,7 +10,7 @@ namespace KS.PizzaEmpire.Unity
 	public class GUIItemButton : GUIItem
 	{	
 		/// <summary>
-		/// Creates a new instace of the GUIItemImage class
+        /// Creates a new instace of the GUIItemButton class
 		/// </summary>
 		public GUIItemButton()
 			: base ()
@@ -18,7 +18,7 @@ namespace KS.PizzaEmpire.Unity
 		}
 		
 		/// <summary>
-		/// Creates a new instance of the GUIItemImage class
+		/// Creates a new instance of the GUIItemButton class
 		/// </summary>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>

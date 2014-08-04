@@ -159,8 +159,7 @@
         {
 			if (ResourceCounts[resource] == 1)
             {     
-				UnityEngine.Object.Destroy(ResourceObjects[resource]);
-                ResourceObjects[resource] = null;
+				ResourceObjects[resource] = null;
                 Resources.UnloadAsset(ResourceObjects[resource]);
             }
 

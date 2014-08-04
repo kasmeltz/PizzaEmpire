@@ -51,6 +51,7 @@
      <Compile Include="Assets\Code\GUI\Controls\GUIItemBox.cs" />
      <Compile Include="Assets\Code\GUI\Controls\GUIItemButton.cs" />
      <Compile Include="Assets\Code\GUI\Controls\GUIItemImage.cs" />
+     <Compile Include="Assets\Code\GUI\Controls\GUIItemProgressBar.cs" />
      <Compile Include="Assets\Code\GUI\DraggableEnum.cs" />
      <Compile Include="Assets\Code\GUI\GUIElementEnum.cs" />
      <Compile Include="Assets\Code\GUI\GUIEvent.cs" />
@@ -59,6 +60,7 @@
      <Compile Include="Assets\Code\GUI\GUIItemFactory.cs" />
      <Compile Include="Assets\Code\GUI\GUIMessages.cs" />
      <Compile Include="Assets\Code\GUI\GUIStateManager.cs" />
+     <Compile Include="Assets\Code\GUI\GameLogicControls\WorkItemProgressBar.cs" />
      <Compile Include="Assets\Code\GUI\Layouts\OrderIngredientsWindow.cs" />
      <Compile Include="Assets\Code\GUI\Layouts\RestaurantCommonElements.cs" />
      <Compile Include="Assets\Code\GameLogic\ExperienceLevelManager.cs" />

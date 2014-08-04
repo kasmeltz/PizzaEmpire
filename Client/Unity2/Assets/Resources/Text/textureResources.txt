@@ -11,3 +11,5 @@ TEXTURE_TUTORIAL_LOUIE_6,Graphics/UI/Characters/louie6
 TEXTURE_WHITE_FLOUR,Graphics/UI/Ingredients/flour
 TEXTURE_SHOPPING_CART,Graphics/UI/Misc/icon-checkmark
 TEXTURE_ICON_PHONE,Graphics/UI/Misc/icon-checkmark
+TEXTURE_BAR_OUTER,Graphics/UI/Misc/barouter
+TEXTURE_BAR_INNER,Graphics/UI/Misc/barinner

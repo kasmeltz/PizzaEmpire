@@ -18,6 +18,7 @@
         CurrentDraggable,
         FullScreemWindow,
 		InGameMotorcycle,
-		ProgressBarDryGoodTruck
+		ProgressBarDryGoodTruck,
+		ProgressBar
 	}	
 }

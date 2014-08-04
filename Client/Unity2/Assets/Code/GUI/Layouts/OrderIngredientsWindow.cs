@@ -35,8 +35,7 @@ namespace KS.PizzaEmpire.Unity
 			flourIngredient.Element = GUIElementEnum.IconFlour;
 			flourIngredient.BuildableItem = BuildableItemEnum.White_Flour;
 			enabledCheck = new GamePlayerStateCheck();
-			enabledCheck.Coins = 
-				ItemManager.Instance.BuildableItems[BuildableItemEnum.White_Flour].CoinCost;
+			enabledCheck.CanBuildItem = BuildableItemEnum.White_Flour;
 			flourIngredient.EnabledCheck = enabledCheck;
 			
 			ingredientMenu.AddChild (flourIngredient);
