@@ -27,7 +27,7 @@
         /// </summary>
         public GUIItem(float x, float y, float w, float h)
         {
-			SetRectangle(x, y, w, h);
+			SetRectangle(x, y, w, h, false);
             Children = new Dictionary<GUIElementEnum, GUIItem>();
             Offset = new Vector2();
             Draggable = DraggableEnum.NONE;
@@ -45,16 +45,34 @@
         /// <param name="y">The y coordinate.</param>
         /// <param name="w">The width.</param>
         /// <param name="h">The height.</param>
-		public void SetRectangle(float x, float y, float w, float h)
+		public void SetRectangle(float x, float y, float w, float h, bool isWorld)
 		{
-			if (x <= 1 && y <= 1 && w <= 1 && h <= 1 )
+			if (isWorld)
 			{
-				x = Screen.width * x;
-				y = Screen.height * y;
-				w = Screen.width * w;
-				h = Screen.height * h;
-			}			
-			Rectangle = new Rect(x, y, w, h);
+				if (w <= 1 && h <= 1 )
+				{
+					w = Screen.width * w;
+					h = Screen.height * h;
+				}			
+				
+				Rectangle = new Rect(x, y, w, h);
+				IsWorld = true;
+				WorldCoords = new Vector2(x, y);
+			} 
+			else
+			{		
+				if (x <= 1 && y <= 1 && w <= 1 && h <= 1 )
+				{
+					x = Screen.width * x;
+					y = Screen.height * y;
+					w = Screen.width * w;
+					h = Screen.height * h;			
+				}
+				
+				Rectangle = new Rect(x, y, w, h);
+				IsWorld = false;
+				WorldCoords = Vector2.zero;
+			}
 		}
 					
         /// <summary>
@@ -136,6 +154,16 @@
         /// The position of this item, with respect to its parent
         /// </summary>
         public Rect Rectangle { get; set; }
+        
+        /// <summary>
+        /// The coordinates of the item in world space
+        /// </summary>
+        public Vector2 WorldCoords { get; set; }
+        
+        /// <summary>
+        /// Whether the item is in world coords.
+        /// </summary>
+        public bool IsWorld { get; set; }        
 
         /// <summary>
         /// The style for this item
@@ -151,6 +179,12 @@
         /// The text for this item
         /// </summary>
         public string Text { get; set; }
+        
+        /// <summary>
+        /// Whether this item is animated
+        /// </summary>
+        /// <value><c>true</c> if animated; otherwise, <c>false</c>.</value>
+        public bool Animated { get ; set; }
         
         /// <summary>
         /// Whether this item is currently available
@@ -303,17 +337,45 @@
 
             return null;
         }
+        
+        /// <summary>
+        /// Animates the item every frame. 
+        /// Only called if Animate = true
+		/// </summary>
+        public virtual void Animate(float dt) { }
+        
+        /// <summary>
+        /// Transforms the items world coordinates to screen coordinates
+        /// </summary>
+        public Rect WorldToScreen()
+        {
+			Vector2 screenPos = Camera.main.WorldToScreenPoint(WorldCoords);
+			Rect rectangle = Rectangle;
+			rectangle.x = screenPos.x;
+			rectangle.y = Screen.height - screenPos.y;
+			return rectangle;
+        }
 
         /// <summary>
         ///  Draws the item
         /// </summary>
-        public void Draw()
+        public void Draw(float dt)
         {
         	if (!Displayed)
         	{
         		return;
         	}
 
+			if (IsWorld)
+			{
+				Rectangle = WorldToScreen();
+			}
+			
+			if (Animated)
+			{
+				Animate(dt);
+			}
+			
 			if (Children.Count > 0)
 			{
 				GUI.BeginGroup(Rectangle);
@@ -333,7 +395,7 @@
             {                
                 foreach (GUIItem item in Children.Values)
                 {
-	                item.Draw();
+	                item.Draw(dt);
                 }
                 GUI.EndGroup();
             }
@@ -391,6 +453,12 @@
         	{
 				Children.Add(item.Element, item);
         	}		
+			Animated = other.Animated;
+			IsWorld = other.IsWorld;
+			Vector2 world = WorldCoords;
+			world.x = other.WorldCoords.x;
+			world.y = other.WorldCoords.y;
+			WorldCoords = world;						
         	Parent = other.Parent;	
 			BuildableItem = other.BuildableItem;
 			Vector2 off = Offset;
@@ -433,6 +501,12 @@
 		public virtual void Reset()
 		{
 			Children.Clear();
+			Animated = false;
+			IsWorld = false;
+			Vector2 world = WorldCoords;
+			world.x = 0;
+			world.y = 0;
+			WorldCoords = world;			
 			Parent = null;
 			BuildableItem = BuildableItemEnum.None;
 			Vector2 off = Offset;

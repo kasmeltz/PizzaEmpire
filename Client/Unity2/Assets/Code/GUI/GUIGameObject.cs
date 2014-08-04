@@ -191,7 +191,9 @@
 				InitStyles();
 			}
 			
-			GUIStateManager.Instance.Draw();
+			float dt = Time.deltaTime;
+			
+			GUIStateManager.Instance.Draw(dt);
 				
 	        if (!IsLoaded)
 			{

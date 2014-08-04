@@ -37,8 +37,7 @@
 			}
 			
 			guiItemBox = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
-			Vector2 screenCoords = Camera.main.WorldToScreenPoint(this.transform.position);
-			guiItemBox.SetRectangle(screenCoords.x, Screen.height - (screenCoords.y + 100), 100, 100);
+			guiItemBox.SetRectangle(transform.position.x, transform.position.y, 0.2f, 0.2f, true);			
 			guiItemBox.Element = ProgressBarElement;
 			guiItemBox.Style = 
 				LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
