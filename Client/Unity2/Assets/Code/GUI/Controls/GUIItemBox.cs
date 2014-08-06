@@ -14,24 +14,12 @@ namespace KS.PizzaEmpire.Unity
 			: base ()
 		{
 		}
-		
-		/// <summary>
-		/// Creates a new instance of the GUIItemBox class
-		/// </summary>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="w">The width.</param>
-		/// <param name="h">The height.</param>
-		public GUIItemBox(float x, float y, float w, float h) 
-			: base(x, y, w, h)
-		{
-		}
-		
+				
 		#region GUIItem
 				
 		public override void Render ()
 		{
-			GUI.Box(Rectangle, Text, Style);
+			GUI.Box(Rectangle, Content, Style);
 		}
 		
 		public override GUIItem Clone ()

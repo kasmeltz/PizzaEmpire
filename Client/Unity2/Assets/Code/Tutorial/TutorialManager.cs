@@ -17,6 +17,7 @@
 
         private List<Texture2D> louieTextures;
         
+		private GUIItemImage louieDialogueWindow;
         private GUIItemBox louieDialogueBox;
         private GUIItemImage louieImage;
         private GUIItemButton moreTextButton;
@@ -24,8 +25,6 @@
         private GamePlayer player;
 
         public bool IsFinished { get; protected set; }
-
-        public GUIStyle Style { get; set; }
 
         public AudioClip louieSound;
 
@@ -64,8 +63,6 @@
         {
             IsFinished = false;
             
-			Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);			
-
             louieTextures = new List<Texture2D>();
             louieTextures.Add(ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_0));
             louieTextures.Add(ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_1));
@@ -77,24 +74,34 @@
 
             louieSound = ResourceManager<AudioClip>.Instance.Load(ResourceEnum.AUDIOCLIP_UNCLELOUIE);
 
+			louieDialogueWindow = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			louieDialogueWindow.Content.image = 
+				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WIN_TUTORIAL_DIALOGUE);
+			louieDialogueWindow.SetRectangle(0.32f, 0.05f, 0.67f, 0.35f, false, ScaleMode.StretchToFill);			                              			                              
+			louieDialogueWindow.Element = GUIElementEnum.TutorialDialogueWindow;
+			
+			GUIStateManager.Instance.AddChild(louieDialogueWindow);
+			
 			louieDialogueBox = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
-			louieDialogueBox.SetRectangle(0.3f, 0.05f, 0.68f, 0.35f, false);			                              			                              
+			louieDialogueBox.SetRectangle(0.05f, 0.05f, 0.58f, 0.25f, false, ScaleMode.ScaleToFit);			                              			                              
       		louieDialogueBox.Element = GUIElementEnum.TutorialDialogueBox;
-			louieDialogueBox.Style = Style;
+			louieDialogueBox.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_NO_BACKGROUND);		
       		
-      		GUIStateManager.Instance.AddChild(louieDialogueBox);
+			louieDialogueWindow.AddChild(louieDialogueBox);
 			
 			moreTextButton = GUIItemFactory<GUIItemButton>.Instance.Pool.New();
-			moreTextButton.SetRectangle(0.62f, 0.27f, 0.05f, 0.075f, false);			                              			                              
+			moreTextButton.Content.image = 
+				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_MORE_TEXT);
+			moreTextButton.SetRectangle(0.59f, 0.24f, 0.075f, 0.075f, false, ScaleMode.ScaleToFit);			                              			                              
 			moreTextButton.Element = GUIElementEnum.TutorialMoreText;
-			moreTextButton.Style = Style;
-			moreTextButton.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_MORE_TEXT);
+			moreTextButton.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_NO_BACKGROUND);		
+			
 			moreTextButton.OnClick = (gi) =>
 			{
 				SetStage(currentStageIndex + 1);
 			};
 			
-			louieDialogueBox.AddChild(moreTextButton);
+			louieDialogueWindow.AddChild(moreTextButton);
 
 			louieImage = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
 			louieImage.Element = GUIElementEnum.TutorialLouie;
@@ -149,7 +156,7 @@
 			stage.OnStart = () =>
 			{
 				SetStageText(3);
-				ToggleMoreTextButton(true);
+				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, false);
 			};
             stateCheck = new GamePlayerStateCheck();
@@ -264,7 +271,7 @@
 		public void ToggleMoreTextButton(bool visible)
 		{
 			GUIItemButton button = GUIStateManager.Instance
-				.GetChildNested(GUIElementEnum.TutorialMoreText) as GUIItemButton; 
+				.GetChildNested(GUIElementEnum.TutorialMoreText) as GUIItemButton;
 			button.Visible = visible;
 		}
 		
@@ -275,9 +282,9 @@
         public void SetStageText(int index)
         {
 			GUIItemBox box = GUIStateManager.Instance
-				.GetChildNested(GUIElementEnum.TutorialDialogueBox) as GUIItemBox; 
-			box.Text = sayings[index];
-			box.Visible = true;
+				.GetChildNested(GUIElementEnum.TutorialDialogueBox) as GUIItemBox;
+            box.Content.text = sayings[index];
+            box.Visible = true;
         }
 
         /// <summary>
@@ -287,25 +294,25 @@
         public void SetLouieTexture(LouieExpression expr, bool visible)
         {
 			GUIItemImage image = GUIStateManager.Instance
-				.GetChildNested(GUIElementEnum.TutorialLouie) as GUIItemImage; 	
-        	
+				.GetChildNested(GUIElementEnum.TutorialLouie) as GUIItemImage;
+				
         	if (!visible)
         	{
-        		image.Visible = false;
+				image.Visible = false;
         		return;
         	}
         	
-        	image.Visible = true;
+			image.Visible = true;
         	
             Texture2D txr = louieTextures[(int)expr];
 			
             float ratio = (float)txr.width / (float)txr.height;
             float height = Screen.height * 0.90f;
-            float width = height * ratio;    
+            float width = height * ratio;
                                 		        	
-			image.SetRectangle(-width * 0.1f, Screen.height - height, width, height, false);
+			image.SetRectangle(-width * 0.1f, Screen.height - height, width, height, false, ScaleMode.ScaleToFit);
             
-            image.Texture = txr;
+			image.Content.image = txr;
         }
         
         /// <summary>

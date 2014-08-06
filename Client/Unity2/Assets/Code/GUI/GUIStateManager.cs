@@ -14,8 +14,9 @@
 		private static volatile GUIStateManager instance;
 		private static object syncRoot = new object();
 		
-		private GUIStateManager() : base(0, 0, Screen.width, Screen.height)
+		private GUIStateManager()
 		{
+			SetRectangle(0,0,Screen.width, Screen.height, false, ScaleMode.StretchToFill);
 		}
 		
 		/// <summary>

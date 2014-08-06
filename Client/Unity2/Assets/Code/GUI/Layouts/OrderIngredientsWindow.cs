@@ -19,17 +19,21 @@ namespace KS.PizzaEmpire.Unity
 			GamePlayerStateCheck availableCheck;
 			GamePlayerStateCheck enabledCheck;					
 			
-			GUIItemBox ingredientMenu = new GUIItemBox (0.05f, 0.05f, 0.25f, 0.80f);
+			GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			
+			GUIItemImage ingredientMenu = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			ingredientMenu.Content.image = 
+				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WIN_ORDER_INGREDIENT);			
+			ingredientMenu.SetRectangle(0.0f, 0.05f, 0.40f, 0.80f, false, ScaleMode.ScaleToFit);
 			ingredientMenu.Element = GUIElementEnum.OrderIngredientsWindow;
-			ingredientMenu.Style = 
-				LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-			ingredientMenu.Visible = false;
+			ingredientMenu.Visible = false;			
 			
 			GUIStateManager.Instance.AddChild(ingredientMenu);
 			
-			GUIItemImage flourIngredient = new GUIItemImage (0.05f, 0.05f, 0.05f, 0.075f);
-			flourIngredient.Texture = 
-				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WHITE_FLOUR);
+			GUIItemImage flourIngredient = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			flourIngredient.Content.image = 
+				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WHITE_FLOUR);			
+			flourIngredient.SetRectangle(0.05f, 0.05f, 0.05f, 0.075f, false, ScaleMode.ScaleToFit);
 			flourIngredient.Draggable = DraggableEnum.RAW_INGREDIENT;
 			flourIngredient.DuplicateOnDrag = true;
 			flourIngredient.Element = GUIElementEnum.IconFlour;
@@ -40,9 +44,10 @@ namespace KS.PizzaEmpire.Unity
 			
 			ingredientMenu.AddChild (flourIngredient);
 			
-			GUIItemImage ingredientShoppingCart = new GUIItemImage (0.15f, 0.15f, 0.15f, 0.15f);
-			ingredientShoppingCart.Texture = 
-				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_SHOPPING_CART);
+			GUIItemImage ingredientShoppingCart = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			ingredientShoppingCart.Content.image = 
+				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_SHOPPING_CART);			
+			ingredientShoppingCart.SetRectangle(0.21f, 0.68f, 0.12f, 0.12f, false, ScaleMode.ScaleToFit);
 			ingredientShoppingCart.Droppable = DraggableEnum.RAW_INGREDIENT;
 			ingredientShoppingCart.Element = GUIElementEnum.IconShoppingCart;
 			ingredientShoppingCart.OnDrop = (i1, i2) =>

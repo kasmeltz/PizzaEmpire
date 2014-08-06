@@ -22,6 +22,7 @@
 		ProgressBar,
 		TutorialMoreText,
 		TutorialDialogueBox,
+		TutorialDialogueWindow,
 		TutorialLouie
 	}	
 }

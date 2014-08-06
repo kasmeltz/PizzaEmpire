@@ -16,19 +16,7 @@ namespace KS.PizzaEmpire.Unity
 			: base ()
 		{
 		}
-		
-		/// <summary>
-		/// Creates a new instance of the GUIItemButton class
-		/// </summary>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="w">The width.</param>
-		/// <param name="h">The height.</param>
-		public GUIItemButton(float x, float y, float w, float h) 
-			: base(x, y, w, h)
-		{
-		}
-		
+				
 		/// <summary>
 		/// The action to be performed when this button is clicked
 		/// </summary>
@@ -39,7 +27,7 @@ namespace KS.PizzaEmpire.Unity
 				
 		public override void Render ()
 		{
-			if (GUI.Button(Rectangle, Texture, Style))
+			if (GUI.Button(Rectangle, Content, Style))
 			{
 				OnClick(this);
 			}

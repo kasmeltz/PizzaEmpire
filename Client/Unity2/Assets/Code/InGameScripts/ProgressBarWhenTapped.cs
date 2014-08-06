@@ -45,7 +45,7 @@
 			}
 			
 			guiItemBox = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
-			guiItemBox.SetRectangle(transform.position.x - 2f, transform.position.y - 0.1f, 0.3f, 0.3f, true);			
+			guiItemBox.SetRectangle(transform.position.x - 2f, transform.position.y - 0.1f, 0.3f, 0.3f, true, ScaleMode.StretchToFill);			
 			guiItemBox.Element = ProgressBarElement;
 			guiItemBox.Style = 
 				LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
@@ -56,14 +56,11 @@
 			if (workItem != null)
 			{
 				progressBar = GUIItemFactory<WorkItemProgressBar>.Instance.Pool.New();
-				progressBar.SetRectangle(0.05f, 0.05f, 0.2f, 0.05f, false);
+				progressBar.Content.image = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_BAR_OUTER);
+				progressBar.BarInner = 	ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_BAR_INNER);				
+				progressBar.SetRectangle(0.05f, 0.05f, 0.2f, 0.05f, false, ScaleMode.StretchToFill);				
 				progressBar.Element = GUIElementEnum.ProgressBar;
-				progressBar.Style =  
-					LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-				progressBar.Visible = true;
-				
-				progressBar.Texture = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_BAR_OUTER);
-				progressBar.BarInner = 	ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_BAR_INNER);
+				progressBar.Visible = true;								
 				
 				progressBar.WorkItem = workItem;
 				

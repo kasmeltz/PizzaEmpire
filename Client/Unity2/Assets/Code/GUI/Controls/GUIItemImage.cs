@@ -1,6 +1,7 @@
 namespace KS.PizzaEmpire.Unity
 {
 	using UnityEngine;
+	using System;
 	
 	/// <summary>
 	/// Represents an image
@@ -13,25 +14,14 @@ namespace KS.PizzaEmpire.Unity
 		public GUIItemImage()
 			: base ()
 		{
-		}
-		
-		/// <summary>
-		/// Creates a new instance of the GUIItemImage class
-		/// </summary>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="w">The width.</param>
-		/// <param name="h">The height.</param>
-		public GUIItemImage(float x, float y, float w, float h) 
-			: base(x, y, w, h)
-		{
-		}
+			
+		}		
 		
 		#region GUIItem
 				
 		public override void Render ()
 		{
-			GUI.DrawTexture(Rectangle, Texture);
+			GUI.DrawTexture(Rectangle, Content.image, Scale);
 		}
 		
 		public override GUIItem Clone ()
@@ -45,7 +35,7 @@ namespace KS.PizzaEmpire.Unity
 		{
 			GUIItemFactory<GUIItemImage>.Instance.Pool.Store(this);
 		}		
-		
+				
 		#endregion		
 	}	
 }

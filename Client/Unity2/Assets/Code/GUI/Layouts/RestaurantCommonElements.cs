@@ -19,11 +19,12 @@ namespace KS.PizzaEmpire.Unity
 			GamePlayerStateCheck availableCheck;
 			GamePlayerStateCheck enabledCheck;
 			
-			GUIItemButton phoneIcon = new GUIItemButton (0.05f, 0.90f, 0.05f, 0.05f);
+			GUIItemButton phoneIcon = GUIItemFactory<GUIItemButton>.Instance.Pool.New();
+			phoneIcon.Content.image = ResourceManager<Texture2D>.Instance.Load (ResourceEnum.TEXTURE_ICON_PHONE);			
+			phoneIcon.SetRectangle(0.0f, 0.85f, 0.15f, 0.15f, false, ScaleMode.ScaleToFit);
 			phoneIcon.Element = GUIElementEnum.IconPhone;
 			phoneIcon.Style = 
-				LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
-			phoneIcon.Texture = ResourceManager<Texture2D>.Instance.Load (ResourceEnum.TEXTURE_ICON_PHONE);
+				LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_NO_BACKGROUND);
 			phoneIcon.OnClick = (gi) =>
 			{
 				GUIItem window = GUIStateManager.Instance
@@ -35,8 +36,9 @@ namespace KS.PizzaEmpire.Unity
 			availableCheck.TutorialStage = 3;
 			phoneIcon.AvailableCheck = availableCheck;
 			
-			GUIStateManager.Instance.AddChild(phoneIcon);			
-			GUIStateManager.Instance.UpdateState(player);
+			GUIStateManager.Instance.AddChild(phoneIcon);	
+			
+			Debug.Log ("PHONE ICON: " + phoneIcon.Rectangle);		
 		}
 	}
 }

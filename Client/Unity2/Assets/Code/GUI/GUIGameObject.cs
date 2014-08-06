@@ -34,13 +34,13 @@
 			GUIItem errorWindow = GUIStateManager.Instance
 				.GetChildNested(GUIElementEnum.ErrorWindow);			
 			errorWindow.Visible = true;
-			errorWindow.Text = com.ErrorMessage;
+			errorWindow.Content.text = com.ErrorMessage;
 			
 			Debug.Log(DateTime.Now + "-------------------------------------------");
 			Debug.Log(DateTime.Now + "Error!");
 			Debug.Log(DateTime.Now + "" + errorWindow.ToString());
 			Debug.Log(DateTime.Now + "" + errorWindow.Visible);
-			Debug.Log(DateTime.Now + errorWindow.Text);
+			Debug.Log(DateTime.Now + errorWindow.Content.text);
 			Debug.Log(DateTime.Now + "-------------------------------------------");
 		}
 	
@@ -220,7 +220,7 @@
 			GUIStyle style;		
 			style = new GUIStyle( GUI.skin.box );
 			style.normal.background = MakeTex( 2, 2, new Color( 1f, 1f, 0.7f, 1f ) );
-			style.normal.textColor = new Color(0.3f, 0.1f, 0.1f, 1);		
+			style.normal.textColor = new Color(0, 0, 0, 1);
 			style.font = ResourceManager<Font>.Instance.Load(ResourceEnum.FONT_ARVO);
 			style.alignment = TextAnchor.MiddleCenter;
 			style.wordWrap = true;
@@ -228,8 +228,18 @@
 			LightweightResourceManager<GUIStyle>.Instance
 				.Set(ResourceEnum.GUISTYLE_BASIC_STYLE, style);
 				
-			GUIItemBox errorWindow = new GUIItemBox(Screen.width * 0.1f, Screen.height * 0.2f, 
-			                                  Screen.width * 0.8f, Screen.height * 0.6f);
+			style = new GUIStyle( GUI.skin.box );
+			style.normal.background = MakeTex( 2, 2, new Color( 0, 0, 0, 0 ) );
+			style.normal.textColor = new Color(0, 0, 0, 1);		
+			style.font = ResourceManager<Font>.Instance.Load(ResourceEnum.FONT_ARVO);
+			style.alignment = TextAnchor.MiddleCenter;
+			style.wordWrap = true;
+			
+			LightweightResourceManager<GUIStyle>.Instance
+				.Set(ResourceEnum.GUISTYLE_NO_BACKGROUND, style);
+
+			GUIItemBox errorWindow = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
+			errorWindow.SetRectangle(0.1f, 0.2f, 0.8f, 0.6f, false, ScaleMode.ScaleToFit);
 			errorWindow.Element = GUIElementEnum.ErrorWindow;
 			errorWindow.Style = style;		
 			errorWindow.Visible = false;

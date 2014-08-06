@@ -77,7 +77,7 @@
 
                 ResourceEnum re = (ResourceEnum)Enum.Parse(typeof(ResourceEnum), tokens[0]);
                 
-                Debug.Log("Initializing " + typeof(T).ToString() + " asset: " + re + ", " + tokens[1]);
+                //Debug.Log("Initializing " + typeof(T).ToString() + " asset: " + re + ", " + tokens[1]);
                 
 				ResourceLocations[re] = tokens[1].Trim();
                 ResourceCounts[re] = 0;
@@ -93,7 +93,7 @@
         /// <returns></returns>
         protected T Load(string path)
         {
-			Debug.Log ("Loading from Resources.Load: " + path);		
+			//Debug.Log ("Loading from Resources.Load: " + path);		
 			return Resources.Load<T>(path);
         }        
                
@@ -107,18 +107,18 @@
         {
 			if (ResourceCounts[resource] == 0)
             {
-				Debug.Log("Loading for first time!: " + resource);
+				//Debug.Log("Loading for first time!: " + resource);
                 ResourceObjects[resource] = Load(ResourceLocations[resource]);
                 ResourceCounts[resource] = 1;
             }   
             else
             {
-				Debug.Log("Resource already loaded!: " + resource);
+				//Debug.Log("Resource already loaded!: " + resource);
                 ResourceCounts[resource]++;
             }
             
-			Debug.Log("Loading " + typeof(T).ToString() + " Item: " + resource + ", " + ResourceObjects[resource]);
-			Debug.Log("Reference count: " + ResourceCounts[resource]);
+			//Debug.Log("Loading " + typeof(T).ToString() + " Item: " + resource + ", " + ResourceObjects[resource]);
+			//Debug.Log("Reference count: " + ResourceCounts[resource]);
 			
             return ResourceObjects[resource];
         }
@@ -157,9 +157,9 @@
         /// <returns></returns>
         public ErrorCode UnLoad(ResourceEnum resource)
         {
-			Debug.Log("UnLoading " + typeof(T).ToString() + " Item: " + resource);
-			Debug.Log("Reference count: " + ResourceCounts[resource]);			
-			Debug.Log("Object: " + ResourceObjects[resource]);
+			//Debug.Log("UnLoading " + typeof(T).ToString() + " Item: " + resource);
+			//Debug.Log("Reference count: " + ResourceCounts[resource]);			
+			//Debug.Log("Object: " + ResourceObjects[resource]);
 						
 			if (ResourceCounts[resource] == 1)
             {     

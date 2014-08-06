@@ -2,7 +2,7 @@
 {
     using Common;
 	using Common.BusinessObjects;
-    using System;
+	using System;
     using System.Collections.Generic;
     using Common.ObjectPool;
     using UnityEngine;
@@ -18,26 +18,19 @@
     	/// <summary>
     	/// Creates a new instance of the GUIItem class
 		/// </summary>
-    	public GUIItem() : this(0,0,0,0)
+		public GUIItem()
     	{
-		}    	
-		
-		/// <summary>
-		/// Creates a new instance of the GUIItem class
-        /// </summary>
-        public GUIItem(float x, float y, float w, float h)
-        {
 			toRemove = new List<GUIElementEnum>();
-			SetRectangle(x, y, w, h, false);
-            Children = new Dictionary<GUIElementEnum, GUIItem>();
-            Offset = new Vector2();
-            Draggable = DraggableEnum.NONE;
-            Droppable = DraggableEnum.NONE;
-            DragHandle = Vector2.zero;
-            Available = true;
-            Enabled = true;
-            Visible = true;
-        }               
+			Children = new Dictionary<GUIElementEnum, GUIItem>();
+			Offset = new Vector2();
+			Draggable = DraggableEnum.NONE;
+			Droppable = DraggableEnum.NONE;
+			DragHandle = Vector2.zero;
+			Available = true;
+			Enabled = true;
+			Visible = true;
+			Content = new GUIContent();
+		}    			          
         
         /// <summary>
         /// Sets the rectangle for this item
@@ -46,18 +39,19 @@
         /// <param name="y">The y coordinate.</param>
         /// <param name="w">The width.</param>
         /// <param name="h">The height.</param>
-		public void SetRectangle(float x, float y, float w, float h, bool isWorld)
+		public virtual void SetRectangle(float x, float y, float w, float h, bool isWorld, ScaleMode scale)
 		{
+			Scale = scale;
+			WorldCoords = Vector2.zero;
+			IsWorld = isWorld;		
+			
 			if (isWorld)
 			{
 				if (w <= 1 && h <= 1 )
 				{
 					w = Screen.width * w;
 					h = Screen.height * h;
-				}			
-				
-				Rectangle = new Rect(x, y, w, h);
-				IsWorld = true;
+				}										
 				WorldCoords = new Vector2(x, y);
 			} 
 			else
@@ -68,18 +62,35 @@
 					y = Screen.height * y;
 					w = Screen.width * w;
 					h = Screen.height * h;			
-				}
-				
-				Rectangle = new Rect(x, y, w, h);
-				IsWorld = false;
-				WorldCoords = Vector2.zero;
+				}				
 			}
+			
+			if (Scale == ScaleMode.ScaleToFit)
+			{
+				if (Content.image != null)
+				{	
+					float r = 
+						Math.Min(w / Content.image.width, 
+						         h / Content.image.height);
+					
+					w = Content.image.width * r;
+					h = Content.image.height * r;
+				}
+			}
+			
+			Rectangle = new Rect(x, y, w, h);
 		}
 					
         /// <summary>
         /// The children items of this item
         /// </summary>
         protected Dictionary<GUIElementEnum, GUIItem> Children { get; set; }    
+        
+        /// <summary>
+        /// The rendered content of this item
+        /// </summary>
+        /// <value>The content.</value>
+        public GUIContent Content { get; set; }
         
         // set to true when drawing
 		public bool IsDrawing { get; set; }
@@ -164,6 +175,11 @@
         /// </summary>
         public Rect Rectangle { get; set; }
         
+        //// <summary>
+        /// The scaling mode that will be used for this iteam
+        /// </summary>
+		public ScaleMode Scale { get; protected set; }
+        
         /// <summary>
         /// The coordinates of the item in world space
         /// </summary>
@@ -179,16 +195,6 @@
         /// </summary>
         public GUIStyle Style { get; set; }
 
-        /// <summary>
-        /// The texture for this item
-        /// </summary>
-        public Texture2D Texture { get; set; }
-        
-        /// <summary>
-        /// The text for this item
-        /// </summary>
-        public string Text { get; set; }
-        
         /// <summary>
         /// Whether this item is animated
         /// </summary>
@@ -514,8 +520,7 @@
 			rectangle.height = other.Rectangle.height;
 			Rectangle = rectangle;
 			Style = other.Style;
-			Texture = other.Texture;
-			Text = other.Text;
+			Content = other.Content;
 			Available = other.Available;
 			Visible = other.Visible;
 			Enabled = other.Enabled;
@@ -527,6 +532,7 @@
 			{				
 				EnabledCheck.CopyFrom(other.EnabledCheck);
 			}
+			Scale = other.Scale;
         }
         
 		#region IResetable
@@ -563,8 +569,8 @@
 			rectangle.height = 0;
 			Rectangle = rectangle;
 			Style = null;
-			Texture = null;
-			Text = null;
+			Content.text = string.Empty;
+			Content.image = null;
 			Available = false;
 			Enabled = false;
 			Visible = false;
@@ -576,6 +582,7 @@
 			{
 				EnabledCheck.Reset();
 			}
+			Scale = ScaleMode.ScaleToFit;
 		}
 		
 		#endregion

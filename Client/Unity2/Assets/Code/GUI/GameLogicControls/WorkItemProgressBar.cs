@@ -21,21 +21,6 @@ namespace KS.PizzaEmpire.Unity
 		}			
 		
 		/// <summary>
-		/// Creates a new instance of the WorkItemProgressBar class
-		/// </summary>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="w">The width.</param>
-		/// <param name="h">The height.</param>
-		public WorkItemProgressBar(float x, float y, float w, float h) 
-			: base(x, y, w, h)
-		{
-			Animated = true;
-			MinValue = 0;
-			MaxValue = 1;
-		}				
-		
-		/// <summary>
 		/// The WorkItem that determines the length of the progess bar
 		/// </summary>
 		/// <value>The work item.</value>
@@ -45,8 +30,6 @@ namespace KS.PizzaEmpire.Unity
 		{
 			Value = (float)GamePlayerLogic.Instance
 				.GetPercentageCompleteForWorkItem(WorkItem);
-			
-			Debug.Log ("Work item progress bar animate: " + Value);
 		}
 						
 		#region GUIItem

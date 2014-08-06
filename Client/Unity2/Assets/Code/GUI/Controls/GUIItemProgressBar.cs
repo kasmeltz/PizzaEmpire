@@ -15,20 +15,7 @@ namespace KS.PizzaEmpire.Unity
 		{
 			TexCoords = new Rect(0, 0, 0, 0);
 		}			
-		
-		/// <summary>
-		/// Creates a new instance of the GUIItemProgressBar class
-		/// </summary>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="w">The width.</param>
-		/// <param name="h">The height.</param>
-		public GUIItemProgressBar(float x, float y, float w, float h) 
-			: base(x, y, w, h)
-		{
-			TexCoords = new Rect(0, 0, 0, 0);
-		}
-		
+				
 		/// <summary>
 		/// The texture that will be used for the inner bar.
 		/// </summary>
@@ -96,7 +83,7 @@ namespace KS.PizzaEmpire.Unity
 		
 		public override void Render ()
 		{			
-			GUI.DrawTexture(Rectangle, Texture);
+			GUI.DrawTexture(Rectangle, Content.image);
 			GUI.DrawTextureWithTexCoords(InnerRect, BarInner, TexCoords);
 		}
 		
