@@ -55,6 +55,5 @@ namespace KS.PizzaEmpire.Common.BusinessObjects
 		/// Whether the state has changed
 		/// </summary>
 		public bool StateChanged { get; set; }
-
 	}
 }

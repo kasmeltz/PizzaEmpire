@@ -25,6 +25,5 @@ namespace KS.PizzaEmpire.Common.BusinessObjects
 		/// The UTC time when the work will be complete
 		/// </summary>
 		public DateTime FinishTime { get; set; }
-
 	}
 }

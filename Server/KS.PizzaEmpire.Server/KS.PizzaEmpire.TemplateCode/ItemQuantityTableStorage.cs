@@ -26,6 +26,5 @@ namespace KS.PizzaEmpire.Business.TableStorage
 		/// The quantity of the item
 		/// </summary>
 		public int Quantity { get; set; }
-
 	}
 }

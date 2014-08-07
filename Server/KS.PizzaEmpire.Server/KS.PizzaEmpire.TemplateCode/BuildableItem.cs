@@ -105,6 +105,5 @@ namespace KS.PizzaEmpire.Common.BusinessObjects
 		/// The items required to build this item
 		/// </summary>
 		public List<ItemQuantity> RequiredItems { get; set; }
-
 	}
 }

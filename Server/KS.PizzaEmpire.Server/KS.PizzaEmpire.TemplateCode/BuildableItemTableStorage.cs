@@ -106,6 +106,5 @@ namespace KS.PizzaEmpire.Business.TableStorage
 		/// The items required to build this item
 		/// </summary>
 		public byte[] RequiredItems { get; set; }
-
 	}
 }

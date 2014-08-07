@@ -25,6 +25,5 @@ namespace KS.PizzaEmpire.Common.BusinessObjects
 		/// The experience required to achieve the level
 		/// </summary>
 		public int ExperienceRequired { get; set; }
-
 	}
 }

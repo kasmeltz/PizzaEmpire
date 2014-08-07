@@ -56,6 +56,5 @@ namespace KS.PizzaEmpire.Business.TableStorage
 		/// Whether the state has changed
 		/// </summary>
 		public bool StateChanged { get; set; }
-
 	}
 }

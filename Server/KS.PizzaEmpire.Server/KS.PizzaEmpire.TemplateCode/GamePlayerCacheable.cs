@@ -4,7 +4,6 @@
 namespace KS.PizzaEmpire.Business.Cache
 {
 	using Common.BusinessObjects;
-	using Business.ProtoSerializable;
 	using ProtoBuf;
 	using System;
 	using System.Collections.Generic;
@@ -55,7 +54,7 @@ namespace KS.PizzaEmpire.Business.Cache
 		/// The work in progress for the player
 		/// </summary>
 		[ProtoMember(6)]
-		public List<WorkItem> WorkItems { get; set; }
+		public List<WorkItemCacheable> WorkItems { get; set; }
 
 		/// <summary>
 		/// The player's current tutorial stage
@@ -68,6 +67,5 @@ namespace KS.PizzaEmpire.Business.Cache
 		/// </summary>
 		[ProtoMember(8)]
 		public bool StateChanged { get; set; }
-
 	}
 }

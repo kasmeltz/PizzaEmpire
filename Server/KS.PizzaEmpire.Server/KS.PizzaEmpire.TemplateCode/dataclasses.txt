@@ -1,37 +1,37 @@
-﻿C@GamePlayer@Represents the state for a player of the game
-P@Coins@int@The number of coins owned by the player
-P@Coupons@int@The number of coupons owned by the player
-P@Experience@int@The current experience of the player
-P@Level@int@The players current level
-P@BuildableItems@Dictionary<BuildableItemEnum, int>@The players inventory of items
-P@WorkItems@List<WorkItem>@The work in progress for the player
-P@TutorialStage@int@The player's current tutorial stage
-P@StateChanged@bool@Whether the state has changed
-C@WorkItem@Represents ongoing work that will produce some finished item(s) after some length of time
-P@ItemCode@BuildableItemEnum@The item code representinf the item being worked on
-P@FinishTime@DateTime@The UTC time when the work will be complete
-C@ItemQuantity@Represents a quantity of some item
-P@ItemCode@BuildableItemEnum@The type of item this quanity is for
-P@Quantity@int@The quantity of the item
-C@ExperienceLevel@Represents an experience level
-P@Level@int@The level of this experience level
-P@ExperienceRequired@int@The experience required to achieve the level
-C@BuildableItem@Represents an item that can be built in the game
-P@ItemCode@BuildableItemEnum@Identifies the type of the item
-P@RequiredLevel@int@The level required to build the item
-P@CoinCost@int@The cost in coins to build the item
-P@ProductionItem@BuildableItemEnum@The item that is required to produce this item
-P@ProductionCapacity@int@The production capacity of the item
-P@BaseProduction@int@The base amount of items that are produced when work is completed
-P@StorageCapacity@int@The maximum number of items this item can store
-P@StorageItem@BuildableItemEnum@The item this item should be stored in
-P@IsStorage@bool@Whether the item is used for storage
-P@IsConsumable@bool@Whether the item is consumed if required for other items
-P@IsImmediate@bool@Whether work on this item finishes immediately
-P@IsWorkSubtracted@bool@Whether doing work subtracts from the quantity of this item
-P@Experience@int@The experience gained when this item is built
-P@BuildSeconds@int@The number of seconds required to build this item
-P@CouponCost@int@The number of coupons required to build this item
-P@SpeedUpCoupons@int@The number of coupons required to speed up this item
-P@SpeedUpSeconds@int@The number of seconds this item will be sped up by specnding coupons
-P@RequiredItems@List<ItemQuantity>@The items required to build this item
+﻿C@GamePlayer@Represents the state for a player of the game@uniqueKey.Substring(0,2);@GP@
+P@Coins@int@The number of coins owned by the player@
+P@Coupons@int@The number of coupons owned by the player@
+P@Experience@int@The current experience of the player@
+P@Level@int@The players current level@
+P@BuildableItems@Dictionary<BuildableItemEnum, int>@The players inventory of items@
+P@WorkItems@List<WorkItem>@The work in progress for the player@
+P@TutorialStage@int@The player's current tutorial stage@
+P@StateChanged@bool@Whether the state has changed@
+C@WorkItem@Represents ongoing work that will produce some finished item(s) after some length of time@ @ @
+P@ItemCode@BuildableItemEnum@The item code representinf the item being worked on@
+P@FinishTime@DateTime@The UTC time when the work will be complete@
+C@ItemQuantity@Represents a quantity of some item@ @ @
+P@ItemCode@BuildableItemEnum@The type of item this quanity is for@
+P@Quantity@int@The quantity of the item@
+C@ExperienceLevel@Represents an experience level@"Version" + Constants.APPLICATION_VERSION;@EL@
+P@Level@int@The level of this experience level@
+P@ExperienceRequired@int@The experience required to achieve the level@
+C@BuildableItem@Represents an item that can be built in the game@"Version" + Constants.APPLICATION_VERSION;@BI@
+P@ItemCode@BuildableItemEnum@Identifies the type of the item@
+P@RequiredLevel@int@The level required to build the item@
+P@CoinCost@int@The cost in coins to build the item@
+P@ProductionItem@BuildableItemEnum@The item that is required to produce this item@
+P@ProductionCapacity@int@The production capacity of the item@
+P@BaseProduction@int@The base amount of items that are produced when work is completed@
+P@StorageCapacity@int@The maximum number of items this item can store@
+P@StorageItem@BuildableItemEnum@The item this item should be stored in@
+P@IsStorage@bool@Whether the item is used for storage@
+P@IsConsumable@bool@Whether the item is consumed if required for other items@
+P@IsImmediate@bool@Whether work on this item finishes immediately@
+P@IsWorkSubtracted@bool@Whether doing work subtracts from the quantity of this item@
+P@Experience@int@The experience gained when this item is built@
+P@BuildSeconds@int@The number of seconds required to build this item@
+P@CouponCost@int@The number of coupons required to build this item@
+P@SpeedUpCoupons@int@The number of coupons required to speed up this item@
+P@SpeedUpSeconds@int@The number of seconds this item will be sped up by specnding coupons@
+P@RequiredItems@List<ItemQuantity>@The items required to build this item@

@@ -72,23 +72,23 @@ namespace KS.PizzaEmpire.Common.Test.APITransfer
             BuildableItemAPI itemAPI = (BuildableItemAPI)morph.ToAPIFormat(bi);
             BuildableItem flip = (BuildableItem)morph.ToBusinessFormat(itemAPI);
 
-            Assert.AreEqual(99, flip.ItemCode);
-            Assert.AreEqual(66, flip.RequiredLevel);
-            Assert.AreEqual(1000, flip.CoinCost);
-            Assert.AreEqual(1000, flip.ProductionItem);
-            Assert.AreEqual(1000, flip.ProductionCapacity);
-            Assert.AreEqual(1000, flip.BaseProduction);
-            Assert.AreEqual(1000, flip.StorageCapacity);
-            Assert.AreEqual(1000, flip.StorageItem);
-            Assert.AreEqual(1000, flip.IsStorage);
-            Assert.AreEqual(1000, flip.IsConsumable);
-            Assert.AreEqual(1000, flip.IsImmediate);
-            Assert.AreEqual(1000, flip.IsWorkSubtracted);
-            Assert.AreEqual(1000, flip.Experience);
-            Assert.AreEqual(1000, flip.BuildSeconds);
-            Assert.AreEqual(1000, flip.CouponCost);
-            Assert.AreEqual(1000, flip.SpeedUpCoupons);
-            Assert.AreEqual(1000, flip.SpeedUpSeconds);
+            Assert.AreEqual(BuildableItemEnum.White_Flour, flip.ItemCode);
+            Assert.AreEqual(1, flip.RequiredLevel);
+            Assert.AreEqual(50, flip.CoinCost);
+            Assert.AreEqual(BuildableItemEnum.Dry_Goods_Delivery_Truck_L1, flip.ProductionItem);
+            Assert.AreEqual(0, flip.ProductionCapacity);
+            Assert.AreEqual(1, flip.BaseProduction);
+            Assert.AreEqual(0, flip.StorageCapacity);
+            Assert.AreEqual(BuildableItemEnum.Restaurant_Storage, flip.StorageItem);
+            Assert.AreEqual(false, flip.IsStorage);
+            Assert.AreEqual(true, flip.IsConsumable);
+            Assert.AreEqual(false, flip.IsImmediate);
+            Assert.AreEqual(false, flip.IsWorkSubtracted);
+            Assert.AreEqual(100, flip.Experience);
+            Assert.AreEqual(10, flip.BuildSeconds);
+            Assert.AreEqual(0, flip.CouponCost);
+            Assert.AreEqual(1, flip.SpeedUpCoupons);
+            Assert.AreEqual(60, flip.SpeedUpSeconds);
         }
     }
 }

@@ -105,7 +105,6 @@ namespace KS.PizzaEmpire.Common.APITransfer
 		/// <summary>
 		/// The items required to build this item
 		/// </summary>
-		public List<ItemQuantity> RequiredItems { get; set; }
-
+		public List<ItemQuantityAPI> RequiredItems { get; set; }
 	}
 }

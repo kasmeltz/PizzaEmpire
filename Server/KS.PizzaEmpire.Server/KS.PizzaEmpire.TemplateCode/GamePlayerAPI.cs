@@ -45,7 +45,7 @@ namespace KS.PizzaEmpire.Common.APITransfer
 		/// <summary>
 		/// The work in progress for the player
 		/// </summary>
-		public List<WorkItem> WorkItems { get; set; }
+		public List<WorkItemAPI> WorkItems { get; set; }
 
 		/// <summary>
 		/// The player's current tutorial stage
@@ -56,6 +56,5 @@ namespace KS.PizzaEmpire.Common.APITransfer
 		/// Whether the state has changed
 		/// </summary>
 		public bool StateChanged { get; set; }
-
 	}
 }

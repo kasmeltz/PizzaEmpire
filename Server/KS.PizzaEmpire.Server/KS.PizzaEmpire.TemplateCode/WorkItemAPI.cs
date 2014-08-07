@@ -26,6 +26,5 @@ namespace KS.PizzaEmpire.Common.APITransfer
 		/// The UTC time when the work will be complete
 		/// </summary>
 		public DateTime FinishTime { get; set; }
-
 	}
 }

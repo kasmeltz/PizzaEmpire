@@ -26,6 +26,5 @@ namespace KS.PizzaEmpire.Business.TableStorage
 		/// The experience required to achieve the level
 		/// </summary>
 		public int ExperienceRequired { get; set; }
-
 	}
 }

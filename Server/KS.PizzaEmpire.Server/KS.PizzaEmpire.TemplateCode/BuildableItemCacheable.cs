@@ -4,7 +4,6 @@
 namespace KS.PizzaEmpire.Business.Cache
 {
 	using Common.BusinessObjects;
-	using Business.ProtoSerializable;
 	using ProtoBuf;
 	using System;
 	using System.Collections.Generic;
@@ -127,7 +126,6 @@ namespace KS.PizzaEmpire.Business.Cache
 		/// The items required to build this item
 		/// </summary>
 		[ProtoMember(18)]
-		public List<ItemQuantity> RequiredItems { get; set; }
-
+		public List<ItemQuantityCacheable> RequiredItems { get; set; }
 	}
 }

@@ -4,7 +4,6 @@
 namespace KS.PizzaEmpire.Business.Cache
 {
 	using Common.BusinessObjects;
-	using Business.ProtoSerializable;
 	using ProtoBuf;
 	using System;
 	using System.Collections.Generic;
@@ -32,6 +31,5 @@ namespace KS.PizzaEmpire.Business.Cache
 		/// </summary>
 		[ProtoMember(2)]
 		public int Quantity { get; set; }
-
 	}
 }

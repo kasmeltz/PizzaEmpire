@@ -92,11 +92,11 @@
             Assert.AreEqual(17, ts.ItemCode);
             Assert.AreEqual(2, ts.RequiredLevel);
             Assert.AreEqual(50, ts.CoinCost);
-            Assert.AreEqual(0, ts.ProductionItem);
+            Assert.AreEqual(48, ts.ProductionItem);
             Assert.AreEqual(0, ts.ProductionCapacity);
             Assert.AreEqual(1, ts.BaseProduction);
             Assert.AreEqual(0, ts.StorageCapacity);
-            Assert.AreEqual(0, ts.StorageItem);
+            Assert.AreEqual(50, ts.StorageItem);
             Assert.AreEqual(false, ts.IsStorage);
             Assert.AreEqual(true, ts.IsConsumable);
             Assert.AreEqual(false, ts.IsImmediate);
@@ -118,11 +118,11 @@
             Assert.AreEqual(BuildableItemEnum.White_Pizza_Dough, flip.ItemCode);
             Assert.AreEqual(2, flip.RequiredLevel);
             Assert.AreEqual(50, flip.CoinCost);
-            Assert.AreEqual(BuildableItemEnum.None, flip.ProductionItem);
+            Assert.AreEqual(BuildableItemEnum.Dough_Mixer_L1, flip.ProductionItem);
             Assert.AreEqual(0, flip.ProductionCapacity);
             Assert.AreEqual(1, flip.BaseProduction);
             Assert.AreEqual(0, flip.StorageCapacity);
-            Assert.AreEqual(BuildableItemEnum.None, flip.StorageItem);
+            Assert.AreEqual(BuildableItemEnum.Fridge_L1, flip.StorageItem);
             Assert.AreEqual(false, flip.IsStorage);
             Assert.AreEqual(true, flip.IsConsumable);
             Assert.AreEqual(false, flip.IsImmediate);
