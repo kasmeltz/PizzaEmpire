@@ -32,9 +32,11 @@
 			CurrentErrorCode = com.Error;
 			
 			GUIItem errorWindow = GUIStateManager.Instance
-				.GetChildNested(GUIElementEnum.ErrorWindow);			
+				.GetChild(GUIElementEnum.ErrorWindow);			
 			errorWindow.Visible = true;
-			errorWindow.Content.text = com.ErrorMessage;
+			
+			GUIItem errorText = errorWindow.GetChild(GUIElementEnum.ErrorWindow);
+			errorText.Content.text = com.ErrorMessage;
 			
 			Debug.Log(DateTime.Now + "-------------------------------------------");
 			Debug.Log(DateTime.Now + "Error!");
@@ -237,14 +239,23 @@
 			
 			LightweightResourceManager<GUIStyle>.Instance
 				.Set(ResourceEnum.GUISTYLE_NO_BACKGROUND, style);
-
-			GUIItemBox errorWindow = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
-			errorWindow.SetRectangle(0.1f, 0.2f, 0.8f, 0.6f, false, ScaleMode.ScaleToFit);
-			errorWindow.Element = GUIElementEnum.ErrorWindow;
-			errorWindow.Style = style;		
+				
+			GUIItemImage errorWindow = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			errorWindow.Content.image = 
+				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WIN_TUTORIAL_DIALOGUE);
+			errorWindow.SetRectangle(0.1f, 0.2f, 0.8f, 0.6f, false, ScaleMode.StretchToFill);
+			errorWindow.Element = GUIElementEnum.ErrorWindow;	
 			errorWindow.Visible = false;
 			
-			GUIStateManager.Instance.AddChild(errorWindow);			
+			GUIStateManager.Instance.AddChild(errorWindow);						
+
+			GUIItemBox errorText = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
+			errorText.SetRectangle(0, 0, 0.8f, 0.6f, false, ScaleMode.StretchToFill);
+			errorText.Element = GUIElementEnum.ErrorWindow;
+			errorText.Style = style;		
+			errorText.Visible = true;
+			
+			errorWindow.AddChild(errorText);								
 			
 			stylesInitialized = true;
 	

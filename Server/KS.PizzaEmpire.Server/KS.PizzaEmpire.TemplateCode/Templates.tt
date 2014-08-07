@@ -1,0 +1,67 @@
+﻿<#@ template language="C#" hostspecific="True"#>
+<#@ include file="Manager.ttinclude"#>
+<#@ include file="ClassDef.ttinclude"#>
+<#@ assembly name="System.Core"#>
+<#@ assembly name="System.Data.Linq"#>
+<#@ assembly name="System.Xml"#>
+<#@ assembly name="System.Xml.Linq"#>
+<#@ import namespace="System.Collections.Generic"#>
+<#@ import namespace="System.IO"#>
+<#@ import namespace="System.Text"#>
+<#
+	List<ClassDef> cds = new List<ClassDef>();
+	var manager = Manager.Create(Host, GenerationEnvironment);
+    string absolutePath = Host.ResolvePath("dataclasses.txt");
+    string contents = File.ReadAllText(absolutePath);
+	string [] lines = contents.Split('\n');	
+	ClassDef currentDef = null;
+	PropertyDef currentPDef = null;
+
+	foreach (string line in lines)
+    {		
+		string [] tks = line.Split('@');
+		string cmd = tks[0];
+		for (int i = 1;i < tks.Length;i++)
+		{
+			tks[i] = tks[i].Trim();
+		}
+		switch (cmd)
+		{		
+			case "C":				
+				currentDef = new ClassDef();
+				currentDef.ClassName = tks[1];
+				currentDef.Description = tks[2];
+				cds.Add(currentDef);
+				break;
+			case "P":
+				currentPDef	= new PropertyDef();
+				currentPDef.PropertyName = tks[1];				
+				currentPDef.PropertyType = tks[2];
+				currentPDef.Description = tks[3];
+				if (tks.Length > 4)
+				{
+					currentPDef.Exclusions = tks[4];
+				}
+				currentDef.Props.Add(currentPDef);
+				break;				
+		}	
+	}	
+
+	var formatters = new List<CodeFormatter>();
+	formatters.Add(new BusinessEntityFormatter());
+	formatters.Add(new APIEntityFormatter());
+	formatters.Add(new TableEntityFormatter());
+	formatters.Add(new CacheEntityFormatter());	
+
+	foreach(ClassDef cd in cds)
+	{
+		foreach(CodeFormatter cf in formatters)
+		{
+			cf.Bind(cd);
+			manager.StartNewFile(cf.FileName); 
+			Write(cd.WriteCode(cf));
+			manager.EndBlock();
+		}
+	}
+	manager.Process(true); 
+#>

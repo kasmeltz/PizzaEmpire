@@ -59,5 +59,11 @@
         /// </summary>
         [ProtoMember(7)]
         public int TutorialStage { get; set; }
+
+        /// <summary>
+        /// Whether the state has changed
+        /// </summary>
+        [ProtoMember(8)]
+        public bool StateChanged { get; set; }
     }
 }

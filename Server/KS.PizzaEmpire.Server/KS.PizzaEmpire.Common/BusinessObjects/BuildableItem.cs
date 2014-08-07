@@ -1,7 +1,6 @@
 ﻿namespace KS.PizzaEmpire.Common.BusinessObjects
 {
     using System.Collections.Generic;
-    using System.IO;
 
     /// <summary>
     /// Represents an item that can be built in the game
