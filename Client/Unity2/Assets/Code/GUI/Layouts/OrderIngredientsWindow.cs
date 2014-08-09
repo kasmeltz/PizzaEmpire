@@ -3,6 +3,7 @@ namespace KS.PizzaEmpire.Unity
 	using UnityEngine;
 	using Common.BusinessObjects;
 	using Common.GameLogic;
+	using System.Collections.Generic;
 	
 	/// <summary>
 	/// Represents the window for ordering ingreduents
@@ -21,19 +22,38 @@ namespace KS.PizzaEmpire.Unity
 			
 			GUIItemFactory<GUIItemImage>.Instance.Pool.New();
 			
-			GUIItemImage ingredientMenu = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
-			ingredientMenu.Content.image = 
+			IngredientOrderWindow window = new IngredientOrderWindow(player);		
+			window.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WIN_ORDER_INGREDIENT);			
-			ingredientMenu.SetRectangle(0.0f, 0.05f, 0.40f, 0.80f, false, ScaleMode.ScaleToFit);
-			ingredientMenu.Element = GUIElementEnum.OrderIngredientsWindow;
-			ingredientMenu.Visible = false;			
+			window.SetRectangle(0.0f, 0.0f, 0.40f, 0.85f, false, ScaleMode.ScaleToFit);
+			window.Element = GUIElementEnum.OrderIngredientsWindow;
+			window.Visible = false;			
 			
-			GUIStateManager.Instance.AddChild(ingredientMenu);
+			GUIStateManager.Instance.AddChild(window);
+			
+			GUIBox flourBox = GUIItemFactory<GUIBox>.Instance.Pool.New();
+			flourBox.Content.text = "Flour";
+			flourBox.SetRectangle(0.02f, 0.12f,  0.15f, 0.15f, false, ScaleMode.ScaleToFit);
+			flourBox.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
+			flourBox.Element = GUIElementEnum.BoxFlour;
+			enabledCheck = new GamePlayerStateCheck();
+			enabledCheck.CanBuildItem = BuildableItemEnum.White_Flour;
+			flourBox.EnabledCheck = enabledCheck;
+			
+			window.AddChild (flourBox);
+			
+			GUIBox flourOrderBox = GUIItemFactory<GUIBox>.Instance.Pool.New();
+			flourOrderBox.Content.text = "";
+			flourOrderBox.SetRectangle(0.02f, 0.25f,  0.15f, 0.05f, false, ScaleMode.ScaleToFit);
+			flourOrderBox.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
+			flourOrderBox.Element = GUIElementEnum.ProgressBar;
+			
+			window.AddChild (flourOrderBox);			
 			
 			GUIItemImage flourIngredient = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
 			flourIngredient.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WHITE_FLOUR);			
-			flourIngredient.SetRectangle(0.05f, 0.05f, 0.05f, 0.075f, false, ScaleMode.ScaleToFit);
+			flourIngredient.SetRectangle(0.18f, 0.12f, 0.15f, 0.15f, false, ScaleMode.ScaleToFit);
 			flourIngredient.Draggable = DraggableEnum.RAW_INGREDIENT;
 			flourIngredient.DuplicateOnDrag = true;
 			flourIngredient.Element = GUIElementEnum.IconFlour;
@@ -42,28 +62,64 @@ namespace KS.PizzaEmpire.Unity
 			enabledCheck.CanBuildItem = BuildableItemEnum.White_Flour;
 			flourIngredient.EnabledCheck = enabledCheck;
 			
-			ingredientMenu.AddChild (flourIngredient);
+			window.AddChild (flourIngredient);
 			
 			GUIItemImage ingredientShoppingCart = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
 			ingredientShoppingCart.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_SHOPPING_CART);			
-			ingredientShoppingCart.SetRectangle(0.21f, 0.68f, 0.12f, 0.12f, false, ScaleMode.ScaleToFit);
+			ingredientShoppingCart.SetRectangle(0.0f, 0.73f, 0.12f, 0.12f, false, ScaleMode.ScaleToFit);
 			ingredientShoppingCart.Droppable = DraggableEnum.RAW_INGREDIENT;
 			ingredientShoppingCart.Element = GUIElementEnum.IconShoppingCart;
 			ingredientShoppingCart.OnDrop = (i1, i2) =>
-			{
+			{				
 				if (i2.BuildableItem != BuildableItemEnum.None)
 				{
+					IngredientOrderWindow iow = GUIStateManager.Instance
+						.GetChild(GUIElementEnum.OrderIngredientsWindow)
+							as IngredientOrderWindow;
+
+					List<ItemQuantity> currentOrder = iow.CurrentOrder;
+										
+					ItemQuantity selected = null;
+					foreach(ItemQuantity iq in currentOrder)
+					{
+						if (iq.ItemCode == i2.BuildableItem)
+						{
+							iq.Quantity++;
+							selected = iq;
+							break;
+						}
+					}
+					
+					if (selected == null)
+					{
+						selected = new ItemQuantity { ItemCode = i2.BuildableItem, Quantity = 1 };
+						currentOrder.Add(selected);
+					}
+					
+					GUIBox orderBox = i2.Parent.GetChild(GUIElementEnum.ProgressBar) as GUIBox;
+					orderBox.Content.text = selected.Quantity.ToString();					
+					
+					/*
 					ServerCommunicator.Instance.Communicate(
 						ServerActionEnum.StartWork, (int)i2.BuildableItem,
 						(ServerCommunication com) => 
 						{
 							GamePlayerLogic.Instance.StartWork(OrderIngredientsWindow.Player, i2.BuildableItem);
 						}, GUIGameObject.SetGlobalError);
+					*/
 				}
 			};
 			
-			ingredientMenu.AddChild (ingredientShoppingCart);			
+			window.AddChild (ingredientShoppingCart);		
+			
+			GUIButton ingredientCheckMark = GUIItemFactory<GUIButton>.Instance.Pool.New();
+			ingredientCheckMark.Content.image = 
+				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_CHECKMARK);			
+			ingredientCheckMark.SetRectangle(0.21f, 0.73f, 0.12f, 0.12f, false, ScaleMode.ScaleToFit);
+			ingredientCheckMark.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_NO_BACKGROUND);
+			
+			window.AddChild (ingredientCheckMark);			
 		}
 	}
 }

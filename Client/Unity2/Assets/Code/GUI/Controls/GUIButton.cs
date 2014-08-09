@@ -7,12 +7,12 @@ namespace KS.PizzaEmpire.Unity
 	/// Represents a button that performs some action
 	/// when click
 	/// </summary>
-	public class GUIItemButton : GUIItem
+	public class GUIButton : GUIItem
 	{	
 		/// <summary>
         /// Creates a new instace of the GUIItemButton class
 		/// </summary>
-		public GUIItemButton()
+		public GUIButton()
 			: base ()
 		{
 		}
@@ -35,14 +35,14 @@ namespace KS.PizzaEmpire.Unity
 		
 		public override GUIItem Clone ()
 		{
-			GUIItemButton item = GUIItemFactory<GUIItemButton>.Instance.Pool.New();
+			GUIButton item = GUIItemFactory<GUIButton>.Instance.Pool.New();
 			item.CopyFrom(this);
 			return item;
 		}	
 		
 		public override void Destroy()
 		{
-			GUIItemFactory<GUIItemButton>.Instance.Pool.Store(this);
+			GUIItemFactory<GUIButton>.Instance.Pool.Store(this);
 		}		
 		
 		/// <summary>
@@ -53,7 +53,7 @@ namespace KS.PizzaEmpire.Unity
 		{
 			base.CopyFrom (other);
 			
-			GUIItemButton button = other as GUIItemButton;
+			GUIButton button = other as GUIButton;
 			if (button == null)
 			{
 				return;

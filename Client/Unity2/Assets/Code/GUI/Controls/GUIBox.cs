@@ -5,12 +5,12 @@ namespace KS.PizzaEmpire.Unity
 	/// <summary>
 	/// Represents a box with some text
 	/// </summary>
-	public class GUIItemBox : GUIItem
+	public class GUIBox : GUIItem
 	{	
 		/// <summary>
 		/// Creates a new instace of the GUIItemBox class
 		/// </summary>
-		public GUIItemBox()
+		public GUIBox()
 			: base ()
 		{
 		}
@@ -24,14 +24,14 @@ namespace KS.PizzaEmpire.Unity
 		
 		public override GUIItem Clone ()
 		{
-			GUIItemBox item = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
+			GUIBox item = GUIItemFactory<GUIBox>.Instance.Pool.New();
 			item.CopyFrom(this);
 			return item;
 		}	
 		
 		public override void Destroy()
 		{
-			GUIItemFactory<GUIItemBox>.Instance.Pool.Store(this);
+			GUIItemFactory<GUIBox>.Instance.Pool.Store(this);
 		}		
 		
 		#endregion

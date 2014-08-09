@@ -1,4 +1,4 @@
-﻿namespace KS.PizzaEmpire.Unity
+namespace KS.PizzaEmpire.Unity
 {
 	using System;
 	using UnityEngine;
@@ -221,7 +221,7 @@
 		{
 			GUIStyle style;		
 			style = new GUIStyle( GUI.skin.box );
-			style.normal.background = MakeTex( 2, 2, new Color( 1f, 1f, 0.7f, 1f ) );
+			style.normal.background = MakeTex( 2, 2, new Color( 0.686f, 0.85f, 0.933f, 1f ) );
 			style.normal.textColor = new Color(0, 0, 0, 1);
 			style.font = ResourceManager<Font>.Instance.Load(ResourceEnum.FONT_ARVO);
 			style.alignment = TextAnchor.MiddleCenter;
@@ -249,7 +249,7 @@
 			
 			GUIStateManager.Instance.AddChild(errorWindow);						
 
-			GUIItemBox errorText = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
+			GUIBox errorText = GUIItemFactory<GUIBox>.Instance.Pool.New();
 			errorText.SetRectangle(0, 0, 0.8f, 0.6f, false, ScaleMode.StretchToFill);
 			errorText.Element = GUIElementEnum.ErrorWindow;
 			errorText.Style = style;		

@@ -1,4 +1,4 @@
-﻿namespace KS.PizzaEmpire.Unity
+namespace KS.PizzaEmpire.Unity
 {
 	using UnityEngine;
 	using System;
@@ -15,7 +15,7 @@
 		public BuildableItemEnum BuildableItem = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1;
 		public List<WorkItem> WorkItems;
 		
-		GUIItemBox guiItemBox;
+		GUIBox guiItemBox;
 		WorkItemProgressBar progressBar;
 		
 		public void Tapped()
@@ -44,7 +44,7 @@
 				}
 			}
 			
-			guiItemBox = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
+			guiItemBox = GUIItemFactory<GUIBox>.Instance.Pool.New();
 			guiItemBox.SetRectangle(transform.position.x - 2f, transform.position.y - 0.1f, 0.3f, 0.3f, true, ScaleMode.StretchToFill);			
 			guiItemBox.Element = ProgressBarElement;
 			guiItemBox.Style = 

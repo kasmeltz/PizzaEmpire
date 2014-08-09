@@ -47,11 +47,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Code\Events\FinishedWorkChecker.cs" />
+     <Compile Include="Assets\Code\GUI\Controls\GUIBox.cs" />
+     <Compile Include="Assets\Code\GUI\Controls\GUIButton.cs" />
+     <Compile Include="Assets\Code\GUI\Controls\GUIImage.cs" />
      <Compile Include="Assets\Code\GUI\Controls\GUIItem.cs" />
-     <Compile Include="Assets\Code\GUI\Controls\GUIItemBox.cs" />
-     <Compile Include="Assets\Code\GUI\Controls\GUIItemButton.cs" />
-     <Compile Include="Assets\Code\GUI\Controls\GUIItemImage.cs" />
-     <Compile Include="Assets\Code\GUI\Controls\GUIItemProgressBar.cs" />
+     <Compile Include="Assets\Code\GUI\Controls\GUIProgressBar.cs" />
+     <Compile Include="Assets\Code\GUI\Controls\GUIWindow.cs" />
      <Compile Include="Assets\Code\GUI\DraggableEnum.cs" />
      <Compile Include="Assets\Code\GUI\GUIElementEnum.cs" />
      <Compile Include="Assets\Code\GUI\GUIEvent.cs" />
@@ -60,6 +61,7 @@
      <Compile Include="Assets\Code\GUI\GUIItemFactory.cs" />
      <Compile Include="Assets\Code\GUI\GUIMessages.cs" />
      <Compile Include="Assets\Code\GUI\GUIStateManager.cs" />
+     <Compile Include="Assets\Code\GUI\GameLogicControls\IngredientOrderWindow.cs" />
      <Compile Include="Assets\Code\GUI\GameLogicControls\WorkItemProgressBar.cs" />
      <Compile Include="Assets\Code\GUI\Layouts\OrderIngredientsWindow.cs" />
      <Compile Include="Assets\Code\GUI\Layouts\RestaurantCommonElements.cs" />

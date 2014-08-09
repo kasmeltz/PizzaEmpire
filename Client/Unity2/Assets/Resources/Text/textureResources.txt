@@ -6,7 +6,7 @@ TEXTURE_TUTORIAL_LOUIE_4,Graphics/UI/Characters/louie4
 TEXTURE_TUTORIAL_LOUIE_5,Graphics/UI/Characters/louie5
 TEXTURE_TUTORIAL_LOUIE_6,Graphics/UI/Characters/louie6
 TEXTURE_ICON_TOMATO_LARGE,Graphics/UI/Ingredients/tomatobig
-TEXTURE_WHITE_FLOUR,Graphics/UI/Ingredients/flour
+TEXTURE_WHITE_FLOUR,Graphics/Tiles/Ingredients/Asset_Flour
 TEXTURE_ICON_CHECKMARK,Graphics/UI/Misc/icon-checkmark
 TEXTURE_ICON_MORE_TEXT,Graphics/UI/Misc/icon-moretext
 TEXTURE_ICON_SHOPPING_CART,Graphics/UI/Misc/icon-shop-cart

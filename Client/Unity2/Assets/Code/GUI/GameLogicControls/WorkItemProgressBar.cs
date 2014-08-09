@@ -7,7 +7,7 @@ namespace KS.PizzaEmpire.Unity
 	/// <summary>
 	/// Represents a progress bar 
 	/// </summary>
-	public class WorkItemProgressBar : GUIItemProgressBar
+	public class WorkItemProgressBar : GUIProgressBar
 	{	
 		/// <summary>
 		/// Creates a new instace of the WorkItemProgressBar class

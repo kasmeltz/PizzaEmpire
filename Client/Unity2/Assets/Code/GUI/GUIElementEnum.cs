@@ -23,6 +23,7 @@
 		TutorialMoreText,
 		TutorialDialogueBox,
 		TutorialDialogueWindow,
-		TutorialLouie
+		TutorialLouie,
+		BoxFlour
 	}	
 }

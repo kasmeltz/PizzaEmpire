@@ -1,4 +1,4 @@
-﻿namespace KS.PizzaEmpire.Unity
+namespace KS.PizzaEmpire.Unity
 {
     using Common;
 	using Common.BusinessObjects;
@@ -109,7 +109,7 @@
 		/// The parent of this item
 		/// </summary>
 		/// <value>The parent of this item</value>
-		protected GUIItem Parent { get; set; }
+		public GUIItem Parent { get; protected set; }
        
 		/// <summary>
 		/// The buildable item this GUI item represents
@@ -520,7 +520,8 @@
 			rectangle.height = other.Rectangle.height;
 			Rectangle = rectangle;
 			Style = other.Style;
-			Content = other.Content;
+			Content.image = other.Content.image;
+			Content.text = other.Content.text;			
 			Available = other.Available;
 			Visible = other.Visible;
 			Enabled = other.Enabled;

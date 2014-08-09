@@ -1,6 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\GUI\Layouts\OrderIngredientsWindow.cs">
+    <Files>
+      <File FileName="c:\Users\Kevin\Documents\GitHub\PizzaEmpire\Client\Unity2\Assets\Code\GUI\Controls\GUIWindow.cs" Line="28" Column="9" />
+      <File FileName="c:\Users\Kevin\Documents\GitHub\PizzaEmpire\Client\Unity2\Assets\Code\GUI\GUIGameObject.cs" Line="278" Column="2" />
+      <File FileName="c:\Users\Kevin\Documents\GitHub\PizzaEmpire\Client\Unity2\Assets\Code\GUI\Layouts\RestaurantCommonElements.cs" Line="35" Column="6" />
+      <File FileName="Assets\Code\GUI\GameLogicControls\IngredientOrderWindow.cs" Line="20" Column="20" />
+      <File FileName="Assets\Code\GUI\GameLogicControls\WorkItemProgressBar.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\GUI\Layouts\OrderIngredientsWindow.cs" Line="17" Column="4" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

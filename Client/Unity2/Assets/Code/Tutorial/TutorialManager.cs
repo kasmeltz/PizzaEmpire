@@ -1,4 +1,4 @@
-﻿namespace KS.PizzaEmpire.Unity
+namespace KS.PizzaEmpire.Unity
 {
     using System;
     using System.Collections.Generic;
@@ -18,9 +18,9 @@
         private List<Texture2D> louieTextures;
         
 		private GUIItemImage louieDialogueWindow;
-        private GUIItemBox louieDialogueBox;
+        private GUIBox louieDialogueBox;
         private GUIItemImage louieImage;
-        private GUIItemButton moreTextButton;
+        private GUIButton moreTextButton;
         
         private GamePlayer player;
 
@@ -77,19 +77,19 @@
 			louieDialogueWindow = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
 			louieDialogueWindow.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WIN_TUTORIAL_DIALOGUE);
-			louieDialogueWindow.SetRectangle(0.32f, 0.05f, 0.67f, 0.35f, false, ScaleMode.StretchToFill);			                              			                              
+			louieDialogueWindow.SetRectangle(0.32f, 0.15f, 0.67f, 0.4f, false, ScaleMode.StretchToFill);			                              			                              
 			louieDialogueWindow.Element = GUIElementEnum.TutorialDialogueWindow;
 			
 			GUIStateManager.Instance.AddChild(louieDialogueWindow);
 			
-			louieDialogueBox = GUIItemFactory<GUIItemBox>.Instance.Pool.New();
-			louieDialogueBox.SetRectangle(0.05f, 0.05f, 0.58f, 0.25f, false, ScaleMode.ScaleToFit);			                              			                              
+			louieDialogueBox = GUIItemFactory<GUIBox>.Instance.Pool.New();
+			louieDialogueBox.SetRectangle(0.05f, 0.05f, 0.58f, 0.3f, false, ScaleMode.ScaleToFit);			                              			                              
       		louieDialogueBox.Element = GUIElementEnum.TutorialDialogueBox;
 			louieDialogueBox.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_NO_BACKGROUND);		
       		
 			louieDialogueWindow.AddChild(louieDialogueBox);
 			
-			moreTextButton = GUIItemFactory<GUIItemButton>.Instance.Pool.New();
+			moreTextButton = GUIItemFactory<GUIButton>.Instance.Pool.New();
 			moreTextButton.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_MORE_TEXT);
 			moreTextButton.SetRectangle(0.59f, 0.24f, 0.075f, 0.075f, false, ScaleMode.ScaleToFit);			                              			                              
@@ -270,8 +270,8 @@
 		/// </summary>
 		public void ToggleMoreTextButton(bool visible)
 		{
-			GUIItemButton button = GUIStateManager.Instance
-				.GetChildNested(GUIElementEnum.TutorialMoreText) as GUIItemButton;
+			GUIButton button = GUIStateManager.Instance
+				.GetChildNested(GUIElementEnum.TutorialMoreText) as GUIButton;
 			button.Visible = visible;
 		}
 		
@@ -281,8 +281,8 @@
         /// <param name="index">Index.</param>
         public void SetStageText(int index)
         {
-			GUIItemBox box = GUIStateManager.Instance
-				.GetChildNested(GUIElementEnum.TutorialDialogueBox) as GUIItemBox;
+			GUIBox box = GUIStateManager.Instance
+				.GetChildNested(GUIElementEnum.TutorialDialogueBox) as GUIBox;
             box.Content.text = sayings[index];
             box.Visible = true;
         }

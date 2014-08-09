@@ -5,12 +5,12 @@ namespace KS.PizzaEmpire.Unity
 	/// <summary>
 	/// Represents a progress bar 
 	/// </summary>
-	public class GUIItemProgressBar : GUIItem
+	public class GUIProgressBar : GUIItem
 	{	
 		/// <summary>
 		/// Creates a new instace of the GUIItemProgressBar class
 		/// </summary>
-		public GUIItemProgressBar()
+		public GUIProgressBar()
 			: base ()
 		{
 			TexCoords = new Rect(0, 0, 0, 0);
@@ -89,14 +89,14 @@ namespace KS.PizzaEmpire.Unity
 		
 		public override GUIItem Clone ()
 		{
-			GUIItemProgressBar item = GUIItemFactory<GUIItemProgressBar>.Instance.Pool.New();
+			GUIProgressBar item = GUIItemFactory<GUIProgressBar>.Instance.Pool.New();
 			item.CopyFrom(this);
 			return item;
 		}	
 		
 		public override void Destroy()
 		{
-			GUIItemFactory<GUIItemProgressBar>.Instance.Pool.Store(this);
+			GUIItemFactory<GUIProgressBar>.Instance.Pool.Store(this);
 		}
 		
 		/// <summary>
@@ -107,7 +107,7 @@ namespace KS.PizzaEmpire.Unity
 		{
 			base.CopyFrom (other);
 			
-			GUIItemProgressBar bar = other as GUIItemProgressBar;
+			GUIProgressBar bar = other as GUIProgressBar;
 			if (bar == null)
 			{
 				return;
