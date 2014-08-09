@@ -142,6 +142,8 @@ namespace KS.PizzaEmpire.Unity
 	
 	    private void Update()
 		{
+			float dt = Time.deltaTime;
+
 			ServerCommunicator.Instance.Update();
 	
 	        float xAxisValue = Input.GetAxis("Horizontal") * 0.1f;
@@ -150,6 +152,8 @@ namespace KS.PizzaEmpire.Unity
 	        {
 				Camera.main.transform.Translate(new Vector3(xAxisValue, yAxisValue, 0));
 	        }
+
+			Camera.main.orthographicSize -= Input.GetAxis ("Mouse ScrollWheel") * 3;
 	
 	        if (!IsLoaded)
 			{
@@ -173,9 +177,7 @@ namespace KS.PizzaEmpire.Unity
 
 			player.StateChanged = false;		
 			GUIStateManager.Instance.ChildrenModified = false;		
-			
-	        float dt = Time.deltaTime;
-	
+				        
 			GUIStateManager.Instance.Update(dt);
 	        workChecker.Update(dt);
 	        

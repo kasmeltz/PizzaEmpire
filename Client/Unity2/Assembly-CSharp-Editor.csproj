@@ -108,25 +108,25 @@
      <None Include="Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\Shaders\Fx\ParticleBlend.shader" />
      <None Include="Assets\Resources\Text\unclelouie.txt" />
  <Reference Include="KS.PizzaEmpire.Common">
- <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/Code/DLLs/KS.PizzaEmpire.Common.dll</HintPath>
+ <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/Code/DLLs/KS.PizzaEmpire.Common.dll</HintPath>
  </Reference>
  <Reference Include="NSubstitute">
- <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NSubstitute/NSubstitute.dll</HintPath>
+ <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NSubstitute/NSubstitute.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
- <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/Mono.Cecil.dll</HintPath>
+ <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/Mono.Cecil.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil.Mdb">
- <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/Mono.Cecil.Mdb.dll</HintPath>
+ <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/Mono.Cecil.Mdb.dll</HintPath>
  </Reference>
  <Reference Include="nunit.core">
- <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/nunit.core.dll</HintPath>
+ <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/nunit.core.dll</HintPath>
  </Reference>
  <Reference Include="nunit.core.interfaces">
- <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/nunit.core.interfaces.dll</HintPath>
+ <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/nunit.core.interfaces.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
- <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/nunit.framework.dll</HintPath>
+ <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NUnit/Libs/nunit.framework.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
