@@ -60,6 +60,8 @@
         Customer_Seating_L1,
         Soda_Machine_L1,
         Restaurant_Storage,
-        Dirty_Dishes
+        Dirty_Dishes,
+        Dirty_Table,
+        Dirty_Floor
     }
 }

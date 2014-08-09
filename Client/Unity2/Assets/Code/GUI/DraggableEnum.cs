@@ -5,6 +5,7 @@ namespace KS.PizzaEmpire.Unity
 	public enum DraggableEnum
 	{
 		NONE = 0,
-		RAW_INGREDIENT
+		RAW_INGREDIENT,
+		DISH_CLOTH
 	}
 }

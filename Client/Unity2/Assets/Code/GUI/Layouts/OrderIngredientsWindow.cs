@@ -74,6 +74,7 @@ namespace KS.PizzaEmpire.Unity
 			{				
 				if (i2.BuildableItem != BuildableItemEnum.None)
 				{
+					/*
 					IngredientOrderWindow iow = GUIStateManager.Instance
 						.GetChild(GUIElementEnum.OrderIngredientsWindow)
 							as IngredientOrderWindow;
@@ -99,15 +100,13 @@ namespace KS.PizzaEmpire.Unity
 					
 					GUIBox orderBox = i2.Parent.GetChild(GUIElementEnum.ProgressBar) as GUIBox;
 					orderBox.Content.text = selected.Quantity.ToString();					
-					
-					/*
+					*/
 					ServerCommunicator.Instance.Communicate(
 						ServerActionEnum.StartWork, (int)i2.BuildableItem,
 						(ServerCommunication com) => 
 						{
 							GamePlayerLogic.Instance.StartWork(OrderIngredientsWindow.Player, i2.BuildableItem);
 						}, GUIGameObject.SetGlobalError);
-					*/
 				}
 			};
 			

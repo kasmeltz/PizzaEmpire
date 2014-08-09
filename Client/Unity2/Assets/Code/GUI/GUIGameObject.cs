@@ -107,6 +107,10 @@ namespace KS.PizzaEmpire.Unity
 			resourcesList = Resources.Load<TextAsset>("Text/fontResources");
 			ResourceManager<Font>.Instance.Initialize(resourcesList.text);
 			Resources.UnloadAsset(resourcesList);		
+
+			resourcesList = Resources.Load<TextAsset>("Text/prefabResources");
+			ResourceManager<GameObject>.Instance.Initialize(resourcesList.text);
+			Resources.UnloadAsset(resourcesList);		
 		}
 	
 	    protected void AllItemsLoaded()

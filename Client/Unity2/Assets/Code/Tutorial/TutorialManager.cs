@@ -14,8 +14,7 @@ namespace KS.PizzaEmpire.Unity
         private int currentStageIndex;
         private TutorialStage currentStage;
         private string[] sayings;
-
-        private List<Texture2D> louieTextures;
+		        private List<Texture2D> louieTextures;
         
 		private GUIItemImage louieDialogueWindow;
         private GUIBox louieDialogueBox;
@@ -218,6 +217,8 @@ namespace KS.PizzaEmpire.Unity
 				SetStageText(8);
 				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Negative, false);
+				GameObject dirtyTable = ResourceManager<GameObject>.Instance.Load(ResourceEnum.PREFAB_DIRTY_TABLE);			
+				GameObject.Instantiate(dirtyTable, new Vector3(-5f,-0.6f,0), Quaternion.identity);
 			};
             stage.GUIEvent = new GUIEvent { GEvent = GUIEventEnum.Wipe, Element = GUIElementEnum.TableCloth };
             stages.Add(stage);

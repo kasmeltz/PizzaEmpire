@@ -70,6 +70,7 @@
      <Compile Include="Assets\Code\GameLogic\GamePlayerStateCheck.cs" />
      <Compile Include="Assets\Code\GameLogic\ItemManager.cs" />
      <Compile Include="Assets\Code\InGameScripts\ProgressBarWhenTapped.cs" />
+     <Compile Include="Assets\Code\InGameScripts\TableClothWhenTapped.cs" />
      <Compile Include="Assets\Code\Resources\LightweightResourceManager.cs" />
      <Compile Include="Assets\Code\Resources\ResourceEnum.cs" />
      <Compile Include="Assets\Code\Resources\ResourceManager.cs" />
@@ -127,6 +128,7 @@
      <None Include="Assets\UnityTestTools\LICENSE.txt" />
      <None Include="Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\Shaders\Fx\ParticleAdditiveBlend.shader" />
      <None Include="Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\Shaders\Fx\Additive.shader" />
+     <None Include="Assets\Resources\Text\prefabResources.txt" />
      <None Include="Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\Shaders\BackgroundAndCharacters\Fallback.shader" />
      <None Include="Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\Shaders\Fx\Multiply.shader" />
      <None Include="Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\Shaders\BackgroundAndCharacters\CharacterSelfIlluminationReflective.shader" />

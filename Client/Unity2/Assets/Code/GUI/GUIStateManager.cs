@@ -213,6 +213,7 @@
 				if (currentlyTapped != null)
 				{
 					currentlyTapped.SendMessage(GUIMessages.UnTapped, SendMessageOptions.DontRequireReceiver);
+					currentlyTapped = null;
 				}
 			}
 		}		

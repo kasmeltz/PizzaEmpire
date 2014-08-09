@@ -300,7 +300,53 @@
 
             bi = new BuildableItem
             {
+                ItemCode = BuildableItemEnum.Dirty_Table,
+                RequiredLevel = 1,
+                CoinCost = 50,
+                ProductionItem = BuildableItemEnum.None,
+                ProductionCapacity = 0,
+                BaseProduction = 1,
+                StorageCapacity = 0,
+                StorageItem = BuildableItemEnum.None,
+                IsStorage = false,
+                IsConsumable = true,
+                IsImmediate = true,
+                IsWorkSubtracted = true,
+                Experience = 100,
+                BuildSeconds = -1,
+                CouponCost = 1,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60,
+            };
+            storageInfo = new BuildableItemStorageInformation(bi.ItemCode.ToString());
+            bitems.Add((BuildableItemTableStorage)storageInfo.ToTableStorage(bi));
+
+            bi = new BuildableItem
+            {
                 ItemCode = BuildableItemEnum.Dirty_Dishes,
+                RequiredLevel = 1,
+                CoinCost = 50,
+                ProductionItem = BuildableItemEnum.None,
+                ProductionCapacity = 0,
+                BaseProduction = 1,
+                StorageCapacity = 0,
+                StorageItem = BuildableItemEnum.None,
+                IsStorage = false,
+                IsConsumable = true,
+                IsImmediate = true,
+                IsWorkSubtracted = true,
+                Experience = 100,
+                BuildSeconds = -1,
+                CouponCost = 1,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60,
+            };
+            storageInfo = new BuildableItemStorageInformation(bi.ItemCode.ToString());
+            bitems.Add((BuildableItemTableStorage)storageInfo.ToTableStorage(bi));
+
+            bi = new BuildableItem
+            {
+                ItemCode = BuildableItemEnum.Dirty_Floor,
                 RequiredLevel = 1,
                 CoinCost = 50,
                 ProductionItem = BuildableItemEnum.None,

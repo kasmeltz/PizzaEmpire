@@ -15,3 +15,4 @@ TEXTURE_BAR_OUTER,Graphics/UI/Misc/barouter
 TEXTURE_BAR_INNER,Graphics/UI/Misc/barinner
 TEXTURE_WIN_TUTORIAL_DIALOGUE,Graphics/UI/Misc/window-tut-diag
 TEXTURE_WIN_ORDER_INGREDIENT,Graphics/UI/Misc/window-ingred
+TEXTURE_UI_DISHCLOTH,Graphics/UI/Misc/dishc

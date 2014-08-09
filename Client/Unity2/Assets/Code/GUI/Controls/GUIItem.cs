@@ -44,24 +44,23 @@ namespace KS.PizzaEmpire.Unity
 			Scale = scale;
 			WorldCoords = Vector2.zero;
 			IsWorld = isWorld;		
-			
-			if (isWorld)
+
+			if (w <= 1 && h <= 1 )
 			{
-				if (w <= 1 && h <= 1 )
-				{
-					w = Screen.width * w;
-					h = Screen.height * h;
-				}										
+				w = Screen.width * w;
+				h = Screen.height * h;
+			}		
+
+			if (isWorld)
+			{											
 				WorldCoords = new Vector2(x, y);
 			} 
 			else
 			{		
-				if (x <= 1 && y <= 1 && w <= 1 && h <= 1 )
+				if (x <= 1 && y <= 1)
 				{
 					x = Screen.width * x;
 					y = Screen.height * y;
-					w = Screen.width * w;
-					h = Screen.height * h;			
 				}				
 			}
 			
