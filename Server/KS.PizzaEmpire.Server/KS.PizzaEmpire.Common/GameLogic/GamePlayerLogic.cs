@@ -61,6 +61,7 @@
             player.BuildableItems = new Dictionary<BuildableItemEnum, int>();
             player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1] = 1;
             player.BuildableItems[BuildableItemEnum.Restaurant_Storage] = 1;
+            player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 1;
 
             player.WorkItems = new List<WorkItem>();
             SetLevel(player, 1);

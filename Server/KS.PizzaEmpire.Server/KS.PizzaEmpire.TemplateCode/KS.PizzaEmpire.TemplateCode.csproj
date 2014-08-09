@@ -72,70 +72,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildableItem.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BuildableItemAPI.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BuildableItemCacheable.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BuildableItemTableStorage.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ExperienceLevel.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ExperienceLevelAPI.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ExperienceLevelCacheable.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ExperienceLevelTableStorage.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GamePlayer.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GamePlayerAPI.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GamePlayerCacheable.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GamePlayerTableStorage.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ItemQuantity.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ItemQuantityAPI.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ItemQuantityCacheable.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ItemQuantityTableStorage.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Templates1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WorkItem.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WorkItemAPI.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WorkItemCacheable.cs">
-      <DependentUpon>Templates.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WorkItemTableStorage.cs">
       <DependentUpon>Templates.tt</DependentUpon>
     </Compile>
   </ItemGroup>

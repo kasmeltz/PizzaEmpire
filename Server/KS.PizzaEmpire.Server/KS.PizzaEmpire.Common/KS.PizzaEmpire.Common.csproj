@@ -39,9 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\KS.PizzaEmpire.TemplateCode\GamePlayer.cs">
-      <Link>BusinessObjects\GamePlayer.cs</Link>
-    </Compile>
     <Compile Include="APITransfer\BuildableItemAPI.cs" />
     <Compile Include="APITransfer\ExperienceLevelAPIMorph.cs" />
     <Compile Include="APITransfer\ExperienceLevelAPI.cs" />
@@ -53,6 +50,7 @@
     <Compile Include="BusinessObjects\BuildableItem.cs" />
     <Compile Include="BusinessObjects\BuildableItemEnum.cs" />
     <Compile Include="BusinessObjects\ExperienceLevel.cs" />
+    <Compile Include="BusinessObjects\GamePlayer.cs" />
     <Compile Include="BusinessObjects\IBusinessObjectEntity.cs" />
     <Compile Include="BusinessObjects\ItemQuantity.cs" />
     <Compile Include="ObjectPool\IResetable.cs" />

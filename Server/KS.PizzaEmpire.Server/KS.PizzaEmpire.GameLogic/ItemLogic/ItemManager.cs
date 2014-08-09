@@ -305,7 +305,7 @@
                 CoinCost = 50,
                 ProductionItem = BuildableItemEnum.None,
                 ProductionCapacity = 0,
-                BaseProduction = 3,
+                BaseProduction = 1,
                 StorageCapacity = 0,
                 StorageItem = BuildableItemEnum.None,
                 IsStorage = false,
