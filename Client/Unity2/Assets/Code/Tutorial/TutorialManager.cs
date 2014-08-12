@@ -223,7 +223,7 @@ namespace KS.PizzaEmpire.Unity
 			stateCheck = new GamePlayerStateCheck ();
 			stateCheck.ItemQuantityLessThan = new List<ItemQuantity> ();
 			stateCheck.ItemQuantityLessThan.Add(
-				new ItemQuantity { ItemCode = BuildableItemEnum.Dirty_Dishes, Quantity = 1 });	
+				new ItemQuantity { ItemCode = BuildableItemEnum.Dirty_Table, Quantity = 1 });	
 			stage.PlayerStateCheck = stateCheck;
             stages.Add(stage);
 
@@ -266,6 +266,71 @@ namespace KS.PizzaEmpire.Unity
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};         
             stages.Add(stage);
+
+			//To order tomatoes, tap on the phone icon. Tap on the vegetables tab. Now add the tomatoes to your shopping cart like you did with the flour. When you're done tap the checkmark.
+			stage = new TutorialStage();
+			stage.OnStart = () =>
+			{
+				SetStageText(13);
+				ToggleMoreTextButton(false);
+				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, false);
+			};
+			stateCheck = new GamePlayerStateCheck();
+			stateCheck.WorkItemsInProgress = new List<ItemQuantity>();
+			stateCheck.WorkItemsInProgress.Add (
+				new ItemQuantity { ItemCode = BuildableItemEnum.Tomatoes, Quantity = 1 });
+			stage.PlayerStateCheck = stateCheck;
+			stages.Add(stage);
+
+			//Way to go kiddo, you're learning how to run a business! It takes a little longer to get stuff from the farm, but those tomatoes will be before you know it.
+			stage = new TutorialStage();
+			stage.OnStart = () =>
+			{
+				GUIItem window = GUIStateManager.Instance
+					.GetChildNested(GUIElementEnum.OrderIngredientsWindow);				
+				window.Visible = false;
+				SetStageText(14);
+				ToggleMoreTextButton(true);
+				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
+			};         
+			stages.Add(stage);
+
+			//It seems you inherited another mess this time its in the kitchen. The dishes need to be cleaned if you want to serve customers. Dishes will accumulate as customers eat your pizza. You'll need to keep the dishes clean in order to keep working!
+			stage = new TutorialStage();
+			stage.OnStart = () =>
+			{
+				SetStageText(15);
+				ToggleMoreTextButton(true);
+				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
+			};         
+			stages.Add(stage);
+
+			//To wash dishes, tap the dishes that have accumulated in the sink and then take the soap and scrub it over the dishes.
+			stage = new TutorialStage();
+			stage.OnStart = () =>
+			{
+				SetStageText(16);
+				ToggleMoreTextButton(false);
+				SetLouieTexture(LouieExpression.Surprised_Negative, false);
+				GameObject dirtyTable = ResourceManager<GameObject>.Instance.Load(ResourceEnum.PREFAB_DIRTY_DISHES);			
+				GameObject.Instantiate(dirtyTable, new Vector3(-5f,-0.6f,0), Quaternion.identity);
+			};
+			stateCheck = new GamePlayerStateCheck ();
+			stateCheck.ItemQuantityLessThan = new List<ItemQuantity> ();
+			stateCheck.ItemQuantityLessThan.Add(
+				new ItemQuantity { ItemCode = BuildableItemEnum.Dirty_Dishes, Quantity = 1 });	
+			stage.PlayerStateCheck = stateCheck;
+			stages.Add(stage);
+
+			//Gee you're a hard worker. Keep this determination and your pizza restaurants are going to be all over this city in no time.
+			stage = new TutorialStage();
+			stage.OnStart = () =>
+			{
+				SetStageText(17);
+				ToggleMoreTextButton(true);
+				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
+			};         
+			stages.Add(stage);
 
             SetStage(player.TutorialStage);
         }

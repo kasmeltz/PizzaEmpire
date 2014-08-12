@@ -1,2 +1,4 @@
 PREFAB_DIRTY_TABLE,Prefabs/Restaurant/DirtyTable
+PREFAB_TABLE_CLOTH,Prefabs/Restaurant/TableCloth
+PREFAB_DIRTY_DISHES,Prefabs/Restaurant/DirtyDishes
 PREFAB_DISH_CLOTH,Prefabs/Restaurant/DishCloth

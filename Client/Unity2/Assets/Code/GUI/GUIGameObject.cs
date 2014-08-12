@@ -226,6 +226,17 @@ namespace KS.PizzaEmpire.Unity
 		private void InitStyles()
 		{
 			GUIStyle style;		
+
+			style = new GUIStyle( GUI.skin.box );
+			style.normal.background = MakeTex( 2, 2, new Color( 0.686f, 0.35f, 0.133f, 1f ) );
+			style.normal.textColor = new Color(0, 0, 0, 1);
+			style.font = ResourceManager<Font>.Instance.Load(ResourceEnum.FONT_ARVO);
+			style.alignment = TextAnchor.MiddleCenter;
+			style.wordWrap = true;
+			
+			LightweightResourceManager<GUIStyle>.Instance
+				.Set(ResourceEnum.GUISTYLE_DEBUG, style);
+
 			style = new GUIStyle( GUI.skin.box );
 			style.normal.background = MakeTex( 2, 2, new Color( 0.686f, 0.85f, 0.933f, 1f ) );
 			style.normal.textColor = new Color(0, 0, 0, 1);
@@ -242,7 +253,7 @@ namespace KS.PizzaEmpire.Unity
 			style.font = ResourceManager<Font>.Instance.Load(ResourceEnum.FONT_ARVO);
 			style.alignment = TextAnchor.MiddleCenter;
 			style.wordWrap = true;
-			
+
 			LightweightResourceManager<GUIStyle>.Instance
 				.Set(ResourceEnum.GUISTYLE_NO_BACKGROUND, style);
 				

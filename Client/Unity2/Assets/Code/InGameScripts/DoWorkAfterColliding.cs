@@ -5,30 +5,34 @@
 	using Common.GameLogic;
 	using System.Collections.Generic;
 
-	public class DishClothBehaviour : MonoBehaviour 
+	public class DoWorkAfterColliding : MonoBehaviour 
 	{
-		protected int wipeCount;
-		public int WipesRequired;
-		protected GameObject dirtyTable;
+		public int CollidesRequired;
+		public string CollideWith;
+		public BuildableItemEnum ItemToBuild;
+
+		protected int collideCount;
+		protected GameObject parent;
 
 		void Start () 
 		{
-			wipeCount = 0;
+			collideCount = 0;
 		}
 		
 		void Update () 
 		{
-			if (wipeCount > WipesRequired)
+			if (collideCount > CollidesRequired)
 			{
 				ServerCommunicator.Instance.Communicate(
-					ServerActionEnum.StartWork, (int)BuildableItemEnum.Dirty_Dishes,
+					ServerActionEnum.StartWork, (int)ItemToBuild,
 					(ServerCommunication com) => 
 					{
-						GamePlayerLogic.Instance.StartWork(OrderIngredientsWindow.Player, BuildableItemEnum.Dirty_Dishes);
+						GamePlayerLogic.Instance.StartWork(
+							GamePlayerManager.Instance.LoggedInPlayer, ItemToBuild);
 					}, GUIGameObject.SetGlobalError);
 
 				Destroy(gameObject);
-				Destroy(dirtyTable);
+				Destroy(parent);
 
 				return;
 			}
@@ -46,10 +50,10 @@
 
 		void OnTriggerEnter2D(Collider2D other)
 		{
-			if (other.tag == "DirtyTable") 
+			if (other.tag == CollideWith) 
 			{
-				dirtyTable = other.gameObject;
-				wipeCount++;
+				parent = other.gameObject;
+				collideCount++;
 			}
 		}
 	}

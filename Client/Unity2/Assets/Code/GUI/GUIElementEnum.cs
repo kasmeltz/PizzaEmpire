@@ -24,6 +24,11 @@
 		TutorialDialogueBox,
 		TutorialDialogueWindow,
 		TutorialLouie,
-		BoxFlour
+		BoxFlour,
+		BoxTomato,
+		TabDryGoods,
+		TabVegetables,
+		TabButtonDryGoods,
+		TabButtonVegetables
 	}	
 }
