@@ -17,7 +17,7 @@
 
             Dictionary<BuildableItemEnum, BuildableItem> bitems = ItemManager.Instance.BuildableItems;
 
-            Assert.AreEqual(9, bitems.Count);
+            Assert.AreEqual(11, bitems.Count);
         }
     }
 }

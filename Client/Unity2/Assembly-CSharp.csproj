@@ -69,6 +69,7 @@
      <Compile Include="Assets\Code\GameLogic\GamePlayerManager.cs" />
      <Compile Include="Assets\Code\GameLogic\GamePlayerStateCheck.cs" />
      <Compile Include="Assets\Code\GameLogic\ItemManager.cs" />
+     <Compile Include="Assets\Code\InGameScripts\DishClothBehaviour.cs" />
      <Compile Include="Assets\Code\InGameScripts\ProgressBarWhenTapped.cs" />
      <Compile Include="Assets\Code\InGameScripts\TableClothWhenTapped.cs" />
      <Compile Include="Assets\Code\Resources\LightweightResourceManager.cs" />

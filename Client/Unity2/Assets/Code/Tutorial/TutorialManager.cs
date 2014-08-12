@@ -220,7 +220,11 @@ namespace KS.PizzaEmpire.Unity
 				GameObject dirtyTable = ResourceManager<GameObject>.Instance.Load(ResourceEnum.PREFAB_DIRTY_TABLE);			
 				GameObject.Instantiate(dirtyTable, new Vector3(-5f,-0.6f,0), Quaternion.identity);
 			};
-            stage.GUIEvent = new GUIEvent { GEvent = GUIEventEnum.Wipe, Element = GUIElementEnum.TableCloth };
+			stateCheck = new GamePlayerStateCheck ();
+			stateCheck.ItemQuantityLessThan = new List<ItemQuantity> ();
+			stateCheck.ItemQuantityLessThan.Add(
+				new ItemQuantity { ItemCode = BuildableItemEnum.Dirty_Dishes, Quantity = 1 });	
+			stage.PlayerStateCheck = stateCheck;
             stages.Add(stage);
 
 			//Good work! Tables will get dusty over time on their own and customers will also mess them up. Customers won't sit in your restaurant to be served unless the table is clean!
@@ -336,8 +340,9 @@ namespace KS.PizzaEmpire.Unity
 			ResourceManager<Texture2D>.Instance.UnLoad(ResourceEnum.TEXTURE_TUTORIAL_LOUIE_6);
 	
 			GUIStateManager.Instance.RemoveChild(GUIElementEnum.TutorialLouie);
-			GUIStateManager.Instance.RemoveChild(GUIElementEnum.TutorialDialogueBox);
-			
+			GUIStateManager.Instance.RemoveChild(GUIElementEnum.TutorialDialogueWindow);
+
+			louieDialogueWindow.Destroy();
 			louieDialogueBox.Destroy();
 			louieImage.Destroy();
 			moreTextButton.Destroy();
@@ -345,24 +350,22 @@ namespace KS.PizzaEmpire.Unity
 			louieDialogueBox = null;
 			louieImage = null;
 			moreTextButton = null;
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
+			stages.Clear ();
+			stages = null;
+			currentStage = null;
+			sayings = null;
+			louieTextures.Clear ();
+			louieTextures = null;
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
         /// <param name="index"></param>
         public void SetStage(int index)
         {
             currentStageIndex = index;
-
-            if (currentStageIndex >= stages.Count)
-            {
-                FinishTutorial();
-                return;
-            }
-
-            currentStage = stages[currentStageIndex];
-            currentStage = stages[index];                       
 
 			if (player != null)
 			{
@@ -378,6 +381,15 @@ namespace KS.PizzaEmpire.Unity
 						}, GUIGameObject.SetGlobalError);
 				}
 			}
+
+            if (currentStageIndex >= stages.Count)
+            {
+                FinishTutorial();
+                return;
+            }
+
+            currentStage = stages[currentStageIndex];
+            currentStage = stages[index];                       
 
             if (currentStage.OnStart != null)
             {

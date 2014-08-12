@@ -10,16 +10,23 @@ namespace KS.PizzaEmpire.Unity
 	{
 		protected bool isTapped;
 
-		protected GUIItemImage dishCloth;
+		//protected GUIItemImage dishCloth;
+		protected GameObject dishCloth;
 
 		public void Tapped()
 		{
 			if (isTapped)
 			{
+				UnTapped();
 				return;
 			}
 
 			isTapped = true;
+
+			dishCloth = ResourceManager<GameObject>.Instance.Load(ResourceEnum.PREFAB_DISH_CLOTH);			
+			dishCloth = (GameObject)GameObject.Instantiate(dishCloth, transform.position, Quaternion.identity);
+
+			/*
 
 			dishCloth = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
 			dishCloth.Content.image = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_UI_DISHCLOTH);
@@ -31,6 +38,7 @@ namespace KS.PizzaEmpire.Unity
 			dishCloth.DuplicateOnDrag = false;
 
 			GUIStateManager.Instance.AddChild(dishCloth);		
+			*/
 
 			Debug.Log ("Tapped!");
 
@@ -41,6 +49,12 @@ namespace KS.PizzaEmpire.Unity
 		{
 			Debug.Log ("UnTapped!");
 
+			if (dishCloth != null) 
+			{
+				DestroyImmediate(dishCloth);
+			}
+
+			/*
 			if (dishCloth != null)
 			{
 				dishCloth.Destroy();							
@@ -48,6 +62,7 @@ namespace KS.PizzaEmpire.Unity
 				ResourceManager<Texture2D>.Instance.UnLoad(ResourceEnum.TEXTURE_UI_DISHCLOTH);
 				GUIStateManager.Instance.RemoveChild(GUIElementEnum.IconWipeTable);
 			}
+			*/
 
 			isTapped = false;
 		}

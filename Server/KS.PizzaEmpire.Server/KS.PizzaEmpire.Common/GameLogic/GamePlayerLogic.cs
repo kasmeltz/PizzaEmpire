@@ -374,7 +374,7 @@
                 return;
             }
 
-            if (player.BuildableItems[item.ItemCode] <= bi.BaseProduction)
+            if (player.BuildableItems[item.ItemCode] < bi.BaseProduction)
             {
                 Trace.WriteLine("Attempt to finished subtracted work for an item the player doesn't have enough of");
                 return;

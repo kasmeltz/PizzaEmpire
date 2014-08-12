@@ -24,6 +24,7 @@
 			WorkItemsInProgress = new List<ItemQuantity>();
 		}
 
+		public List<ItemQuantity> ItemQuantityLessThan { get; set; }
         public List<ItemQuantity> WorkItemsInProgress { get; set; }
         public int? RequiredLevel { get; set; }
         public BuildableItemEnum CanBuildItem { get; set; }
@@ -31,9 +32,35 @@
         public int? TutorialStage { get; set; }
 
 		/// <summary>
+		/// Checks whether the player has less than the
+		/// indicated number of items
+		/// </summary>
+		/// <param name="player">The player to check.</param>
+		public bool CheckItemsLessThan(GamePlayer player)
+		{
+			if (ItemQuantityLessThan == null || 
+			    ItemQuantityLessThan.Count == 0)
+			{
+				return true;
+			}
+
+			for (int i = 0; i < ItemQuantityLessThan.Count; i++)
+			{
+				ItemQuantity checkIQ = ItemQuantityLessThan[i];
+				if (player.BuildableItems.ContainsKey(checkIQ.ItemCode) && 
+				    player.BuildableItems[checkIQ.ItemCode] >= checkIQ.Quantity)
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/// <summary>
 		/// Checks the work items in progress.
 		/// </summary>
-		/// <param name="player">Player.</param>
+		/// <param name="player">The player to check.</param>
 		public bool CheckWorkItemsInProgress(GamePlayer player)
 		{
             if (WorkItemsInProgress == null || 
@@ -44,34 +71,31 @@
 
 			Dictionary<BuildableItemEnum, int> playerWis = new Dictionary<BuildableItemEnum, int>();
             for (int i = 0; i < player.WorkItems.Count; i++)
-                {
-                    WorkItem playerWi = player.WorkItems[i];
-                    if (!playerWis.ContainsKey(playerWi.ItemCode))
-                    {
-                        playerWis[playerWi.ItemCode] = 1;
-                    }
-                    else
-                    {
-                        playerWis[playerWi.ItemCode]++;
-                    }
-                }
+	        {
+	            WorkItem playerWi = player.WorkItems[i];
+	            if (!playerWis.ContainsKey(playerWi.ItemCode))
+	            {
+	                playerWis[playerWi.ItemCode] = 1;
+	            }
+	            else
+	            {
+	                playerWis[playerWi.ItemCode]++;
+	            }
+	        }
 
-            if (WorkItemsInProgress != null)
-            {
-                for (int i = 0; i < WorkItemsInProgress.Count; i++)
-                {
-                    ItemQuantity checkWi = WorkItemsInProgress[i];
-                    if (!playerWis.ContainsKey(checkWi.ItemCode))
-                    {
-                        return false;
-                    }
-                    if (playerWis[checkWi.ItemCode] < checkWi.Quantity)
-                    {
-                        return false;
-                    }
-                }
-            }
-			
+	        for (int i = 0; i < WorkItemsInProgress.Count; i++)
+	        {
+	            ItemQuantity checkWi = WorkItemsInProgress[i];
+	            if (!playerWis.ContainsKey(checkWi.ItemCode))
+	            {
+	                return false;
+	            }
+	            if (playerWis[checkWi.ItemCode] < checkWi.Quantity)
+	            {
+	                return false;
+	            }
+	        }
+
 			return true;
 		}
 		
@@ -87,6 +111,11 @@
             {
                 return false;
             }
+
+			if (!CheckItemsLessThan(player)) 
+			{
+				return false;			
+			}
 
             if (RequiredLevel.HasValue && 
                 player.Level < RequiredLevel)

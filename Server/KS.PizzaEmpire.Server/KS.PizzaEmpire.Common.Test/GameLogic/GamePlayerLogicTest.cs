@@ -233,6 +233,50 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             };
             bitems[bi.ItemCode] = bi;
 
+            bi = new BuildableItem
+            {
+                ItemCode = BuildableItemEnum.Dirty_Table,
+                RequiredLevel = 1,
+                CoinCost = 50,
+                ProductionItem = BuildableItemEnum.None,
+                ProductionCapacity = 0,
+                BaseProduction = 3,
+                StorageCapacity = 0,
+                StorageItem = BuildableItemEnum.None,
+                IsStorage = false,
+                IsConsumable = true,
+                IsImmediate = true,
+                IsWorkSubtracted = true,
+                Experience = 100,
+                BuildSeconds = -1,
+                CouponCost = 1,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60,
+            };
+            bitems[bi.ItemCode] = bi;
+
+            bi = new BuildableItem
+            {
+                ItemCode = BuildableItemEnum.Dirty_Floor,
+                RequiredLevel = 1,
+                CoinCost = 50,
+                ProductionItem = BuildableItemEnum.None,
+                ProductionCapacity = 0,
+                BaseProduction = 3,
+                StorageCapacity = 0,
+                StorageItem = BuildableItemEnum.None,
+                IsStorage = false,
+                IsConsumable = true,
+                IsImmediate = true,
+                IsWorkSubtracted = true,
+                Experience = 100,
+                BuildSeconds = -1,
+                CouponCost = 1,
+                SpeedUpCoupons = 1,
+                SpeedUpSeconds = 60,
+            };
+            bitems[bi.ItemCode] = bi;
+
             GamePlayerLogic.Instance.BuildableItems = bitems;
 
             Dictionary<int, ExperienceLevel>elevels = new Dictionary<int, ExperienceLevel>();
@@ -281,7 +325,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(5, Player.Coupons);
             Assert.AreEqual(1, Player.Level);
             Assert.AreEqual(0, Player.Experience);
-            Assert.AreEqual(2, Player.BuildableItems.Values.Count);
+            Assert.AreEqual(5, Player.BuildableItems.Values.Count);
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Restaurant_Storage]);
             Assert.AreEqual(0, Player.WorkItems.Count);
@@ -583,11 +627,11 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestStartWorkImmediate()
         {
-            Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 4;
+            Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 3;
 
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.Dirty_Dishes);
 
-            Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dirty_Dishes]);
+            Assert.AreEqual(0, Player.BuildableItems[BuildableItemEnum.Dirty_Dishes]);
             Assert.AreEqual(0, Player.WorkItems.Count);
             Assert.AreEqual(true, Player.StateChanged);
             Assert.AreEqual(100, Player.Experience);
