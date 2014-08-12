@@ -25,7 +25,7 @@ namespace KS.PizzaEmpire.Unity
 			GamePlayerStateCheck enabledCheck;					
 
 			/// WINDOW
-			GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			GUIItemFactory<GUIImage>.Instance.Pool.New();
 			
 			IngredientOrderWindow window = new IngredientOrderWindow(player);		
 			window.Content.image = 
@@ -37,7 +37,7 @@ namespace KS.PizzaEmpire.Unity
 			GUIStateManager.Instance.AddChild(window);
 
 			/// SHOPPING CART
-			GUIItemImage ingredientShoppingCart = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			GUIImage ingredientShoppingCart = GUIItemFactory<GUIImage>.Instance.Pool.New();
 			ingredientShoppingCart.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_SHOPPING_CART);			
 			ingredientShoppingCart.SetRectangle(0.0f, 0.73f, 0.12f, 0.12f, false, ScaleMode.ScaleToFit);
@@ -98,18 +98,18 @@ namespace KS.PizzaEmpire.Unity
 			/// TABS
 			/// DRY GOODS TAB
 			GUIBox dryGoodsTab = GUIItemFactory<GUIBox>.Instance.Pool.New();
-			dryGoodsTab.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_NO_BACKGROUND);
+			dryGoodsTab.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_DEBUG);
 			dryGoodsTab.Element = GUIElementEnum.TabDryGoods;
-			dryGoodsTab.SetRectangle (0, 0, 0.25f, 0.85f, false, ScaleMode.ScaleToFit);
+			dryGoodsTab.SetRectangle (0, 0, 0.25f, 0.75f, false, ScaleMode.ScaleToFit);
 			dryGoodsTab.Visible = true;
 
 			window.AddChild (dryGoodsTab);
 
 			/// VEGETABLES TAB
 			GUIBox vegetablesTab = GUIItemFactory<GUIBox>.Instance.Pool.New();
-			vegetablesTab.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_NO_BACKGROUND);
+			vegetablesTab.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_DEBUG);
 			vegetablesTab.Element = GUIElementEnum.TabVegetables;
-			vegetablesTab.SetRectangle (0, 0, 0.25f, 0.85f, false, ScaleMode.ScaleToFit);
+			vegetablesTab.SetRectangle (0, 0, 0.25f, 0.75f, false, ScaleMode.ScaleToFit);
 			vegetablesTab.Visible = false;
 			
 			window.AddChild (vegetablesTab);
@@ -170,7 +170,7 @@ namespace KS.PizzaEmpire.Unity
 			
 			dryGoodsTab.AddChild (flourOrderBox);			
 			
-			GUIItemImage flourIngredient = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			GUIImage flourIngredient = GUIItemFactory<GUIImage>.Instance.Pool.New();
 			flourIngredient.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WHITE_FLOUR);			
 			flourIngredient.SetRectangle(0.18f, 0.12f, 0.15f, 0.15f, false, ScaleMode.ScaleToFit);
@@ -204,7 +204,7 @@ namespace KS.PizzaEmpire.Unity
 			
 			vegetablesTab.AddChild (tomatoOrderBox);			
 			
-			GUIItemImage tomatoIngredient = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			GUIImage tomatoIngredient = GUIItemFactory<GUIImage>.Instance.Pool.New();
 			tomatoIngredient.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_ICON_TOMATO);			
 			tomatoIngredient.SetRectangle(0.18f, 0.12f, 0.15f, 0.15f, false, ScaleMode.ScaleToFit);

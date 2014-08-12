@@ -16,9 +16,9 @@ namespace KS.PizzaEmpire.Unity
         private string[] sayings;
 		        private List<Texture2D> louieTextures;
         
-		private GUIItemImage louieDialogueWindow;
+		private GUIImage louieDialogueWindow;
         private GUIBox louieDialogueBox;
-        private GUIItemImage louieImage;
+		private GUIImage louieImage;
         private GUIButton moreTextButton;
         
         private GamePlayer player;
@@ -73,7 +73,7 @@ namespace KS.PizzaEmpire.Unity
 
             louieSound = ResourceManager<AudioClip>.Instance.Load(ResourceEnum.AUDIOCLIP_UNCLELOUIE);
 
-			louieDialogueWindow = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			louieDialogueWindow = GUIItemFactory<GUIImage>.Instance.Pool.New();
 			louieDialogueWindow.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WIN_TUTORIAL_DIALOGUE);
 			louieDialogueWindow.SetRectangle(0.32f, 0.15f, 0.67f, 0.4f, false, ScaleMode.StretchToFill);			                              			                              
@@ -102,7 +102,7 @@ namespace KS.PizzaEmpire.Unity
 			
 			louieDialogueWindow.AddChild(moreTextButton);
 
-			louieImage = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			louieImage = GUIItemFactory<GUIImage>.Instance.Pool.New();
 			louieImage.Element = GUIElementEnum.TutorialLouie;
 				
 			GUIStateManager.Instance.AddChild(louieImage);
@@ -363,8 +363,8 @@ namespace KS.PizzaEmpire.Unity
         /// </summary>
         public void SetLouieTexture(LouieExpression expr, bool visible)
         {
-			GUIItemImage image = GUIStateManager.Instance
-				.GetChildNested(GUIElementEnum.TutorialLouie) as GUIItemImage;
+			GUIImage image = GUIStateManager.Instance
+				.GetChildNested(GUIElementEnum.TutorialLouie) as GUIImage;
 				
         	if (!visible)
         	{

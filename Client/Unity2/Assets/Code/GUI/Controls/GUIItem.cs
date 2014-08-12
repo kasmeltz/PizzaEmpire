@@ -217,6 +217,11 @@ namespace KS.PizzaEmpire.Unity
 		/// </summary>
 		/// <value>True if the item is enabled, false otherwise</value>
 		public bool Enabled { get; set; }
+
+		/// <summary>
+		/// An action to be performed when the state of the item is updated.
+		/// </summayr>
+		public Action<GUIItem> OnStateUpdate { get; set; }
 		
 		/// <summary>
 		/// Whether this item will be displayed
@@ -462,6 +467,11 @@ namespace KS.PizzaEmpire.Unity
 				{
 					Enabled = false;
 				}
+			}
+
+			if (OnStateUpdate != null) 
+			{
+				OnStateUpdate (this);
 			}
 			
 			foreach(GUIItem item in Children.Values)

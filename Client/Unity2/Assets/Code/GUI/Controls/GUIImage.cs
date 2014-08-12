@@ -6,12 +6,12 @@ namespace KS.PizzaEmpire.Unity
 	/// <summary>
 	/// Represents an image
 	/// </summary>
-	public class GUIItemImage : GUIItem
+	public class GUIImage : GUIItem
 	{	
 		/// <summary>
 		/// Creates a new instace of the GUIItemImage class
 		/// </summary>
-		public GUIItemImage()
+		public GUIImage()
 			: base ()
 		{
 			
@@ -26,14 +26,14 @@ namespace KS.PizzaEmpire.Unity
 		
 		public override GUIItem Clone ()
 		{
-			GUIItemImage item = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			GUIImage item = GUIItemFactory<GUIImage>.Instance.Pool.New();
 			item.CopyFrom(this);
 			return item;
 		}	
 		
 		public override void Destroy()
 		{
-			GUIItemFactory<GUIItemImage>.Instance.Pool.Store(this);
+			GUIItemFactory<GUIImage>.Instance.Pool.Store(this);
 		}		
 				
 		#endregion		

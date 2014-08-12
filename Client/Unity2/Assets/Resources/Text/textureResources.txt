@@ -5,6 +5,8 @@ TEXTURE_TUTORIAL_LOUIE_3,Graphics/UI/Characters/louie3
 TEXTURE_TUTORIAL_LOUIE_4,Graphics/UI/Characters/louie4
 TEXTURE_TUTORIAL_LOUIE_5,Graphics/UI/Characters/louie5
 TEXTURE_TUTORIAL_LOUIE_6,Graphics/UI/Characters/louie6
+TEXTURE_ICON_COINS,Graphics/UI/Misc/coin
+TEXTURE_ICON_COUPONS,Graphics/UI/Misc/coupon
 TEXTURE_ICON_TOMATO,Graphics/UI/Ingredients/Tomato
 TEXTURE_WHITE_FLOUR,Graphics/UI/Ingredients/White_Flour
 TEXTURE_ICON_CHECKMARK,Graphics/UI/Misc/icon-checkmark

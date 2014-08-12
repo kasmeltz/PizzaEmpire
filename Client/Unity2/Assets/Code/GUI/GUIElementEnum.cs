@@ -6,6 +6,10 @@
 	public enum GUIElementEnum
 	{
 		None,
+		IconCoins,
+		BoxCoins,
+		IconCoupons,
+		BoxCoupons,
     	IconCheckMark,
     	TableCloth,
 		IconPhone,

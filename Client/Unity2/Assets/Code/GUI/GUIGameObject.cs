@@ -215,8 +215,6 @@ namespace KS.PizzaEmpire.Unity
 					
 			//TutorialManager.Instance.OnGUI();		
 										       
-			GUI.TextArea(new Rect(0,0,50, 20), player.Coins.ToString());
-			GUI.TextArea(new Rect(50,0,50, 20), player.Coupons.ToString());
 			GUI.TextArea(new Rect(100,0,50, 20), player.Level.ToString());
 			GUI.TextArea(new Rect(150,0,50, 20), player.Experience.ToString());
 			GUI.TextArea(new Rect(200,0,50, 20), player.BuildableItems.Count.ToString());
@@ -257,7 +255,7 @@ namespace KS.PizzaEmpire.Unity
 			LightweightResourceManager<GUIStyle>.Instance
 				.Set(ResourceEnum.GUISTYLE_NO_BACKGROUND, style);
 				
-			GUIItemImage errorWindow = GUIItemFactory<GUIItemImage>.Instance.Pool.New();
+			GUIImage errorWindow = GUIItemFactory<GUIImage>.Instance.Pool.New();
 			errorWindow.Content.image = 
 				ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_WIN_TUTORIAL_DIALOGUE);
 			errorWindow.SetRectangle(0.1f, 0.2f, 0.8f, 0.6f, false, ScaleMode.StretchToFill);
