@@ -302,7 +302,7 @@
             {
                 ItemCode = BuildableItemEnum.Dirty_Table,
                 RequiredLevel = 1,
-                CoinCost = 50,
+                CoinCost = 0,
                 ProductionItem = BuildableItemEnum.None,
                 ProductionCapacity = 0,
                 BaseProduction = 1,
@@ -325,7 +325,7 @@
             {
                 ItemCode = BuildableItemEnum.Dirty_Dishes,
                 RequiredLevel = 1,
-                CoinCost = 50,
+                CoinCost = 0,
                 ProductionItem = BuildableItemEnum.None,
                 ProductionCapacity = 0,
                 BaseProduction = 1,
@@ -348,7 +348,7 @@
             {
                 ItemCode = BuildableItemEnum.Dirty_Floor,
                 RequiredLevel = 1,
-                CoinCost = 50,
+                CoinCost = 0,
                 ProductionItem = BuildableItemEnum.None,
                 ProductionCapacity = 0,
                 BaseProduction = 1,

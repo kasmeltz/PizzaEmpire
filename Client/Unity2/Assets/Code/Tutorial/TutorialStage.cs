@@ -2,6 +2,7 @@
 {	
 	using System;
 	using UnityEngine;
+	using Common.GameLogic;
 	
 	/// <summary>
 	/// Represents an item which defines a stage in a tutorial

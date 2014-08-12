@@ -4,6 +4,7 @@ namespace KS.PizzaEmpire.Unity
     using System.Collections.Generic;
     using UnityEngine;
     using Common.BusinessObjects;
+	using Common.GameLogic;
 
     public class TutorialManager
     {
@@ -218,7 +219,7 @@ namespace KS.PizzaEmpire.Unity
 				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Negative, false);
 				GameObject dirtyTable = ResourceManager<GameObject>.Instance.Load(ResourceEnum.PREFAB_DIRTY_TABLE);			
-				GameObject.Instantiate(dirtyTable, new Vector3(-5f,-0.6f,0), Quaternion.identity);
+				GameObject.Instantiate(dirtyTable, new Vector3(-5f,-0.6f,0), Quaternion.identity);						
 			};
 			stateCheck = new GamePlayerStateCheck ();
 			stateCheck.ItemQuantityLessThan = new List<ItemQuantity> ();
@@ -313,7 +314,7 @@ namespace KS.PizzaEmpire.Unity
 				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Negative, false);
 				GameObject dirtyTable = ResourceManager<GameObject>.Instance.Load(ResourceEnum.PREFAB_DIRTY_DISHES);			
-				GameObject.Instantiate(dirtyTable, new Vector3(-5f,-0.6f,0), Quaternion.identity);
+				GameObject.Instantiate(dirtyTable, new Vector3(-5f,-0.6f,0), Quaternion.identity);			
 			};
 			stateCheck = new GamePlayerStateCheck ();
 			stateCheck.ItemQuantityLessThan = new List<ItemQuantity> ();
@@ -330,6 +331,21 @@ namespace KS.PizzaEmpire.Unity
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};         
+			stages.Add(stage);
+
+			//Well look at that! Your flour is here. I told you it wouldn't take long. To unload the flour, tap the flour bag in the back of the delivery van and drag it into your restaurant.
+			stage = new TutorialStage();
+			stage.OnStart = () =>
+			{
+				SetStageText(18);
+				ToggleMoreTextButton(false);
+				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
+			};         
+			stateCheck = new GamePlayerStateCheck ();
+			stateCheck.ItemQuantityGreaterThan = new List<ItemQuantity> ();
+			stateCheck.ItemQuantityGreaterThan.Add(
+				new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, Quantity = 0 });	
+			stage.PlayerStateCheck = stateCheck;
 			stages.Add(stage);
 
             SetStage(player.TutorialStage);

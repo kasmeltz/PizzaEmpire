@@ -67,7 +67,6 @@
      <Compile Include="Assets\Code\GUI\Layouts\RestaurantCommonElements.cs" />
      <Compile Include="Assets\Code\GameLogic\ExperienceLevelManager.cs" />
      <Compile Include="Assets\Code\GameLogic\GamePlayerManager.cs" />
-     <Compile Include="Assets\Code\GameLogic\GamePlayerStateCheck.cs" />
      <Compile Include="Assets\Code\GameLogic\ItemManager.cs" />
      <Compile Include="Assets\Code\InGameScripts\CreateItemWhenTapped.cs" />
      <Compile Include="Assets\Code\InGameScripts\DoWorkAfterColliding.cs" />

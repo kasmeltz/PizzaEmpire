@@ -108,9 +108,6 @@
      <None Include="Assets\Resources\Text\fontResources.txt" />
      <None Include="Assets\UnityTestTools\Examples\IntegrationTestsFrameworkExamples\AngryBotsTests\Shaders\Fx\ParticleBlend.shader" />
      <None Include="Assets\Resources\Text\unclelouie.txt" />
- <Reference Include="KS.PizzaEmpire.Common">
- <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/Code/DLLs/KS.PizzaEmpire.Common.dll</HintPath>
- </Reference>
  <Reference Include="NSubstitute">
  <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/UnityTestTools/UnitTesting/Editor/NSubstitute/NSubstitute.dll</HintPath>
  </Reference>
@@ -132,10 +129,11 @@
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
  </Reference>
+ <Reference Include="KS.PizzaEmpire.Common">
+ <HintPath>C:/Users/ksmeltze/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/Code/DLLs/KS.PizzaEmpire.Common.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{60BD6474-6980-9D55-7945-A77DFD40D7E9}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-UnityScript.unityproj">
       <Project>{C038AE25-C8E8-B397-5AC3-B1D13C5C8D97}</Project>      <Name>Assembly-UnityScript</Name>    </ProjectReference>
   </ItemGroup>
