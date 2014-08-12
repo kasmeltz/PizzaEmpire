@@ -125,7 +125,7 @@ namespace KS.PizzaEmpire.Unity
             stage.OnStart = () =>
             {
 				AudioSource.PlayClipAtPoint(louieSound, Vector3.zero);
-            	SetStageText(0);
+            	SetStageText(0, true);
             	ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Normal, true);
             };           
@@ -135,7 +135,7 @@ namespace KS.PizzaEmpire.Unity
             stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(1);
+				SetStageText(1, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised, true);
 			};            
@@ -145,7 +145,7 @@ namespace KS.PizzaEmpire.Unity
             stage = new TutorialStage();            
 			stage.OnStart = () =>
 			{
-				SetStageText(2);
+				SetStageText(2, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};
@@ -155,7 +155,7 @@ namespace KS.PizzaEmpire.Unity
             stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(3);
+				SetStageText(3, true);
 				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, false);
 			};
@@ -173,7 +173,7 @@ namespace KS.PizzaEmpire.Unity
 				GUIItem window = GUIStateManager.Instance
 					.GetChildNested(GUIElementEnum.OrderIngredientsWindow);				
 				window.Visible = false;
-				SetStageText(4);
+				SetStageText(4, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Excited_Happy_Thumbs_Up, true);
             };
@@ -183,7 +183,7 @@ namespace KS.PizzaEmpire.Unity
 			stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(5);
+				SetStageText(5, true);
 				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};
@@ -194,7 +194,7 @@ namespace KS.PizzaEmpire.Unity
 			stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(6);
+				SetStageText(6, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Excited_Happy, true);
 			};
@@ -205,7 +205,7 @@ namespace KS.PizzaEmpire.Unity
             stage.OnStart = () =>
             {
                 AudioSource.PlayClipAtPoint(louieSound, Vector3.zero);
-				SetStageText(7);
+				SetStageText(7, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Eye_Pop, true);
             };
@@ -215,7 +215,7 @@ namespace KS.PizzaEmpire.Unity
             stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(8);
+				SetStageText(8, true);
 				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Negative, false);
 				GameObject dirtyTable = ResourceManager<GameObject>.Instance.Load(ResourceEnum.PREFAB_DIRTY_TABLE);			
@@ -232,7 +232,7 @@ namespace KS.PizzaEmpire.Unity
             stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(9);
+				SetStageText(9, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};
@@ -242,7 +242,7 @@ namespace KS.PizzaEmpire.Unity
             stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(10);
+				SetStageText(10, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};
@@ -252,7 +252,7 @@ namespace KS.PizzaEmpire.Unity
             stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(11);
+				SetStageText(11, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};
@@ -262,7 +262,7 @@ namespace KS.PizzaEmpire.Unity
             stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(12);
+				SetStageText(12, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};         
@@ -272,7 +272,7 @@ namespace KS.PizzaEmpire.Unity
 			stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(13);
+				SetStageText(13, true);
 				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, false);
 			};
@@ -290,7 +290,7 @@ namespace KS.PizzaEmpire.Unity
 				GUIItem window = GUIStateManager.Instance
 					.GetChildNested(GUIElementEnum.OrderIngredientsWindow);				
 				window.Visible = false;
-				SetStageText(14);
+				SetStageText(14, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};         
@@ -300,7 +300,7 @@ namespace KS.PizzaEmpire.Unity
 			stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(15);
+				SetStageText(15, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};         
@@ -310,7 +310,7 @@ namespace KS.PizzaEmpire.Unity
 			stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(16);
+				SetStageText(16, true);
 				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Negative, false);
 				GameObject dirtyTable = ResourceManager<GameObject>.Instance.Load(ResourceEnum.PREFAB_DIRTY_DISHES);			
@@ -327,25 +327,34 @@ namespace KS.PizzaEmpire.Unity
 			stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(17);
+				SetStageText(17, true);
 				ToggleMoreTextButton(true);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
 			};         
 			stages.Add(stage);
 
-			//Well look at that! Your flour is here. I told you it wouldn't take long. To unload the flour, tap the flour bag in the back of the delivery van and drag it into your restaurant.
+			//Wait for flour to arrive...
 			stage = new TutorialStage();
 			stage.OnStart = () =>
 			{
-				SetStageText(18);
+				SetStageText(0, false);
 				ToggleMoreTextButton(false);
-				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
-			};         
+				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, false);
+			};   
 			stateCheck = new GamePlayerStateCheck ();
 			stateCheck.ItemQuantityGreaterThan = new List<ItemQuantity> ();
 			stateCheck.ItemQuantityGreaterThan.Add(
 				new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, Quantity = 0 });	
 			stage.PlayerStateCheck = stateCheck;
+
+			//Well look at that! Your flour is here. I told you it wouldn't take long. To unload the flour, tap the flour bag in the back of the delivery van and drag it into your restaurant.
+			stage = new TutorialStage();
+			stage.OnStart = () =>
+			{
+				SetStageText(18, true);
+				ToggleMoreTextButton(false);
+				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
+			};         
 			stages.Add(stage);
 
             SetStage(player.TutorialStage);
@@ -365,12 +374,12 @@ namespace KS.PizzaEmpire.Unity
         /// Sets the text for this stage
         /// </summary>
         /// <param name="index">Index.</param>
-        public void SetStageText(int index)
+        public void SetStageText(int index, bool visible)
         {
 			GUIBox box = GUIStateManager.Instance
 				.GetChildNested(GUIElementEnum.TutorialDialogueBox) as GUIBox;
             box.Content.text = sayings[index];
-            box.Visible = true;
+			box.Visible = visible;
         }
 
         /// <summary>
