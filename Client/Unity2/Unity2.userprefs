@@ -1,8 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Events\FinishedWorkChecker.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\InGameScripts\DoWorkAfterColliding.cs">
     <Files>
-      <File FileName="Assets\Code\Events\FinishedWorkChecker.cs" Line="65" Column="1" />
+      <File FileName="Assets\Code\InGameScripts\CreateItemWhenTapped.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\InGameScripts\DoWorkAfterColliding.cs" Line="60" Column="2" />
+      <File FileName="Assets\Code\InGameScripts\ProgressBarWhenTapped.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
