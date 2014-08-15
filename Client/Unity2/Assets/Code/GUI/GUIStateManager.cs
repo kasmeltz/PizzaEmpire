@@ -48,15 +48,15 @@
 		/// <summary>
 		/// The currently tapped game object
 		/// </summary>
-		private GameObject currentlyTapped;
+		private GameObject currentlyTappedGameObject;
 
 		/// <summary>
 		/// The currently dragged game object
 		/// </summary>
-		private GameObject currentlyDragged;
+		private GameObject currentlyDraggedGameObject;
 		
-        /// The currently grabbed item    
-		public GUIItem GrabbedItem { get; protected set; }
+        /// The currently grabbed GUI item    
+		private GUIItem currentlyGrabbedItem { get; set; }
 			               
         /// <summary>
         /// Updates the manager every frame
@@ -137,29 +137,29 @@
 		/// <summary>
 		/// Releases the currently grabbed item if there is one
 		/// </summary>
-		public bool ReleaseItem()
+		public bool ReleaseItem(GUIItem grabbedItem)
 		{
-			if (GrabbedItem == null)
+			if (grabbedItem == null)
 			{
 				return false;
 			}
 			
 			GUIItem dropper = 
-				GetItemAt(GrabbedItem.Rectangle.x, GrabbedItem.Rectangle.y, 
-                 	GrabbedItem.Rectangle.width, GrabbedItem.Rectangle.height, 
-				          GrabbedItem, AcceptsDraggable);
+				GetItemAt(grabbedItem.Rectangle.x, grabbedItem.Rectangle.y, 
+				          grabbedItem.Rectangle.width, grabbedItem.Rectangle.height, 
+				          grabbedItem, AcceptsDraggable);
 								
 			if (dropper != null)
 			{
-				dropper.OnDrop(dropper, GrabbedItem);
+				dropper.OnDrop(dropper, grabbedItem);
 			}
 			
-			if (GrabbedItem.DuplicateOnDrag)
+			if (currentlyGrabbedItem.DuplicateOnDrag)
 			{
-				GrabbedItem.Destroy();
+				grabbedItem.Destroy();
 				RemoveChild(GUIElementEnum.CurrentDraggable);
 			}
-			GrabbedItem = null;
+			grabbedItem = null;
 
 			return true;
 		}
@@ -173,16 +173,16 @@
 		public GUIItem GrabItem(float x, float y)
 		{		
 			GUIItem grabbedItem = GetItemAt(x - 2, y - 2, 4, 4, null, IsDraggable);
-			if (GrabbedItem != null)
+			if (grabbedItem != null)
 			{
-				Vector2 dragHandle = GrabbedItem.DragHandle;
-				dragHandle.x = x - (GrabbedItem.Rectangle.x + GrabbedItem.Offset.x);
-				dragHandle.y = y - (GrabbedItem.Rectangle.y + GrabbedItem.Offset.y);
-				GrabbedItem.DragHandle = dragHandle;
+				Vector2 dragHandle = grabbedItem.DragHandle;
+				dragHandle.x = x - (grabbedItem.Rectangle.x + grabbedItem.Offset.x);
+				dragHandle.y = y - (grabbedItem.Rectangle.y + grabbedItem.Offset.y);
+				grabbedItem.DragHandle = dragHandle;
 															
-				if (GrabbedItem.DuplicateOnDrag)
+				if (grabbedItem.DuplicateOnDrag)
 				{
-					GUIItem newItem = GrabbedItem.Clone();					
+					GUIItem newItem = grabbedItem.Clone();					
 										
 					Rect rectangle = newItem.Rectangle;
 					rectangle.x = newItem.Offset.x + rectangle.x;
@@ -196,7 +196,7 @@
 					
 					Children[GUIElementEnum.CurrentDraggable] = newItem;												
 									
-					GrabbedItem = newItem;
+					grabbedItem = newItem;
 				}
 			}		
 
@@ -233,20 +233,20 @@
 					if (behaviour != null)
 					{
 						behaviour.Tap();
-						currentlyTapped = newlyTapped;
+						currentlyTappedGameObject = newlyTapped;
 						break;
 					}
 				}
 			}
 			else 
 			{
-				if (currentlyTapped != null)
+				if (currentlyTappedGameObject != null)
 				{
-					Tappable behaviour = currentlyTapped.GetComponent<Tappable>();
+					Tappable behaviour = currentlyTappedGameObject.GetComponent<Tappable>();
 					if (behaviour != null)
 					{
 						behaviour.UnTap();
-						currentlyTapped = null;
+						currentlyTappedGameObject = null;
 					}
 				}
 			}
@@ -283,7 +283,7 @@
 					if (behaviour != null)
 					{
 						behaviour.Drag(new Vector3(x, Screen.height - y, Camera.main.nearClipPlane));
-						currentlyDragged = newlyDragged;
+						currentlyDraggedGameObject = newlyDragged;
 						break;
 					}
 				}
@@ -297,9 +297,9 @@
 		/// <param name="y">The y coordinate.</param>
 		public void HandleDragBegin(float x, float y)
 		{
-			GrabbedItem = GrabItem(x, y);
+			currentlyGrabbedItem = GrabItem(x, y);
 
-			if (GrabbedItem == null)
+			if (currentlyGrabbedItem == null)
 			{
 				HandleGameWorldDragBegin(x, Screen.height - y);			
 			}
@@ -310,9 +310,9 @@
 		/// </summary>
 		public void HandleGameWorldDrag(float x, float y)
 		{
-			if (currentlyDragged != null)
+			if (currentlyDraggedGameObject != null)
 			{
-				Draggable behaviour = currentlyDragged.GetComponent<Draggable>();
+				Draggable behaviour = currentlyDraggedGameObject.GetComponent<Draggable>();
 				if (behaviour != null)
 				{
 					behaviour.Drag(new Vector3(x, Screen.height - y, Camera.main.nearClipPlane));
@@ -327,9 +327,9 @@
 		/// <param name="y">The y coordinate.</param>
 		public void HandleDrag(float x, float y)
 		{
-			if (GrabbedItem != null)
+			if (currentlyGrabbedItem != null)
 			{
-				DragItem(GrabbedItem, x, y);
+				DragItem(currentlyGrabbedItem, x, y);
 			} 
 			else 
 			{
@@ -342,16 +342,16 @@
 		/// </summary>
 		public void HandleGameWorldDragEnd(float x, float y)
 		{
-			if (currentlyDragged != null)
+			if (currentlyDraggedGameObject != null)
 			{
-				Droppable behaviour = currentlyDragged.GetComponent<Droppable>();
+				Droppable behaviour = currentlyDraggedGameObject.GetComponent<Droppable>();
 				if (behaviour != null)
 				{
 					behaviour.Drop(new Vector3(x, Screen.height - y, Camera.main.nearClipPlane));
 				}
 			}
 
-			currentlyDragged = null;
+			currentlyDraggedGameObject = null;
 		}
 
 		/// <summary>
@@ -361,7 +361,7 @@
 		/// <param name="y">The y coordinate.</param>
 		public void HandleDragEnd(float x, float y)
 		{
-			if (!ReleaseItem ()) 
+			if (!ReleaseItem(currentlyGrabbedItem)) 
 			{
 				HandleGameWorldDragEnd(x, y);
 			}
