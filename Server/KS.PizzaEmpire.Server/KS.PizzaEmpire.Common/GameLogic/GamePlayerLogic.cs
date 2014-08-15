@@ -46,6 +46,190 @@
         /// </summary>
         public Dictionary<BuildableItemEnum, BuildableItem> BuildableItems { get; set; }
 
+        #region Events
+
+        /// <summary>
+        /// An event that is fired when the player's level changes
+        /// </summary>
+        public event EventHandler<GamePlayerLogicEventArgs> LevelChanged;
+        protected virtual void OnLevelChanged(GamePlayerLogicEventArgs e)
+        {
+            try
+            {
+                EventHandler<GamePlayerLogicEventArgs> handler = LevelChanged;
+                if (handler != null)
+                {
+                    handler(this, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Exception in LevelChanged: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// An event that is fired when the player's experience changes
+        /// </summary>
+        public event EventHandler<GamePlayerLogicEventArgs> ExperienceChanged;
+        protected virtual void OnExperienceChanged(GamePlayerLogicEventArgs e)
+        {
+            try
+            {
+                EventHandler<GamePlayerLogicEventArgs> handler = ExperienceChanged;
+                if (handler != null)
+                {
+                    handler(this, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Exception in ExperienceChanged: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// An event that is fired when the player's coins change
+        /// </summary>
+        public event EventHandler<GamePlayerLogicEventArgs> CoinsChanged;
+        protected virtual void OnCoinsChanged(GamePlayerLogicEventArgs e)
+        {
+            try
+            {
+                EventHandler<GamePlayerLogicEventArgs> handler = CoinsChanged;
+                if (handler != null)
+                {
+                    handler(this, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Exception in CoinsChanged: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// An event that is fired when the player's coupons change
+        /// </summary>
+        public event EventHandler<GamePlayerLogicEventArgs> CouponsChanged;
+        protected virtual void OnCouponsChanged(GamePlayerLogicEventArgs e)
+        {
+            try
+            {
+                EventHandler<GamePlayerLogicEventArgs> handler = CouponsChanged;
+                if (handler != null)
+                {
+                    handler(this, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Exception in CouponsChanged: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// An event that is fired when an item is consumed
+        /// </summary>
+        public event EventHandler<GamePlayerLogicEventArgs> ItemConsumed;
+        protected virtual void OnItemConsumed(GamePlayerLogicEventArgs e)
+        {
+            try
+            {
+                EventHandler<GamePlayerLogicEventArgs> handler = ItemConsumed;
+                if (handler != null)
+                {
+                    handler(this, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Exception in ItemsConsumed: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// An event that is fired when an item is subtracted
+        /// </summary>
+        public event EventHandler<GamePlayerLogicEventArgs> ItemSubtracted;
+        protected virtual void OnItemSubtracted(GamePlayerLogicEventArgs e)
+        {
+            try
+            {
+                EventHandler<GamePlayerLogicEventArgs> handler = ItemSubtracted;
+                if (handler != null)
+                {
+                    handler(this, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Exception in ItemSubtracted: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// An event that is fired when an item is added to the player
+        /// </summary>
+        public event EventHandler<GamePlayerLogicEventArgs> ItemAdded;
+        protected virtual void OnItemAdded(GamePlayerLogicEventArgs e)
+        {
+            try
+            {
+                EventHandler<GamePlayerLogicEventArgs> handler = ItemAdded;
+                if (handler != null)
+                {
+                    handler(this, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Exception in ItemAdded: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// An event that is fired when the player's work is started
+        /// </summary>
+        public event EventHandler<GamePlayerLogicEventArgs> WorkStarted;
+        protected virtual void OnWorkStarted(GamePlayerLogicEventArgs e)
+        {
+            try
+            {
+                EventHandler<GamePlayerLogicEventArgs> handler = WorkStarted;
+                if (handler != null)
+                {
+                    handler(this, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Exception in WorkStarted: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// An event that is fired when the player's work is finished
+        /// </summary>
+        public event EventHandler<GamePlayerLogicEventArgs> WorkFinished;
+        protected virtual void OnWorkFinished(GamePlayerLogicEventArgs e)
+        {
+            try
+            {
+                EventHandler<GamePlayerLogicEventArgs> handler = WorkFinished;
+                if (handler != null)
+                {
+                    handler(this, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Exception in WorkFinished: " + ex.Message);
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Creates a brand new game player - e.g. a Game Player who is logging in for
         /// the first time with no persistant state
@@ -85,6 +269,12 @@
             }
 
             player.Level = level;
+
+            if (LevelChanged != null)
+            {
+                OnLevelChanged(new GamePlayerLogicEventArgs(player, level));
+            }
+
             player.StateChanged = true;
         }
 
@@ -96,6 +286,11 @@
         public void AddExperience(GamePlayer player, int experience)
         {
             player.Experience += experience;
+
+            if (ExperienceChanged != null)
+            {
+                OnExperienceChanged(new GamePlayerLogicEventArgs(player, experience));
+            }
 
             bool levelUp;
             do
@@ -291,14 +486,49 @@
                     if (ri.IsConsumable)
                     {
                         player.BuildableItems[requiredItem.ItemCode] -= requiredItem.Quantity;
+
+                        if (ItemConsumed != null)
+                        {
+                            OnItemConsumed(new GamePlayerLogicEventArgs(player, requiredItem));
+                        }
                     }
                 }
             }
 
-            player.Coins -= bi.CoinCost;
-            player.Coupons -= bi.CouponCost;
+            ModifyCoins(player, -bi.CoinCost);
+            ModifyCoupons(player, -bi.CouponCost);
 
             player.StateChanged = true;
+        }
+
+        /// <summary>
+        /// Modifies the player's coins
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="amount"></param>
+        public void ModifyCoins(GamePlayer player, int amount)
+        {
+            player.Coins += amount;
+
+            if (amount != 0 && CoinsChanged != null)
+            {
+                OnCoinsChanged(new GamePlayerLogicEventArgs(player, amount));
+            }
+        }
+
+        /// <summary>
+        /// Modifies the player's coupons
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="amount"></param>
+        public void ModifyCoupons(GamePlayer player, int amount)
+        {
+            player.Coupons += amount;
+
+            if (amount != 0 && CouponsChanged != null)
+            {
+                OnCouponsChanged(new GamePlayerLogicEventArgs(player, amount));
+            }
         }
 
         /// <summary>
@@ -327,6 +557,11 @@
 
             player.WorkItems.Add(workItem);
 
+            if (WorkStarted != null)
+            {
+                OnWorkStarted(new GamePlayerLogicEventArgs(player, workItem));
+            }
+
             if (bi.IsImmediate)
             {
                 FinishWork(player, DateTime.UtcNow);
@@ -352,6 +587,12 @@
             }
 
             player.BuildableItems[item.ItemCode] += bi.BaseProduction;
+
+            if (ItemAdded != null)
+            {
+                OnItemAdded(new GamePlayerLogicEventArgs(player,
+                    new ItemQuantity { ItemCode = item.ItemCode, Quantity = bi.BaseProduction } ));
+            }
 
             if (!bi.IsConsumable)
             {
@@ -381,6 +622,12 @@
             }
 
             player.BuildableItems[item.ItemCode] -= bi.BaseProduction;
+
+            if (ItemSubtracted != null)
+            {
+                OnItemSubtracted(new GamePlayerLogicEventArgs(player,
+                    new ItemQuantity { ItemCode = item.ItemCode, Quantity = bi.BaseProduction }));
+            }
         }
 
 
@@ -433,6 +680,11 @@
             {
                 AdjustInventory(player, item);
                 player.WorkItems.Remove(item);
+
+                if (WorkFinished != null)
+                {
+                    OnWorkFinished(new GamePlayerLogicEventArgs(player, item));                        
+                }
             }
 
             player.StateChanged = true;

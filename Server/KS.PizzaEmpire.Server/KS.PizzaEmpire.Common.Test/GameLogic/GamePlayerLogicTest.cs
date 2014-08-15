@@ -522,6 +522,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             WorkItem workItem = GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
             Assert.AreEqual(BuildableItemEnum.White_Flour, workItem.ItemCode);
             Assert.AreEqual(true, Player.StateChanged);
+            Assert.AreEqual(950, Player.Coins);
+            Assert.AreEqual(5, Player.Coupons);
         }
 
         [TestMethod]
@@ -668,6 +670,193 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             Assert.IsTrue(ratio < 1.2);
             Assert.IsTrue(ratio > 50.0 / 60.0);
+        }
+
+        [TestMethod]
+        public void TestLevelChangedEvent()
+        {
+            bool levelChanged = false;
+            int newLevel = -1;
+
+            GamePlayerLogic.Instance.LevelChanged += (o, e) =>
+            {
+                levelChanged = true;
+                newLevel = e.Value.Value;
+            };
+
+            GamePlayerLogic.Instance.SetLevel(Player, 3);
+
+            Assert.AreEqual(3, newLevel);
+            Assert.AreEqual(true, levelChanged);
+        }
+
+        [TestMethod]
+        public void TestExperienceChangedEvent()
+        {
+            bool experienceChanged = false;
+            int addedExperience = -1;
+
+            GamePlayerLogic.Instance.ExperienceChanged += (o, e) =>
+            {
+                experienceChanged = true;
+                addedExperience = e.Value.Value;
+            };
+
+            GamePlayerLogic.Instance.AddExperience(Player, 150);
+
+            Assert.AreEqual(150, addedExperience);
+            Assert.AreEqual(true, experienceChanged);
+        }
+
+        [TestMethod]
+        public void TestCoinsChangedEvent()
+        {
+            bool coinsChanged = false;
+            int coinChangeAmount = -1;
+
+            GamePlayerLogic.Instance.CoinsChanged += (o, e) =>
+            {
+                coinsChanged = true;
+                coinChangeAmount = e.Value.Value;
+            };
+
+            GamePlayerLogic.Instance.ModifyCoins(Player, 150);
+
+            Assert.AreEqual(150, coinChangeAmount);
+            Assert.AreEqual(true, coinsChanged);
+        }
+
+        [TestMethod]
+        public void TestCouponsChangedEvent()
+        {
+            bool couponsChanged = false;
+            int couponChangeAmount = -1;
+
+            GamePlayerLogic.Instance.CouponsChanged += (o, e) =>
+            {
+                couponsChanged = true;
+                couponChangeAmount = e.Value.Value;
+            };
+
+            GamePlayerLogic.Instance.ModifyCoupons(Player, -3);
+
+            Assert.AreEqual(-3, couponChangeAmount);
+            Assert.AreEqual(true, couponsChanged);
+        }
+
+        [TestMethod]
+        public void TestItemConsumedEvent()
+        {
+            Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
+            Player.BuildableItems[BuildableItemEnum.Yeast] = 2;
+            Player.BuildableItems[BuildableItemEnum.Salt] = 1;
+            Player.BuildableItems[BuildableItemEnum.Dough_Mixer_L1] = 1;
+
+            bool itemConsumed = false;
+            List<ItemQuantity> items = new List<ItemQuantity>();
+
+            GamePlayerLogic.Instance.ItemConsumed += (o, e) =>
+            {
+                itemConsumed = true;
+                items.Add(e.ItemQuantity);
+            };
+
+            GamePlayerLogic.Instance.DeductResources(Player, BuildableItemEnum.White_Pizza_Dough);
+
+            Assert.AreEqual(3, items.Count);
+            Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
+            Assert.AreEqual(1, items[0].Quantity);
+            Assert.AreEqual(BuildableItemEnum.Salt, items[1].ItemCode);
+            Assert.AreEqual(1, items[1].Quantity);
+            Assert.AreEqual(BuildableItemEnum.Yeast, items[2].ItemCode);
+            Assert.AreEqual(1, items[2].Quantity);
+            Assert.AreEqual(true, itemConsumed);
+        }
+
+        [TestMethod]
+        public void TestItemSubtractedEvent()
+        {
+            Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
+
+            bool itemSubtracted = false;
+            List<ItemQuantity> items = new List<ItemQuantity>();
+
+            GamePlayerLogic.Instance.ItemSubtracted += (o, e) =>
+            {
+                itemSubtracted = true;
+                items.Add(e.ItemQuantity);
+            };
+
+            GamePlayerLogic.Instance.SubtractItem(Player, 
+                new WorkItem { ItemCode = BuildableItemEnum.White_Flour });
+
+            Assert.AreEqual(1, items.Count);
+            Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
+            Assert.AreEqual(1, items[0].Quantity);
+            Assert.AreEqual(true, itemSubtracted);
+        }
+
+        [TestMethod]
+        public void TestItemAddedEvent()
+        {
+            Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
+
+            bool itemAdded = false;
+            List<ItemQuantity> items = new List<ItemQuantity>();
+
+            GamePlayerLogic.Instance.ItemAdded += (o, e) =>
+            {
+                itemAdded = true;
+                items.Add(e.ItemQuantity);
+            };
+
+            GamePlayerLogic.Instance.AddItem(Player,
+                new WorkItem { ItemCode = BuildableItemEnum.White_Flour });
+
+            Assert.AreEqual(1, items.Count);
+            Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
+            Assert.AreEqual(1, items[0].Quantity);
+            Assert.AreEqual(true, itemAdded);
+        }
+
+        [TestMethod]
+        public void TestWorkStartedEvent()
+        {
+            bool workStarted = false;
+            List<WorkItem> items = new List<WorkItem>();
+
+            GamePlayerLogic.Instance.WorkStarted += (o, e) =>
+            {
+                workStarted = true;
+                items.Add(e.WorkItem);
+            };
+
+            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
+
+            Assert.AreEqual(1, items.Count);
+            Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
+            Assert.AreEqual(true, workStarted);
+        }
+
+        [TestMethod]
+        public void TestWorkFinishedEvent()
+        {
+            Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 3;
+
+            bool workFinished = false;
+            List<WorkItem> items = new List<WorkItem>();
+
+            GamePlayerLogic.Instance.WorkFinished += (o, e) =>
+            {
+                workFinished = true;
+                items.Add(e.WorkItem);
+            };
+
+            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.Dirty_Dishes);
+
+            Assert.AreEqual(1, items.Count);
+            Assert.AreEqual(BuildableItemEnum.Dirty_Dishes, items[0].ItemCode);
+            Assert.AreEqual(true, workFinished);
         }
     }
 }
