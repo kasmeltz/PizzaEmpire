@@ -44,8 +44,16 @@
 		/// Can handle up to 20 collisions with the mouse and screen objects per check
 		/// </summary>
 		private Collider2D[] collisions = new Collider2D[20];
-		
+
+		/// <summary>
+		/// The currently tapped game object
+		/// </summary>
 		private GameObject currentlyTapped;
+
+		/// <summary>
+		/// The currently dragged game object
+		/// </summary>
+		private GameObject currentlyDragged;
 		
         /// The currently grabbed item    
 		public GUIItem GrabbedItem { get; protected set; }
@@ -129,11 +137,11 @@
 		/// <summary>
 		/// Releases the currently grabbed item if there is one
 		/// </summary>
-		public void ReleaseItem()
+		public bool ReleaseItem()
 		{
 			if (GrabbedItem == null)
 			{
-				return;
+				return false;
 			}
 			
 			GUIItem dropper = 
@@ -152,6 +160,8 @@
 				RemoveChild(GUIElementEnum.CurrentDraggable);
 			}
 			GrabbedItem = null;
+
+			return true;
 		}
 		
 		/// <summary>
@@ -160,9 +170,9 @@
 		/// </summary>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
-		public void GrabItem(float x, float y)
+		public GUIItem GrabItem(float x, float y)
 		{		
-			GrabbedItem = GetItemAt(x - 2, y - 2, 4, 4, null, IsDraggable);
+			GUIItem grabbedItem = GetItemAt(x - 2, y - 2, 4, 4, null, IsDraggable);
 			if (GrabbedItem != null)
 			{
 				Vector2 dragHandle = GrabbedItem.DragHandle;
@@ -188,55 +198,60 @@
 									
 					GrabbedItem = newItem;
 				}
-			}				
+			}		
+
+			return grabbedItem;
 		}
-		
+
 		/// <summary>
-		/// Handles game world actions at the given coordinates
+		/// Gets the game world objects at the specified screen position
+		/// n.b. for efficiency reasons the results are stored in the collisions
+		/// array member.
 		/// </summary>
-		public void HandleGameWorldTap(float x, float y)
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		public int GetGameWorldObjects(float x, float y)
 		{
 			Vector3 screenPos = new Vector3(x, y, Camera.main.nearClipPlane);			
 			Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);		
-			int collisionCount = Physics2D.OverlapPointNonAlloc(worldPos, collisions);
-						
+			return Physics2D.OverlapPointNonAlloc(worldPos, collisions);
+		}
+		
+		/// <summary>
+		/// Handles game world tap at the given coordinates
+		/// </summary>
+		public void HandleGameWorldTap(float x, float y)
+		{
+			int collisionCount = GetGameWorldObjects (x, y);
+
 			if (collisionCount > 0)
 			{
 				for (int i = 0;i < collisionCount;i++)
 				{
 					GameObject newlyTapped = collisions[i].gameObject;
-					newlyTapped.SendMessage(GUIMessages.Tapped, SendMessageOptions.DontRequireReceiver);			
+					Tappable behaviour = newlyTapped.GetComponent<Tappable>();
+					if (behaviour != null)
+					{
+						behaviour.Tap();
+						currentlyTapped = newlyTapped;
+						break;
+					}
 				}
 			}
-			else
+			else 
 			{
 				if (currentlyTapped != null)
 				{
-					currentlyTapped.SendMessage(GUIMessages.UnTapped, SendMessageOptions.DontRequireReceiver);
-					currentlyTapped = null;
+					Tappable behaviour = currentlyTapped.GetComponent<Tappable>();
+					if (behaviour != null)
+					{
+						behaviour.UnTap();
+						currentlyTapped = null;
+					}
 				}
 			}
 		}		
-		
-		/// <summary>
-		/// Called when a tap has been handled
-		/// </summary>
-		public void TapHandled(GameObject tapHandler, GUIElementEnum element)
-		{
-			if (currentlyTapped != null && currentlyTapped != tapHandler)
-			{
-				currentlyTapped.SendMessage(GUIMessages.UnTapped, SendMessageOptions.DontRequireReceiver);
-			}
-			
-			currentlyTapped = tapHandler;
-			
-			if (!TutorialManager.Instance.IsFinished)
-			{
-				GUIEvent gEvent = new GUIEvent(element, GUIEventEnum.Tap);
-				TutorialManager.Instance.TryAdvance(gEvent);
-			}
-		}
-		
+
 		/// <summary>
 		/// Deals with tap events at the specified screen coordinates
 		/// </summary>
@@ -253,15 +268,58 @@
 		}
 				
 		/// <summary>
+		/// Handles game world drag at the given coordinates
+		/// </summary>
+		public void HandleGameWorldDragBegin(float x, float y)
+		{
+			int collisionCount = GetGameWorldObjects (x, y);
+			
+			if (collisionCount > 0)
+			{
+				for (int i = 0;i < collisionCount;i++)
+				{
+					GameObject newlyDragged = collisions[i].gameObject;
+					Draggable behaviour = newlyDragged.GetComponent<Draggable>();
+					if (behaviour != null)
+					{
+						behaviour.Drag(new Vector3(x, Screen.height - y, Camera.main.nearClipPlane));
+						currentlyDragged = newlyDragged;
+						break;
+					}
+				}
+			}
+		}		
+
+		/// <summary>
 		/// Handles the begin of a drag event
 		/// </summary>
 		/// <param name="x">The x coordinate.</param>
 		/// <param name="y">The y coordinate.</param>
 		public void HandleDragBegin(float x, float y)
 		{
-			GrabItem(x, y);
+			GrabbedItem = GrabItem(x, y);
+
+			if (GrabbedItem == null)
+			{
+				HandleGameWorldDragBegin(x, Screen.height - y);			
+			}
 		}
 			
+		/// <summary>
+		/// Handles game world drag at the given coordinates
+		/// </summary>
+		public void HandleGameWorldDrag(float x, float y)
+		{
+			if (currentlyDragged != null)
+			{
+				Draggable behaviour = currentlyDragged.GetComponent<Draggable>();
+				if (behaviour != null)
+				{
+					behaviour.Drag(new Vector3(x, Screen.height - y, Camera.main.nearClipPlane));
+				}
+			}
+		}
+
 		/// <summary>
 		/// Handles a drag event at the specified coordinate
 		/// </summary>
@@ -272,9 +330,30 @@
 			if (GrabbedItem != null)
 			{
 				DragItem(GrabbedItem, x, y);
-			}  
+			} 
+			else 
+			{
+				HandleGameWorldDrag(x, y);
+			}
 		}
-		
+
+		/// <summary>
+		/// Handles game world drag at the given coordinates
+		/// </summary>
+		public void HandleGameWorldDragEnd(float x, float y)
+		{
+			if (currentlyDragged != null)
+			{
+				Droppable behaviour = currentlyDragged.GetComponent<Droppable>();
+				if (behaviour != null)
+				{
+					behaviour.Drop(new Vector3(x, Screen.height - y, Camera.main.nearClipPlane));
+				}
+			}
+
+			currentlyDragged = null;
+		}
+
 		/// <summary>
 		/// Handles a drag event at the specified coordinate
 		/// </summary>
@@ -282,7 +361,10 @@
 		/// <param name="y">The y coordinate.</param>
 		public void HandleDragEnd(float x, float y)
 		{
-			ReleaseItem();
+			if (!ReleaseItem ()) 
+			{
+				HandleGameWorldDragEnd(x, y);
+			}
 		}
 		
 		#if UNITY_STANDALONE_WIN

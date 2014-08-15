@@ -6,11 +6,8 @@ namespace KS.PizzaEmpire.Unity
 	using Common.BusinessObjects;
 	using Common.GameLogic;
 	
-	public class ProgressBarWhenTapped : MonoBehaviour 
+	public class ProgressBarWhenTapped : Tappable 
 	{
-		protected bool isTapped;
-		
-		public GUIElementEnum TappedElement = GUIElementEnum.InGameMotorcycle;
 		public GUIElementEnum ProgressBarElement = GUIElementEnum.ProgressBarDryGoodTruck;
 		public BuildableItemEnum BuildableItem = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1;
 		public List<WorkItem> WorkItems;
@@ -18,15 +15,17 @@ namespace KS.PizzaEmpire.Unity
 		GUIBox guiItemBox;
 		WorkItemProgressBar progressBar;
 		
-		public void Tapped()
+		public override void Tap()
 		{
+			Debug.Log ("ProgressBarWhenTapped Tap!");
+
+			base.Tap();
+
 			if (isTapped)
 			{
-				UnTapped();
+				UnTap();
 				return;
 			}
-			
-			Debug.Log(DateTime.Now + ": Tapped");
 			
 			isTapped = true;
 			
@@ -66,12 +65,14 @@ namespace KS.PizzaEmpire.Unity
 				
 				guiItemBox.AddChild(progressBar);	
 			}
-			
-			GUIStateManager.Instance.TapHandled(this.gameObject, TappedElement);
 		}
 		
-		public void UnTapped()
+		public override void UnTap()
 		{
+			Debug.Log ("ProgressBarWhenTapped UnTap!");
+
+			base.UnTap();
+
 			if (!isTapped)
 			{
 				return;

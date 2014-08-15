@@ -26,7 +26,17 @@ namespace KS.PizzaEmpire.Unity
 	    AsyncOperation resourceCleaner = null;
 	
 		public static ErrorCode CurrentErrorCode = ErrorCode.ERROR_OK;
-		
+
+		public static void OnItemAddedHandler(object sender, GamePlayerLogicEventArgs e)
+		{
+			if (e.ItemQuantity.ItemCode == BuildableItemEnum.White_Flour) 
+			{
+				GameObject whiteFlourPrefab = 
+					ResourceManager<GameObject>.Instance.Load (ResourceEnum.PREFAB_WHITE_FLOUR);
+				GameObject.Instantiate(whiteFlourPrefab);
+			}
+		}
+
 		public static void SetGlobalError(ServerCommunication com)
 		{
 			CurrentErrorCode = com.Error;
@@ -61,7 +71,7 @@ namespace KS.PizzaEmpire.Unity
 		
 	    private void Start()
 		{		
-	        IsLoaded = false;
+			IsLoaded = false;
 	        
 			ServerCommunicator.Instance.Communicate(ServerActionEnum.GetBuildableItems,
 		        (ServerCommunication com) => 
@@ -126,6 +136,8 @@ namespace KS.PizzaEmpire.Unity
 	        }
 	
 	        IsLoaded = true;
+
+			GamePlayerLogic.Instance.ItemAdded += OnItemAddedHandler;
 		
 			BuildGUI ();
 				

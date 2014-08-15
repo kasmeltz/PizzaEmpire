@@ -354,9 +354,6 @@ namespace KS.PizzaEmpire.Unity
 				SetStageText(18, true);
 				ToggleMoreTextButton(false);
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, true);
-
-				GameObject whiteFlourPrefab = ResourceManager<GameObject>.Instance.Load(ResourceEnum.PREFAB_WHITE_FLOUR);			
-				GameObject.Instantiate(whiteFlourPrefab, new Vector3(4.5f,9.8f,0), Quaternion.identity);			
 			};         
 			stages.Add(stage);
 

@@ -18,35 +18,6 @@
 		{
 			collideCount = 0;
 		}
-		
-		void Update () 
-		{
-			if (collideCount > CollidesRequired)
-			{
-				ServerCommunicator.Instance.Communicate(
-					ServerActionEnum.StartWork, (int)ItemToBuild,
-					(ServerCommunication com) => 
-					{
-						GamePlayerLogic.Instance.StartWork(
-							GamePlayerManager.Instance.LoggedInPlayer, ItemToBuild);
-					}, GUIGameObject.SetGlobalError);
-
-				Destroy(gameObject);
-				Destroy(parent);
-
-				return;
-			}
-
-			if (Input.GetMouseButton(0)) 
-			{
-				Vector3 mousePosition = Input.mousePosition;
-				mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-				Vector3 position = transform.position;
-				position.x = mousePosition.x;
-				position.y = mousePosition.y;
-				transform.position = position;
-			}
-		}
 
 		void OnTriggerEnter2D(Collider2D other)
 		{
@@ -55,6 +26,22 @@
 				parent = other.gameObject;
 				collideCount++;
 			}
+
+            if (collideCount > CollidesRequired)
+            {
+                ServerCommunicator.Instance.Communicate(
+                    ServerActionEnum.StartWork, (int)ItemToBuild,
+                    (ServerCommunication com) =>
+                    {
+                        GamePlayerLogic.Instance.StartWork(
+                            GamePlayerManager.Instance.LoggedInPlayer, ItemToBuild);
+                    }, GUIGameObject.SetGlobalError);
+
+                Destroy(gameObject);
+                Destroy(parent);
+
+                return;
+            }
 		}
 	}
 }

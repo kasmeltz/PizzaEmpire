@@ -59,7 +59,6 @@
      <Compile Include="Assets\Code\GUI\GUIEventEnum.cs" />
      <Compile Include="Assets\Code\GUI\GUIGameObject.cs" />
      <Compile Include="Assets\Code\GUI\GUIItemFactory.cs" />
-     <Compile Include="Assets\Code\GUI\GUIMessages.cs" />
      <Compile Include="Assets\Code\GUI\GUIStateManager.cs" />
      <Compile Include="Assets\Code\GUI\GameLogicControls\IngredientOrderWindow.cs" />
      <Compile Include="Assets\Code\GUI\GameLogicControls\WorkItemProgressBar.cs" />
@@ -70,7 +69,12 @@
      <Compile Include="Assets\Code\GameLogic\ItemManager.cs" />
      <Compile Include="Assets\Code\InGameScripts\CreateItemWhenTapped.cs" />
      <Compile Include="Assets\Code\InGameScripts\DoWorkAfterColliding.cs" />
+     <Compile Include="Assets\Code\InGameScripts\Draggable.cs" />
+     <Compile Include="Assets\Code\InGameScripts\DropOrSnapBack.cs" />
+     <Compile Include="Assets\Code\InGameScripts\Droppable.cs" />
      <Compile Include="Assets\Code\InGameScripts\ProgressBarWhenTapped.cs" />
+     <Compile Include="Assets\Code\InGameScripts\SpawnLocation.cs" />
+     <Compile Include="Assets\Code\InGameScripts\Tappable.cs" />
      <Compile Include="Assets\Code\Resources\LightweightResourceManager.cs" />
      <Compile Include="Assets\Code\Resources\ResourceEnum.cs" />
      <Compile Include="Assets\Code\Resources\ResourceManager.cs" />

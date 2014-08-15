@@ -6,18 +6,20 @@ namespace KS.PizzaEmpire.Unity
 	using Common.BusinessObjects;
 	using Common.GameLogic;
 
-	public class CreateItemWhenTapped : MonoBehaviour
+	public class CreateItemWhenTapped : Tappable
 	{
 		public ResourceEnum ItemToCreate;
 
-		protected bool isTapped;
 		protected GameObject createdItem;
 
-		public void Tapped()
+		public override void Tap()
 		{
+			base.Tap();
+
+			Debug.Log ("CreateItemWhenTapped Tap!");
+
 			if (isTapped)
 			{
-				UnTapped();
 				return;
 			}
 
@@ -25,15 +27,13 @@ namespace KS.PizzaEmpire.Unity
 
 			createdItem = ResourceManager<GameObject>.Instance.Load(ItemToCreate);			
 			createdItem = (GameObject)GameObject.Instantiate(createdItem, transform.position, Quaternion.identity);
-
-			Debug.Log ("Tapped!");
-
-			GUIStateManager.Instance.TapHandled(this.gameObject, GUIElementEnum.None);
 		}
 
-		public void UnTapped()
+		public override void UnTap()
 		{
-			Debug.Log ("UnTapped!");
+			Debug.Log ("CreateItemWhenTapped UnTap!");
+
+			base.UnTap ();
 
 			if (createdItem != null) 
 			{
