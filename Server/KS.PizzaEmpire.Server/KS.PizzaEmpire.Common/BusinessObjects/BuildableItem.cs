@@ -18,41 +18,6 @@
         public BuildableItemEnum ItemCode { get; set; }
 
         /// <summary>
-        /// The level required to build this item
-        /// </summary>
-        public int RequiredLevel { get; set; }
-
-        /// <summary>
-        /// The cost in coins to build this item
-        /// </summary>
-        public int CoinCost { get; set; }
-
-        /// <summary>
-        /// The item that is required to produce this item
-        /// </summary>
-        public BuildableItemEnum ProductionItem { get; set; }
-
-        /// <summary>
-        /// The production capacity
-        /// </summary>
-        public int ProductionCapacity { get; set; }
-
-        /// <summary>
-        /// The base amount of items that are produced when work is completed
-        /// </summary>
-        public int BaseProduction { get; set; }
-
-        /// <summary>
-        /// The maximum number of items this item can store
-        /// </summary>
-        public int StorageCapacity { get; set; }
-
-        /// <summary>
-        /// The item this item should be stored in
-        /// </summary>
-        public BuildableItemEnum StorageItem { get; set; }
-
-        /// <summary>
         /// Whether the item is used for storage
         /// </summary>
         public bool IsStorage { get; set; }
@@ -73,34 +38,39 @@
         public bool IsWorkSubtracted { get; set; }
 
         /// <summary>
-        /// The experience gained when this item is built
+        /// The item that is required to produce this item
         /// </summary>
-        public int Experience { get; set; }
+        public BuildableItemEnum ProductionItem { get; set; }
 
         /// <summary>
-        /// The number of seconds required to build this item
+        /// The item this item should be stored in
         /// </summary>
-        public int BuildSeconds { get; set; }
+        public BuildableItemEnum StorageItem { get; set; }
 
         /// <summary>
-        /// The number of coupons required to build this item
+        /// The storage area this item is linked to
         /// </summary>
-        public int CouponCost { get; set; }
+        public InventoryStorageEnum StorageArea { get; set; }        
 
         /// <summary>
-        /// The number of coupons required to speed up this item
+        /// The per level stats associated with this item
         /// </summary>
-        public int SpeedUpCoupons { get; set; }
+        public Dictionary<int, BuildableItemStat> Stats { get; set; }
 
         /// <summary>
-        /// The number of seconds this item will be sped up by specnding coupons
+        /// Returns the stats for the requested level
         /// </summary>
-        public int SpeedUpSeconds { get; set; }
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public BuildableItemStat GetStat(int level)
+        {
+            if (!Stats.ContainsKey(level))
+            {
+                return null;
+            }
 
-        /// <summary>
-        /// The required items to build this item
-        /// </summary>
-        public List<ItemQuantity> RequiredItems { get; set; } 
+            return Stats[level];                
+        }
     }
 }
 
