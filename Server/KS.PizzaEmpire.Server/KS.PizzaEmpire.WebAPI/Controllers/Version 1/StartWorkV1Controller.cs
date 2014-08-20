@@ -36,7 +36,7 @@
                     return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT };
                 }
 
-                WorkItem item = GamePlayerLogic.Instance.StartWork(player, (BuildableItemEnum)itemCode);
+                WorkInProgress item = GamePlayerLogic.Instance.StartWork(player, (BuildableItemEnum)itemCode);
 
                 if (player.StateChanged)
                 {

@@ -1,12 +1,11 @@
 ﻿namespace KS.PizzaEmpire.Common.BusinessObjects
 {
-    using System;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// Represents ongoing work that will produce some finished item(s) after some length of time
-    /// as used by the game logic.
+    /// Represents an item that is general work
     /// </summary>
-    public class WorkItem : IBusinessObjectEntity
+    public class WorkItem : BuildableItem
     {
         /// <summary>
         /// Creates a new instance of the WorkItem class.
@@ -14,13 +13,8 @@
         public WorkItem() { }
 
         /// <summary>
-        /// The item code that represents the item we are working on
+        /// The per level stats associated with this item
         /// </summary>
-        public BuildableItemEnum ItemCode { get; set; }
-
-        /// <summary>
-        /// The time when this work will be complete in UTC format
-        /// </summary>
-        public DateTime FinishTime { get; set; }
+        public List<WorkItemStat> WorkStats { get; set; }
     }
 }

@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static List<WorkItemProtoBuf> FromBusiness(List<WorkItem> items)
+        public static List<WorkItemProtoBuf> FromBusiness(List<WorkInProgress> items)
         {
             if (items == null)
             {
@@ -38,7 +38,7 @@
             }   
 
             List<WorkItemProtoBuf> wis = new List<WorkItemProtoBuf>();
-            foreach (WorkItem wi in items)
+            foreach (WorkInProgress wi in items)
             {
                 WorkItemProtoBuf clone = new WorkItemProtoBuf();
                 clone.ItemCode = wi.ItemCode;
@@ -53,17 +53,17 @@
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static List<WorkItem> ToBusiness(List<WorkItemProtoBuf> items)
+        public static List<WorkInProgress> ToBusiness(List<WorkItemProtoBuf> items)
         {
             if (items == null)
             {
                 return null;
             }   
 
-            List<WorkItem> wis = new List<WorkItem>();
+            List<WorkInProgress> wis = new List<WorkInProgress>();
             foreach (WorkItemProtoBuf wi in items)
             {
-                WorkItem clone = new WorkItem();
+                WorkInProgress clone = new WorkInProgress();
                 clone.ItemCode = wi.ItemCode;
                 clone.FinishTime = wi.FinishTime;
                 wis.Add(clone);

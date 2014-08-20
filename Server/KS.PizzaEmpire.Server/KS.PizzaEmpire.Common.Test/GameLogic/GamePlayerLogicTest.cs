@@ -419,8 +419,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestDoesPlayerHaveProductionCapacityFalse()
         {
-            Player.WorkItems.Add(new WorkItem { ItemCode = BuildableItemEnum.White_Flour });
-            Player.WorkItems.Add(new WorkItem { ItemCode = BuildableItemEnum.White_Flour });
+            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
+            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
             Assert.AreEqual(false,
                 GamePlayerLogic.Instance.DoesPlayerHaveProductionCapacity(Player, BuildableItemEnum.White_Flour));
         }
@@ -444,7 +444,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         public void TestAddItem()
         {
             Assert.AreEqual(false, Player.BuildableItems.ContainsKey(BuildableItemEnum.White_Flour));
-            GamePlayerLogic.Instance.AddItem(Player, new WorkItem { ItemCode = BuildableItemEnum.White_Flour });
+            GamePlayerLogic.Instance.AddItem(Player, new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.White_Flour]);
             Assert.AreEqual(true, Player.StateChanged);
         }
@@ -452,9 +452,9 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestAddItemNonConsumable()
         {
-            GamePlayerLogic.Instance.AddItem(Player, new WorkItem { ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1 });
+            GamePlayerLogic.Instance.AddItem(Player, new WorkInProgress { ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1 });
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
-            GamePlayerLogic.Instance.AddItem(Player, new WorkItem { ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1 });
+            GamePlayerLogic.Instance.AddItem(Player, new WorkInProgress { ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1 });
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
             Assert.AreEqual(true, Player.StateChanged);
         }
@@ -463,7 +463,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [ExpectedException(typeof(ArgumentException))]
         public void TestFinishWorkNone()
         {
-            List<WorkItem> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
+            List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(0, finishedItems.Count);
             Assert.AreEqual(true, Player.StateChanged);
         }
@@ -471,8 +471,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestFinishWorkNoneReady()
         {
-            Player.WorkItems.Add(new WorkItem { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
-            List<WorkItem> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
+            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
+            List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(0, finishedItems.Count);
             Assert.AreEqual(true, Player.StateChanged);
         }
@@ -480,9 +480,9 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestFinishWorkOneReady()
         {
-            Player.WorkItems.Add(new WorkItem { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
-            Player.WorkItems.Add(new WorkItem { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(-1) });
-            List<WorkItem> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
+            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
+            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(-1) });
+            List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(1, finishedItems.Count);
             Assert.AreEqual(BuildableItemEnum.White_Flour, finishedItems[0].ItemCode);
             Assert.AreEqual(true, Player.StateChanged);
@@ -491,10 +491,10 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestFinishWorkTwoReady()
         {
-            Player.WorkItems.Add(new WorkItem { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
-            Player.WorkItems.Add(new WorkItem { ItemCode = BuildableItemEnum.Yeast, FinishTime = DateTime.UtcNow.AddHours(-1) });
-            Player.WorkItems.Add(new WorkItem { ItemCode = BuildableItemEnum.Salt, FinishTime = DateTime.UtcNow.AddHours(-1) });
-            List<WorkItem> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
+            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
+            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.Yeast, FinishTime = DateTime.UtcNow.AddHours(-1) });
+            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.Salt, FinishTime = DateTime.UtcNow.AddHours(-1) });
+            List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(2, finishedItems.Count);
             Assert.AreEqual(BuildableItemEnum.Yeast, finishedItems[0].ItemCode);
             Assert.AreEqual(BuildableItemEnum.Salt, finishedItems[1].ItemCode);
@@ -519,7 +519,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestStartWork()
         {
-            WorkItem workItem = GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
+            WorkInProgress workItem = GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
             Assert.AreEqual(BuildableItemEnum.White_Flour, workItem.ItemCode);
             Assert.AreEqual(true, Player.StateChanged);
             Assert.AreEqual(950, Player.Coins);
@@ -645,7 +645,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
 
-            List<WorkItem> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
+            List<WorkInProgress> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
 
             Assert.AreEqual(2, wis.Count);
         }
@@ -653,7 +653,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestGetCurrentWorkItemsForProductionItemNoItemsInProduction()
         {
-            List<WorkItem> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
+            List<WorkInProgress> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
 
             Assert.AreEqual(0, wis.Count);
         }
@@ -788,7 +788,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             };
 
             GamePlayerLogic.Instance.SubtractItem(Player, 
-                new WorkItem { ItemCode = BuildableItemEnum.White_Flour });
+                new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
 
             Assert.AreEqual(1, items.Count);
             Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
@@ -811,7 +811,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             };
 
             GamePlayerLogic.Instance.AddItem(Player,
-                new WorkItem { ItemCode = BuildableItemEnum.White_Flour });
+                new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
 
             Assert.AreEqual(1, items.Count);
             Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
@@ -823,7 +823,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         public void TestWorkStartedEvent()
         {
             bool workStarted = false;
-            List<WorkItem> items = new List<WorkItem>();
+            List<WorkInProgress> items = new List<WorkInProgress>();
 
             GamePlayerLogic.Instance.WorkStarted += (o, e) =>
             {
@@ -844,7 +844,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 3;
 
             bool workFinished = false;
-            List<WorkItem> items = new List<WorkItem>();
+            List<WorkInProgress> items = new List<WorkInProgress>();
 
             GamePlayerLogic.Instance.WorkFinished += (o, e) =>
             {

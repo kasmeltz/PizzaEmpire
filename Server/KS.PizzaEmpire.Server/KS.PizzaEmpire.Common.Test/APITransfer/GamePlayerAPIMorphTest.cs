@@ -24,9 +24,9 @@
                 Experience = 1000,
                 Level = 4,
                 StateChanged = false,
-                WorkItems = new List<WorkItem>
+                WorkItems = new List<WorkInProgress>
                 {
-                    new WorkItem 
+                    new WorkInProgress 
                     {
                          ItemCode = BuildableItemEnum.White_Flour,
                          FinishTime = DateTime.UtcNow

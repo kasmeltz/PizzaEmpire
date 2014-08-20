@@ -14,11 +14,6 @@
         public int Location { get; set; }
 
         /// <summary>
-        /// The storage to check
-        /// </summary>
-        public InventoryStorageEnum Storage { get; set; }
-
-        /// <summary>
         /// The item to check
         /// </summary>
         public BuildableItemEnum Item { get; set; }

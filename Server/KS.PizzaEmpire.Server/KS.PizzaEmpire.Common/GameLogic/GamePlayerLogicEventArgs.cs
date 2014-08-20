@@ -12,7 +12,7 @@
         /// <summary>
         /// Creates a new instance of the GamePlayerLogicEventArgs class
         /// </summary>
-        public GamePlayerLogicEventArgs(GamePlayer player, WorkItem item)
+        public GamePlayerLogicEventArgs(GamePlayer player, WorkInProgress item)
         {
             Player = player;
             WorkItem = item;
@@ -57,7 +57,7 @@
         /// <summary>
         /// The work item the event pertains to
         /// </summary>
-        public WorkItem WorkItem { get; protected set; }
+        public WorkInProgress WorkItem { get; protected set; }
 
         /// <summary>
         /// An integer value the event pertains to

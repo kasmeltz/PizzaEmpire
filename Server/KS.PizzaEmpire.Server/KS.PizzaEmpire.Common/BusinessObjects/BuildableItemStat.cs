@@ -31,22 +31,7 @@
         /// The cost in coins to build this item
         /// </summary>
         public int CoinCost { get; set; }
-        
-        /// <summary>
-        /// The production capacity
-        /// </summary>
-        public int ProductionCapacity { get; set; }
-
-        /// <summary>
-        /// The base amount of items that are produced when work is completed
-        /// </summary>
-        public int BaseProduction { get; set; }
-
-        /// <summary>
-        /// The maximum number of items this item can store
-        /// </summary>
-        public int StorageCapacity { get; set; }
-       
+               
         /// <summary>
         /// The experience gained when this item is built
         /// </summary>

@@ -15,17 +15,8 @@
         public BusinessLocation() { }
 
         /// <summary>
-        /// The inventories at this location
+        /// The items at this location
         /// </summary>
-        public Dictionary<InventoryStorageEnum, LocationStorage> Storage { get; set; }
-
-        /// <summary>
-        /// Returns the storage for the given storage type
-        /// </summary>
-        /// <param name="storage">The storage type to retrieve</param>
-        public LocationStorage GetStorage(InventoryStorageEnum storageType)
-        {
-            return Storage[storageType];
-        }
+        public LocationStorage Storage { get; set; }
     }
 }

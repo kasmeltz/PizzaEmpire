@@ -15,13 +15,13 @@
         /// <summary>
         /// The items in this storage
         /// </summary>
-        public Dictionary<BuildableItemEnum, StorageItem> Items { get; set; }
+        public Dictionary<BuildableItemEnum, GamePlayerItem> Items { get; set; }
 
         /// <summary>
-        /// Returns the StorageItem for the given item type
+        /// Returns the GamePlayerItem for the given item type
         /// </summary>
-        /// <param name="storage">The item to retrieve</param>
-        public StorageItem GetItem(BuildableItemEnum itemCode)
+        /// <param name="itemCode">The item to retrieve</param>
+        public GamePlayerItem GetItem(BuildableItemEnum itemCode)
         {
             if (!Items.ContainsKey(itemCode))
             {

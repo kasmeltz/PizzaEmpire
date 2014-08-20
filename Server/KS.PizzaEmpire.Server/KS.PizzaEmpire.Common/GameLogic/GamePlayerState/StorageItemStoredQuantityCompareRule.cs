@@ -6,7 +6,7 @@
     /// <summary>
     /// Represents a rule that compares the player's storage items
     /// </summary>
-    public class StorageItemQuantityCompareRule : StorageItemCompareRule
+    public class StorageItemStoredQuantityCompareRule : StorageItemCompareRule
     {        
         /// <summary>
         /// The quantity to compare
@@ -16,9 +16,9 @@
         public override bool IsValid(GamePlayer player)
         {
             BusinessLocation bl = player.GetLocation(Location);
-            LocationStorage ls = bl.GetStorage(Storage);
-            StorageItem si = ls.GetItem(Item);
-            int q = si.GetQuantity(Level);
+            LocationStorage ls = bl.Storage;            
+            GamePlayerItem si = ls.GetItem(Item);
+            int q = si.StoredQuantity;
 
             switch (ComparisonType)
             {

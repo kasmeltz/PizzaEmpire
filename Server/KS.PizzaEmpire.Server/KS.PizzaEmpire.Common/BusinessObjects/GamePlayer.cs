@@ -41,7 +41,7 @@
         /// <summary>
         /// The work in progress for the player
         /// </summary>
-        public List<WorkItem> WorkItems { get; set; }
+        public List<WorkInProgress> WorkItems { get; set; }
 
         /// <summary>
         /// The player's current tutorial stage

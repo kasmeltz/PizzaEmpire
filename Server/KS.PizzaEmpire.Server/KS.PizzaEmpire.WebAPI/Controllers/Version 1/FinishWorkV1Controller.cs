@@ -35,7 +35,7 @@
 
                 DateTime[] now = new DateTime[1];  
                 now[0] = DateTime.UtcNow;
-                List<WorkItem> items = GamePlayerLogic.Instance.FinishWork(player, now[0]);
+                List<WorkInProgress> items = GamePlayerLogic.Instance.FinishWork(player, now[0]);
 
                 if (player.StateChanged)
                 {

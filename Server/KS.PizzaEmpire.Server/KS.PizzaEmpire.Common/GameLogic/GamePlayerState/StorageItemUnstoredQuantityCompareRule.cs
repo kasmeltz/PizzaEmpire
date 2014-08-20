@@ -6,32 +6,37 @@
     /// <summary>
     /// Represents a rule that compares the player's storage items
     /// </summary>
-    public abstract class StorageItemLevelCompareRule : StorageItemCompareRule
-    {                
+    public class StorageItemUnstoredQuantityCompareRule : StorageItemCompareRule
+    {        
+        /// <summary>
+        /// The quantity to compare
+        /// </summary>
+        public int Quantity { get; set; }
+
         public override bool IsValid(GamePlayer player)
         {
             BusinessLocation bl = player.GetLocation(Location);
-            LocationStorage ls = bl.Storage;
+            LocationStorage ls = bl.Storage;            
             GamePlayerItem si = ls.GetItem(Item);
-            int l = si.Level;
+            int q = si.UnstoredQuantity;
 
             switch (ComparisonType)
             {
                 case ComparisonEnum.Equal:
-                    return l == Level;
+                    return q == Quantity;
                 case ComparisonEnum.GreaterThan:
-                    return l > Level;
+                    return q > Quantity;
                 case ComparisonEnum.GreaterThanOrEqual:
-                    return l >= Level;
+                    return q >= Quantity;
                 case ComparisonEnum.LessThan:
-                    return l < Level;
+                    return q < Quantity;
                 case ComparisonEnum.LessThanOrEqual:
-                    return l <= Level;
+                    return q <= Quantity;
                 case ComparisonEnum.NotEqual:
-                    return l != Level;
+                    return q != Quantity;
             }
 
-            return false;            
+            return false;
         }
     }
 }

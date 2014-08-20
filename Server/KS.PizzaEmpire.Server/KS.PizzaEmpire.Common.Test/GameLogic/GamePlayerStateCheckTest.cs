@@ -508,8 +508,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             // Arrange
             GamePlayer player = new GamePlayer
             {
-                WorkItems = new List<WorkItem> {
-                     new WorkItem { ItemCode = BuildableItemEnum.Olive_Oil, FinishTime = DateTime.Now }
+                WorkItems = new List<WorkInProgress> {
+                     new WorkInProgress { ItemCode = BuildableItemEnum.Olive_Oil, FinishTime = DateTime.Now }
                 }
             };
 
@@ -533,8 +533,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             // Arrange
             GamePlayer player = new GamePlayer
             {
-                WorkItems = new List<WorkItem> {
-                     new WorkItem { ItemCode = BuildableItemEnum.Mozzarella_Cheese, FinishTime = DateTime.Now }
+                WorkItems = new List<WorkInProgress> {
+                     new WorkInProgress { ItemCode = BuildableItemEnum.Mozzarella_Cheese, FinishTime = DateTime.Now }
                 }
             };
 

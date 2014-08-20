@@ -249,7 +249,7 @@
             player.BuildableItems[BuildableItemEnum.Dirty_Table] = 1;
             player.BuildableItems[BuildableItemEnum.Dirty_Floor] = 1;
 
-            player.WorkItems = new List<WorkItem>();
+            player.WorkItems = new List<WorkInProgress>();
             SetLevel(player, 1);
 
             return player;
@@ -334,7 +334,7 @@
             }
 
             int inUse = 0;
-            foreach (WorkItem wi in player.WorkItems)
+            foreach (WorkInProgress wi in player.WorkItems)
             {
                 BuildableItem wbi = BuildableItems[wi.ItemCode];
                 if (wbi.ProductionItem == bi.ProductionItem)
@@ -536,7 +536,7 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="code"></param>
-        public WorkItem StartWork(GamePlayer player, BuildableItemEnum itemCode)
+        public WorkInProgress StartWork(GamePlayer player, BuildableItemEnum itemCode)
         {
             bool canDoWork = TryBuildItem(player, itemCode);
 
@@ -549,7 +549,7 @@
 
             DeductResources(player, itemCode);
 
-            WorkItem workItem = new WorkItem
+            WorkInProgress workItem = new WorkInProgress
             {
                 ItemCode = itemCode,
                 FinishTime = DateTime.UtcNow.AddSeconds(bi.BuildSeconds)
@@ -577,7 +577,7 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="item"></param>
-        public void AddItem(GamePlayer player, WorkItem item)
+        public void AddItem(GamePlayer player, WorkInProgress item)
         {
             BuildableItem bi = BuildableItems[item.ItemCode];
 
@@ -605,7 +605,7 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="item"></param>
-        public void SubtractItem(GamePlayer player, WorkItem item)
+        public void SubtractItem(GamePlayer player, WorkInProgress item)
         {
             BuildableItem bi = BuildableItems[item.ItemCode];
 
@@ -636,7 +636,7 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="item"></param>
-        public void AdjustInventory(GamePlayer player, WorkItem item)
+        public void AdjustInventory(GamePlayer player, WorkInProgress item)
         {
             BuildableItem bi = BuildableItems[item.ItemCode];
 
@@ -657,9 +657,9 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="itemCode"></param>
-        public List<WorkItem> FinishWork(GamePlayer player, DateTime checkBefore)
+        public List<WorkInProgress> FinishWork(GamePlayer player, DateTime checkBefore)
         {
-            List<WorkItem> finishedItems = new List<WorkItem>();
+            List<WorkInProgress> finishedItems = new List<WorkInProgress>();
 
             if (player.WorkItems == null ||
                 player.WorkItems.Count == 0)
@@ -668,7 +668,7 @@
                 throw new ArgumentException();
             }
 
-            foreach (WorkItem item in player.WorkItems)
+            foreach (WorkInProgress item in player.WorkItems)
             {
                 if (item.FinishTime < checkBefore)
                 {
@@ -676,7 +676,7 @@
                 }
             }
 
-            foreach (WorkItem item in finishedItems)
+            foreach (WorkInProgress item in finishedItems)
             {
                 AdjustInventory(player, item);
                 player.WorkItems.Remove(item);
@@ -714,11 +714,11 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="stage"></param>
-        public List<WorkItem> GetCurrentWorkItemsForProductionItem(GamePlayer player, BuildableItemEnum productionItem)
+        public List<WorkInProgress> GetCurrentWorkItemsForProductionItem(GamePlayer player, BuildableItemEnum productionItem)
         {
-            List<WorkItem> workItems = new List<WorkItem>();
+            List<WorkInProgress> workItems = new List<WorkInProgress>();
 
-            foreach (WorkItem item in player.WorkItems)
+            foreach (WorkInProgress item in player.WorkItems)
             {
                 BuildableItem bi = BuildableItems[item.ItemCode];
                 if (bi.ProductionItem == productionItem)
@@ -736,7 +736,7 @@
         /// </summary>
         /// <param name="workItem"></param>
         /// <returns></returns>
-        public double GetPercentageCompleteForWorkItem(WorkItem workItem)
+        public double GetPercentageCompleteForWorkItem(WorkInProgress workItem)
         {
             BuildableItem bi = BuildableItems[workItem.ItemCode];
             double secondsToGo = workItem.FinishTime.Subtract(DateTime.UtcNow).TotalSeconds;

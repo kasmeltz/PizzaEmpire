@@ -69,7 +69,7 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
 
             if (clone.WorkItems == null)
             {
-                clone.WorkItems = new List<WorkItem>();
+                clone.WorkItems = new List<WorkInProgress>();
             }
 
             clone.TutorialStage = item.TutorialStage;
@@ -107,7 +107,7 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
 
             if (clone.WorkItems == null)
             {
-                clone.WorkItems = new List<WorkItem>();
+                clone.WorkItems = new List<WorkInProgress>();
             }
 
             clone.TutorialStage = other.TutorialStage;
