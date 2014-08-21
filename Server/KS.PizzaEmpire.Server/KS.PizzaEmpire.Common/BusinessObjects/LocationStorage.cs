@@ -30,8 +30,8 @@
             else
             {
                 ItemQuantity existing = Items[iq.ItemCode];
-                existing.UnStoredQuantity += existing.UnStoredQuantity;
-                existing.StoredQuantity += existing.StoredQuantity;
+                existing.UnStoredQuantity += iq.UnStoredQuantity;
+                existing.StoredQuantity += iq.StoredQuantity;
                 Items[iq.ItemCode] = existing;
             }                        
         }
@@ -79,8 +79,8 @@
             if (Items.ContainsKey(iq.ItemCode))
             {
                 ItemQuantity existing = Items[iq.ItemCode];
-                existing.UnStoredQuantity -= existing.UnStoredQuantity;
-                existing.StoredQuantity -= existing.StoredQuantity;
+                existing.UnStoredQuantity -= iq.UnStoredQuantity;
+                existing.StoredQuantity -= iq.StoredQuantity;
                 if (existing.UnStoredQuantity <= 0 && existing.StoredQuantity <= 0)
                 {
                     Items.Remove(iq.ItemCode); 
@@ -100,8 +100,8 @@
             if (Items.ContainsKey(iq.ItemCode))
             {
                 ItemQuantity existing = Items[iq.ItemCode];
-                existing.UnStoredQuantity -= existing.UnStoredQuantity;
-                existing.StoredQuantity += existing.StoredQuantity;
+                existing.UnStoredQuantity -= iq.UnStoredQuantity;
+                existing.StoredQuantity += iq.StoredQuantity;
                 Items[iq.ItemCode] = existing;
             }
         }      

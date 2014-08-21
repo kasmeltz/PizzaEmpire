@@ -250,7 +250,7 @@
                     ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck, 
                     UnStoredQuantity = 1, 
                     StoredQuantity = 0,
-                    Level = 1 
+                    Level = 0
                 });
 
             AddItem(player,
@@ -259,7 +259,7 @@
                     ItemCode = BuildableItemEnum.Restaurant_Storage,
                     UnStoredQuantity = 1,
                     StoredQuantity = 0,
-                    Level = 1
+                    Level = 0
                 });
 
             AddItem(player,
@@ -268,7 +268,7 @@
                     ItemCode = BuildableItemEnum.Dirty_Table,
                     UnStoredQuantity = 1,
                     StoredQuantity = 0,
-                    Level = 1
+                    Level = 0
                 });
 
             AddItem(player,
@@ -277,7 +277,7 @@
                     ItemCode = BuildableItemEnum.Dirty_Dishes,
                     UnStoredQuantity = 1,
                     StoredQuantity = 0,
-                    Level = 1
+                    Level = 0
                 });
 
             AddItem(player,
@@ -286,7 +286,7 @@
                     ItemCode = BuildableItemEnum.Dirty_Floor,
                     UnStoredQuantity = 1,
                     StoredQuantity = 0,
-                    Level = 1
+                    Level = 0
                 });
         }
 
@@ -351,34 +351,43 @@
         /// <param name="player"></param>
         /// <param name="itemCode"></param>
         /// <returns></returns>
-        public bool DoesPlayerHaveProductionCapacity(GamePlayer player, BuildableItemEnum itemCode)
+        public bool DoesPlayerHaveProductionCapacity(GamePlayer player, int location, int level, BuildableItemEnum itemCode)
         {
-            BuildableItem bi = BuildableItems[itemCode];
-
-            if (bi.ProductionItem == BuildableItemEnum.None)
+            ConsumableItem consumable = BuildableItems[itemCode] as ConsumableItem;
+            if (consumable == null)
             {
                 return true;
             }
+            
+            BusinessLocation businessLocation = player.Locations[location];
+            LocationStorage storage = businessLocation.Storage;
 
-            BuildableItem capacityItem = BuildableItems[bi.ProductionItem];
-
-            if (!player.BuildableItems.ContainsKey(capacityItem.ItemCode) || 
-                player.BuildableItems[capacityItem.ItemCode] == 0)
+            if (!storage.Items.ContainsKey(consumable.ProducedWith) ||
+                storage.Items[consumable.ProducedWith].UnStoredQuantity == 0)
             {
                 return false;
             }
 
             int inUse = 0;
-            foreach (WorkInProgress wi in player.WorkItems)
+            foreach (WorkInProgress wi in player.WorkInProgress)
             {
-                BuildableItem wbi = BuildableItems[wi.ItemCode];
-                if (wbi.ProductionItem == bi.ProductionItem)
+                ConsumableItem cip = BuildableItems[wi.Quantity.ItemCode] as ConsumableItem;
+                if (cip == null)
+                {
+                    continue;
+                }
+
+                if (cip.ProducedWith == consumable.ProducedWith)
                 {
                     inUse++;
                 }
             }
 
-            return inUse < capacityItem.ProductionCapacity;
+            ProductionItem productionItem = BuildableItems[consumable.ProducedWith] as ProductionItem;
+            int productionItemLevel = storage.Items[productionItem.ItemCode].Level;
+            ProductionItemStat productionStat = productionItem.ProductionStats[productionItemLevel];
+
+            return inUse < productionStat.Capacity;
         }
         
         /// <summary>
@@ -387,28 +396,38 @@
         /// <param name="player"></param>
         /// <param name="itemCode"></param>
         /// <returns></returns>
-        public bool DoesPlayeraHaveStorageCapacity(GamePlayer player, BuildableItemEnum itemCode)
+        public bool DoesPlayeraHaveStorageCapacity(GamePlayer player, int location, int level, BuildableItemEnum itemCode)
         {
-            BuildableItem bi = BuildableItems[itemCode];
-
-            if (bi.StorageItem == BuildableItemEnum.None)
+            ConsumableItem consumable = BuildableItems[itemCode] as ConsumableItem;
+            if (consumable == null)
             {
                 return true;
             }
 
-            BuildableItem storageItem = BuildableItems[bi.StorageItem];
+            BusinessLocation businessLocation = player.Locations[location];
+            LocationStorage storage = businessLocation.Storage;
 
-            int itemsInInventory = 0;
-            foreach (KeyValuePair<BuildableItemEnum, int> kvp in player.BuildableItems)
+            int itemsInStorage = 0;
+            foreach (ItemQuantity iq in storage.Items.Values)
             {
-                BuildableItem si = BuildableItems[kvp.Key];
-                if (si.StorageItem == bi.StorageItem)
+                ConsumableItem csi = BuildableItems[iq.ItemCode] as ConsumableItem;
+                if (csi == null)
                 {
-                    itemsInInventory += kvp.Value;
-                }
+                    continue;
+                }                
+                if (csi.StoredIn == consumable.StoredIn)
+                {
+                    itemsInStorage += iq.StoredQuantity;
+                }                
             }
 
-            return itemsInInventory + bi.BaseProduction < storageItem.StorageCapacity;
+            StorageItem storageItem = BuildableItems[consumable.StoredIn] as StorageItem;
+            int storageItemLevel = storage.Items[storageItem.ItemCode].Level;
+            StorageItemStat storageStat = storageItem.StorageStats[storageItemLevel];
+
+            return itemsInStorage +
+                GetProductionQuantityForItem(player, location, level, itemCode) <
+                    storageStat.Capacity;
         }
 
         /// <summary>
@@ -497,13 +516,17 @@
                 {
                     return ErrorCode.START_WORK_INSUFFICIENT_NEGATIVE;
                 }
-            } 
+            }                 
             else
             {
-                ItemQuantity inStorage = storage.Items[itemCode];
-                if (inStorage.UnStoredQuantity > 0 && inStorage.Level >= level)
+                ConsumableItem consumable = buildabelItem as ConsumableItem;
+                if (consumable == null)
                 {
-                    return ErrorCode.START_WORK_MULTIPLE_NON_CONSUMABLE;
+                    ItemQuantity inStorage = storage.Items[itemCode];
+                    if (inStorage.UnStoredQuantity > 0 && inStorage.Level >= level)
+                    {
+                        return ErrorCode.START_WORK_MULTIPLE_NON_CONSUMABLE;
+                    }
                 }
             }
 
@@ -640,13 +663,11 @@
                 OnWorkStarted(new GamePlayerLogicEventArgs(player, wip));
             }
 
-            /*
             WorkItem workItem = buildableItem as WorkItem;
             if (workItem != null)
             {
                 FinishWork(player, DateTime.UtcNow);
             }
-             * */
 
             player.StateChanged = true;
 
@@ -685,67 +706,7 @@
             {
                 OnItemSubtracted(new GamePlayerLogicEventArgs(player, itemQuantity));
             }
-        }
-
-        /*
-        /// <summary>
-        /// Adds an item to a player when work is completed
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="item"></param>
-        public void AddItem(GamePlayer player, WorkInProgress item)
-        {
-            BuildableItem bi = BuildableItems[item.ItemCode];
-
-            if (!player.BuildableItems.ContainsKey(item.ItemCode))
-            {
-                player.BuildableItems[item.ItemCode] = 0;
-            }
-
-            player.BuildableItems[item.ItemCode] += bi.BaseProduction;
-
-            if (ItemAdded != null)
-            {
-                OnItemAdded(new GamePlayerLogicEventArgs(player,
-                    new ItemQuantity { ItemCode = item.ItemCode, Quantity = bi.BaseProduction } ));
-            }
-
-            if (!bi.IsConsumable)
-            {
-                player.BuildableItems[item.ItemCode] = 1;
-            }
-        }
-
-        /// <summary>
-        /// Removes an item from a player when work is completed
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="item"></param>
-        public void SubtractItem(GamePlayer player, WorkInProgress item)
-        {
-            BuildableItem bi = BuildableItems[item.ItemCode];
-
-            if (!player.BuildableItems.ContainsKey(item.ItemCode))
-            {
-                Trace.WriteLine("Attempt to finished subtracted work for an item the player doesn't own");
-                return;
-            }
-
-            if (player.BuildableItems[item.ItemCode] < bi.BaseProduction)
-            {
-                Trace.WriteLine("Attempt to finished subtracted work for an item the player doesn't have enough of");
-                return;
-            }
-
-            player.BuildableItems[item.ItemCode] -= bi.BaseProduction;
-
-            if (ItemSubtracted != null)
-            {
-                OnItemSubtracted(new GamePlayerLogicEventArgs(player,
-                    new ItemQuantity { ItemCode = item.ItemCode, Quantity = bi.BaseProduction }));
-            }
-        }
-
+        }        
 
         /// <summary>
         /// Adds or removes an item to or from a player when work is completed
@@ -754,18 +715,15 @@
         /// <param name="item"></param>
         public void AdjustInventory(GamePlayer player, WorkInProgress item)
         {
-            BuildableItem bi = BuildableItems[item.ItemCode];
-
-            if (bi.IsWorkSubtracted)
+            WorkItem workItem = BuildableItems[item.Quantity.ItemCode] as WorkItem;
+            if (workItem != null)
             {
-                SubtractItem(player, item);
+                RemoveItem(player, item.Location, item.Quantity);
             }
             else
             {
-                AddItem(player, item);
+                AddItem(player, item.Location, item.Quantity);
             }            
-
-            AddExperience(player, bi.Experience);
         }
 
         /// <summary>
@@ -777,14 +735,14 @@
         {
             List<WorkInProgress> finishedItems = new List<WorkInProgress>();
 
-            if (player.WorkItems == null ||
-                player.WorkItems.Count == 0)
+            if (player.WorkInProgress == null ||
+                player.WorkInProgress.Count == 0)
             {
                 Trace.TraceError("Attempt to finish work but no work started!");
                 throw new ArgumentException();
             }
 
-            foreach (WorkInProgress item in player.WorkItems)
+            foreach (WorkInProgress item in player.WorkInProgress)
             {
                 if (item.FinishTime < checkBefore)
                 {
@@ -795,7 +753,11 @@
             foreach (WorkInProgress item in finishedItems)
             {
                 AdjustInventory(player, item);
-                player.WorkItems.Remove(item);
+                BuildableItem buildableItem = BuildableItems[item.Quantity.ItemCode];
+                BuildableItemStat stat = buildableItem.Stats[item.Quantity.Level];
+                AddExperience(player, stat.Experience);
+
+                player.WorkInProgress.Remove(item);
 
                 if (WorkFinished != null)
                 {
@@ -823,7 +785,6 @@
             player.TutorialStage = stage;
             player.StateChanged = true;            
         }
-         */
 
         /// <summary>
         /// Gets the current work items being produced in 

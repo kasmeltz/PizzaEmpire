@@ -988,6 +988,34 @@
             List<BuildableItem> items = new List<BuildableItem>();
             BuildableItem item;
 
+            item = new StorageItem
+            {
+                ItemCode = BuildableItemEnum.Restaurant_Storage,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = 0,
+                        CoinCost = 0,
+                        CouponCost = 0,
+                        Experience = 0,
+                        RequiredLevel = 0,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>()                                                      
+                    }
+                },
+                StorageStats = new List<StorageItemStat>
+                {
+                    new StorageItemStat
+                    {                         
+                         Capacity = 10
+                    }
+                }
+            };
+            items.Add(item);
+
+
             item = new ProductionItem
             {
                 ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck,
@@ -1013,7 +1041,84 @@
                     }
                 }
             };
+            items.Add(item);
 
+            item = new WorkItem
+            {
+                ItemCode = BuildableItemEnum.Dirty_Table,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = -1000,
+                        CoinCost = 0,
+                        CouponCost = 0,
+                        Experience = 100,
+                        RequiredLevel = 0,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>()                                                      
+                    }
+                },
+                WorkStats = new List<WorkItemStat>
+                {
+                    new WorkItemStat
+                    { 
+                    }
+                }
+            };
+            items.Add(item);
+
+            item = new WorkItem
+            {
+                ItemCode = BuildableItemEnum.Dirty_Dishes,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = -1000,
+                        CoinCost = 0,
+                        CouponCost = 0,
+                        Experience = 100,
+                        RequiredLevel = 0,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>()                                                      
+                    }
+                },
+                WorkStats = new List<WorkItemStat>
+                {
+                    new WorkItemStat
+                    { 
+                    }
+                }
+            };
+            items.Add(item);
+
+            item = new WorkItem
+            {
+                ItemCode = BuildableItemEnum.Dirty_Floor,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = -1000,
+                        CoinCost = 0,
+                        CouponCost = 0,
+                        Experience = 100,
+                        RequiredLevel = 0,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>()                                                      
+                    }
+                },
+                WorkStats = new List<WorkItemStat>
+                {
+                    new WorkItemStat
+                    { 
+                    }
+                }
+            };
             items.Add(item);
 
             item = new ConsumableItem
@@ -1040,7 +1145,115 @@
                          ProductionQuantity = 1
                     }
                 },
-                ProducedWith = BuildableItemEnum.Dry_Goods_Delivery_Truck
+                ProducedWith = BuildableItemEnum.Dry_Goods_Delivery_Truck,
+                StoredIn = BuildableItemEnum.Restaurant_Storage
+            };
+            items.Add(item);
+
+            item = new ConsumableItem
+            {
+                ItemCode = BuildableItemEnum.Yeast,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = 30,
+                        CoinCost = 50,
+                        CouponCost = 0,
+                        Experience = 100,
+                        RequiredLevel = 1,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>()                                                      
+                    }
+                },
+                ConsumableStats = new List<ConsumableItemStat>
+                {
+                    new ConsumableItemStat
+                    {
+                         ProductionQuantity = 1
+                    }
+                },
+                ProducedWith = BuildableItemEnum.Dry_Goods_Delivery_Truck,
+                StoredIn = BuildableItemEnum.Restaurant_Storage
+            };
+            items.Add(item);
+
+            item = new ConsumableItem
+            {
+                ItemCode = BuildableItemEnum.Salt,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = 30,
+                        CoinCost = 50,
+                        CouponCost = 0,
+                        Experience = 100,
+                        RequiredLevel = 1,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>()                                                      
+                    }
+                },
+                ConsumableStats = new List<ConsumableItemStat>
+                {
+                    new ConsumableItemStat
+                    {
+                         ProductionQuantity = 1
+                    }
+                },
+                ProducedWith = BuildableItemEnum.Dry_Goods_Delivery_Truck,
+                StoredIn = BuildableItemEnum.Restaurant_Storage
+            };
+            items.Add(item);
+
+            item = new ConsumableItem
+            {
+                ItemCode = BuildableItemEnum.White_Pizza_Dough,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = 30,
+                        CoinCost = 50,
+                        CouponCost = 0,
+                        Experience = 100,
+                        RequiredLevel = 3,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>
+                        {
+                            new ItemQuantity 
+                            {
+                                ItemCode = BuildableItemEnum.White_Flour,
+                                StoredQuantity = 1,
+                                Level = 0
+                            },
+                            new ItemQuantity 
+                            {
+                                ItemCode = BuildableItemEnum.Yeast,
+                                StoredQuantity = 1,
+                                Level = 0
+                            },
+                            new ItemQuantity 
+                            {
+                                ItemCode = BuildableItemEnum.Salt,
+                                StoredQuantity = 1,
+                                Level = 0
+                            }
+                        }                             
+                    }
+                },
+                ConsumableStats = new List<ConsumableItemStat>
+                {
+                    new ConsumableItemStat
+                    {
+                         ProductionQuantity = 1
+                    }
+                },
+                ProducedWith = BuildableItemEnum.Dough_Mixer,
+                StoredIn = BuildableItemEnum.Fridge
             };
 
             items.Add(item);

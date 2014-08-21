@@ -102,7 +102,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestNewGamePlayerHasProperDeliveryTruck()
         {
-            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].Level);
             Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].StoredQuantity);
             Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].UnStoredQuantity);
         }
@@ -110,7 +110,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestNewGamePlayerHasProperRestaurantStorage()
         {
-            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Restaurant_Storage].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Restaurant_Storage].Level);
             Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Restaurant_Storage].StoredQuantity);
             Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Restaurant_Storage].UnStoredQuantity);
         }
@@ -118,7 +118,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestNewGamePlayerHasProperDirtyTables()
         {
-            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Table].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Table].Level);
             Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Table].StoredQuantity);
             Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Table].UnStoredQuantity);
         }
@@ -126,7 +126,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestNewGamePlayerHasProperDirtyDishes()
         {
-            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Dishes].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Dishes].Level);
             Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Dishes].StoredQuantity);
             Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Dishes].UnStoredQuantity);
         }
@@ -134,7 +134,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestNewGamePlayerHasProperDirtyFloors()
         {
-            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Floor].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Floor].Level);
             Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Floor].StoredQuantity);
             Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Floor].UnStoredQuantity);
         }
@@ -231,152 +231,160 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestDoesPlayerHaveProductionCapacityTrue()
         {
-            Assert.Fail("Not implemented");
-
-            /*
+            Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].Level = 0;
             Assert.AreEqual(true,
-                GamePlayerLogic.Instance.DoesPlayerHaveProductionCapacity(Player, BuildableItemEnum.White_Flour));
-             * */
+                GamePlayerLogic.Instance.DoesPlayerHaveProductionCapacity(Player, 0, 0, BuildableItemEnum.White_Flour));
         }
 
         [TestMethod]
         public void TestDoesPlayerHaveProductionCapacityFalse()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
-            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
+            Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].Level = 0;
+            Player.WorkInProgress.Add(new WorkInProgress { Quantity = new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, UnStoredQuantity = 1 } });
+            Player.WorkInProgress.Add(new WorkInProgress { Quantity = new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, UnStoredQuantity = 1 } });
             Assert.AreEqual(false,
-                GamePlayerLogic.Instance.DoesPlayerHaveProductionCapacity(Player, BuildableItemEnum.White_Flour));
-             * */
+                GamePlayerLogic.Instance.DoesPlayerHaveProductionCapacity(Player, 0, 0, BuildableItemEnum.White_Flour));
         }
 
         [TestMethod]
         public void TestDoesPlayeraHaveStorageCapacityTrue()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             Assert.AreEqual(true,
-                GamePlayerLogic.Instance.DoesPlayeraHaveStorageCapacity(Player, BuildableItemEnum.White_Flour));
-             * */
+                GamePlayerLogic.Instance.DoesPlayeraHaveStorageCapacity(Player, 0, 0, BuildableItemEnum.White_Flour));
         }
 
         [TestMethod]
          public void TestDoesPlayeraHaveStorageCapacityFalse()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            Player.BuildableItems[BuildableItemEnum.White_Flour] = 10;
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 20, ItemCode = BuildableItemEnum.White_Flour, Level = 0 });
             Assert.AreEqual(false,
-                GamePlayerLogic.Instance.DoesPlayeraHaveStorageCapacity(Player, BuildableItemEnum.White_Flour));
-             * */
+                GamePlayerLogic.Instance.DoesPlayeraHaveStorageCapacity(Player, 0, 0, BuildableItemEnum.White_Flour));
         }
 
         [TestMethod]
         public void TestAddItem()
         {
-            Assert.Fail("Not implemented");
+            Assert.AreEqual(false, Player.Locations[0].Storage.Items.ContainsKey(BuildableItemEnum.White_Flour));
 
-            /*
-            Assert.AreEqual(false, Player.BuildableItems.ContainsKey(BuildableItemEnum.White_Flour));
-            GamePlayerLogic.Instance.AddItem(Player, new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
-            Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.White_Flour]);
+             GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { UnStoredQuantity = 1, ItemCode = BuildableItemEnum.White_Flour, Level = 0 });
+
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.White_Flour].UnStoredQuantity);
             Assert.AreEqual(true, Player.StateChanged);
-             * */
         }
-
-        [TestMethod]
-        public void TestAddItemNonConsumable()
-        {
-            Assert.Fail("Not implemented");
-
-            /*
-            GamePlayerLogic.Instance.AddItem(Player, new WorkInProgress { ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1 });
-            Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
-            GamePlayerLogic.Instance.AddItem(Player, new WorkInProgress { ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1 });
-            Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
-            Assert.AreEqual(true, Player.StateChanged);
-             * */
-        }
-
+        
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TestFinishWorkNone()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(0, finishedItems.Count);
             Assert.AreEqual(true, Player.StateChanged);
-             * */
         }
 
         [TestMethod]
         public void TestFinishWorkNoneReady()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
+            Player.WorkInProgress.Add(new WorkInProgress
+                {
+                    Quantity = new ItemQuantity
+                    {
+                        ItemCode = BuildableItemEnum.White_Flour
+                    },
+                    FinishTime = DateTime.UtcNow.AddHours(1)
+                });
             List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(0, finishedItems.Count);
             Assert.AreEqual(true, Player.StateChanged);
-             * */
         }
 
         [TestMethod]
         public void TestFinishWorkOneReady()
         {
-            Assert.Fail("Not implemented");
+            Player.WorkInProgress.Add(new WorkInProgress
+            {
+                Quantity = new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.White_Flour
+                },
+                FinishTime = DateTime.UtcNow.AddHours(1)
+            });
 
-            /*
-            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
-            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(-1) });
+            Player.WorkInProgress.Add(new WorkInProgress
+            {
+                Quantity = new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.White_Flour
+                },
+                FinishTime = DateTime.UtcNow.AddHours(-1)
+            });
+
             List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(1, finishedItems.Count);
-            Assert.AreEqual(BuildableItemEnum.White_Flour, finishedItems[0].ItemCode);
+            Assert.AreEqual(BuildableItemEnum.White_Flour, finishedItems[0].Quantity.ItemCode);
             Assert.AreEqual(true, Player.StateChanged);
-             * */
         }
 
         [TestMethod]
         public void TestFinishWorkTwoReady()
         {
-            Assert.Fail("Not implemented");
-            
-            /*
-            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
-            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.Yeast, FinishTime = DateTime.UtcNow.AddHours(-1) });
-            Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.Salt, FinishTime = DateTime.UtcNow.AddHours(-1) });
+            Player.WorkInProgress.Add(new WorkInProgress
+            {
+                Quantity = new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.White_Flour
+                },
+                FinishTime = DateTime.UtcNow.AddHours(1)
+            });
+
+            Player.WorkInProgress.Add(new WorkInProgress
+            {
+                Quantity = new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.Yeast
+                },
+                FinishTime = DateTime.UtcNow.AddHours(-1)
+            });
+
+            Player.WorkInProgress.Add(new WorkInProgress
+            {
+                Quantity = new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.Salt
+                },
+                FinishTime = DateTime.UtcNow.AddHours(-1)
+            });
+
             List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(2, finishedItems.Count);
-            Assert.AreEqual(BuildableItemEnum.Yeast, finishedItems[0].ItemCode);
-            Assert.AreEqual(BuildableItemEnum.Salt, finishedItems[1].ItemCode);
+            Assert.AreEqual(BuildableItemEnum.Yeast, finishedItems[0].Quantity.ItemCode);
+            Assert.AreEqual(BuildableItemEnum.Salt, finishedItems[1].Quantity.ItemCode);
             Assert.AreEqual(true, Player.StateChanged);
-             * */
         }
 
         [TestMethod]
         public void TestDeductResources()
         {
-            Assert.Fail("Not implemented");
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 3, ItemCode = BuildableItemEnum.White_Flour, Level = 0 });
 
-            /*
-            Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
-            Player.BuildableItems[BuildableItemEnum.Yeast] = 2;
-            Player.BuildableItems[BuildableItemEnum.Salt] = 1;
-            Player.BuildableItems[BuildableItemEnum.Dough_Mixer_L1] = 1;
-            GamePlayerLogic.Instance.DeductResources(Player, BuildableItemEnum.White_Pizza_Dough);
-            Assert.AreEqual(2, Player.BuildableItems[BuildableItemEnum.White_Flour]);
-            Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Yeast]);
-            Assert.AreEqual(0, Player.BuildableItems[BuildableItemEnum.Salt]);
-            Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dough_Mixer_L1]);
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 2, ItemCode = BuildableItemEnum.Yeast, Level = 0 });
+
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 1, ItemCode = BuildableItemEnum.Salt, Level = 0 });
+
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 1, ItemCode = BuildableItemEnum.Dough_Mixer, Level = 0 });
+
+            GamePlayerLogic.Instance.DeductResources(Player, 0, 0, BuildableItemEnum.White_Pizza_Dough);
+
+            Assert.AreEqual(2, Player.Locations[0].Storage.Items[BuildableItemEnum.White_Flour].StoredQuantity);
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Yeast].StoredQuantity);
+            Assert.AreEqual(false, Player.Locations[0].Storage.Items.ContainsKey(BuildableItemEnum.Salt));
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dough_Mixer].StoredQuantity);
             Assert.AreEqual(true, Player.StateChanged);
-             * */
         }
 
         [TestMethod]
@@ -394,174 +402,123 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestCanBuildItemFailItemType()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, (BuildableItemEnum)5000);
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, 0, 0, (BuildableItemEnum)5000);
 
             Assert.AreEqual(ErrorCode.START_WORK_INVALID_ITEM, ec);
-             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailLevel()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             GamePlayer player = GamePlayerLogic.Instance.CreateNewGamePlayer();
 
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(player, BuildableItemEnum.White_Pizza_Dough);
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(player, 0, 0, BuildableItemEnum.White_Pizza_Dough);
 
             Assert.AreEqual(ErrorCode.START_WORK_ITEM_NOT_AVAILABLE, ec);
-             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailCoins()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             Player.Coins = 0;
 
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Flour);
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, 0, 0, BuildableItemEnum.White_Flour);
 
             Assert.AreEqual(ErrorCode.START_WORK_INSUFFICIENT_COINS, ec);
-             * */
-        }
-
-        [TestMethod]
-        public void TestCanBuildItemFailCoupons()
-        {
-            Assert.Fail("Not implemented");
-
-            /*
-            Player.Coupons = 0;
-
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.Tomatoes);
-
-            Assert.AreEqual(ErrorCode.START_WORK_INSUFFICIENT_COUPONS, ec);
-             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailImproperIngredients()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             GamePlayerLogic.Instance.SetLevel(Player, 3);
 
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Pizza_Dough);
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, 0, 0, BuildableItemEnum.White_Pizza_Dough);
 
             Assert.AreEqual(ErrorCode.START_WORK_INVALID_INGREDIENTS, ec);
-             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailInsufficeintIngredients()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             GamePlayerLogic.Instance.SetLevel(Player, 3);
-            Player.BuildableItems[BuildableItemEnum.Salt] = 0;
-            Player.BuildableItems[BuildableItemEnum.White_Flour] = 0;
-            Player.BuildableItems[BuildableItemEnum.Yeast] = 0;
 
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Pizza_Dough);
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 0, ItemCode = BuildableItemEnum.White_Flour, Level = 0 });
+
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 0, ItemCode = BuildableItemEnum.Yeast, Level = 0 });
+
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 1, ItemCode = BuildableItemEnum.Salt, Level = 0 });
+
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, 0, 0, BuildableItemEnum.White_Pizza_Dough);
             
             Assert.AreEqual(ErrorCode.START_WORK_INSUFFICIENT_INGREDIENTS, ec);
-             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailEquipmentFull()
         {
-            Assert.Fail("Not implemented");
+            GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.White_Flour);
+            GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.White_Flour);
 
-            /*
-            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
-            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
-
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Flour);
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, 0, 0, BuildableItemEnum.White_Flour);
 
             Assert.AreEqual(ErrorCode.START_WORK_NO_PRODUCTION_CAPACITY, ec);
-             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailStorageFull()
         {
-            Assert.Fail("Not implemented");
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 10, ItemCode = BuildableItemEnum.White_Flour, Level = 0 });
 
-            /*
-
-            Player.BuildableItems[BuildableItemEnum.White_Flour] = 10;
-
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Flour);
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, 0, 0, BuildableItemEnum.White_Flour);
 
             Assert.AreEqual(ErrorCode.START_WORK_NO_STORAGE_CAPACITY, ec);
-             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailNotEnoughNeg()
         {
-            Assert.Fail("Not implemented");
+            GamePlayerLogic.Instance.RemoveItem(Player, 0,
+                new ItemQuantity { StoredQuantity = 1, UnStoredQuantity = 1, ItemCode = BuildableItemEnum.Dirty_Dishes, Level = 0 });
 
-            /*
-            Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 2;
-
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.Dirty_Dishes);
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, 0, 0, BuildableItemEnum.Dirty_Dishes);
 
             Assert.AreEqual(ErrorCode.START_WORK_INSUFFICIENT_NEGATIVE, ec);
-             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailNonConsumable()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, 0, 0, BuildableItemEnum.Dry_Goods_Delivery_Truck);
 
             Assert.AreEqual(ErrorCode.START_WORK_MULTIPLE_NON_CONSUMABLE, ec);
-             * */
         }
 
         [TestMethod]
         public void TestStartWorkImmediate()
         {
-            Assert.Fail("Not implemented");
+            GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.Dirty_Dishes);
 
-            /*
-            Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 3;
-
-            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.Dirty_Dishes);
-
-            Assert.AreEqual(0, Player.BuildableItems[BuildableItemEnum.Dirty_Dishes]);
-            Assert.AreEqual(0, Player.WorkItems.Count);
+            Assert.AreEqual(false, Player.Locations[0].Storage.Items.ContainsKey(BuildableItemEnum.Dirty_Dishes));
+            Assert.AreEqual(0, Player.WorkInProgress.Count);
             Assert.AreEqual(true, Player.StateChanged);
             Assert.AreEqual(100, Player.Experience);
-             * */
         }
 
         [TestMethod]
         public void TestGetCurrentWorkItemsForProductionItemItemsInProduction()
         {
-            Assert.Fail("Not implemented");
+            GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.White_Flour);
+            GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.White_Flour);
 
-            /*
-            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
-            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
-
-            List<WorkInProgress> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
+            List<WorkInProgress> wis = 
+                GamePlayerLogic.Instance
+                    .GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck);
 
             Assert.AreEqual(2, wis.Count);
-             * */
         }
 
         [TestMethod]
@@ -578,19 +535,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestGetPercentageCompleteForWorkItem()
         {
-            Assert.Fail("Not implemented");
+            GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.White_Flour);
+            GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.White_Flour);
 
-            /*
-            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
-            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
+            Player.WorkInProgress[0].FinishTime = DateTime.UtcNow.AddSeconds(2);
 
-            Player.WorkItems[0].FinishTime = DateTime.UtcNow.AddSeconds(2);
-
-            double ratio = GamePlayerLogic.Instance.GetPercentageCompleteForWorkItem(Player.WorkItems[0]);
+            double ratio = GamePlayerLogic.Instance.GetPercentageCompleteForWorkItem(Player.WorkInProgress[0]);
 
             Assert.IsTrue(ratio < 1.2);
             Assert.IsTrue(ratio > 50.0 / 60.0);
-             * */
         }
 
         [TestMethod]
@@ -664,47 +617,18 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(-3, couponChangeAmount);
             Assert.AreEqual(true, couponsChanged);
         }
-
-        [TestMethod]
-        public void TestItemConsumedEvent()
-        {
-            Assert.Fail("Not implemented");
-
-            /*
-            Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
-            Player.BuildableItems[BuildableItemEnum.Yeast] = 2;
-            Player.BuildableItems[BuildableItemEnum.Salt] = 1;
-            Player.BuildableItems[BuildableItemEnum.Dough_Mixer_L1] = 1;
-
-            bool itemConsumed = false;
-            List<ItemQuantity> items = new List<ItemQuantity>();
-
-            GamePlayerLogic.Instance.ItemConsumed += (o, e) =>
-            {
-                itemConsumed = true;
-                items.Add(e.ItemQuantity);
-            };
-
-            GamePlayerLogic.Instance.DeductResources(Player, BuildableItemEnum.White_Pizza_Dough);
-
-            Assert.AreEqual(3, items.Count);
-            Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
-            Assert.AreEqual(1, items[0].Quantity);
-            Assert.AreEqual(BuildableItemEnum.Salt, items[1].ItemCode);
-            Assert.AreEqual(1, items[1].Quantity);
-            Assert.AreEqual(BuildableItemEnum.Yeast, items[2].ItemCode);
-            Assert.AreEqual(1, items[2].Quantity);
-            Assert.AreEqual(true, itemConsumed);
-             * */
-        }
-
+        
         [TestMethod]
         public void TestItemSubtractedEvent()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
+            GamePlayerLogic.Instance.AddItem(Player, 0,
+                new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.White_Flour,
+                    Level = 1,
+                    StoredQuantity = 2,
+                    UnStoredQuantity = 1
+                });
 
             bool itemSubtracted = false;
             List<ItemQuantity> items = new List<ItemQuantity>();
@@ -715,24 +639,25 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
                 items.Add(e.ItemQuantity);
             };
 
-            GamePlayerLogic.Instance.SubtractItem(Player, 
-                new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
+            GamePlayerLogic.Instance.RemoveItem(Player, 0,
+                new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.White_Flour,
+                    Level = 1,
+                    StoredQuantity = 1,
+                    UnStoredQuantity = 1
+                });
 
             Assert.AreEqual(1, items.Count);
             Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
-            Assert.AreEqual(1, items[0].Quantity);
+            Assert.AreEqual(1, items[0].StoredQuantity);
+            Assert.AreEqual(1, items[0].UnStoredQuantity);
             Assert.AreEqual(true, itemSubtracted);
-             * */
         }
 
         [TestMethod]
         public void TestItemAddedEvent()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
-
             bool itemAdded = false;
             List<ItemQuantity> items = new List<ItemQuantity>();
 
@@ -742,14 +667,16 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
                 items.Add(e.ItemQuantity);
             };
 
-            GamePlayerLogic.Instance.AddItem(Player,
-                new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
+            GamePlayerLogic.Instance.AddItem(Player, 0, 
+                new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, Level = 1, 
+                    StoredQuantity = 2, UnStoredQuantity = 1 });
 
             Assert.AreEqual(1, items.Count);
             Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
-            Assert.AreEqual(1, items[0].Quantity);
+            Assert.AreEqual(1, items[0].UnStoredQuantity);
+            Assert.AreEqual(2, items[0].StoredQuantity);
+            Assert.AreEqual(1, items[0].Level);
             Assert.AreEqual(true, itemAdded);
-             * */
         }
 
         [TestMethod]
@@ -774,11 +701,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestWorkFinishedEvent()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 3;
-
             bool workFinished = false;
             List<WorkInProgress> items = new List<WorkInProgress>();
 
@@ -788,12 +710,11 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
                 items.Add(e.WorkItem);
             };
 
-            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.Dirty_Dishes);
+            GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.Dirty_Dishes);
 
             Assert.AreEqual(1, items.Count);
-            Assert.AreEqual(BuildableItemEnum.Dirty_Dishes, items[0].ItemCode);
+            Assert.AreEqual(BuildableItemEnum.Dirty_Dishes, items[0].Quantity.ItemCode);
             Assert.AreEqual(true, workFinished);
-             * */
         }
     }
 }
