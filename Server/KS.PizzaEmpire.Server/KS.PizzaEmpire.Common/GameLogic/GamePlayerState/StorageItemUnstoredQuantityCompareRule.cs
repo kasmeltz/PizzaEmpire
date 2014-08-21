@@ -18,7 +18,15 @@
             BusinessLocation bl = player.Locations[Location];
             LocationStorage ls = bl.Storage;
             ItemQuantity iq = ls.GetItem(Item);
-            int q = iq.UnStoredQuantity;
+            int q;
+            if (iq == null)
+            {
+                q = 0;
+            }
+            else
+            {
+                q = iq.UnStoredQuantity;
+            }       
 
             switch (ComparisonType)
             {

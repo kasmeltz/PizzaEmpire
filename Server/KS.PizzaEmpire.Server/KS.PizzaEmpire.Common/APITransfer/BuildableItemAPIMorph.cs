@@ -18,10 +18,10 @@
         {
             throw new NotImplementedException();
 
+            /*
             BuildableItem other = entity as BuildableItem;
             BuildableItemAPI clone = new BuildableItemAPI();
 
-            /*
             clone.ItemCode = other.ItemCode;
             clone.IsStorage = other.IsStorage;
             clone.IsConsumable = other.IsConsumable;
@@ -40,9 +40,9 @@
             clone.SpeedUpCoupons = other.SpeedUpCoupons;
             clone.SpeedUpSeconds = other.SpeedUpSeconds;
             clone.RequiredItems = other.RequiredItems;
-             * */
 
             return clone;
+             * */
         }
 
         /// <summary>
@@ -54,10 +54,9 @@
         {
             throw new NotImplementedException();
 
+            /*
             BuildableItemAPI other = entity as BuildableItemAPI;
             BuildableItem clone = new BuildableItem();
-
-            /*
 
             clone.ItemCode = other.ItemCode;
             clone.RequiredLevel = other.RequiredLevel;
@@ -76,9 +75,9 @@
             clone.SpeedUpCoupons = other.SpeedUpCoupons;
             clone.SpeedUpSeconds = other.SpeedUpSeconds;
             clone.RequiredItems = other.RequiredItems;
-             * */
 
             return clone;
+             * */
         }
     }
 }

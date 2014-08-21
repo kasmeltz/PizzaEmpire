@@ -32,6 +32,9 @@
         /// <returns></returns>
         public static List<WorkItemProtoBuf> FromBusiness(List<WorkInProgress> items)
         {
+            throw new NotImplementedException();
+
+            /*
             if (items == null)
             {
                 return null;
@@ -46,6 +49,7 @@
                 wis.Add(clone);
             }
             return wis;
+             */
         }
 
         /// <summary>
@@ -55,6 +59,9 @@
         /// <returns></returns>
         public static List<WorkInProgress> ToBusiness(List<WorkItemProtoBuf> items)
         {
+            throw new NotImplementedException();
+
+            /*
             if (items == null)
             {
                 return null;
@@ -69,6 +76,7 @@
                 wis.Add(clone);
             }
             return wis;
+             * */
         }
     }
 }

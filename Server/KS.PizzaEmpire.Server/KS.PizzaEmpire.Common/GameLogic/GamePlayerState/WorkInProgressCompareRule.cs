@@ -9,57 +9,40 @@
     public class WorkInProgressCompareRule : ComparisonRule
     {
         /// <summary>
-        /// The items to compare
+        /// The item to compare
         /// </summary>
-        public List<ItemQuantity> Items { get; set; }
+        public ItemQuantity Item { get; set; }
 
-        protected Dictionary<BuildableItemEnum, int> itemsFound 
-            = new Dictionary<BuildableItemEnum, int>();
-
-        protected bool CompareOneItem(ItemQuantity iq)
+        public override bool IsValid(GamePlayer player)
         {
             int actual = 0;
 
-            if (itemsFound.ContainsKey(iq.ItemCode))
+            for (int i = 0; i < player.WorkInProgress.Count; i++)
             {
-                actual = itemsFound[iq.ItemCode];
+                WorkInProgress wip = player.WorkInProgress[i];
+                if (wip.Quantity.ItemCode == Item.ItemCode)
+                {
+                    actual += wip.Quantity.UnStoredQuantity;
+                }
             }
 
             switch (ComparisonType)
             {
                 case ComparisonEnum.Equal:
-                    return actual == iq.UnStoredQuantity;
+                    return actual == Item.UnStoredQuantity;
                 case ComparisonEnum.GreaterThan:
-                    return actual > iq.UnStoredQuantity;
+                    return actual > Item.UnStoredQuantity;
                 case ComparisonEnum.GreaterThanOrEqual:
-                    return actual >= iq.UnStoredQuantity;
+                    return actual >= Item.UnStoredQuantity;
                 case ComparisonEnum.LessThan:
-                    return actual < iq.UnStoredQuantity;
+                    return actual < Item.UnStoredQuantity;
                 case ComparisonEnum.LessThanOrEqual:
-                    return actual <= iq.UnStoredQuantity;
+                    return actual <= Item.UnStoredQuantity;
                 case ComparisonEnum.NotEqual:
-                    return actual != iq.UnStoredQuantity;
+                    return actual != Item.UnStoredQuantity;
             }
 
             return false;
-        }
-
-        public override bool IsValid(GamePlayer player)
-        {
-            for (int i = 0; i < player.WorkItems.Count; i++)
-            {
-                itemsFound[player.WorkItems[i].ItemCode]++;
-            }
-
-            for (int i = 0; i < Items.Count; i++) 
-            {
-                if (!CompareOneItem(Items[i]) )
-                {
-                    return false;
-                }
-            }
-
-            return true;            
         }
     }
 }

@@ -6,14 +6,22 @@
     /// <summary>
     /// Represents a rule that compares the player's storage items
     /// </summary>
-    public abstract class StorageItemLevelCompareRule : StorageItemCompareRule
+    public class StorageItemLevelCompareRule : StorageItemCompareRule
     {                
         public override bool IsValid(GamePlayer player)
         {
             BusinessLocation bl = player.Locations[Location];
             LocationStorage ls = bl.Storage;
             ItemQuantity iq = ls.GetItem(Item);
-            int l = iq.Level;
+            int l;
+            if (iq == null)
+            {
+                l = 0;
+            }
+            else
+            {
+                l = iq.Level;
+            }            
 
             switch (ComparisonType)
             {

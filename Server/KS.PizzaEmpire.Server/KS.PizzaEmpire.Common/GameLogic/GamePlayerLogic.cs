@@ -129,26 +129,6 @@
         }
 
         /// <summary>
-        /// An event that is fired when an item is consumed
-        /// </summary>
-        public event EventHandler<GamePlayerLogicEventArgs> ItemConsumed;
-        protected virtual void OnItemConsumed(GamePlayerLogicEventArgs e)
-        {
-            try
-            {
-                EventHandler<GamePlayerLogicEventArgs> handler = ItemConsumed;
-                if (handler != null)
-                {
-                    handler(this, e);
-                }
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceError("Exception in ItemsConsumed: " + ex.Message);
-            }
-        }
-
-        /// <summary>
         /// An event that is fired when an item is subtracted
         /// </summary>
         public event EventHandler<GamePlayerLogicEventArgs> ItemSubtracted;
@@ -246,7 +226,7 @@
 
             AddNewLocation(player);
 
-            player.WorkItems = new List<WorkInProgress>();
+            player.WorkInProgress = new List<WorkInProgress>();
             SetLevel(player, 1);
 
             return player;
@@ -365,7 +345,6 @@
             player.StateChanged = true;
         }
 
-        /*
         /// <summary>
         /// Returns true if the player has the capacity to start hhe item.
         /// </summary>
@@ -431,7 +410,7 @@
 
             return itemsInInventory + bi.BaseProduction < storageItem.StorageCapacity;
         }
-        
+
         /// <summary>
         /// Returns ErrorCode.OK if the player can build the item,
         /// an error code otherwise
@@ -439,68 +418,90 @@
         /// <param name="player"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public ErrorCode CanBuildItem(GamePlayer player, BuildableItemEnum itemCode)
+        public ErrorCode CanBuildItem(GamePlayer player, int location, int level, BuildableItemEnum itemCode)
         {
             if (!BuildableItems.ContainsKey(itemCode))
             {
                 return ErrorCode.START_WORK_INVALID_ITEM;
             }
 
-            BuildableItem bi = BuildableItems[itemCode];
+            BuildableItem buildabelItem = BuildableItems[itemCode];
 
-            if (player.Level < bi.RequiredLevel)
+            if (level < 0 || level > buildabelItem.Stats.Count)
+            {
+                return ErrorCode.START_WORK_INVALID_LEVEL;
+            }
+
+            BuildableItemStat stat = buildabelItem.Stats[level];
+
+            if (player.Level < stat.RequiredLevel)
             {
                 return ErrorCode.START_WORK_ITEM_NOT_AVAILABLE;
             }
 
-            if (bi.CoinCost > player.Coins)
+            if (stat.CoinCost > player.Coins)
             {
                 return ErrorCode.START_WORK_INSUFFICIENT_COINS;
             }
 
-            if (bi.CouponCost > player.Coupons)
+            if (stat.CouponCost > player.Coupons)
             {
                 return ErrorCode.START_WORK_INSUFFICIENT_COUPONS;
             }
 
-            if (bi.RequiredItems != null)
+            if (location < 0 || location > player.Locations.Count)
             {
-                foreach (ItemQuantity itemQuantity in bi.RequiredItems)
+                return ErrorCode.START_WORK_INVALID_LOCATION;
+            }
+
+            BusinessLocation businessLocation = player.Locations[location];
+            LocationStorage storage = businessLocation.Storage;
+
+            if (stat.RequiredItems != null)
+            {
+                foreach (ItemQuantity itemQuantity in stat.RequiredItems)
                 {
-                    if (!player.BuildableItems.ContainsKey(itemQuantity.ItemCode))
+                    if (!storage.Items.ContainsKey(itemQuantity.ItemCode))
                     {
                         return ErrorCode.START_WORK_INVALID_INGREDIENTS;
                     }
 
-                    if (player.BuildableItems[itemQuantity.ItemCode] < itemQuantity.Quantity)
+                    if (storage.Items[itemQuantity.ItemCode].StoredQuantity 
+                        < itemQuantity.StoredQuantity)
                     {
                         return ErrorCode.START_WORK_INSUFFICIENT_INGREDIENTS;
                     }
                 }
             }
 
-            if (!DoesPlayerHaveProductionCapacity(player, itemCode))
+            if (!DoesPlayerHaveProductionCapacity(player, location, level, itemCode))
             {
                 return ErrorCode.START_WORK_NO_PRODUCTION_CAPACITY;
             }
 
-            if (!DoesPlayeraHaveStorageCapacity(player, itemCode))
+            if (!DoesPlayeraHaveStorageCapacity(player, location, level, itemCode))
             {
                 return ErrorCode.START_WORK_NO_STORAGE_CAPACITY;
             }
 
-            if (bi.IsWorkSubtracted)
+            WorkItem workItem = buildabelItem as WorkItem;
+            if (workItem != null)
             {
-                if (!player.BuildableItems.ContainsKey(itemCode) ||
-                    player.BuildableItems[itemCode] < bi.BaseProduction)
+                if (!storage.Items.ContainsKey(itemCode))
                 {
                     return ErrorCode.START_WORK_INSUFFICIENT_NEGATIVE;
                 }
-            }
-
-            if (!bi.IsConsumable)
+                
+                if (storage.Items[itemCode].UnStoredQuantity < 
+                    GetProductionQuantityForItem(player, location, level, itemCode))
+                {
+                    return ErrorCode.START_WORK_INSUFFICIENT_NEGATIVE;
+                }
+            } 
+            else
             {
-                if (player.BuildableItems.ContainsKey(itemCode))
+                ItemQuantity inStorage = storage.Items[itemCode];
+                if (inStorage.UnStoredQuantity > 0 && inStorage.Level >= level)
                 {
                     return ErrorCode.START_WORK_MULTIPLE_NON_CONSUMABLE;
                 }
@@ -513,9 +514,9 @@
         /// Returns true if the player can build the item, throws an exception otherwise
         /// </summary>
         /// <returns></returns>
-        public bool TryBuildItem(GamePlayer player, BuildableItemEnum itemCode)
+        public bool TryBuildItem(GamePlayer player, int location, int level, BuildableItemEnum itemCode)
         {
-            ErrorCode error = CanBuildItem(player, itemCode);
+            ErrorCode error = CanBuildItem(player, location, level, itemCode);
             if (error != ErrorCode.ERROR_OK)
             {
                 Trace.TraceError(error.ToString());
@@ -530,33 +531,24 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="itemCode"></param>
-        public void DeductResources(GamePlayer player, BuildableItemEnum itemCode)
+        public void DeductResources(GamePlayer player, int location, int level, BuildableItemEnum itemCode)
         {
-            BuildableItem bi = BuildableItems[itemCode];
+            BuildableItem buildableItem = BuildableItems[itemCode];
+            BuildableItemStat stat = buildableItem.Stats[level];
 
-            if (bi.RequiredItems != null)
+            if (stat.RequiredItems != null)
             {
-                foreach (ItemQuantity requiredItem in bi.RequiredItems)
+                foreach (ItemQuantity requiredItem in stat.RequiredItems)
                 {
-                    BuildableItem ri = BuildableItems[requiredItem.ItemCode];
-                    if (ri.IsConsumable)
-                    {
-                        player.BuildableItems[requiredItem.ItemCode] -= requiredItem.Quantity;
-
-                        if (ItemConsumed != null)
-                        {
-                            OnItemConsumed(new GamePlayerLogicEventArgs(player, requiredItem));
-                        }
-                    }
+                    RemoveItem(player, location, requiredItem);
                 }
             }
 
-            ModifyCoins(player, -bi.CoinCost);
-            ModifyCoupons(player, -bi.CouponCost);
+            ModifyCoins(player, -stat.CoinCost);
+            ModifyCoupons(player, -stat.CouponCost);
 
             player.StateChanged = true;
         }
-        */
          
         /// <summary>
         /// Modifies the player's coins
@@ -588,48 +580,78 @@
             }
         }
 
-        /*
+        /// <summary>
+        /// Returns the production amount for an item
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="location"></param>
+        /// <param name="level"></param>
+        /// <param name="itemCode"></param>
+        /// <returns></returns>
+        public int GetProductionQuantityForItem(GamePlayer player, int location, int level, BuildableItemEnum itemCode)
+        {
+            BuildableItem buildableItem = BuildableItems[itemCode];    
+            ConsumableItem consumable = buildableItem as ConsumableItem;
+            if (consumable != null)
+            {
+                ConsumableItemStat stat = consumable.ConsumableStats[level];
+                if (stat != null)
+                {
+                    return stat.ProductionQuantity;
+                }
+            }
+
+            return 1;
+        }
+            
         /// <summary>
         /// Starts a player doing delayed work if all conditions pass.
         /// </summary>
         /// <param name="player"></param>
         /// <param name="code"></param>
-        public WorkInProgress StartWork(GamePlayer player, BuildableItemEnum itemCode)
+        public WorkInProgress StartWork(GamePlayer player, int location, int level, BuildableItemEnum itemCode)
         {
-            bool canDoWork = TryBuildItem(player, itemCode);
+            bool canDoWork = TryBuildItem(player, location, level, itemCode);
 
             if (!canDoWork)
             {
                 return null;
             }
 
-            BuildableItem bi = BuildableItems[itemCode];
+            DeductResources(player, location, level, itemCode);
 
-            DeductResources(player, itemCode);
+            BuildableItem buildableItem = BuildableItems[itemCode];
+            BuildableItemStat stat = buildableItem.Stats[level];
 
-            WorkInProgress workItem = new WorkInProgress
+            WorkInProgress wip = new WorkInProgress
             {
-                ItemCode = itemCode,
-                FinishTime = DateTime.UtcNow.AddSeconds(bi.BuildSeconds)
+                Quantity = new ItemQuantity
+                {
+                    ItemCode = itemCode,
+                    UnStoredQuantity = GetProductionQuantityForItem(player, location, level, itemCode)
+                },
+                FinishTime = DateTime.UtcNow.AddSeconds(stat.BuildSeconds)
             };
 
-            player.WorkItems.Add(workItem);
+            player.WorkInProgress.Add(wip);
 
             if (WorkStarted != null)
             {
-                OnWorkStarted(new GamePlayerLogicEventArgs(player, workItem));
+                OnWorkStarted(new GamePlayerLogicEventArgs(player, wip));
             }
 
-            if (bi.IsImmediate)
+            /*
+            WorkItem workItem = buildableItem as WorkItem;
+            if (workItem != null)
             {
                 FinishWork(player, DateTime.UtcNow);
             }
+             * */
 
             player.StateChanged = true;
 
-            return workItem;
+            return wip;
         }
-         * */
 
         /// <summary>
         /// Adds an item to the player's inventory
@@ -645,6 +667,23 @@
             if (ItemAdded != null)
             {
                 OnItemAdded(new GamePlayerLogicEventArgs(player, itemQuantity));
+            }
+        }
+
+        /// <summary>
+        /// Removes an item from the player's inventory
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="quantity"></param>
+        public void RemoveItem(GamePlayer player, int businessLocation, ItemQuantity itemQuantity)
+        {
+            BusinessLocation location = player.Locations[businessLocation];
+            LocationStorage storage = location.Storage;
+            storage.RemoveItem(itemQuantity);
+
+            if (ItemSubtracted != null)
+            {
+                OnItemSubtracted(new GamePlayerLogicEventArgs(player, itemQuantity));
             }
         }
 
@@ -784,7 +823,7 @@
             player.TutorialStage = stage;
             player.StateChanged = true;            
         }
-         
+         */
 
         /// <summary>
         /// Gets the current work items being produced in 
@@ -792,16 +831,20 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="stage"></param>
-        public List<WorkInProgress> GetCurrentWorkItemsForProductionItem(GamePlayer player, BuildableItemEnum productionItem)
+        public List<WorkInProgress> GetCurrentWorkItemsForProductionItem(GamePlayer player, 
+            BuildableItemEnum productionItem)
         {
             List<WorkInProgress> workItems = new List<WorkInProgress>();
 
-            foreach (WorkInProgress item in player.WorkItems)
+            foreach (WorkInProgress workInProgress in player.WorkInProgress)
             {
-                BuildableItem bi = BuildableItems[item.ItemCode];
-                if (bi.ProductionItem == productionItem)
+                ConsumableItem item = BuildableItems[workInProgress.Quantity.ItemCode] as ConsumableItem;
+                if (item != null)
                 {
-                    workItems.Add(item);
+                    if (item.ProducedWith == productionItem)
+                    {
+                        workItems.Add(workInProgress);
+                    }
                 }
             }
 
@@ -816,11 +859,11 @@
         /// <returns></returns>
         public double GetPercentageCompleteForWorkItem(WorkInProgress workItem)
         {
-            BuildableItem bi = BuildableItems[workItem.ItemCode];
+            BuildableItem buildableItem = BuildableItems[workItem.Quantity.ItemCode];
+            BuildableItemStat stat = buildableItem.Stats[workItem.Quantity.Level];
             double secondsToGo = workItem.FinishTime.Subtract(DateTime.UtcNow).TotalSeconds;
-            double ratio = 1 - (secondsToGo / (double)bi.BuildSeconds);
+            double ratio = 1 - (secondsToGo / (double)stat.BuildSeconds);
             return Math.Min(1, Math.Max(ratio, 0));
         }
-         * */
     }
 }

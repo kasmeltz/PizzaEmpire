@@ -978,5 +978,74 @@
         {
             await StoreBuildableItems();    
         }
+
+        /// <summary>
+        /// Returns a list of the buildable items in the game
+        /// </summary>
+        /// <returns></returns>
+        public List<BuildableItem> CreateItemList()
+        {
+            List<BuildableItem> items = new List<BuildableItem>();
+            BuildableItem item;
+
+            item = new ProductionItem
+            {
+                ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = 0,
+                        CoinCost = 0,
+                        CouponCost = 0,
+                        Experience = 0,
+                        RequiredLevel = 0,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>()                                                      
+                    }
+                },
+                ProductionStats = new List<ProductionItemStat>
+                {
+                    new ProductionItemStat
+                    {
+                         Capacity = 2
+                    }
+                }
+            };
+
+            items.Add(item);
+
+            item = new ConsumableItem
+            {
+                ItemCode = BuildableItemEnum.White_Flour,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = 30,
+                        CoinCost = 50,
+                        CouponCost = 0,
+                        Experience = 100,
+                        RequiredLevel = 1,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>()                                                      
+                    }
+                },
+                ConsumableStats = new List<ConsumableItemStat>
+                {
+                    new ConsumableItemStat
+                    {
+                         ProductionQuantity = 1
+                    }
+                },
+                ProducedWith = BuildableItemEnum.Dry_Goods_Delivery_Truck
+            };
+
+            items.Add(item);
+
+            return items;            
+        }
     }
 }

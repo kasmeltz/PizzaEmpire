@@ -14,9 +14,14 @@
         public WorkInProgress() { }
 
         /// <summary>
-        /// The item code that represents the item we are working on
+        /// The details of the work that is in progress
         /// </summary>
-        public BuildableItemEnum ItemCode { get; set; }
+        public ItemQuantity Quantity { get; set; }
+
+        /// <summary>
+        /// The location that the work is being done for
+        /// </summary>
+        public int Location { get; set; }
 
         /// <summary>
         /// The time when this work will be complete in UTC format

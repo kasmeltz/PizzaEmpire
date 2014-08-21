@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KS.PizzaEmpire.Common.GameLogic;
 using KS.PizzaEmpire.Common.BusinessObjects;
 using System.Collections.Generic;
+using KS.PizzaEmpire.GameLogic.ItemLogic;
 
 namespace KS.PizzaEmpire.Common.Test.GameLogic
 {
@@ -13,271 +14,13 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
         [ClassInitialize]
         public static void InitializeAllTests(TestContext testContent)
-        {            
-            /*
-             * 
+        {
+            List<BuildableItem> items = ItemManager.Instance.CreateItemList();
             Dictionary<BuildableItemEnum, BuildableItem> bitems = new Dictionary<BuildableItemEnum, BuildableItem>();
-            BuildableItem bi;
-
-            bi = new BuildableItem
+            foreach (BuildableItem item in items)
             {
-                ItemCode = BuildableItemEnum.Restaurant_Storage,
-                RequiredLevel = 1,
-                CoinCost = 0,
-                ProductionItem = BuildableItemEnum.None,
-                ProductionCapacity = 0,
-                BaseProduction = 1,
-                StorageCapacity = 5,
-                StorageItem = BuildableItemEnum.None,
-                IsStorage = true,
-                IsConsumable = false,
-                IsImmediate = false,
-                IsWorkSubtracted = false,
-                Experience = 0,
-                BuildSeconds = 0,
-                CouponCost = 0,
-                SpeedUpCoupons = 0, 
-                SpeedUpSeconds = 0
-            };
-            bitems[bi.ItemCode] = bi;
-
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.White_Flour,
-                RequiredLevel = 1,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1,
-                ProductionCapacity = 0,
-                BaseProduction = 1,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.Restaurant_Storage,
-                IsStorage = false,
-                IsConsumable = true,
-                IsImmediate = false,
-                IsWorkSubtracted = false,
-                Experience = 100,
-                BuildSeconds = 60,
-                CouponCost = 0,
-                SpeedUpCoupons = 1,
-                SpeedUpSeconds = 60,
-            };
-            bitems[bi.ItemCode] = bi;
-
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.Yeast,
-                RequiredLevel = 2,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1,
-                ProductionCapacity = 0,
-                BaseProduction = 1,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.Restaurant_Storage,
-                IsStorage = false,
-                IsConsumable = true,
-                IsImmediate = false,
-                IsWorkSubtracted = false,
-                Experience = 100,
-                BuildSeconds = 60,
-                CouponCost = 0,
-                SpeedUpCoupons = 1, 
-                SpeedUpSeconds = 60
-            };
-            bitems[bi.ItemCode] = bi;
-
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.Salt,
-                RequiredLevel = 2,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1,
-                ProductionCapacity = 0,
-                BaseProduction = 1,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.Restaurant_Storage,
-                IsStorage = false,
-                IsConsumable = true,
-                IsImmediate = false,
-                IsWorkSubtracted = false,
-                Experience = 100,
-                BuildSeconds = 60,
-                CouponCost = 0,
-                SpeedUpCoupons = 1, 
-                SpeedUpSeconds = 60
-            };
-            bitems[bi.ItemCode] = bi;
-            
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.White_Pizza_Dough,
-                RequiredLevel = 2,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.Dough_Mixer_L1,
-                ProductionCapacity = 0,
-                BaseProduction = 1,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.Fridge_L1,
-                IsStorage = false,
-                IsConsumable = true,
-                IsImmediate = false,
-                IsWorkSubtracted = false,
-                Experience = 100,
-                BuildSeconds = 60,
-                CouponCost = 0,
-                SpeedUpCoupons = 1, 
-                SpeedUpSeconds = 60,
-                RequiredItems = new List<ItemQuantity>
-                {
-                    new ItemQuantity 
-                    {
-                         ItemCode = BuildableItemEnum.White_Flour,
-                         Quantity = 1
-                    },
-                    new ItemQuantity
-                    {
-                         ItemCode = BuildableItemEnum.Salt,
-                         Quantity = 1
-                    },
-                    new ItemQuantity
-                    {
-                         ItemCode = BuildableItemEnum.Yeast,
-                         Quantity = 1                    
-                    }
-                }
-            };
-            bitems[bi.ItemCode] = bi;
-
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1,
-                RequiredLevel = 1,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.None,
-                ProductionCapacity = 2,
-                BaseProduction = 1,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.None,
-                IsStorage = false,
-                IsConsumable = false,
-                IsImmediate = false,
-                IsWorkSubtracted = false,
-                Experience = 100,
-                BuildSeconds = 60,
-                CouponCost = 0,
-                SpeedUpCoupons = 1,
-                SpeedUpSeconds = 60,
-            };
-            bitems[bi.ItemCode] = bi;
-            
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.Dough_Mixer_L1,
-                RequiredLevel = 1,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.None,
-                ProductionCapacity = 2,
-                BaseProduction = 1,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.None,
-                IsStorage = false,
-                IsConsumable = false,
-                IsImmediate = false,
-                IsWorkSubtracted = false,
-                Experience = 100,
-                BuildSeconds = 60,
-                CouponCost = 0,
-                SpeedUpCoupons = 1,
-                SpeedUpSeconds = 60,
-            };
-            bitems[bi.ItemCode] = bi;
-
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.Tomatoes,
-                RequiredLevel = 1,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1,
-                ProductionCapacity = 0,
-                BaseProduction = 1,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.Restaurant_Storage,
-                IsStorage = false,
-                IsConsumable = true,
-                IsImmediate = false,
-                IsWorkSubtracted = false,
-                Experience = 100,
-                BuildSeconds = 60,
-                CouponCost = 1,
-                SpeedUpCoupons = 1,
-                SpeedUpSeconds = 60,
-            };
-            bitems[bi.ItemCode] = bi;
-
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.Dirty_Dishes,
-                RequiredLevel = 1,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.None,
-                ProductionCapacity = 0,
-                BaseProduction = 3,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.None,
-                IsStorage = false,
-                IsConsumable = true,
-                IsImmediate = true,
-                IsWorkSubtracted = true,
-                Experience = 100,
-                BuildSeconds = -1,
-                CouponCost = 1,
-                SpeedUpCoupons = 1,
-                SpeedUpSeconds = 60,
-            };
-            bitems[bi.ItemCode] = bi;
-
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.Dirty_Table,
-                RequiredLevel = 1,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.None,
-                ProductionCapacity = 0,
-                BaseProduction = 3,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.None,
-                IsStorage = false,
-                IsConsumable = true,
-                IsImmediate = true,
-                IsWorkSubtracted = true,
-                Experience = 100,
-                BuildSeconds = -1,
-                CouponCost = 1,
-                SpeedUpCoupons = 1,
-                SpeedUpSeconds = 60,
-            };
-            bitems[bi.ItemCode] = bi;
-
-            bi = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.Dirty_Floor,
-                RequiredLevel = 1,
-                CoinCost = 50,
-                ProductionItem = BuildableItemEnum.None,
-                ProductionCapacity = 0,
-                BaseProduction = 3,
-                StorageCapacity = 0,
-                StorageItem = BuildableItemEnum.None,
-                IsStorage = false,
-                IsConsumable = true,
-                IsImmediate = true,
-                IsWorkSubtracted = true,
-                Experience = 100,
-                BuildSeconds = -1,
-                CouponCost = 1,
-                SpeedUpCoupons = 1,
-                SpeedUpSeconds = 60,
-            };
-            bitems[bi.ItemCode] = bi;
+                bitems[item.ItemCode] = item;
+            }
 
             GamePlayerLogic.Instance.BuildableItems = bitems;
 
@@ -312,7 +55,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             elevels[exl.Level] = exl;
 
             GamePlayerLogic.Instance.ExperienceLevels = elevels;
-             * */
         }
 
         [TestInitialize]
@@ -322,67 +64,123 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         }
 
         [TestMethod]
-        public void TestCreateNewGamePlayer()
+        public void TestNewGamePlayerHasProperCoins()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             Assert.AreEqual(1000, Player.Coins);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperCoupons()
+        {
             Assert.AreEqual(5, Player.Coupons);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperLevel()
+        {
             Assert.AreEqual(1, Player.Level);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperExperience()
+        {
             Assert.AreEqual(0, Player.Experience);
-            Assert.AreEqual(5, Player.BuildableItems.Values.Count);
-            Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
-            Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Restaurant_Storage]);
-            Assert.AreEqual(0, Player.WorkItems.Count);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperLocations()
+        {
+            Assert.AreEqual(1, Player.Locations.Count);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperItemCount()
+        {
+            Assert.AreEqual(5, Player.Locations[0].Storage.Items.Count);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperDeliveryTruck()
+        {
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].StoredQuantity);
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].UnStoredQuantity);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperRestaurantStorage()
+        {
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Restaurant_Storage].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Restaurant_Storage].StoredQuantity);
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Restaurant_Storage].UnStoredQuantity);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperDirtyTables()
+        {
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Table].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Table].StoredQuantity);
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Table].UnStoredQuantity);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperDirtyDishes()
+        {
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Dishes].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Dishes].StoredQuantity);
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Dishes].UnStoredQuantity);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperDirtyFloors()
+        {
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Floor].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Floor].StoredQuantity);
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dirty_Floor].UnStoredQuantity);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperWorkItems()
+        {
+            Assert.AreEqual(0, Player.WorkInProgress.Count);            
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerStateChanged()
+        {
             Assert.AreEqual(true, Player.StateChanged);
-             * */
         }
 
         [TestMethod]
         public void TestSetLevel()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.SetLevel(Player, 2);
             Assert.AreEqual(2, Player.Level);
             Assert.AreEqual(true, Player.StateChanged);
-             * */
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TestSetLevelDoesntExist()
         {
-            Assert.Fail("Not implemented");
-
-            /*            
             GamePlayerLogic.Instance.SetLevel(Player, -1);
             Assert.AreEqual(false, Player.StateChanged);
-             * */
         }
 
         [TestMethod]
         public void TestAddExperienceNoLevels()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 50);
             Assert.AreEqual(50, Player.Experience);
             Assert.AreEqual(1, Player.Level);
             Assert.AreEqual(true, Player.StateChanged);
-             */
         }
 
         [TestMethod]
         public void TestAddExperienceOneLevelExact()
         {
-            Assert.Fail("Not implemented");
-
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 100);
             Assert.AreEqual(100, Player.Experience);
@@ -393,8 +191,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestAddExperienceOneLevel()
         {
-            Assert.Fail("Not implemented");
-
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 150);
             Assert.AreEqual(150, Player.Experience);
@@ -405,8 +201,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestAddExperienceTwoLevelsExact()
         {
-            Assert.Fail("Not implemented");
-
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 300);
             Assert.AreEqual(300, Player.Experience);
@@ -417,8 +211,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestAddExperienceTwoLevels()
         {
-            Assert.Fail("Not implemented");
-
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 400);
             Assert.AreEqual(400, Player.Experience);
@@ -429,8 +221,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestAddExperienceMaxLevels()
         {
-            Assert.Fail("Not implemented");
-
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 40000);
             Assert.AreEqual(40000, Player.Experience);
@@ -592,15 +382,13 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestStartWork()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            WorkInProgress workItem = GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
-            Assert.AreEqual(BuildableItemEnum.White_Flour, workItem.ItemCode);
+            WorkInProgress workItem = GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.White_Flour);
+            Assert.AreEqual(BuildableItemEnum.White_Flour, workItem.Quantity.ItemCode);
+            Assert.AreEqual(1, workItem.Quantity.UnStoredQuantity);
+            Assert.AreEqual(0, workItem.Location);            
             Assert.AreEqual(true, Player.StateChanged);
             Assert.AreEqual(950, Player.Coins);
             Assert.AreEqual(5, Player.Coupons);
-             * */
         }
 
         [TestMethod]
@@ -779,13 +567,12 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestGetCurrentWorkItemsForProductionItemNoItemsInProduction()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-            List<WorkInProgress> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
+            List<WorkInProgress> wis = 
+                GamePlayerLogic
+                    .Instance
+                    .GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck);
 
             Assert.AreEqual(0, wis.Count);
-             */
         }
 
         [TestMethod]
@@ -809,8 +596,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestLevelChangedEvent()
         {
-            Assert.Fail("Not implemented");
-
             bool levelChanged = false;
             int newLevel = -1;
 
@@ -829,8 +614,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestExperienceChangedEvent()
         {
-            Assert.Fail("Not implemented");
-
             bool experienceChanged = false;
             int addedExperience = -1;
 
@@ -849,8 +632,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestCoinsChangedEvent()
         {
-            Assert.Fail("Not implemented");
-
             bool coinsChanged = false;
             int coinChangeAmount = -1;
 
@@ -869,8 +650,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestCouponsChangedEvent()
         {
-            Assert.Fail("Not implemented");
-
             bool couponsChanged = false;
             int couponChangeAmount = -1;
 
@@ -976,9 +755,6 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestWorkStartedEvent()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             bool workStarted = false;
             List<WorkInProgress> items = new List<WorkInProgress>();
 
@@ -988,12 +764,11 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
                 items.Add(e.WorkItem);
             };
 
-            GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
+            GamePlayerLogic.Instance.StartWork(Player, 0, 0, BuildableItemEnum.White_Flour);
 
             Assert.AreEqual(1, items.Count);
-            Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
+            Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].Quantity.ItemCode);
             Assert.AreEqual(true, workStarted);
-             * */
         }
 
         [TestMethod]

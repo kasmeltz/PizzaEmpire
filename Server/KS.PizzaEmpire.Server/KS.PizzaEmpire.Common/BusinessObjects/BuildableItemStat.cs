@@ -13,16 +13,6 @@
         public BuildableItemStat() { }
 
         /// <summary>
-        /// The BuildableItem this stat is associated with
-        /// </summary>
-        public BuildableItem Parent { get; set; }
-
-        /// <summary>
-        /// The level of this stat
-        /// </summary>
-        public int Level { get; set; }
-
-        /// <summary>
         /// The level required to build this item
         /// </summary>
         public int RequiredLevel { get; set; }
