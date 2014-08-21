@@ -92,6 +92,9 @@
         /// </summary>
         public async Task StoreBuildableItems()
         {
+            throw new NotImplementedException();
+
+            /*
             List<BuildableItemTableStorage> bitems = new List<BuildableItemTableStorage>();
             BuildableItem bi;
             BuildableItemStorageInformation storageInfo;
@@ -372,6 +375,7 @@
             await storage.DeleteTable();
             await storage.SetTable("BuildableItem");
             await storage.InsertOrReplace<BuildableItemTableStorage>(bitems);
+             * */
         }
 
 

@@ -15,10 +15,10 @@
 
         public override bool IsValid(GamePlayer player)
         {
-            BusinessLocation bl = player.GetLocation(Location);
+            BusinessLocation bl = player.Locations[Location];
             LocationStorage ls = bl.Storage;            
-            GamePlayerItem si = ls.GetItem(Item);
-            int q = si.StoredQuantity;
+            ItemQuantity iq = ls.GetItem(Item);
+            int q = iq.StoredQuantity;
 
             switch (ComparisonType)
             {

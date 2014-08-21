@@ -17,6 +17,9 @@
         [TestInitialize]
         public void Initialize()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             storageInfo = new BuildableItemStorageInformation(BuildableItemEnum.White_Flour.ToString());
 
             bitem = new BuildableItem
@@ -57,16 +60,21 @@
                     }
                 }
             };
+             * */
         }
 
         [TestMethod]
         public void TestInstantiate()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Assert.AreEqual("White_Flour", storageInfo.UniqueKey);
             Assert.AreEqual("BuildableItem", storageInfo.TableName);
             Assert.AreEqual("Version1", storageInfo.PartitionKey);
             Assert.AreEqual("White_Flour", storageInfo.RowKey);
             Assert.AreEqual("BI_White_Flour", storageInfo.CacheKey);
+             * */
         }
 
         [TestMethod]
@@ -112,6 +120,9 @@
         [TestMethod]
         public void TestFromTableStorage()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             BuildableItemTableStorage ts = (BuildableItemTableStorage)storageInfo.ToTableStorage(bitem);
             BuildableItem flip = (BuildableItem)storageInfo.FromTableStorage(ts);
 
@@ -139,6 +150,7 @@
             Assert.AreEqual(1, flip.RequiredItems[1].Quantity);
             Assert.AreEqual(BuildableItemEnum.Yeast, flip.RequiredItems[2].ItemCode);
             Assert.AreEqual(1, flip.RequiredItems[2].Quantity);
+             * */
         }        
     }
 }

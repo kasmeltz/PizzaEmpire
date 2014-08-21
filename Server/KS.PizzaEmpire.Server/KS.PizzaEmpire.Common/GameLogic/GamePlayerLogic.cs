@@ -242,17 +242,72 @@
             player.Coupons = 5;
             player.Experience = 0;
 
-            player.BuildableItems = new Dictionary<BuildableItemEnum, int>();
-            player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1] = 1;
-            player.BuildableItems[BuildableItemEnum.Restaurant_Storage] = 1;
-            player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 1;
-            player.BuildableItems[BuildableItemEnum.Dirty_Table] = 1;
-            player.BuildableItems[BuildableItemEnum.Dirty_Floor] = 1;
+            player.Locations = new List<BusinessLocation>();
+
+            AddNewLocation(player);
 
             player.WorkItems = new List<WorkInProgress>();
             SetLevel(player, 1);
 
             return player;
+        }
+
+        /// <summary>
+        /// Adds a new location to a player
+        /// </summary>
+        /// <param name="player"></param>
+        public void AddNewLocation(GamePlayer player)
+        {
+            BusinessLocation location = new BusinessLocation();
+            LocationStorage storage = new LocationStorage();
+            storage.Items = new Dictionary<BuildableItemEnum, ItemQuantity>();
+            location.Storage = storage;
+            player.Locations.Add(location);
+
+            AddItem(player,
+                0, new ItemQuantity 
+                { 
+                    ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck, 
+                    UnStoredQuantity = 1, 
+                    StoredQuantity = 0,
+                    Level = 1 
+                });
+
+            AddItem(player,
+                0, new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.Restaurant_Storage,
+                    UnStoredQuantity = 1,
+                    StoredQuantity = 0,
+                    Level = 1
+                });
+
+            AddItem(player,
+                0, new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.Dirty_Table,
+                    UnStoredQuantity = 1,
+                    StoredQuantity = 0,
+                    Level = 1
+                });
+
+            AddItem(player,
+                0, new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.Dirty_Dishes,
+                    UnStoredQuantity = 1,
+                    StoredQuantity = 0,
+                    Level = 1
+                });
+
+            AddItem(player,
+                0, new ItemQuantity
+                {
+                    ItemCode = BuildableItemEnum.Dirty_Floor,
+                    UnStoredQuantity = 1,
+                    StoredQuantity = 0,
+                    Level = 1
+                });
         }
 
         /// <summary>
@@ -310,6 +365,7 @@
             player.StateChanged = true;
         }
 
+        /*
         /// <summary>
         /// Returns true if the player has the capacity to start hhe item.
         /// </summary>
@@ -500,7 +556,8 @@
 
             player.StateChanged = true;
         }
-
+        */
+         
         /// <summary>
         /// Modifies the player's coins
         /// </summary>
@@ -531,6 +588,7 @@
             }
         }
 
+        /*
         /// <summary>
         /// Starts a player doing delayed work if all conditions pass.
         /// </summary>
@@ -571,7 +629,26 @@
 
             return workItem;
         }
+         * */
 
+        /// <summary>
+        /// Adds an item to the player's inventory
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="quantity"></param>
+        public void AddItem(GamePlayer player, int businessLocation, ItemQuantity itemQuantity)
+        {
+            BusinessLocation location = player.Locations[businessLocation];
+            LocationStorage storage = location.Storage;
+            storage.AddItem(itemQuantity);
+
+            if (ItemAdded != null)
+            {
+                OnItemAdded(new GamePlayerLogicEventArgs(player, itemQuantity));
+            }
+        }
+
+        /*
         /// <summary>
         /// Adds an item to a player when work is completed
         /// </summary>
@@ -707,6 +784,7 @@
             player.TutorialStage = stage;
             player.StateChanged = true;            
         }
+         
 
         /// <summary>
         /// Gets the current work items being produced in 
@@ -743,5 +821,6 @@
             double ratio = 1 - (secondsToGo / (double)bi.BuildSeconds);
             return Math.Min(1, Math.Max(ratio, 0));
         }
+         * */
     }
 }

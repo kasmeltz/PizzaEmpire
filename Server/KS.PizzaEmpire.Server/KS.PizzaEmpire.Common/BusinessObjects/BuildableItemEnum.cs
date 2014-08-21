@@ -40,7 +40,7 @@
         Hawaiin_Pizza_M,
         Hawaiin_Pizza_L,
         Phone_L1,
-        Dry_Goods_Delivery_Truck_L1,
+        Dry_Goods_Delivery_Truck,
         Vegetable_Farm_Delivery_Truck_L1,
         Meat_Farm_Delivery_Truck_L1,
         Dairy_Farm_Delivery_Truck_L1,

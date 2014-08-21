@@ -17,6 +17,10 @@
         [TestInitialize]
         public void Initialize()
         {
+            Assert.Fail("Not implemented");
+
+
+            /*
             storageInfo = new GamePlayerStorageInformation("KEVIN");
 
             player = new GamePlayer
@@ -41,21 +45,29 @@
                 },
                 TutorialStage = 10
             };
+             * */
         }
 
         [TestMethod]
         public void TestInstantiate()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Assert.AreEqual("KEVIN", storageInfo.UniqueKey);
             Assert.AreEqual("GamePlayer", storageInfo.TableName);
             Assert.AreEqual("KE", storageInfo.PartitionKey);
             Assert.AreEqual("KEVIN", storageInfo.RowKey);
             Assert.AreEqual("GP_KEVIN", storageInfo.CacheKey);
+             * */
         }
 
         [TestMethod]
         public void TestToCache()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerCacheable cacheable = (GamePlayerCacheable)storageInfo.ToCache(player);
 
             Assert.AreEqual(99, cacheable.Coins);
@@ -65,11 +77,16 @@
             Assert.AreEqual(1, cacheable.WorkItems.Count);
             Assert.AreEqual(2, cacheable.BuildableItems.Count);
             Assert.AreEqual(10, cacheable.TutorialStage);
+             * */
         }
 
         [TestMethod]
         public void TestFromCache()
         {
+
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerCacheable cacheable = (GamePlayerCacheable)storageInfo.ToCache(player);
             GamePlayer flip = (GamePlayer)storageInfo.FromCache(cacheable);
 
@@ -80,11 +97,15 @@
             Assert.AreEqual(1, flip.WorkItems.Count);
             Assert.AreEqual(2, flip.BuildableItems.Count);
             Assert.AreEqual(10, flip.TutorialStage);
+             * */
         }
 
         [TestMethod]
         public void TestToTableStorage()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerTableStorage ts = (GamePlayerTableStorage)storageInfo.ToTableStorage(player);
 
             Assert.AreEqual(99, ts.Coins);
@@ -94,11 +115,15 @@
             Assert.AreEqual(17, ts.WorkItemsSerialized.Length);
             Assert.AreEqual(12, ts.BuildableItemsSerialized.Length);
             Assert.AreEqual(10, ts.TutorialStage);
+             * */
         }
 
         [TestMethod]
         public void TestFromTableStorage()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerTableStorage ts = (GamePlayerTableStorage)storageInfo.ToTableStorage(player);
             GamePlayer flip = (GamePlayer)storageInfo.FromTableStorage(ts);
 
@@ -109,6 +134,7 @@
             Assert.AreEqual(1, flip.WorkItems.Count);
             Assert.AreEqual(2, flip.BuildableItems.Count);
             Assert.AreEqual(10, flip.TutorialStage);
+             * */
         }        
     }
 }

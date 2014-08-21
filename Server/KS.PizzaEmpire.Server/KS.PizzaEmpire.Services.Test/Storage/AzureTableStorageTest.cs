@@ -522,6 +522,9 @@
         [TestMethod]
         public async Task TestSaveGamePlayer()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerStorageInformation storageInfo = new GamePlayerStorageInformation("test123");
             GamePlayer player = new GamePlayer();
             player.Coins = 1000;
@@ -536,6 +539,7 @@
             AzureTableStorage storage = new AzureTableStorage();
             await storage.SetTable(storageInfo.TableName);
             await storage.InsertOrReplace<GamePlayerTableStorage>((GamePlayerTableStorage)storageInfo.ToTableStorage(player));
+             * */
         }
     }
 }

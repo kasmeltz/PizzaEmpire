@@ -15,10 +15,12 @@
 
         public bool IsValid(GamePlayer player)
         {
+            /*
             if (GamePlayerLogic.Instance.CanBuildItem(player, Item) != ErrorCode.ERROR_OK)
             {
                 return false;
             }
+             * */
 
             return true;
         }

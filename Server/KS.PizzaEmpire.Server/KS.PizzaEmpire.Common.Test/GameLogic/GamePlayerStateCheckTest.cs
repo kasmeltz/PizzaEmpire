@@ -12,6 +12,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [ClassInitialize]
         public static void InitializeAllTests(TestContext testContent)
         {
+            /*
+             
             Dictionary<BuildableItemEnum, BuildableItem> bitems = new Dictionary<BuildableItemEnum, BuildableItem>();
             BuildableItem bi;
 
@@ -308,11 +310,16 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             elevels[exl.Level] = exl;
 
             GamePlayerLogic.Instance.ExperienceLevels = elevels;
+             * 
+             * */
         }
         
         [TestMethod]
         public void TestTutorialStageFalse()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer { TutorialStage = 3 };
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck { TutorialStage = 4 };
@@ -322,11 +329,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(false, tf);
+             * */
         }
 
         [TestMethod]
         public void TestTutorialStageTrue()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer { TutorialStage = 4 };
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck { TutorialStage = 4 };
@@ -336,11 +347,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(true, tf);
+             * */
         }
 
         [TestMethod]
         public void TestCoinsFalse()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer { TutorialStage = 3 };
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck { Coins = 4 };
@@ -350,11 +365,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(false, tf);
+             * */
         }
 
         [TestMethod]
         public void TestCoinsTrue()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer { Coins = 4 };
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck { Coins = 4 };
@@ -364,11 +383,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(true, tf);
+             * */
         }
 
         [TestMethod]
         public void TestRequiredLevelFalse()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer { Level = 3 };
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck { RequiredLevel = 4 };
@@ -378,11 +401,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(false, tf);
+             * */
         }
 
         [TestMethod]
         public void TestRequiredLevelTrue()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer { Level = 4 };
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck { RequiredLevel = 4 };
@@ -392,11 +419,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(true, tf);
+             * */
         }
 
         [TestMethod]
         public void TestItemQuantityGreaterThanFalse()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer
             {
@@ -416,11 +447,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(false, tf);
+             * */
         }
 
         [TestMethod]
         public void TestItemQuantityGreaterThanTrue()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer
             {
@@ -444,11 +479,17 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(true, tf);
+             * 
+             * */
         }
 
         [TestMethod]
         public void TestItemQuantityLessThanFalse()
         {
+            Assert.Fail("Not implemented");
+
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer
             {
@@ -472,11 +513,16 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(false, tf);
+             * 
+             * */
         }
 
         [TestMethod]
         public void TestItemQuantityLessThanTrue()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer
             {
@@ -500,11 +546,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(true, tf);
+             * */
         }
 
         [TestMethod]
         public void TestWorkItemsInProgressFalse()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer
             {
@@ -525,11 +575,16 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(false, tf);
+             * */
         }
 
         [TestMethod]
         public void TestWorkItemsInProgressTrue()
         {
+            Assert.Fail("Not implemented");
+
+
+            /*
             // Arrange
             GamePlayer player = new GamePlayer
             {
@@ -550,11 +605,16 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(true, tf);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFalse()
         {
+            Assert.Fail("Not implemented");
+
+            /*
+
             // Arrange
             GamePlayer player = GamePlayerLogic.Instance.CreateNewGamePlayer();
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck
@@ -567,11 +627,16 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(false, tf);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemTrue()
         {
+            Assert.Fail("Not implemented");
+
+            /*
+
             // Arrange
             GamePlayer player = GamePlayerLogic.Instance.CreateNewGamePlayer();
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck
@@ -584,11 +649,16 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(true, tf);
+             * */
         }
 
         [TestMethod]
         public void TestOneFailedFalse()
         {
+            Assert.Fail("Not implemented");
+
+            /*
+
             // Arrange
             GamePlayer player = new GamePlayer { Coins = 3, TutorialStage = 4 };
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck { Coins = 4, TutorialStage = 4 };
@@ -598,11 +668,16 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(false, tf);
+             * */
         }
 
         [TestMethod]
         public void TestMultiplePassed()
         {
+            Assert.Fail("Not implemented");
+
+            /*
+
             // Arrange
             GamePlayer player = new GamePlayer { Coins = 4, TutorialStage = 4 };
             GamePlayerStateCheck stateCheck = new GamePlayerStateCheck { Coins = 4, TutorialStage = 4 };
@@ -612,6 +687,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             // Assert
             Assert.AreEqual(true, tf);
+             * */
         }
     }
 }

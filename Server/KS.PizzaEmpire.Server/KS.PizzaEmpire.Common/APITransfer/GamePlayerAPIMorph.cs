@@ -17,9 +17,11 @@
         /// <returns></returns>
         public IAPIEntity ToAPIFormat(IBusinessObjectEntity entity)
         {
+
             GamePlayer item = entity as GamePlayer;
             GamePlayerAPI clone = new GamePlayerAPI();
 
+            /*
             clone.Coins = item.Coins;
             clone.Coupons = item.Coupons;
             clone.Experience = item.Experience;
@@ -39,6 +41,7 @@
             clone.WorkItems = item.WorkItems;
 
             clone.TutorialStage = item.TutorialStage;
+             * */
 
             return clone;
         }
@@ -53,6 +56,7 @@
             GamePlayerAPI item = entity as GamePlayerAPI;
             GamePlayer clone = new GamePlayer();
 
+            /*
             clone.Coins = item.Coins;
             clone.Coupons = item.Coupons;
             clone.Experience = item.Experience;
@@ -69,6 +73,7 @@
             clone.WorkItems = item.WorkItems;
 
             clone.TutorialStage = item.TutorialStage;
+            */
 
             return clone;
         }

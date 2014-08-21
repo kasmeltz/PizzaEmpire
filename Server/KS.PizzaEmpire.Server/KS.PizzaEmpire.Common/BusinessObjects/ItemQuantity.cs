@@ -16,8 +16,18 @@
         public BuildableItemEnum ItemCode { get; set; }
 
         /// <summary>
-        /// The quantity of items
+        /// The stored quantity of items
         /// </summary>
-        public int Quantity { get; set; }
+        public int StoredQuantity { get; set; }
+
+        /// <summary>
+        /// The unstored quantity of items
+        /// </summary>
+        public int UnStoredQuantity { get; set; }
+
+        /// <summary>
+        /// The level of the item
+        /// </summary>
+        public int Level { get; set; }        
     }
 }

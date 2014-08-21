@@ -1,12 +1,13 @@
 ﻿namespace KS.PizzaEmpire.Business.StorageInformation
 {
     using Cache;
-    using TableStorage;
-    using System.IO;
+    using Common.BusinessObjects;
     using ProtoBuf;
-    using KS.PizzaEmpire.Common.BusinessObjects;
+    using ProtoSerializable;
+    using System;
     using System.Collections.Generic;
-using KS.PizzaEmpire.Business.ProtoSerializable;
+    using System.IO;
+    using TableStorage;
     
     /// <summary>
     /// Represents in item that contains information about storing an 
@@ -35,6 +36,9 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
         /// <returns></returns>
         public override ICacheEntity ToCache(IBusinessObjectEntity item)
         {
+            throw new NotImplementedException();
+            
+            /*
             GamePlayer gp = item as GamePlayer;
 
             GamePlayerCacheable clone = new GamePlayerCacheable();
@@ -48,6 +52,7 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
             clone.TutorialStage = gp.TutorialStage;
 
             return clone;
+             */
         }
 
         /// <summary>
@@ -57,6 +62,11 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
         /// <returns></returns>
         public override IBusinessObjectEntity FromCache(ICacheEntity entity)
         {
+
+            throw new NotImplementedException();
+            
+
+            /*
             GamePlayerCacheable item = entity as GamePlayerCacheable;
 
             GamePlayer clone = new GamePlayer();
@@ -75,6 +85,7 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
             clone.TutorialStage = item.TutorialStage;
 
             return clone;
+             * */
         }
 
         /// <summary>
@@ -84,6 +95,9 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
         /// <returns></returns>
         public override IBusinessObjectEntity FromTableStorage(ITableStorageEntity entity)
         {
+            throw new NotImplementedException();
+
+            /*
             GamePlayerTableStorage other = entity as GamePlayerTableStorage;
 
             GamePlayer clone = new GamePlayer();
@@ -113,6 +127,7 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
             clone.TutorialStage = other.TutorialStage;
             
             return clone;
+             * */
         }
    
         /// <summary>
@@ -122,6 +137,9 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
         /// <returns></returns>
         public override ITableStorageEntity ToTableStorage(IBusinessObjectEntity entity)
         {
+            throw new NotImplementedException();
+
+            /*
             GamePlayer item = entity as GamePlayer;
             GamePlayerTableStorage clone = new GamePlayerTableStorage();
             
@@ -150,6 +168,7 @@ using KS.PizzaEmpire.Business.ProtoSerializable;
             clone.TutorialStage = item.TutorialStage;
 
             return clone;
+             * */
         }
     }
 }

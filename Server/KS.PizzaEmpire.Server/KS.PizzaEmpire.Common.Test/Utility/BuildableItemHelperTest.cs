@@ -25,6 +25,9 @@
         [TestMethod]
         public void TestToJSON()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             Dictionary<BuildableItemEnum, BuildableItem> dict = new Dictionary<BuildableItemEnum, BuildableItem>();
             dict[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1] = new BuildableItem
@@ -55,11 +58,15 @@
 
             // Assert
             Assert.AreEqual(expectedJson, json);
+             * */
         }
 
         [TestMethod]
         public void TestFromJSON()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             // Arrange
             string expectedJson = @"[{""ItemCode"":35,""RequiredLevel"":0,""CoinCost"":0,""ProductionItem"":0,""ProductionCapacity"":0,""BaseProduction"":0,""StorageCapacity"":0,""StorageItem"":0,""IsStorage"":false,""IsConsumable"":false,""IsImmediate"":false,""IsWorkSubtracted"":false,""Experience"":0,""BuildSeconds"":0,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":null},{""ItemCode"":1,""RequiredLevel"":0,""CoinCost"":100,""ProductionItem"":35,""ProductionCapacity"":0,""BaseProduction"":0,""StorageCapacity"":0,""StorageItem"":0,""IsStorage"":false,""IsConsumable"":true,""IsImmediate"":false,""IsWorkSubtracted"":false,""Experience"":0,""BuildSeconds"":180,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[{""ItemCode"":48,""Quantity"":4}]}]";
 
@@ -80,6 +87,7 @@
             Assert.AreEqual(1, dict[BuildableItemEnum.White_Flour].RequiredItems.Count);
             Assert.AreEqual(BuildableItemEnum.Dough_Mixer_L1, dict[BuildableItemEnum.White_Flour].RequiredItems[0].ItemCode);
             Assert.AreEqual(4, dict[BuildableItemEnum.White_Flour].RequiredItems[0].Quantity);
+             * */
         }
     }
 }

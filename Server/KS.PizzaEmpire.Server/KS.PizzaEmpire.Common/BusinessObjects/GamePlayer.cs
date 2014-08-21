@@ -52,15 +52,5 @@
         /// Whether the state has changed
         /// </summary>
         public bool StateChanged { get; set; }
-
-        /// <summary>
-        /// Gets the location specified by the location number
-        /// </summary>
-        /// <param name="locationNumber"></param>
-        /// <returns></returns>
-        public BusinessLocation GetLocation(int locationNumber)
-        {
-            return Locations[locationNumber];
-        }
     }
 }

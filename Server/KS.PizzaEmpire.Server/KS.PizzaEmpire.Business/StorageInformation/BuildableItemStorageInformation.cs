@@ -57,6 +57,9 @@
         /// <returns></returns>
         public override IBusinessObjectEntity FromTableStorage(ITableStorageEntity entity)
         {
+            throw new NotImplementedException();
+
+            /*
             BuildableItemTableStorage other = entity as BuildableItemTableStorage;
 
             BuildableItem clone = new BuildableItem();
@@ -88,6 +91,7 @@
             clone.RequiredItems = ItemQuantityProtoBuf.ToBusiness(wis);
 
             return clone;
+             * */
         }
 
         /// <summary>
@@ -97,6 +101,9 @@
         /// <returns></returns>
         public override ITableStorageEntity ToTableStorage(IBusinessObjectEntity entity)
         {
+            throw new NotImplementedException();
+
+            /*
             BuildableItem other = entity as BuildableItem;
 
             BuildableItemTableStorage clone = new BuildableItemTableStorage();
@@ -131,6 +138,7 @@
             }
 
             return clone;
+             * */
         }
     }
 }

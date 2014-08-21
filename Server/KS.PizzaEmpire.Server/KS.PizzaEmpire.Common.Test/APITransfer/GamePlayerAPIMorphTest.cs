@@ -15,6 +15,9 @@
         [TestInitialize]
         public void Initialize()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             morph = new GamePlayerAPIMorph();
 
             player = new GamePlayer
@@ -39,11 +42,15 @@
                 },
                 TutorialStage = 10
             };
+             * */
         }
 
         [TestMethod]
         public void TestToAPIFormat()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerAPI playerAPI = (GamePlayerAPI)morph.ToAPIFormat(player);
 
             Assert.AreEqual(99, playerAPI.Coins);
@@ -54,11 +61,15 @@
             Assert.AreEqual(BuildableItemEnum.White_Flour, playerAPI.WorkItems[0].ItemCode);
             Assert.AreEqual("1:1:35:1", playerAPI.BuildableItems);
             Assert.AreEqual(10, playerAPI.TutorialStage);
+             * */
         }
 
         [TestMethod]
         public void TestFromAPIFormat()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerAPI playerAPI = (GamePlayerAPI)morph.ToAPIFormat(player);
             GamePlayer flip = (GamePlayer)morph.ToBusinessFormat(playerAPI);
 
@@ -72,6 +83,7 @@
             Assert.AreEqual(1, flip.BuildableItems[BuildableItemEnum.White_Flour]);
             Assert.AreEqual(1, flip.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
             Assert.AreEqual(10, flip.TutorialStage);
+             * */
         }
     }
 }

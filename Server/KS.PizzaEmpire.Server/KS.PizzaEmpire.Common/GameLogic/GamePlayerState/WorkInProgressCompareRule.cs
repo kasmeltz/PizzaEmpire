@@ -4,9 +4,9 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a rule that compares the player's work items
+    /// Represents a rule that compares the player's work in progress
     /// </summary>
-    public class WorkItemCompareRule : ComparisonRule
+    public class WorkInProgressCompareRule : ComparisonRule
     {
         /// <summary>
         /// The items to compare
@@ -28,17 +28,17 @@
             switch (ComparisonType)
             {
                 case ComparisonEnum.Equal:
-                    return actual == iq.Quantity;
+                    return actual == iq.UnStoredQuantity;
                 case ComparisonEnum.GreaterThan:
-                    return actual > iq.Quantity;
+                    return actual > iq.UnStoredQuantity;
                 case ComparisonEnum.GreaterThanOrEqual:
-                    return actual >= iq.Quantity;
+                    return actual >= iq.UnStoredQuantity;
                 case ComparisonEnum.LessThan:
-                    return actual < iq.Quantity;
+                    return actual < iq.UnStoredQuantity;
                 case ComparisonEnum.LessThanOrEqual:
-                    return actual <= iq.Quantity;
+                    return actual <= iq.UnStoredQuantity;
                 case ComparisonEnum.NotEqual:
-                    return actual != iq.Quantity;
+                    return actual != iq.UnStoredQuantity;
             }
 
             return false;

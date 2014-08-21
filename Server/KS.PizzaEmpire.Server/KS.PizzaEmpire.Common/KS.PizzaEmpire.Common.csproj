@@ -62,7 +62,6 @@
     <Compile Include="BusinessObjects\ProductionItem.cs" />
     <Compile Include="BusinessObjects\ConsumableItemStat.cs" />
     <Compile Include="BusinessObjects\ProductionItemStat.cs" />
-    <Compile Include="BusinessObjects\GamePlayerItem.cs" />
     <Compile Include="BusinessObjects\StorageItem.cs" />
     <Compile Include="BusinessObjects\StorageItemStat.cs" />
     <Compile Include="GameLogic\GamePlayerLogicEventArgs.cs" />
@@ -78,7 +77,7 @@
     <Compile Include="GameLogic\GamePlayerState\GamePlayerStateRule.cs" />
     <Compile Include="GameLogic\GamePlayerState\ComparisonRule.cs" />
     <Compile Include="GameLogic\GamePlayerState\StorageItemStoredQuantityCompareRule.cs" />
-    <Compile Include="GameLogic\GamePlayerState\WorkItemCompareRule.cs" />
+    <Compile Include="GameLogic\GamePlayerState\WorkInProgressCompareRule.cs" />
     <Compile Include="ObjectPool\IResetable.cs" />
     <Compile Include="ObjectPool\ObjectPoolWithCollectiveReset.cs" />
     <Compile Include="ObjectPool\ObjectPoolWithReset.cs" />

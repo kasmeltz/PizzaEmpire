@@ -1,6 +1,7 @@
 ﻿namespace KS.PizzaEmpire.Common.APITransfer
 {
     using BusinessObjects;
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -15,32 +16,12 @@
         /// <returns></returns>
         public IAPIEntity ToAPIFormat(IBusinessObjectEntity entity)
         {
+            throw new NotImplementedException();
+
             BuildableItem other = entity as BuildableItem;
             BuildableItemAPI clone = new BuildableItemAPI();
 
             /*
-
-        /// <summary>
-        /// The item that is required to produce this item
-        /// </summary>
-        public BuildableItemEnum ProductionItem { get; set; }
-
-        /// <summary>
-        /// The item this item should be stored in
-        /// </summary>
-        public BuildableItemEnum StorageItem { get; set; }
-
-        /// <summary>
-        /// The storage area this item is linked to
-        /// </summary>
-        public InventoryStorageEnum StorageArea { get; set; }
-
-        /// <summary>
-        /// The per level stats associated with this item
-        /// </summary>
-        public Dictionary<int, BuildableItemStat> Stats { get; set; }
-            */
-
             clone.ItemCode = other.ItemCode;
             clone.IsStorage = other.IsStorage;
             clone.IsConsumable = other.IsConsumable;
@@ -59,6 +40,7 @@
             clone.SpeedUpCoupons = other.SpeedUpCoupons;
             clone.SpeedUpSeconds = other.SpeedUpSeconds;
             clone.RequiredItems = other.RequiredItems;
+             * */
 
             return clone;
         }
@@ -70,6 +52,8 @@
         /// <returns></returns>
         public IBusinessObjectEntity ToBusinessFormat(IAPIEntity entity)
         {
+            throw new NotImplementedException();
+
             BuildableItemAPI other = entity as BuildableItemAPI;
             BuildableItem clone = new BuildableItem();
 

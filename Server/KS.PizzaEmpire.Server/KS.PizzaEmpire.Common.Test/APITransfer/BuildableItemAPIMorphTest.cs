@@ -18,6 +18,9 @@ namespace KS.PizzaEmpire.Common.Test.APITransfer
         [TestInitialize]
         public void Initialize()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             morph = new BuildableItemAPIMorph();
 
             bi = new BuildableItem
@@ -40,11 +43,15 @@ namespace KS.PizzaEmpire.Common.Test.APITransfer
                 SpeedUpCoupons = 1,
                 SpeedUpSeconds = 60,
             };
+             * */
         }
 
         [TestMethod]
         public void TestToAPIFormat()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             BuildableItemAPI itemAPI = (BuildableItemAPI)morph.ToAPIFormat(bi);
 
             Assert.AreEqual(BuildableItemEnum.White_Flour, itemAPI.ItemCode);
@@ -64,11 +71,15 @@ namespace KS.PizzaEmpire.Common.Test.APITransfer
             Assert.AreEqual(0, itemAPI.CouponCost);
             Assert.AreEqual(1, itemAPI.SpeedUpCoupons);
             Assert.AreEqual(60, itemAPI.SpeedUpSeconds);
+             * */
         }
 
         [TestMethod]
         public void TestFromAPIFormat()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             BuildableItemAPI itemAPI = (BuildableItemAPI)morph.ToAPIFormat(bi);
             BuildableItem flip = (BuildableItem)morph.ToBusinessFormat(itemAPI);
 
@@ -89,6 +100,7 @@ namespace KS.PizzaEmpire.Common.Test.APITransfer
             Assert.AreEqual(0, flip.CouponCost);
             Assert.AreEqual(1, flip.SpeedUpCoupons);
             Assert.AreEqual(60, flip.SpeedUpSeconds);
+             * */
         }
     }
 }

@@ -14,6 +14,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [ClassInitialize]
         public static void InitializeAllTests(TestContext testContent)
         {            
+            /*
+             * 
             Dictionary<BuildableItemEnum, BuildableItem> bitems = new Dictionary<BuildableItemEnum, BuildableItem>();
             BuildableItem bi;
 
@@ -310,6 +312,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             elevels[exl.Level] = exl;
 
             GamePlayerLogic.Instance.ExperienceLevels = elevels;
+             * */
         }
 
         [TestInitialize]
@@ -321,6 +324,9 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestCreateNewGamePlayer()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Assert.AreEqual(1000, Player.Coins);
             Assert.AreEqual(5, Player.Coupons);
             Assert.AreEqual(1, Player.Level);
@@ -330,38 +336,53 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Restaurant_Storage]);
             Assert.AreEqual(0, Player.WorkItems.Count);
             Assert.AreEqual(true, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         public void TestSetLevel()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.SetLevel(Player, 2);
             Assert.AreEqual(2, Player.Level);
             Assert.AreEqual(true, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TestSetLevelDoesntExist()
         {
+            Assert.Fail("Not implemented");
+
+            /*            
             GamePlayerLogic.Instance.SetLevel(Player, -1);
             Assert.AreEqual(false, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         public void TestAddExperienceNoLevels()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 50);
             Assert.AreEqual(50, Player.Experience);
             Assert.AreEqual(1, Player.Level);
             Assert.AreEqual(true, Player.StateChanged);
+             */
         }
 
         [TestMethod]
         public void TestAddExperienceOneLevelExact()
         {
+            Assert.Fail("Not implemented");
+
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 100);
             Assert.AreEqual(100, Player.Experience);
@@ -372,6 +393,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestAddExperienceOneLevel()
         {
+            Assert.Fail("Not implemented");
+
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 150);
             Assert.AreEqual(150, Player.Experience);
@@ -382,6 +405,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestAddExperienceTwoLevelsExact()
         {
+            Assert.Fail("Not implemented");
+
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 300);
             Assert.AreEqual(300, Player.Experience);
@@ -392,6 +417,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestAddExperienceTwoLevels()
         {
+            Assert.Fail("Not implemented");
+
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 400);
             Assert.AreEqual(400, Player.Experience);
@@ -402,6 +429,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestAddExperienceMaxLevels()
         {
+            Assert.Fail("Not implemented");
+
             Assert.AreEqual(1, Player.Level);
             GamePlayerLogic.Instance.AddExperience(Player, 40000);
             Assert.AreEqual(40000, Player.Experience);
@@ -412,85 +441,124 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestDoesPlayerHaveProductionCapacityTrue()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Assert.AreEqual(true,
                 GamePlayerLogic.Instance.DoesPlayerHaveProductionCapacity(Player, BuildableItemEnum.White_Flour));
+             * */
         }
 
         [TestMethod]
         public void TestDoesPlayerHaveProductionCapacityFalse()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
             Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
             Assert.AreEqual(false,
                 GamePlayerLogic.Instance.DoesPlayerHaveProductionCapacity(Player, BuildableItemEnum.White_Flour));
+             * */
         }
 
         [TestMethod]
         public void TestDoesPlayeraHaveStorageCapacityTrue()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Assert.AreEqual(true,
                 GamePlayerLogic.Instance.DoesPlayeraHaveStorageCapacity(Player, BuildableItemEnum.White_Flour));
+             * */
         }
 
         [TestMethod]
          public void TestDoesPlayeraHaveStorageCapacityFalse()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.BuildableItems[BuildableItemEnum.White_Flour] = 10;
             Assert.AreEqual(false,
                 GamePlayerLogic.Instance.DoesPlayeraHaveStorageCapacity(Player, BuildableItemEnum.White_Flour));
+             * */
         }
 
         [TestMethod]
         public void TestAddItem()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Assert.AreEqual(false, Player.BuildableItems.ContainsKey(BuildableItemEnum.White_Flour));
             GamePlayerLogic.Instance.AddItem(Player, new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour });
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.White_Flour]);
             Assert.AreEqual(true, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         public void TestAddItemNonConsumable()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerLogic.Instance.AddItem(Player, new WorkInProgress { ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1 });
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
             GamePlayerLogic.Instance.AddItem(Player, new WorkInProgress { ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1 });
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1]);
             Assert.AreEqual(true, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TestFinishWorkNone()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(0, finishedItems.Count);
             Assert.AreEqual(true, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         public void TestFinishWorkNoneReady()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
             List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(0, finishedItems.Count);
             Assert.AreEqual(true, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         public void TestFinishWorkOneReady()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
             Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(-1) });
             List<WorkInProgress> finishedItems = GamePlayerLogic.Instance.FinishWork(Player, DateTime.UtcNow);
             Assert.AreEqual(1, finishedItems.Count);
             Assert.AreEqual(BuildableItemEnum.White_Flour, finishedItems[0].ItemCode);
             Assert.AreEqual(true, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         public void TestFinishWorkTwoReady()
         {
+            Assert.Fail("Not implemented");
+            
+            /*
             Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.White_Flour, FinishTime = DateTime.UtcNow.AddHours(1) });
             Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.Yeast, FinishTime = DateTime.UtcNow.AddHours(-1) });
             Player.WorkItems.Add(new WorkInProgress { ItemCode = BuildableItemEnum.Salt, FinishTime = DateTime.UtcNow.AddHours(-1) });
@@ -499,11 +567,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(BuildableItemEnum.Yeast, finishedItems[0].ItemCode);
             Assert.AreEqual(BuildableItemEnum.Salt, finishedItems[1].ItemCode);
             Assert.AreEqual(true, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         public void TestDeductResources()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
             Player.BuildableItems[BuildableItemEnum.Yeast] = 2;
             Player.BuildableItems[BuildableItemEnum.Salt] = 1;
@@ -514,69 +586,97 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(0, Player.BuildableItems[BuildableItemEnum.Salt]);
             Assert.AreEqual(1, Player.BuildableItems[BuildableItemEnum.Dough_Mixer_L1]);
             Assert.AreEqual(true, Player.StateChanged);
+             * */
         }
 
         [TestMethod]
         public void TestStartWork()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             WorkInProgress workItem = GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
             Assert.AreEqual(BuildableItemEnum.White_Flour, workItem.ItemCode);
             Assert.AreEqual(true, Player.StateChanged);
             Assert.AreEqual(950, Player.Coins);
             Assert.AreEqual(5, Player.Coupons);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailItemType()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, (BuildableItemEnum)5000);
 
             Assert.AreEqual(ErrorCode.START_WORK_INVALID_ITEM, ec);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailLevel()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayer player = GamePlayerLogic.Instance.CreateNewGamePlayer();
 
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(player, BuildableItemEnum.White_Pizza_Dough);
 
             Assert.AreEqual(ErrorCode.START_WORK_ITEM_NOT_AVAILABLE, ec);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailCoins()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.Coins = 0;
 
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Flour);
 
             Assert.AreEqual(ErrorCode.START_WORK_INSUFFICIENT_COINS, ec);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailCoupons()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.Coupons = 0;
 
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.Tomatoes);
 
             Assert.AreEqual(ErrorCode.START_WORK_INSUFFICIENT_COUPONS, ec);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailImproperIngredients()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerLogic.Instance.SetLevel(Player, 3);
 
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Pizza_Dough);
 
             Assert.AreEqual(ErrorCode.START_WORK_INVALID_INGREDIENTS, ec);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailInsufficeintIngredients()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerLogic.Instance.SetLevel(Player, 3);
             Player.BuildableItems[BuildableItemEnum.Salt] = 0;
             Player.BuildableItems[BuildableItemEnum.White_Flour] = 0;
@@ -585,50 +685,71 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Pizza_Dough);
             
             Assert.AreEqual(ErrorCode.START_WORK_INSUFFICIENT_INGREDIENTS, ec);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailEquipmentFull()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
 
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Flour);
 
             Assert.AreEqual(ErrorCode.START_WORK_NO_PRODUCTION_CAPACITY, ec);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailStorageFull()
         {
+            Assert.Fail("Not implemented");
+
+            /*
+
             Player.BuildableItems[BuildableItemEnum.White_Flour] = 10;
 
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.White_Flour);
 
             Assert.AreEqual(ErrorCode.START_WORK_NO_STORAGE_CAPACITY, ec);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailNotEnoughNeg()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 2;
 
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.Dirty_Dishes);
 
             Assert.AreEqual(ErrorCode.START_WORK_INSUFFICIENT_NEGATIVE, ec);
+             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemFailNonConsumable()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
 
             Assert.AreEqual(ErrorCode.START_WORK_MULTIPLE_NON_CONSUMABLE, ec);
+             * */
         }
 
         [TestMethod]
         public void TestStartWorkImmediate()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 3;
 
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.Dirty_Dishes);
@@ -637,30 +758,42 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(0, Player.WorkItems.Count);
             Assert.AreEqual(true, Player.StateChanged);
             Assert.AreEqual(100, Player.Experience);
+             * */
         }
 
         [TestMethod]
         public void TestGetCurrentWorkItemsForProductionItemItemsInProduction()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
 
             List<WorkInProgress> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
 
             Assert.AreEqual(2, wis.Count);
+             * */
         }
 
         [TestMethod]
         public void TestGetCurrentWorkItemsForProductionItemNoItemsInProduction()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             List<WorkInProgress> wis = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(Player, BuildableItemEnum.Dry_Goods_Delivery_Truck_L1);
 
             Assert.AreEqual(0, wis.Count);
+             */
         }
 
         [TestMethod]
         public void TestGetPercentageCompleteForWorkItem()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
             GamePlayerLogic.Instance.StartWork(Player, BuildableItemEnum.White_Flour);
 
@@ -670,11 +803,14 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
 
             Assert.IsTrue(ratio < 1.2);
             Assert.IsTrue(ratio > 50.0 / 60.0);
+             * */
         }
 
         [TestMethod]
         public void TestLevelChangedEvent()
         {
+            Assert.Fail("Not implemented");
+
             bool levelChanged = false;
             int newLevel = -1;
 
@@ -693,6 +829,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestExperienceChangedEvent()
         {
+            Assert.Fail("Not implemented");
+
             bool experienceChanged = false;
             int addedExperience = -1;
 
@@ -711,6 +849,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestCoinsChangedEvent()
         {
+            Assert.Fail("Not implemented");
+
             bool coinsChanged = false;
             int coinChangeAmount = -1;
 
@@ -729,6 +869,8 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestCouponsChangedEvent()
         {
+            Assert.Fail("Not implemented");
+
             bool couponsChanged = false;
             int couponChangeAmount = -1;
 
@@ -747,6 +889,9 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestItemConsumedEvent()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
             Player.BuildableItems[BuildableItemEnum.Yeast] = 2;
             Player.BuildableItems[BuildableItemEnum.Salt] = 1;
@@ -771,11 +916,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(BuildableItemEnum.Yeast, items[2].ItemCode);
             Assert.AreEqual(1, items[2].Quantity);
             Assert.AreEqual(true, itemConsumed);
+             * */
         }
 
         [TestMethod]
         public void TestItemSubtractedEvent()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
 
             bool itemSubtracted = false;
@@ -794,11 +943,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
             Assert.AreEqual(1, items[0].Quantity);
             Assert.AreEqual(true, itemSubtracted);
+             * */
         }
 
         [TestMethod]
         public void TestItemAddedEvent()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.BuildableItems[BuildableItemEnum.White_Flour] = 3;
 
             bool itemAdded = false;
@@ -817,11 +970,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
             Assert.AreEqual(1, items[0].Quantity);
             Assert.AreEqual(true, itemAdded);
+             * */
         }
 
         [TestMethod]
         public void TestWorkStartedEvent()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             bool workStarted = false;
             List<WorkInProgress> items = new List<WorkInProgress>();
 
@@ -836,11 +993,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(1, items.Count);
             Assert.AreEqual(BuildableItemEnum.White_Flour, items[0].ItemCode);
             Assert.AreEqual(true, workStarted);
+             * */
         }
 
         [TestMethod]
         public void TestWorkFinishedEvent()
         {
+            Assert.Fail("Not implemented");
+
+            /*
             Player.BuildableItems[BuildableItemEnum.Dirty_Dishes] = 3;
 
             bool workFinished = false;
@@ -857,6 +1018,7 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(1, items.Count);
             Assert.AreEqual(BuildableItemEnum.Dirty_Dishes, items[0].ItemCode);
             Assert.AreEqual(true, workFinished);
+             * */
         }
     }
 }

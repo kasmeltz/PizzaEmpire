@@ -32,6 +32,10 @@
         /// <returns></returns>
         public static List<ItemQuantityProtoBuf> FromBusiness(List<ItemQuantity> items)
         {
+            throw new NotImplementedException();
+
+
+            /*
             if (items == null)
             { 
                 return null;
@@ -46,6 +50,7 @@
                 wis.Add(clone);
             }
             return wis;
+             */
         }
 
         /// <summary>
@@ -55,6 +60,9 @@
         /// <returns></returns>
         public static List<ItemQuantity> ToBusiness(List<ItemQuantityProtoBuf> items)
         {
+            throw new NotImplementedException();
+
+            /*
             if (items == null)
             {
                 return null;
@@ -69,6 +77,7 @@
                 wis.Add(clone);
             }
             return wis;
+             * */
         }
     }
 }
