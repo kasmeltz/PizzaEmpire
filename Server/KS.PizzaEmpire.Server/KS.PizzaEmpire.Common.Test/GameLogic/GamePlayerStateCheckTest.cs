@@ -94,6 +94,13 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
                         {
                             Items = new Dictionary<BuildableItemEnum,ItemQuantity>
                             {
+                                {
+                                     BuildableItemEnum.Restaurant_Storage,
+                                     new ItemQuantity
+                                     { 
+                                         Level = 0, ItemCode = BuildableItemEnum.Restaurant_Storage, UnStoredQuantity = 1, StoredQuantity = 0
+                                     }
+                                },
                                 { 
                                     BuildableItemEnum.White_Flour, 
                                     new ItemQuantity 
@@ -1185,45 +1192,38 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestCanBuildItemFalse()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-
             // Arrange
-            GamePlayer player = GamePlayerLogic.Instance.CreateNewGamePlayer();
-            GamePlayerStateCheck stateCheck = new GamePlayerStateCheck
-            {
-                CanBuildItem = BuildableItemEnum.White_Pizza_Dough
-            };
+            StateCheck.Rules.Add(new CanBuildItemRule 
+                { 
+                    Level = 0,
+                    Location = 0,
+                    Item = BuildableItemEnum.White_Pizza_Dough 
+                });
 
             // Act
-            bool tf = stateCheck.CheckAll(player);
+            bool tf = StateCheck.IsValid(Player);
 
             // Assert
             Assert.AreEqual(false, tf);
-             * */
         }
 
         [TestMethod]
         public void TestCanBuildItemTrue()
         {
-            Assert.Fail("Not implemented");
-
-            /*
-
             // Arrange
-            GamePlayer player = GamePlayerLogic.Instance.CreateNewGamePlayer();
-            GamePlayerStateCheck stateCheck = new GamePlayerStateCheck
+            Player.Coins = 1000;
+            StateCheck.Rules.Add(new CanBuildItemRule
             {
-                CanBuildItem = BuildableItemEnum.White_Flour
-            };
+                Level = 0,
+                Location = 0,
+                Item = BuildableItemEnum.White_Flour
+            });
 
             // Act
-            bool tf = stateCheck.CheckAll(player);
+            bool tf = StateCheck.IsValid(Player);
 
             // Assert
             Assert.AreEqual(true, tf);
-             * */
         }
 
         [TestMethod]

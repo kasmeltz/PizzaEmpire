@@ -10,17 +10,19 @@
         public CanBuildItemRule() {}
 
         public BuildableItemEnum Item { get; set; }
+        public int Level { get; set; }
+        public int Location { get; set; }
 
         #region IGamePlayerStateRule
 
         public bool IsValid(GamePlayer player)
         {
-            /*
-            if (GamePlayerLogic.Instance.CanBuildItem(player, Item) != ErrorCode.ERROR_OK)
+            if (GamePlayerLogic.Instance
+                .CanBuildItem(player, Location, Level, Item) != 
+                    ErrorCode.ERROR_OK)
             {
                 return false;
             }
-             * */
 
             return true;
         }
