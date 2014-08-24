@@ -1,15 +1,11 @@
 ﻿namespace KS.PizzaEmpire.Business.StorageInformation
 {
     using AutoMapper;
+    using Cache;
     using Common;
-    using KS.PizzaEmpire.Business.Cache;
-    using KS.PizzaEmpire.Business.ProtoSerializable;
-    using KS.PizzaEmpire.Business.TableStorage;
-    using KS.PizzaEmpire.Common.BusinessObjects;
-    using ProtoBuf;
+    using Common.BusinessObjects;
     using System;
-    using System.Collections.Generic;
-    using System.IO;
+    using TableStorage;
 
     /// <summary>
     /// Represents in item that contains information about storing a

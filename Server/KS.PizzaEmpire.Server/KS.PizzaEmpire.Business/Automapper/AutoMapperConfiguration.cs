@@ -40,7 +40,7 @@
                 .Map<T, K>(serializedItem);
         }
     }
-
+    
     public class AutoMapperConfiguration
     {
         public static void Configure()
@@ -66,18 +66,31 @@
                     ProtoDeserializerConverter<List<ProductionItemStatProtoSerializable>,
                         List<ProductionItemStat>>());
 
+            Mapper.CreateMap<List<ConsumableItemStat>, byte[]>()
+                           .ConvertUsing(new
+                               ProtoSerializerConverter<List<ConsumableItemStat>,
+                                   List<ConsumableItemStatProtoSerializable>>());
+
+            Mapper.CreateMap<byte[], List<ConsumableItemStat>>()
+                .ConvertUsing(new
+                    ProtoDeserializerConverter<List<ConsumableItemStatProtoSerializable>,
+                        List<ConsumableItemStat>>());
+
             // Serializable classes
             Mapper.CreateMap<ItemQuantity, ItemQuantityProtoSerializable>();
             Mapper.CreateMap<BuildableItemStat, BuildableItemStatProtoSerializable>();
             Mapper.CreateMap<ProductionItemStat, ProductionItemStatProtoSerializable>();
+            Mapper.CreateMap<ConsumableItemStat, ConsumableItemStatProtoSerializable>();
 
             Mapper.CreateMap<ItemQuantityProtoSerializable, ItemQuantity>();
             Mapper.CreateMap<BuildableItemStatProtoSerializable, BuildableItemStat>();
             Mapper.CreateMap<ProductionItemStatProtoSerializable, ProductionItemStat>();
+            Mapper.CreateMap<ConsumableItemStatProtoSerializable, ConsumableItemStat>();
 
             // Buildable Items
             Mapper.CreateMap<BuildableItem, BuildableItemTableStorage>()
                 .Include<ProductionItem, ProductionItemTableStorage>()
+                .Include<ConsumableItem, ConsumableItemTableStorage>()
                 .ForMember(bts => bts.PartitionKey, opt => opt.Ignore())
                 .ForMember(bts => bts.RowKey, opt => opt.Ignore())
                 .ForMember(bts => bts.Timestamp, opt => opt.Ignore())
@@ -94,6 +107,15 @@
                 .ForMember(bts => bts.ETag, opt => opt.Ignore());
 
             Mapper.CreateMap<ProductionItemTableStorage, ProductionItem>();
+
+            // Consumable Items
+            Mapper.CreateMap<ConsumableItem, ConsumableItemTableStorage>()
+                .ForMember(bts => bts.PartitionKey, opt => opt.Ignore())
+                .ForMember(bts => bts.RowKey, opt => opt.Ignore())
+                .ForMember(bts => bts.Timestamp, opt => opt.Ignore())
+                .ForMember(bts => bts.ETag, opt => opt.Ignore());
+
+            Mapper.CreateMap<ConsumableItemTableStorage, ConsumableItem>();
 
             // Experience Levels
             Mapper.CreateMap<ExperienceLevel, ExperienceLevelTableStorage>()

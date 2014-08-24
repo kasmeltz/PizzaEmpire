@@ -9,7 +9,7 @@
     public class ProductionItemTableStorage : BuildableItemTableStorage
     {
         /// <summary>
-        /// Creates a new instance of the BuildableItemTableStorage class.
+        /// Creates a new instance of the ProductionItemTableStorage class.
         /// </summary>
         public ProductionItemTableStorage() { }
 

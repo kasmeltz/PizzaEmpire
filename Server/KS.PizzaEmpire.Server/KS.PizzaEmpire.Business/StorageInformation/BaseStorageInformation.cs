@@ -1,8 +1,9 @@
-﻿using KS.PizzaEmpire.Business.Cache;
-using KS.PizzaEmpire.Business.TableStorage;
-using KS.PizzaEmpire.Common.BusinessObjects;
-namespace KS.PizzaEmpire.Business.StorageInformation
+﻿namespace KS.PizzaEmpire.Business.StorageInformation
 {
+    using Cache;
+    using Common.BusinessObjects;
+    using TableStorage;
+    
     /// <summary>
     /// The base implementation of an item that contains information
     /// about various storage settings
