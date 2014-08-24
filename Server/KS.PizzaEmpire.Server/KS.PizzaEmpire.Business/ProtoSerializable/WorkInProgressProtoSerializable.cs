@@ -6,12 +6,12 @@
     using System.Collections.Generic;
 
     [ProtoContract]
-    public class WorkItemProtoBuf
+    public class WorkInProgressProtoSerializable
     {
          /// <summary>
         /// Creates a new instance of the WorkItemProtoBuf class.
         /// </summary>
-        public WorkItemProtoBuf() { }
+        public WorkInProgressProtoSerializable() { }
 
         /// <summary>
         /// The item code that represents the item we are working on
@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static List<WorkItemProtoBuf> FromBusiness(List<WorkInProgress> items)
+        public static List<WorkInProgressProtoSerializable> FromBusiness(List<WorkInProgress> items)
         {
             throw new NotImplementedException();
 
@@ -57,7 +57,7 @@
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static List<WorkInProgress> ToBusiness(List<WorkItemProtoBuf> items)
+        public static List<WorkInProgress> ToBusiness(List<WorkInProgressProtoSerializable> items)
         {
             throw new NotImplementedException();
 

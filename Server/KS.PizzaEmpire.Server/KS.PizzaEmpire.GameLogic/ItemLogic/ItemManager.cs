@@ -92,7 +92,29 @@
         /// </summary>
         public async Task StoreBuildableItems()
         {
-            throw new NotImplementedException();
+            List<BuildableItem> items = CreateItemList();
+
+            /*
+            foreach (BuildableItem item in items)
+            {
+                re.StorageInformation = new RecipeStorageInformation(re.ItemCode.ToString());
+                recs.Add((RecipeTableStorage)re.ToTableStorageEntity());
+
+                AzureTableStorage storage = new AzureTableStorage();
+                await storage.SetTable("BuildableItem");
+                await storage.DeleteTable();
+                await storage.SetTable("BuildableItem");
+                await storage.InsertOrReplace<BuildableItemTableStorage>(bitems);
+            }
+            */
+
+            /*
+            AzureTableStorage storage = new AzureTableStorage();
+            await storage.SetTable("BuildableItem");
+            await storage.DeleteTable();
+            await storage.SetTable("BuildableItem");
+            await storage.InsertOrReplace<BuildableItemTableStorage>(bitems);
+            */
 
             /*
             List<BuildableItemTableStorage> bitems = new List<BuildableItemTableStorage>();

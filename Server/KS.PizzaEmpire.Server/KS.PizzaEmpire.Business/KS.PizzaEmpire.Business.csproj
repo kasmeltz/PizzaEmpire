@@ -67,8 +67,9 @@
   <ItemGroup>
     <Compile Include="Cache\GamePlayerCacheable.cs" />
     <Compile Include="Cache\ICacheEntity.cs" />
-    <Compile Include="ProtoSerializable\ItemQuantityProtoBuf.cs" />
-    <Compile Include="ProtoSerializable\WorkItemProtoBuf.cs" />
+    <Compile Include="ProtoSerializable\BuildableItemStatProtoSerializable.cs" />
+    <Compile Include="ProtoSerializable\ItemQuantityProtoSerializable.cs" />
+    <Compile Include="ProtoSerializable\WorkInProgressProtoSerializable.cs" />
     <Compile Include="StorageInformation\BaseStorageInformation.cs" />
     <Compile Include="StorageInformation\BuildableItemStorageInformation.cs" />
     <Compile Include="StorageInformation\ExperienceLevelStorageInformation.cs" />

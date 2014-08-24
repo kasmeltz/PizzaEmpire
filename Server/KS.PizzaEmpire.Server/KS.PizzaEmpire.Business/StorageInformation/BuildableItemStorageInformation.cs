@@ -51,47 +51,51 @@
         }
 
         /// <summary>
+        /// Copies the info from a BuildableItemTableStorage to a BuildableItem table storage
+        /// </summary>
+        /// <param name="clone"></param>
+        /// <param name="other"></param>
+        public void Copy(BuildableItem clone, BuildableItemTableStorage other)
+        {
+            clone.ItemCode = (BuildableItemEnum)other.ItemCode;
+            List<BuildableItemStatProtoSerializable> stats = null;
+            using (MemoryStream memoryStream = new MemoryStream(other.Stats))
+            {
+                stats = Serializer.Deserialize<List<BuildableItemStatProtoSerializable>>(memoryStream);
+            }
+            clone.Stats = BuildableItemStatProtoSerializable.ToBusiness(stats);
+        }
+
+        /// <summary>
+        /// Copies the info from a BuildableItem to a BuildableItemTableStorage table storage
+        /// </summary>
+        /// <param name="clone"></param>
+        /// <param name="other"></param>
+        public void Copy(BuildableItemTableStorage clone, BuildableItem other)
+        {
+            clone.ItemCode = (int)other.ItemCode;
+            List<BuildableItemStatProtoSerializable> stats = 
+                BuildableItemStatProtoSerializable.FromBusiness(other.Stats);
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                Serializer.Serialize(memoryStream, stats);
+                clone.Stats = memoryStream.ToArray();
+            }
+        }
+
+        /// <summary>
         /// Translates an ITableStorageEntity to an IBusinessObjectEntity
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         public override IBusinessObjectEntity FromTableStorage(ITableStorageEntity entity)
         {
-            throw new NotImplementedException();
-
-            /*
             BuildableItemTableStorage other = entity as BuildableItemTableStorage;
-
             BuildableItem clone = new BuildableItem();
-     
-            clone.ItemCode = (BuildableItemEnum)other.ItemCode;
-            clone.RequiredLevel = other.RequiredLevel;
-            clone.CoinCost = other.CoinCost;
-            clone.ProductionItem = (BuildableItemEnum)other.ProductionItem;
-            clone.ProductionCapacity = other.ProductionCapacity;
-            clone.BaseProduction = other.BaseProduction;
-            clone.StorageCapacity = other.StorageCapacity;
-            clone.StorageItem = (BuildableItemEnum)other.StorageItem;
-            clone.IsStorage = other.IsStorage;
-            clone.IsConsumable = other.IsConsumable;
-            clone.IsImmediate = other.IsImmediate;
-            clone.IsWorkSubtracted = other.IsWorkSubtracted;
-            clone.Experience = other.Experience;
-            clone.BuildSeconds = other.BuildSeconds;
-            clone.CouponCost = other.CouponCost;
-            clone.SpeedUpCoupons = other.SpeedUpCoupons;
-            clone.SpeedUpSeconds = other.SpeedUpSeconds;
 
-            List<ItemQuantityProtoBuf> wis = null;
-            using (MemoryStream memoryStream = new MemoryStream(other.RequiredItemsSerialized))
-            {
-                wis = Serializer.Deserialize<List<ItemQuantityProtoBuf>>(memoryStream);
-            }
-
-            clone.RequiredItems = ItemQuantityProtoBuf.ToBusiness(wis);
+            Copy(clone, other);
 
             return clone;
-             * */
         }
 
         /// <summary>
@@ -101,44 +105,15 @@
         /// <returns></returns>
         public override ITableStorageEntity ToTableStorage(IBusinessObjectEntity entity)
         {
-            throw new NotImplementedException();
-
-            /*
             BuildableItem other = entity as BuildableItem;
-
             BuildableItemTableStorage clone = new BuildableItemTableStorage();
 
             clone.PartitionKey = PartitionKey;
             clone.RowKey = RowKey;
 
-            clone.ItemCode = (int)other.ItemCode;
-            clone.RequiredLevel = other.RequiredLevel;
-            clone.CoinCost = other.CoinCost;
-            clone.ProductionItem = (int)other.ProductionItem;
-            clone.ProductionCapacity = other.ProductionCapacity;
-            clone.BaseProduction = other.BaseProduction;
-            clone.StorageCapacity = other.StorageCapacity;
-            clone.StorageItem = (int)other.StorageItem;
-            clone.IsStorage = other.IsStorage;
-            clone.IsConsumable = other.IsConsumable;
-            clone.IsImmediate = other.IsImmediate;
-            clone.IsWorkSubtracted = other.IsWorkSubtracted;
-            clone.Experience = other.Experience;
-            clone.BuildSeconds = other.BuildSeconds;
-            clone.CouponCost = other.CouponCost;
-            clone.SpeedUpCoupons = other.SpeedUpCoupons;
-            clone.SpeedUpSeconds = other.SpeedUpSeconds;
-
-            List<ItemQuantityProtoBuf> wis = ItemQuantityProtoBuf.FromBusiness(other.RequiredItems);
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                Serializer.Serialize(memoryStream, wis);
-                clone.RequiredItemsSerialized = memoryStream.ToArray();
-            }
-
+            Copy(clone, other);
+            
             return clone;
-             * */
         }
     }
 }
