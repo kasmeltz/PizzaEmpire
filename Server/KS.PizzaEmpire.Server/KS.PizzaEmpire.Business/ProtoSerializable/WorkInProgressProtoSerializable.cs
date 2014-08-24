@@ -14,69 +14,21 @@
         public WorkInProgressProtoSerializable() { }
 
         /// <summary>
-        /// The item code that represents the item we are working on
+        /// The details of the work that is in progress
         /// </summary>
         [ProtoMember(1)]
-        public BuildableItemEnum ItemCode { get; set; }
+        public ItemQuantity Quantity { get; set; }
+
+        /// <summary>
+        /// The location that the work is being done for
+        /// </summary>
+        [ProtoMember(2)]
+        public int Location { get; set; }
 
         /// <summary>
         /// The time when this work will be complete in UTC format
         /// </summary>
-        [ProtoMember(2)]
+        [ProtoMember(3)] 
         public DateTime FinishTime { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        public static List<WorkInProgressProtoSerializable> FromBusiness(List<WorkInProgress> items)
-        {
-            throw new NotImplementedException();
-
-            /*
-            if (items == null)
-            {
-                return null;
-            }   
-
-            List<WorkItemProtoBuf> wis = new List<WorkItemProtoBuf>();
-            foreach (WorkInProgress wi in items)
-            {
-                WorkItemProtoBuf clone = new WorkItemProtoBuf();
-                clone.ItemCode = wi.ItemCode;
-                clone.FinishTime = wi.FinishTime;
-                wis.Add(clone);
-            }
-            return wis;
-             */
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        public static List<WorkInProgress> ToBusiness(List<WorkInProgressProtoSerializable> items)
-        {
-            throw new NotImplementedException();
-
-            /*
-            if (items == null)
-            {
-                return null;
-            }   
-
-            List<WorkInProgress> wis = new List<WorkInProgress>();
-            foreach (WorkItemProtoBuf wi in items)
-            {
-                WorkInProgress clone = new WorkInProgress();
-                clone.ItemCode = wi.ItemCode;
-                clone.FinishTime = wi.FinishTime;
-                wis.Add(clone);
-            }
-            return wis;
-             * */
-        }
     }
 }

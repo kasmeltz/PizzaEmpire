@@ -3,28 +3,32 @@
     using AutoMapper;
     using Common;
     using KS.PizzaEmpire.Business.Cache;
+    using KS.PizzaEmpire.Business.ProtoSerializable;
     using KS.PizzaEmpire.Business.TableStorage;
     using KS.PizzaEmpire.Common.BusinessObjects;
+    using ProtoBuf;
     using System;
+    using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
-    /// Represents in item that contains information about storing an 
-    /// ExperienceLevel entity in various types of storage.
+    /// Represents in item that contains information about storing a
+    /// ProductionItem entity in various types of storage.
     /// </summary>
-    public class ExperienceLevelStorageInformation : BaseStorageInformation
-    {       
+    public class ProductionItemStorageInformation : BaseStorageInformation
+    {
         /// <summary>
-        /// Creates a new instance of the ExperienceLevelStorageInformation class with the
+        /// Creates a new instance of the ProductionItemStorageInformation class with the
         /// provided Unique Key
         /// </summary>
         /// <param name="uniqueKey"></param>
-        public ExperienceLevelStorageInformation(string uniqueKey) 
+        public ProductionItemStorageInformation(string uniqueKey)
             : base(uniqueKey)
         {
-            TableName = "ExperienceLevel";
+            TableName = "ProductionItem";
             PartitionKey = "Version" + Constants.APPLICATION_VERSION;
             RowKey = uniqueKey;
-            CacheKey = "EL_" + uniqueKey;
+            CacheKey = "PI_" + uniqueKey;
         }
 
         /// <summary>
@@ -55,8 +59,8 @@
         public override IBusinessObjectEntity FromTableStorage(ITableStorageEntity entity)
         {
             return Mapper
-                .Map<ExperienceLevelTableStorage, ExperienceLevel>(
-                    (ExperienceLevelTableStorage)entity);
+                .Map<ProductionItemTableStorage, ProductionItem>(
+                    (ProductionItemTableStorage)entity);
         }
 
         /// <summary>
@@ -66,9 +70,9 @@
         /// <returns></returns>
         public override ITableStorageEntity ToTableStorage(IBusinessObjectEntity entity)
         {
-            ExperienceLevelTableStorage ts = Mapper
-               .Map<ExperienceLevel, ExperienceLevelTableStorage>(
-                   (ExperienceLevel)entity);
+            BuildableItemTableStorage ts = Mapper
+                .Map<ProductionItem, ProductionItemTableStorage>(
+                    (ProductionItem)entity);
 
             ts.PartitionKey = PartitionKey;
             ts.RowKey = RowKey;

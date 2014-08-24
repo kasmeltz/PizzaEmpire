@@ -1,9 +1,11 @@
 ﻿namespace KS.PizzaEmpire.Business.Test.StorageInformation
 {
+    using AutoMapper;
     using Business.Cache;
     using Business.StorageInformation;
     using Business.TableStorage;
     using Common.BusinessObjects;
+    using KS.PizzaEmpire.Business.Automapper;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
 
@@ -12,6 +14,13 @@
     {
         public ExperienceLevelStorageInformation storageInfo;
         public ExperienceLevel level;
+
+        [ClassInitialize]
+        public static void InitAllTests(TestContext testContext)
+        {
+            AutoMapperConfiguration.Configure();
+            Mapper.AssertConfigurationIsValid();
+        }
 
         [TestInitialize]
         public void Initialize()

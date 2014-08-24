@@ -1,5 +1,6 @@
 ﻿namespace KS.PizzaEmpire.Business.StorageInformation
 {
+    using AutoMapper;
     using Common;
     using KS.PizzaEmpire.Business.Cache;
     using KS.PizzaEmpire.Business.ProtoSerializable;
@@ -49,40 +50,7 @@
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// Copies the info from a BuildableItemTableStorage to a BuildableItem table storage
-        /// </summary>
-        /// <param name="clone"></param>
-        /// <param name="other"></param>
-        public void Copy(BuildableItem clone, BuildableItemTableStorage other)
-        {
-            clone.ItemCode = (BuildableItemEnum)other.ItemCode;
-            List<BuildableItemStatProtoSerializable> stats = null;
-            using (MemoryStream memoryStream = new MemoryStream(other.Stats))
-            {
-                stats = Serializer.Deserialize<List<BuildableItemStatProtoSerializable>>(memoryStream);
-            }
-            clone.Stats = BuildableItemStatProtoSerializable.ToBusiness(stats);
-        }
-
-        /// <summary>
-        /// Copies the info from a BuildableItem to a BuildableItemTableStorage table storage
-        /// </summary>
-        /// <param name="clone"></param>
-        /// <param name="other"></param>
-        public void Copy(BuildableItemTableStorage clone, BuildableItem other)
-        {
-            clone.ItemCode = (int)other.ItemCode;
-            List<BuildableItemStatProtoSerializable> stats = 
-                BuildableItemStatProtoSerializable.FromBusiness(other.Stats);
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                Serializer.Serialize(memoryStream, stats);
-                clone.Stats = memoryStream.ToArray();
-            }
-        }
-
+        
         /// <summary>
         /// Translates an ITableStorageEntity to an IBusinessObjectEntity
         /// </summary>
@@ -90,12 +58,9 @@
         /// <returns></returns>
         public override IBusinessObjectEntity FromTableStorage(ITableStorageEntity entity)
         {
-            BuildableItemTableStorage other = entity as BuildableItemTableStorage;
-            BuildableItem clone = new BuildableItem();
-
-            Copy(clone, other);
-
-            return clone;
+            return Mapper
+                .Map<BuildableItemTableStorage,BuildableItem>(
+                    (BuildableItemTableStorage)entity);
         }
 
         /// <summary>
@@ -105,15 +70,14 @@
         /// <returns></returns>
         public override ITableStorageEntity ToTableStorage(IBusinessObjectEntity entity)
         {
-            BuildableItem other = entity as BuildableItem;
-            BuildableItemTableStorage clone = new BuildableItemTableStorage();
+            BuildableItemTableStorage ts = Mapper
+                .Map<BuildableItem, BuildableItemTableStorage>(
+                    (BuildableItem)entity);
 
-            clone.PartitionKey = PartitionKey;
-            clone.RowKey = RowKey;
+            ts.PartitionKey = PartitionKey;
+            ts.RowKey = RowKey;
 
-            Copy(clone, other);
-            
-            return clone;
+            return ts;
         }
     }
 }
