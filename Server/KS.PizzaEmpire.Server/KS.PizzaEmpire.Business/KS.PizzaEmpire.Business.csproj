@@ -75,12 +75,14 @@
     <Compile Include="Cache\GamePlayerCacheable.cs" />
     <Compile Include="Cache\ICacheEntity.cs" />
     <Compile Include="ProtoSerializable\ConsumableItemStatProtoSerializable.cs" />
+    <Compile Include="ProtoSerializable\WorkItemStatProtoSerializable.cs" />
     <Compile Include="ProtoSerializable\ProductionItemStatProtoSerializable.cs" />
     <Compile Include="ProtoSerializable\BuildableItemStatProtoSerializable.cs" />
     <Compile Include="ProtoSerializable\ItemQuantityProtoSerializable.cs" />
     <Compile Include="ProtoSerializable\WorkInProgressProtoSerializable.cs" />
     <Compile Include="StorageInformation\BaseStorageInformation.cs" />
     <Compile Include="StorageInformation\ConsumableItemStorageInformation.cs" />
+    <Compile Include="StorageInformation\WorkItemStorageInformation.cs" />
     <Compile Include="StorageInformation\ProductionItemStorageInformation.cs" />
     <Compile Include="StorageInformation\BuildableItemStorageInformation.cs" />
     <Compile Include="StorageInformation\ExperienceLevelStorageInformation.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="StorageInformation\IStorageInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableStorage\ConsumableItemTableStorage.cs" />
+    <Compile Include="TableStorage\WorkItemTableStorage.cs" />
     <Compile Include="TableStorage\ProductionItemTableStorage.cs" />
     <Compile Include="TableStorage\BuildableItemTableStorage.cs" />
     <Compile Include="TableStorage\ExperienceLevelTableStorage.cs" />
