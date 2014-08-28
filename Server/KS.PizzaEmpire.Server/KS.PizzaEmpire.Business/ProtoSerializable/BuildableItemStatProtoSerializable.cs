@@ -8,7 +8,7 @@
     public class BuildableItemStatProtoSerializable
     {
         /// <summary>
-        /// Creates a new instance of the BuildableItemStatProtoBuf class.
+        /// Creates a new instance of the BuildableItemStatProtoSerializable class.
         /// </summary>
         public BuildableItemStatProtoSerializable() { }
 

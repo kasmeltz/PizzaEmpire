@@ -6,7 +6,7 @@
     public class WorkItemStatProtoSerializable
     {
         /// <summary>
-        /// Creates a new instance of the BuildableItemStatProtoBuf class.
+        /// Creates a new instance of the WorkItemStatProtoSerializable class.
         /// </summary>
         public WorkItemStatProtoSerializable() { }
     }

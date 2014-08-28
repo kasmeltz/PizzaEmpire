@@ -54,9 +54,24 @@
         /// <returns></returns>
         public override IBusinessObjectEntity FromTableStorage(ITableStorageEntity entity)
         {
-            return Mapper
-                .Map<BuildableItemTableStorage,BuildableItem>(
-                    (BuildableItemTableStorage)entity);
+            BuildableItemTableStorage buildableItemTableStorage = (BuildableItemTableStorage)entity;
+            switch ((BuildableItemCategory)buildableItemTableStorage.Category)
+            {
+                case BuildableItemCategory.Production:
+                    return Mapper
+                        .Map<BuildableItemTableStorage, ProductionItem>(buildableItemTableStorage);
+                case BuildableItemCategory.Consumable:
+                    return Mapper
+                        .Map<BuildableItemTableStorage, ConsumableItem>(buildableItemTableStorage);
+                case BuildableItemCategory.Work:
+                    return Mapper
+                        .Map<BuildableItemTableStorage, WorkItem>(buildableItemTableStorage);
+                case BuildableItemCategory.Storage:
+                    return Mapper
+                        .Map<BuildableItemTableStorage, StorageItem>(buildableItemTableStorage);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -66,10 +81,8 @@
         /// <returns></returns>
         public override ITableStorageEntity ToTableStorage(IBusinessObjectEntity entity)
         {
-            BuildableItemTableStorage ts = Mapper
-                .Map<BuildableItem, BuildableItemTableStorage>(
-                    (BuildableItem)entity);
-
+            BuildableItemTableStorage ts = (BuildableItemTableStorage)Mapper
+                .Map(entity, entity.GetType(), typeof(BuildableItemTableStorage));
             ts.PartitionKey = PartitionKey;
             ts.RowKey = RowKey;
 

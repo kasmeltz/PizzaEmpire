@@ -9,7 +9,7 @@
     public class WorkInProgressProtoSerializable
     {
          /// <summary>
-        /// Creates a new instance of the WorkItemProtoBuf class.
+        /// Creates a new instance of the WorkInProgressProtoSerializable class.
         /// </summary>
         public WorkInProgressProtoSerializable() { }
 

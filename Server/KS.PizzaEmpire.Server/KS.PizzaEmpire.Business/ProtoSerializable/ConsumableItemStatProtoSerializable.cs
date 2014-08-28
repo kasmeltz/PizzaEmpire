@@ -6,7 +6,7 @@
     public class ConsumableItemStatProtoSerializable
     {
         /// <summary>
-        /// Creates a new instance of the BuildableItemStatProtoBuf class.
+        /// Creates a new instance of the ConsumableItemStatProtoSerializable class.
         /// </summary>
         public ConsumableItemStatProtoSerializable() { }
 

@@ -15,7 +15,7 @@
     [TestClass]
     public class ProductionItemStorageInformationTest
     {
-        public ProductionItemStorageInformation storageInfo;
+        public BuildableItemStorageInformation storageInfo;
         public ProductionItem bitem;
 
         [ClassInitialize]
@@ -28,7 +28,7 @@
         [TestInitialize]
         public void Initialize()
         {            
-            storageInfo = new ProductionItemStorageInformation(BuildableItemEnum.White_Flour.ToString());
+            storageInfo = new BuildableItemStorageInformation(BuildableItemEnum.White_Flour.ToString());
 
             bitem = new ProductionItem
             {
@@ -78,10 +78,10 @@
         public void TestInstantiate()
         {
             Assert.AreEqual("White_Flour", storageInfo.UniqueKey);
-            Assert.AreEqual("ProductionItem", storageInfo.TableName);
+            Assert.AreEqual("BuildableItem", storageInfo.TableName);
             Assert.AreEqual("Version1", storageInfo.PartitionKey);
             Assert.AreEqual("White_Flour", storageInfo.RowKey);
-            Assert.AreEqual("PI_White_Flour", storageInfo.CacheKey);
+            Assert.AreEqual("BI_White_Flour", storageInfo.CacheKey);
         }
 
         [TestMethod]
@@ -102,19 +102,21 @@
         [TestMethod]
         public void TestToTableStorage()
         {
-            ProductionItemTableStorage ts = (ProductionItemTableStorage)storageInfo.ToTableStorage(bitem);
+            BuildableItemTableStorage ts = (BuildableItemTableStorage)storageInfo.ToTableStorage(bitem);
 
             Assert.AreEqual("Version1", ts.PartitionKey);
             Assert.AreEqual("White_Flour", ts.RowKey);
             Assert.AreEqual(15, ts.ItemCode);
             Assert.AreEqual(32, ts.Stats.Length);
             Assert.AreEqual(4, ts.ProductionStats.Length);
+            Assert.AreEqual(null, ts.StorageStats);
+            Assert.AreEqual(1, ts.Category);
         }
 
         [TestMethod]
         public void TestFromTableStorage()
         {
-            ProductionItemTableStorage ts = (ProductionItemTableStorage)storageInfo.ToTableStorage(bitem);
+            BuildableItemTableStorage ts = (BuildableItemTableStorage)storageInfo.ToTableStorage(bitem);
             ProductionItem flip = (ProductionItem)storageInfo.FromTableStorage(ts);
 
             Assert.AreEqual(BuildableItemEnum.White_Pizza_Dough, flip.ItemCode);
@@ -140,13 +142,13 @@
         [TestMethod]
         public async Task TestTableStorageServiceRoundTrip()
         {
-            ProductionItemTableStorage ts = (ProductionItemTableStorage)storageInfo.ToTableStorage(bitem);
+            BuildableItemTableStorage ts = (BuildableItemTableStorage)storageInfo.ToTableStorage(bitem);
             
             AzureTableStorage storage = new AzureTableStorage();
             await storage.SetTable(storageInfo.TableName);
-            await storage.InsertOrReplace<ProductionItemTableStorage>(ts);
+            await storage.InsertOrReplace<BuildableItemTableStorage>(ts);
 
-            ProductionItemTableStorage storageItem = await storage.Get<ProductionItemTableStorage>(storageInfo.PartitionKey, storageInfo.RowKey);
+            BuildableItemTableStorage storageItem = await storage.Get<BuildableItemTableStorage>(storageInfo.PartitionKey, storageInfo.RowKey);
 
             ProductionItem flip = (ProductionItem)storageInfo.FromTableStorage(storageItem); 
 

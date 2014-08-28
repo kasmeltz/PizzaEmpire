@@ -90,11 +90,11 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StorageInformation\ConsumableItemStorageInformationTest.cs" />
+    <Compile Include="StorageInformation\StorageItemStorageInformationTest.cs" />
     <Compile Include="StorageInformation\WorkItemStorageInformationTest.cs" />
     <Compile Include="StorageInformation\ProductionItemStorageInformationTest.cs" />
     <Compile Include="StorageInformation\GamePlayerStorageInformationTest.cs" />
     <Compile Include="StorageInformation\ExperienceLevelStorageInformationTest.cs" />
-    <Compile Include="StorageInformation\BuildableItemStorageInformationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

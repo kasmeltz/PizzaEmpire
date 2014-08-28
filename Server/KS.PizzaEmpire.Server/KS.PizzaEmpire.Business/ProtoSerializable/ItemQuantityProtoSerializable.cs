@@ -9,7 +9,7 @@
     public class ItemQuantityProtoSerializable
     {
          /// <summary>
-        /// Creates a new instance of the ItemQuantityProtoBuf class.
+        /// Creates a new instance of the ItemQuantityProtoSerializable class.
         /// </summary>
         public ItemQuantityProtoSerializable() { }
 

@@ -13,10 +13,10 @@
     using System.Threading.Tasks;
 
     [TestClass]
-    public class BuildableItemStorageInformationTest
+    public class StorageItemStorageInformationTest
     {
         public BuildableItemStorageInformation storageInfo;
-        public BuildableItem bitem;
+        public StorageItem bitem;
 
         [ClassInitialize]
         public static void InitAllTests(TestContext testContext)
@@ -30,7 +30,7 @@
         {            
             storageInfo = new BuildableItemStorageInformation(BuildableItemEnum.White_Flour.ToString());
 
-            bitem = new BuildableItem
+            bitem = new StorageItem
             {
                 ItemCode = BuildableItemEnum.White_Pizza_Dough,
                 Stats = new List<BuildableItemStat>
@@ -63,6 +63,13 @@
                             }
                         }
                     }
+                },
+                StorageStats = new List<StorageItemStat>
+                {
+                    new StorageItemStat
+                    {
+                        Capacity = 2
+                    }                   
                 }
             };
         }
@@ -101,13 +108,16 @@
             Assert.AreEqual("White_Flour", ts.RowKey);
             Assert.AreEqual(15, ts.ItemCode);
             Assert.AreEqual(32, ts.Stats.Length);
+            Assert.AreEqual(null, ts.ProductionStats);
+            Assert.AreEqual(4, ts.StorageStats.Length);
+            Assert.AreEqual(0, ts.Category);
         }
 
         [TestMethod]
         public void TestFromTableStorage()
         {
             BuildableItemTableStorage ts = (BuildableItemTableStorage)storageInfo.ToTableStorage(bitem);
-            BuildableItem flip = (BuildableItem)storageInfo.FromTableStorage(ts);
+            StorageItem flip = (StorageItem)storageInfo.FromTableStorage(ts);
 
             Assert.AreEqual(BuildableItemEnum.White_Pizza_Dough, flip.ItemCode);
             Assert.AreEqual(1, flip.Stats.Count);
@@ -125,6 +135,8 @@
             Assert.AreEqual(1, flip.Stats[0].RequiredItems[1].StoredQuantity);
             Assert.AreEqual(BuildableItemEnum.Yeast, flip.Stats[0].RequiredItems[2].ItemCode);
             Assert.AreEqual(1, flip.Stats[0].RequiredItems[2].StoredQuantity);
+            Assert.AreEqual(1, flip.StorageStats.Count);
+            Assert.AreEqual(2, flip.StorageStats[0].Capacity);
         }
 
         [TestMethod]
@@ -138,7 +150,7 @@
 
             BuildableItemTableStorage storageItem = await storage.Get<BuildableItemTableStorage>(storageInfo.PartitionKey, storageInfo.RowKey);
 
-            BuildableItem flip = (BuildableItem)storageInfo.FromTableStorage(storageItem); 
+            StorageItem flip = (StorageItem)storageInfo.FromTableStorage(storageItem); 
 
             Assert.AreEqual(BuildableItemEnum.White_Pizza_Dough, flip.ItemCode);
             Assert.AreEqual(1, flip.Stats.Count);
@@ -156,6 +168,8 @@
             Assert.AreEqual(1, flip.Stats[0].RequiredItems[1].StoredQuantity);
             Assert.AreEqual(BuildableItemEnum.Yeast, flip.Stats[0].RequiredItems[2].ItemCode);
             Assert.AreEqual(1, flip.Stats[0].RequiredItems[2].StoredQuantity);
+            Assert.AreEqual(1, flip.StorageStats.Count);
+            Assert.AreEqual(2, flip.StorageStats[0].Capacity);
         }        
     }
 }

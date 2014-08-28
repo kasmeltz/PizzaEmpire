@@ -3,12 +3,12 @@
     using ProtoBuf;
 
     [ProtoContract]
-    public class ProductionItemStatProtoSerializable
+    public class StorageItemStatProtoSerializable
     {
         /// <summary>
-        /// Creates a new instance of the ProductionItemStatProtoSerializable class.
+        /// Creates a new instance of the StorageItemStatProtoSerializable class.
         /// </summary>
-        public ProductionItemStatProtoSerializable() { }
+        public StorageItemStatProtoSerializable() { }
 
         /// <summary>
         /// The maximum number of items this item can produce at once

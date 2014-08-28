@@ -33,18 +33,18 @@
         public int Level { get; set; }
 
         /// <summary>
-        /// The players inventory of items
+        /// The player's current tutorial stage
         /// </summary>
-        public byte[] BuildableItemsSerialized { get; set; }
+        public int TutorialStage { get; set; }
+
+        /// <summary>
+        /// The locations (restuarants or head office) associated with the player
+        /// </summary>
+        public byte[] Locations { get; set; }
 
         /// <summary>
         /// The work in progress for the player
         /// </summary>
-        public byte[] WorkItemsSerialized { get; set; }
-
-        /// <summary>
-        /// The player's current tutorial stage
-        /// </summary>
-        public int TutorialStage { get; set; }
+        public byte[] WorkItems { get; set; }
     }
 }

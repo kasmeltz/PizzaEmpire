@@ -86,57 +86,81 @@
                     ProtoDeserializerConverter<List<WorkItemStatProtoSerializable>,
                         List<WorkItemStat>>());
 
+            Mapper.CreateMap<List<StorageItemStat>, byte[]>()
+             .ConvertUsing(new
+                 ProtoSerializerConverter<List<StorageItemStat>,
+                    List<StorageItemStatProtoSerializable>>());
+
+            Mapper.CreateMap<byte[], List<StorageItemStat>>()
+                .ConvertUsing(new
+                    ProtoDeserializerConverter<List<StorageItemStatProtoSerializable>,
+                        List<StorageItemStat>>());
+
             // Serializable classes
             Mapper.CreateMap<ItemQuantity, ItemQuantityProtoSerializable>();
             Mapper.CreateMap<BuildableItemStat, BuildableItemStatProtoSerializable>();
             Mapper.CreateMap<ProductionItemStat, ProductionItemStatProtoSerializable>();
             Mapper.CreateMap<ConsumableItemStat, ConsumableItemStatProtoSerializable>();
             Mapper.CreateMap<WorkItemStat, WorkItemStatProtoSerializable>();
+            Mapper.CreateMap<StorageItemStat, StorageItemStatProtoSerializable>();
 
             Mapper.CreateMap<ItemQuantityProtoSerializable, ItemQuantity>();
             Mapper.CreateMap<BuildableItemStatProtoSerializable, BuildableItemStat>();
             Mapper.CreateMap<ProductionItemStatProtoSerializable, ProductionItemStat>();
             Mapper.CreateMap<ConsumableItemStatProtoSerializable, ConsumableItemStat>();
             Mapper.CreateMap<WorkItemStatProtoSerializable, WorkItemStat>();
+            Mapper.CreateMap<StorageItemStatProtoSerializable, StorageItemStat>();
 
-            // Buildable Items
-            Mapper.CreateMap<BuildableItem, BuildableItemTableStorage>()
-                .Include<ProductionItem, ProductionItemTableStorage>()
-                .Include<ConsumableItem, ConsumableItemTableStorage>()
+            // Buildable Item Types
+            Mapper.CreateMap<ProductionItem, BuildableItemTableStorage>()
                 .ForMember(bts => bts.PartitionKey, opt => opt.Ignore())
                 .ForMember(bts => bts.RowKey, opt => opt.Ignore())
                 .ForMember(bts => bts.Timestamp, opt => opt.Ignore())
-                .ForMember(bts => bts.ETag, opt => opt.Ignore());
+                .ForMember(bts => bts.ETag, opt => opt.Ignore())
+                .ForMember(bts => bts.StorageStats, opt => opt.Ignore())
+                .ForMember(bts => bts.WorkStats, opt => opt.Ignore())
+                .ForMember(bts => bts.ConsumableStats, opt => opt.Ignore())
+                .ForMember(bts => bts.ProducedWith, opt => opt.Ignore())
+                .ForMember(bts => bts.StoredIn, opt => opt.Ignore())
+                .ForMember(bts => bts.Category, opt => opt.UseValue<int>((int)BuildableItemCategory.Production));                    
+            Mapper.CreateMap<BuildableItemTableStorage, ProductionItem>();
 
-            Mapper.CreateMap<BuildableItemTableStorage, BuildableItem>()
-                .Include<ProductionItemTableStorage, ProductionItem>();
-
-            // Production Items
-            Mapper.CreateMap<ProductionItem, ProductionItemTableStorage>()
+            Mapper.CreateMap<StorageItem, BuildableItemTableStorage>()
                 .ForMember(bts => bts.PartitionKey, opt => opt.Ignore())
                 .ForMember(bts => bts.RowKey, opt => opt.Ignore())
                 .ForMember(bts => bts.Timestamp, opt => opt.Ignore())
-                .ForMember(bts => bts.ETag, opt => opt.Ignore());
+                .ForMember(bts => bts.ETag, opt => opt.Ignore())
+                .ForMember(bts => bts.ProductionStats, opt => opt.Ignore())
+                .ForMember(bts => bts.WorkStats, opt => opt.Ignore())
+                .ForMember(bts => bts.ConsumableStats, opt => opt.Ignore())
+                .ForMember(bts => bts.ProducedWith, opt => opt.Ignore())
+                .ForMember(bts => bts.StoredIn, opt => opt.Ignore())
+                .ForMember(bts => bts.Category, opt => opt.UseValue<int>((int)BuildableItemCategory.Storage));
+            Mapper.CreateMap<BuildableItemTableStorage, StorageItem>();
 
-            Mapper.CreateMap<ProductionItemTableStorage, ProductionItem>();
-
-            // Consumable Items
-            Mapper.CreateMap<ConsumableItem, ConsumableItemTableStorage>()
+            Mapper.CreateMap<WorkItem, BuildableItemTableStorage>()
                 .ForMember(bts => bts.PartitionKey, opt => opt.Ignore())
                 .ForMember(bts => bts.RowKey, opt => opt.Ignore())
                 .ForMember(bts => bts.Timestamp, opt => opt.Ignore())
-                .ForMember(bts => bts.ETag, opt => opt.Ignore());
+                .ForMember(bts => bts.ETag, opt => opt.Ignore())
+                .ForMember(bts => bts.ProductionStats, opt => opt.Ignore())
+                .ForMember(bts => bts.ConsumableStats, opt => opt.Ignore())
+                .ForMember(bts => bts.StorageStats, opt => opt.Ignore())
+                .ForMember(bts => bts.ProducedWith, opt => opt.Ignore())
+                .ForMember(bts => bts.StoredIn, opt => opt.Ignore())
+                .ForMember(bts => bts.Category, opt => opt.UseValue<int>((int)BuildableItemCategory.Work));
+            Mapper.CreateMap<BuildableItemTableStorage, WorkItem>();
 
-            Mapper.CreateMap<ConsumableItemTableStorage, ConsumableItem>();
-
-            // Work Items
-            Mapper.CreateMap<WorkItem, WorkItemTableStorage>()
+            Mapper.CreateMap<ConsumableItem, BuildableItemTableStorage>()
                 .ForMember(bts => bts.PartitionKey, opt => opt.Ignore())
                 .ForMember(bts => bts.RowKey, opt => opt.Ignore())
                 .ForMember(bts => bts.Timestamp, opt => opt.Ignore())
-                .ForMember(bts => bts.ETag, opt => opt.Ignore());
-
-            Mapper.CreateMap<WorkItemTableStorage, WorkItem>();
+                .ForMember(bts => bts.ETag, opt => opt.Ignore())
+                .ForMember(bts => bts.ProductionStats, opt => opt.Ignore())
+                .ForMember(bts => bts.StorageStats, opt => opt.Ignore())
+                .ForMember(bts => bts.WorkStats, opt => opt.Ignore())
+                .ForMember(bts => bts.Category, opt => opt.UseValue<int>((int)BuildableItemCategory.Consumable));
+            Mapper.CreateMap<BuildableItemTableStorage, ConsumableItem>();
 
             // Experience Levels
             Mapper.CreateMap<ExperienceLevel, ExperienceLevelTableStorage>()

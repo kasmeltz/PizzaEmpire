@@ -32,6 +32,16 @@
         /// The players current level
         /// </summary>
         public int Level { get; set; }
+        
+        /// <summary>
+        /// The player's current tutorial stage
+        /// </summary>
+        public int TutorialStage { get; set; }
+
+        /// <summary>
+        /// Whether the state has changed
+        /// </summary>
+        public bool StateChanged { get; set; }
 
         /// <summary>
         /// The locations (restuarants or head office) associated with the player
@@ -42,15 +52,5 @@
         /// The work in progress for the player
         /// </summary>
         public List<WorkInProgress> WorkInProgress { get; set; }
-
-        /// <summary>
-        /// The player's current tutorial stage
-        /// </summary>
-        public int TutorialStage { get; set; }
-
-        /// <summary>
-        /// Whether the state has changed
-        /// </summary>
-        public bool StateChanged { get; set; }
     }
 }

@@ -15,7 +15,7 @@
     [TestClass]
     public class WorkItemStorageInformationTest
     {
-        public WorkItemStorageInformation storageInfo;
+        public BuildableItemStorageInformation storageInfo;
         public WorkItem bitem;
 
         [ClassInitialize]
@@ -28,7 +28,7 @@
         [TestInitialize]
         public void Initialize()
         {
-            storageInfo = new WorkItemStorageInformation(BuildableItemEnum.White_Flour.ToString());
+            storageInfo = new BuildableItemStorageInformation(BuildableItemEnum.White_Flour.ToString());
 
             bitem = new WorkItem
             {
@@ -75,10 +75,10 @@
         public void TestInstantiate()
         {
             Assert.AreEqual("White_Flour", storageInfo.UniqueKey);
-            Assert.AreEqual("WorkItem", storageInfo.TableName);
+            Assert.AreEqual("BuildableItem", storageInfo.TableName);
             Assert.AreEqual("Version1", storageInfo.PartitionKey);
             Assert.AreEqual("White_Flour", storageInfo.RowKey);
-            Assert.AreEqual("WI_White_Flour", storageInfo.CacheKey);
+            Assert.AreEqual("BI_White_Flour", storageInfo.CacheKey);
         }
 
         [TestMethod]
@@ -99,7 +99,7 @@
         [TestMethod]
         public void TestToTableStorage()
         {
-            WorkItemTableStorage ts = (WorkItemTableStorage)storageInfo.ToTableStorage(bitem);
+            BuildableItemTableStorage ts = (BuildableItemTableStorage)storageInfo.ToTableStorage(bitem);
 
             Assert.AreEqual("Version1", ts.PartitionKey);
             Assert.AreEqual("White_Flour", ts.RowKey);
@@ -111,7 +111,7 @@
         [TestMethod]
         public void TestFromTableStorage()
         {
-            WorkItemTableStorage ts = (WorkItemTableStorage)storageInfo.ToTableStorage(bitem);
+            BuildableItemTableStorage ts = (BuildableItemTableStorage)storageInfo.ToTableStorage(bitem);
             WorkItem flip = (WorkItem)storageInfo.FromTableStorage(ts);
 
             Assert.AreEqual(BuildableItemEnum.White_Pizza_Dough, flip.ItemCode);
@@ -136,13 +136,13 @@
         [TestMethod]
         public async Task TestTableStorageServiceRoundTrip()
         {
-            WorkItemTableStorage ts = (WorkItemTableStorage)storageInfo.ToTableStorage(bitem);
+            BuildableItemTableStorage ts = (BuildableItemTableStorage)storageInfo.ToTableStorage(bitem);
 
             AzureTableStorage storage = new AzureTableStorage();
             await storage.SetTable(storageInfo.TableName);
-            await storage.InsertOrReplace<WorkItemTableStorage>(ts);
+            await storage.InsertOrReplace<BuildableItemTableStorage>(ts);
 
-            WorkItemTableStorage storageItem = await storage.Get<WorkItemTableStorage>(storageInfo.PartitionKey, storageInfo.RowKey);
+            BuildableItemTableStorage storageItem = await storage.Get<BuildableItemTableStorage>(storageInfo.PartitionKey, storageInfo.RowKey);
 
             WorkItem flip = (WorkItem)storageInfo.FromTableStorage(storageItem);
 

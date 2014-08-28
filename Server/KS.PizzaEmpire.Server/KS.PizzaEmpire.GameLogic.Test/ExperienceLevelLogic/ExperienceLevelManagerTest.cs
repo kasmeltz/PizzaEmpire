@@ -1,15 +1,23 @@
 ﻿namespace KS.PizzaEmpire.GameLogic.Test.ExperienceLevelLogic
 {
-    using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using GameLogic.ExperienceLevelLogic;
-    using System.Threading.Tasks;
+    using AutoMapper;
+    using Business.Automapper;
     using Common.BusinessObjects;
+    using GameLogic.ExperienceLevelLogic;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     [TestClass]
     public class ExperienceLevelManagerTest
     {
+        [ClassInitialize]
+        public static void InitAllTests(TestContext testContext)
+        {
+            AutoMapperConfiguration.Configure();
+            Mapper.AssertConfigurationIsValid();
+        }
+
         [TestMethod]
         public void TestInstance()
         {
