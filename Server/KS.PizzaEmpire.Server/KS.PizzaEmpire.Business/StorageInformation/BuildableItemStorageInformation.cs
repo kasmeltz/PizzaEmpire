@@ -83,6 +83,7 @@
         {
             BuildableItemTableStorage ts = (BuildableItemTableStorage)Mapper
                 .Map(entity, entity.GetType(), typeof(BuildableItemTableStorage));
+            
             ts.PartitionKey = PartitionKey;
             ts.RowKey = RowKey;
 

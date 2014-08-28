@@ -6,7 +6,7 @@
     public class BuildableItemAPI : IAPIEntity
     {
         /// <summary>
-        /// Creates a new instance of the GamePlayer class.
+        /// Creates a new instance of the BuildableItemAPI class.
         /// </summary>
         public BuildableItemAPI() { }
 
@@ -14,10 +14,25 @@
         /// Identifies the type of item
         /// </summary>
         public BuildableItemEnum ItemCode { get; set; }
+            
+        /// <summary>
+        /// The work item
+        /// </summary>
+        public WorkItem WorkItem { get; set; }
 
         /// <summary>
-        /// The per level stats associated with this item
+        /// The production item
         /// </summary>
-        public List<BuildableItemStat> Stats { get; set; }
+        public ProductionItem ProductionItem { get; set; }
+
+        /// <summary>
+        /// The storage item
+        /// </summary>
+        public StorageItem StorageItem { get; set; }
+
+        /// <summary>
+        /// The consumable item
+        /// </summary>
+        public ConsumableItem ConsumableItem { get; set; }
     }
 }

@@ -10,7 +10,9 @@
         /// <summary>
         /// Creates a new instance of the WorkItem class.
         /// </summary>
-        public WorkItem() { }
+        public WorkItem() 
+        {
+        }
 
         /// <summary>
         /// The per level stats associated with this item

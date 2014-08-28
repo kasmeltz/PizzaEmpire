@@ -43,27 +43,27 @@
         public int Level { get; set; }
 
         /// <summary>
-        /// The players inventory of items
-        /// </summary>
-        [ProtoMember(5)]
-        public Dictionary<BuildableItemEnum, int> BuildableItems { get; set; }
-
-        /// <summary>
-        /// The work in progress for the player
-        /// </summary>
-        [ProtoMember(6)]
-        public List<WorkInProgressProtoSerializable> WorkItems { get; set; }
-
-        /// <summary>
         /// The player's current tutorial stage
         /// </summary>
-        [ProtoMember(7)]
+        [ProtoMember(5)]
         public int TutorialStage { get; set; }
 
         /// <summary>
         /// Whether the state has changed
         /// </summary>
-        [ProtoMember(8)]
+        [ProtoMember(6)]
         public bool StateChanged { get; set; }
+
+        /// <summary>
+        /// The locations (restuarants or head office) associated with the player
+        /// </summary>
+        [ProtoMember(7)] 
+        public List<BusinessLocationProtoSerializable> Locations { get; set; }
+
+        /// <summary>
+        /// The work in progress for the player
+        /// </summary>
+        [ProtoMember(8)]
+        public List<WorkInProgressProtoSerializable> WorkInProgress { get; set; }
     }
 }

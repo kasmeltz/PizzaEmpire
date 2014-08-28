@@ -45,6 +45,6 @@
         /// <summary>
         /// The work in progress for the player
         /// </summary>
-        public byte[] WorkItems { get; set; }
+        public byte[] WorkInProgress { get; set; }
     }
 }

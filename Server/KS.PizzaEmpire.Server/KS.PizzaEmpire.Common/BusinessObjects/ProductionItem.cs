@@ -10,7 +10,9 @@
         /// <summary>
         /// Creates a new instance of the ProductionItem class.
         /// </summary>
-        public ProductionItem() { }
+        public ProductionItem() 
+        {
+        }
 
         /// <summary>
         /// The per level stats associated with this item

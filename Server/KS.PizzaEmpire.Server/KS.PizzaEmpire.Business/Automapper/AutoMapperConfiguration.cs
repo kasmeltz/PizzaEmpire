@@ -4,6 +4,7 @@
     using Business.ProtoSerializable;
     using Business.TableStorage;
     using Common.BusinessObjects;
+    using KS.PizzaEmpire.Business.Cache;
     using ProtoBuf;
     using System.Collections.Generic;
     using System.IO;
@@ -45,7 +46,7 @@
     {
         public static void Configure()
         {
-            // Serialized classes
+            // *************************** TO / FROM BYTE ARRAY ***************************
             Mapper.CreateMap<List<BuildableItemStat>, byte[]>()
                 .ConvertUsing(new 
                     ProtoSerializerConverter<List<BuildableItemStat>, 
@@ -87,22 +88,46 @@
                         List<WorkItemStat>>());
 
             Mapper.CreateMap<List<StorageItemStat>, byte[]>()
-             .ConvertUsing(new
-                 ProtoSerializerConverter<List<StorageItemStat>,
-                    List<StorageItemStatProtoSerializable>>());
+                .ConvertUsing(new
+                    ProtoSerializerConverter<List<StorageItemStat>,
+                        List<StorageItemStatProtoSerializable>>());
 
             Mapper.CreateMap<byte[], List<StorageItemStat>>()
                 .ConvertUsing(new
                     ProtoDeserializerConverter<List<StorageItemStatProtoSerializable>,
                         List<StorageItemStat>>());
 
-            // Serializable classes
+            Mapper.CreateMap<List<BusinessLocation>, byte[]>()
+                .ConvertUsing(new
+                    ProtoSerializerConverter<List<BusinessLocation>,
+                        List<BusinessLocationProtoSerializable>>());
+
+            Mapper.CreateMap<byte[], List<BusinessLocation>>()
+                .ConvertUsing(new
+                    ProtoDeserializerConverter<List<BusinessLocationProtoSerializable>,
+                        List<BusinessLocation>>());
+
+            Mapper.CreateMap<List<WorkInProgress>, byte[]>()
+                            .ConvertUsing(new
+                                ProtoSerializerConverter<List<WorkInProgress>,
+                                    List<WorkInProgressProtoSerializable>>());
+
+            Mapper.CreateMap<byte[], List<WorkInProgress>>()
+                .ConvertUsing(new
+                    ProtoDeserializerConverter<List<WorkInProgressProtoSerializable>,
+                        List<WorkInProgress>>());
+            // *************************** TO / FROM BYTE ARRAY ***************************
+
+            // *************************** PROTO SERIALIZABLE ***************************
             Mapper.CreateMap<ItemQuantity, ItemQuantityProtoSerializable>();
             Mapper.CreateMap<BuildableItemStat, BuildableItemStatProtoSerializable>();
             Mapper.CreateMap<ProductionItemStat, ProductionItemStatProtoSerializable>();
             Mapper.CreateMap<ConsumableItemStat, ConsumableItemStatProtoSerializable>();
             Mapper.CreateMap<WorkItemStat, WorkItemStatProtoSerializable>();
             Mapper.CreateMap<StorageItemStat, StorageItemStatProtoSerializable>();
+            Mapper.CreateMap<BusinessLocation, BusinessLocationProtoSerializable>();
+            Mapper.CreateMap<LocationStorage, LocationStorageProtoSerializable>();
+            Mapper.CreateMap<WorkInProgress, WorkInProgressProtoSerializable>();
 
             Mapper.CreateMap<ItemQuantityProtoSerializable, ItemQuantity>();
             Mapper.CreateMap<BuildableItemStatProtoSerializable, BuildableItemStat>();
@@ -110,7 +135,12 @@
             Mapper.CreateMap<ConsumableItemStatProtoSerializable, ConsumableItemStat>();
             Mapper.CreateMap<WorkItemStatProtoSerializable, WorkItemStat>();
             Mapper.CreateMap<StorageItemStatProtoSerializable, StorageItemStat>();
+            Mapper.CreateMap<BusinessLocationProtoSerializable, BusinessLocation>();
+            Mapper.CreateMap<LocationStorageProtoSerializable, LocationStorage>();
+            Mapper.CreateMap<WorkInProgressProtoSerializable, WorkInProgress>();
+            // *************************** PROTO SERIALIZABLE ***************************
 
+            // *************************** TABLE STORAGE ***************************
             // Buildable Item Types
             Mapper.CreateMap<ProductionItem, BuildableItemTableStorage>()
                 .ForMember(bts => bts.PartitionKey, opt => opt.Ignore())
@@ -122,7 +152,7 @@
                 .ForMember(bts => bts.ConsumableStats, opt => opt.Ignore())
                 .ForMember(bts => bts.ProducedWith, opt => opt.Ignore())
                 .ForMember(bts => bts.StoredIn, opt => opt.Ignore())
-                .ForMember(bts => bts.Category, opt => opt.UseValue<int>((int)BuildableItemCategory.Production));                    
+                .ForMember(bts => bts.Category, opt => opt.UseValue<int>((int)BuildableItemCategory.Production));
             Mapper.CreateMap<BuildableItemTableStorage, ProductionItem>();
 
             Mapper.CreateMap<StorageItem, BuildableItemTableStorage>()
@@ -170,6 +200,22 @@
                 .ForMember(bts => bts.ETag, opt => opt.Ignore());
 
             Mapper.CreateMap<ExperienceLevelTableStorage, ExperienceLevel>();
+
+            // Game Player
+            Mapper.CreateMap<GamePlayer, GamePlayerTableStorage>()
+                .ForMember(bts => bts.PartitionKey, opt => opt.Ignore())
+                .ForMember(bts => bts.RowKey, opt => opt.Ignore())
+                .ForMember(bts => bts.Timestamp, opt => opt.Ignore())
+                .ForMember(bts => bts.ETag, opt => opt.Ignore());
+
+            Mapper.CreateMap<GamePlayerTableStorage, GamePlayer>()
+                .ForMember(bts => bts.StateChanged, opt => opt.Ignore());
+            // *************************** TABLE STORAGE ***************************
+
+            // *************************** CACHEABLE ***************************
+            Mapper.CreateMap<GamePlayer, GamePlayerCacheable>();
+            Mapper.CreateMap<GamePlayerCacheable, GamePlayer>();
+            // *************************** CACHEABLE ***************************
         }
     }
 }

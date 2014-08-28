@@ -1,5 +1,6 @@
 ﻿namespace KS.PizzaEmpire.Business.StorageInformation
 {
+    using AutoMapper;
     using Cache;
     using Common.BusinessObjects;
     using System;
@@ -30,25 +31,11 @@
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public override ICacheEntity ToCache(IBusinessObjectEntity item)
+        public override ICacheEntity ToCache(IBusinessObjectEntity entity)
         {
-            throw new NotImplementedException();
-            
-            /*
-            GamePlayer gp = item as GamePlayer;
-
-            GamePlayerCacheable clone = new GamePlayerCacheable();
-            clone.Coins = gp.Coins;
-            clone.Coupons = gp.Coupons;
-            clone.Experience = gp.Experience;
-            clone.Level = gp.Level;
-            clone.BuildableItems = gp.BuildableItems;
-            clone.WorkItems = WorkItemProtoBuf.FromBusiness(gp.WorkItems);
-
-            clone.TutorialStage = gp.TutorialStage;
-
-            return clone;
-             */
+            return Mapper
+                .Map<GamePlayer, GamePlayerCacheable>(
+                    (GamePlayer)entity);
         }
 
         /// <summary>
@@ -58,30 +45,9 @@
         /// <returns></returns>
         public override IBusinessObjectEntity FromCache(ICacheEntity entity)
         {
-
-            throw new NotImplementedException();
-            
-
-            /*
-            GamePlayerCacheable item = entity as GamePlayerCacheable;
-
-            GamePlayer clone = new GamePlayer();
-            clone.Coins = item.Coins;
-            clone.Coupons = item.Coupons;
-            clone.Experience = item.Experience;
-            clone.Level = item.Level;
-            clone.BuildableItems = item.BuildableItems;
-            clone.WorkItems = WorkItemProtoBuf.ToBusiness(item.WorkItems);
-
-            if (clone.WorkItems == null)
-            {
-                clone.WorkItems = new List<WorkInProgress>();
-            }
-
-            clone.TutorialStage = item.TutorialStage;
-
-            return clone;
-             * */
+            return Mapper
+                .Map<GamePlayerCacheable, GamePlayer>(
+                    (GamePlayerCacheable)entity);
         }
 
         /// <summary>
@@ -91,39 +57,9 @@
         /// <returns></returns>
         public override IBusinessObjectEntity FromTableStorage(ITableStorageEntity entity)
         {
-            throw new NotImplementedException();
-
-            /*
-            GamePlayerTableStorage other = entity as GamePlayerTableStorage;
-
-            GamePlayer clone = new GamePlayer();
-            clone.Coins = other.Coins;
-            clone.Coupons = other.Coupons;
-            clone.Experience = other.Experience;
-            clone.Level = other.Level;
-
-            using (MemoryStream memoryStream = new MemoryStream(other.BuildableItemsSerialized))
-            {
-                clone.BuildableItems = Serializer.Deserialize<Dictionary<BuildableItemEnum, int>>(memoryStream);
-            }
-
-            List<WorkItemProtoBuf> wis = null;
-            using (MemoryStream memoryStream = new MemoryStream(other.WorkItemsSerialized))
-            {
-                wis = Serializer.Deserialize<List<WorkItemProtoBuf>>(memoryStream);
-            }
-
-            clone.WorkItems = WorkItemProtoBuf.ToBusiness(wis);
-
-            if (clone.WorkItems == null)
-            {
-                clone.WorkItems = new List<WorkInProgress>();
-            }
-
-            clone.TutorialStage = other.TutorialStage;
-            
-            return clone;
-             * */
+            return Mapper
+                .Map<GamePlayerTableStorage, GamePlayer>(
+                    (GamePlayerTableStorage)entity);
         }
    
         /// <summary>
@@ -133,38 +69,14 @@
         /// <returns></returns>
         public override ITableStorageEntity ToTableStorage(IBusinessObjectEntity entity)
         {
-            throw new NotImplementedException();
+            GamePlayerTableStorage ts = Mapper
+                .Map<GamePlayer, GamePlayerTableStorage>(
+                    (GamePlayer)entity);
 
-            /*
-            GamePlayer item = entity as GamePlayer;
-            GamePlayerTableStorage clone = new GamePlayerTableStorage();
-            
-            clone.PartitionKey = PartitionKey;
-            clone.RowKey = RowKey;
+            ts.PartitionKey = PartitionKey;
+            ts.RowKey = RowKey;
 
-            clone.Coins = item.Coins;
-            clone.Coupons = item.Coupons;
-            clone.Experience = item.Experience;
-            clone.Level = item.Level;
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                Serializer.Serialize(memoryStream, item.BuildableItems);
-                clone.BuildableItemsSerialized = memoryStream.ToArray();
-            }
-
-            List<WorkItemProtoBuf> wis = WorkItemProtoBuf.FromBusiness(item.WorkItems);
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                Serializer.Serialize(memoryStream, wis);
-                clone.WorkItemsSerialized = memoryStream.ToArray();
-            }
-
-            clone.TutorialStage = item.TutorialStage;
-
-            return clone;
-             * */
+            return ts;
         }
     }
 }

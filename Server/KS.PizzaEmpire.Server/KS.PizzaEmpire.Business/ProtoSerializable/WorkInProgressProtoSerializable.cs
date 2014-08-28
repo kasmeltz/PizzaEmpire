@@ -17,7 +17,7 @@
         /// The details of the work that is in progress
         /// </summary>
         [ProtoMember(1)]
-        public ItemQuantity Quantity { get; set; }
+        public ItemQuantityProtoSerializable Quantity { get; set; }
 
         /// <summary>
         /// The location that the work is being done for

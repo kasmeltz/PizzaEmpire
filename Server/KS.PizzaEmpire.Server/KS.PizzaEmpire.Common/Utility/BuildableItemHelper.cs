@@ -3,7 +3,7 @@
     using BusinessObjects;
     using APITransfer;
     using System.Collections.Generic;
-    using LitJson;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// A class that does some work with buildable items in the game
@@ -19,7 +19,7 @@
         {
             Dictionary<BuildableItemEnum, BuildableItem> itemDictionary = new Dictionary<BuildableItemEnum, BuildableItem>();
             BuildableItemAPIMorph morph = new BuildableItemAPIMorph();
-            List<BuildableItemAPI> itemList = JsonMapper.ToObject<List<BuildableItemAPI>>(json);
+            List<BuildableItemAPI> itemList = JsonConvert.DeserializeObject<List<BuildableItemAPI>>(json);
             foreach (BuildableItemAPI item in itemList)
             {
                 itemDictionary[item.ItemCode] = (BuildableItem)morph.ToBusinessFormat(item);
@@ -41,7 +41,7 @@
             {
                 itemList.Add((BuildableItemAPI)morph.ToAPIFormat(item));
             }
-            return JsonMapper.ToJson(itemList);
+            return JsonConvert.SerializeObject(itemList); 
         }
     }
 }

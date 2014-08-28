@@ -10,7 +10,9 @@
          /// <summary>
         /// Creates a new instance of the StorageItem class.
         /// </summary>
-        public StorageItem() { }
+        public StorageItem() 
+        {
+        }
 
         /// <summary>
         /// The per level stats associated with this item

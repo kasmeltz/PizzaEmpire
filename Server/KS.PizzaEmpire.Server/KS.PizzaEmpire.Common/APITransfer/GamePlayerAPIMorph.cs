@@ -1,6 +1,7 @@
 ﻿namespace KS.PizzaEmpire.Common.APITransfer
 {
     using BusinessObjects;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -17,31 +18,17 @@
         /// <returns></returns>
         public IAPIEntity ToAPIFormat(IBusinessObjectEntity entity)
         {
-
-            GamePlayer item = entity as GamePlayer;
             GamePlayerAPI clone = new GamePlayerAPI();
+            GamePlayer other = entity as GamePlayer;
 
-            /*
-            clone.Coins = item.Coins;
-            clone.Coupons = item.Coupons;
-            clone.Experience = item.Experience;
-            clone.Level = item.Level;
-
-            StringBuilder sb = new StringBuilder();
-            foreach(KeyValuePair<BuildableItemEnum, int> kvp in item.BuildableItems)
-            {
-                sb.Append((int)kvp.Key);
-                sb.Append(":");
-                sb.Append(kvp.Value);
-                sb.Append(":");
-            }
-            sb.Remove(sb.Length - 1, 1);
-            clone.BuildableItems = sb.ToString();
-
-            clone.WorkItems = item.WorkItems;
-
-            clone.TutorialStage = item.TutorialStage;
-             * */
+            clone.Coins = other.Coins;
+            clone.Coupons = other.Coupons;
+            clone.Experience = other.Experience;
+            clone.Level = other.Level;
+            clone.TutorialStage = other.TutorialStage;
+            clone.StateChanged = other.StateChanged;
+            clone.Locations = other.Locations;
+            clone.WorkInProgress = other.WorkInProgress;
 
             return clone;
         }
@@ -53,27 +40,17 @@
         /// <returns></returns>
         public IBusinessObjectEntity ToBusinessFormat(IAPIEntity entity)
         {
-            GamePlayerAPI item = entity as GamePlayerAPI;
             GamePlayer clone = new GamePlayer();
+            GamePlayerAPI other = entity as GamePlayerAPI;
 
-            /*
-            clone.Coins = item.Coins;
-            clone.Coupons = item.Coupons;
-            clone.Experience = item.Experience;
-            clone.Level = item.Level;
-
-            clone.BuildableItems = new Dictionary<BuildableItemEnum, int>();
-            string[] items = item.BuildableItems.Split(':');
-            for (int i = 0; i < items.Length; i += 2)
-            {
-                BuildableItemEnum bie = (BuildableItemEnum)Int32.Parse(items[i]);
-                clone.BuildableItems[bie] = Int32.Parse(items[i + 1]);
-            }
-
-            clone.WorkItems = item.WorkItems;
-
-            clone.TutorialStage = item.TutorialStage;
-            */
+            clone.Coins = other.Coins;
+            clone.Coupons = other.Coupons;
+            clone.Experience = other.Experience;
+            clone.Level = other.Level;
+            clone.TutorialStage = other.TutorialStage;
+            clone.StateChanged = other.StateChanged;
+            clone.Locations = other.Locations;
+            clone.WorkInProgress = other.WorkInProgress;
 
             return clone;
         }

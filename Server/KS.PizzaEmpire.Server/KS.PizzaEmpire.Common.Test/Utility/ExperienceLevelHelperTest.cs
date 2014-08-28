@@ -13,10 +13,8 @@
         {
             // Arrange
             Dictionary<int, ExperienceLevel> dict = new Dictionary<int, ExperienceLevel>();
-
             // Act
             string json = ExperienceLevelHelper.ToJSON(dict);
-
             // Assert
             Assert.AreEqual("[]", json);
         }
@@ -28,7 +26,8 @@
             Dictionary<int, ExperienceLevel> dict = new Dictionary<int, ExperienceLevel>();
             dict[1] = new ExperienceLevel { Level = 1, ExperienceRequired = 100 };
             dict[2] = new ExperienceLevel { Level = 2, ExperienceRequired = 300 };
-            string expectedJson = @"[{""Level"":1,""ExperienceRequired"":100},{""Level"":2,""ExperienceRequired"":300}]";
+            string expectedJson = 
+                @"[{""Level"":1,""ExperienceRequired"":100},{""Level"":2,""ExperienceRequired"":300}]";
             
             // Act
             string json = ExperienceLevelHelper.ToJSON(dict);
@@ -41,7 +40,8 @@
         public void TestFromJSON()
         {
             // Arrange
-            string expectedJson = @"[{""Level"":1,""ExperienceRequired"":100},{""Level"":2,""ExperienceRequired"":300}]";
+            string expectedJson =
+                @"[{""Level"":1,""ExperienceRequired"":100},{""Level"":2,""ExperienceRequired"":300}]";
             
             // Act
             Dictionary<int, ExperienceLevel> dict = ExperienceLevelHelper.FromJSON(expectedJson);

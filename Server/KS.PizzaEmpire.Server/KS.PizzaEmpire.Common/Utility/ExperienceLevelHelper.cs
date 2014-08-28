@@ -2,8 +2,8 @@
 {
     using BusinessObjects;
     using APITransfer;
-    using LitJson;
     using System.Collections.Generic;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// A class that does some work with experience levels in the game
@@ -19,7 +19,7 @@
         {
             Dictionary<int, ExperienceLevel> itemDictionary = new Dictionary<int, ExperienceLevel>();
             ExperienceLevelAPIMorph morph = new ExperienceLevelAPIMorph();
-            List<ExperienceLevelAPI> itemList = JsonMapper.ToObject<List<ExperienceLevelAPI>>(json);
+            List<ExperienceLevelAPI> itemList = JsonConvert.DeserializeObject<List<ExperienceLevelAPI>>(json);
             foreach (ExperienceLevelAPI item in itemList)
             {
                 itemDictionary[item.Level] = (ExperienceLevel)morph.ToBusinessFormat(item);
@@ -41,7 +41,7 @@
             {
                 itemList.Add((ExperienceLevelAPI)morph.ToAPIFormat(item));
             }
-            return JsonMapper.ToJson(itemList);
+            return JsonConvert.SerializeObject(itemList); 
         }
     }
 }

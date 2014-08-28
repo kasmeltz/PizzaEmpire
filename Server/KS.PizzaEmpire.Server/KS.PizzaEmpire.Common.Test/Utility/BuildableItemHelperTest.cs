@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using BusinessObjects;
     using Common.Utility;
+    using KS.PizzaEmpire.GameLogic.ItemLogic;
 
     [TestClass]
     public class BuildableItemHelperTest
@@ -14,10 +15,8 @@
         {
             // Arrange
             Dictionary<BuildableItemEnum, BuildableItem> dict = new Dictionary<BuildableItemEnum, BuildableItem>();
-
             // Act
             string json = BuildableItemHelper.ToJSON(dict);
-
             // Assert
             Assert.AreEqual("[]", json);
         }
@@ -25,69 +24,42 @@
         [TestMethod]
         public void TestToJSON()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             // Arrange
+            List<BuildableItem> items = ItemManager.Instance.CreateItemList();
             Dictionary<BuildableItemEnum, BuildableItem> dict = new Dictionary<BuildableItemEnum, BuildableItem>();
-            dict[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1] = new BuildableItem
+            foreach(BuildableItem item in items)
             {
-                ItemCode = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1,
-                CoinCost = 0, IsConsumable = false
-            };
-            dict[BuildableItemEnum.White_Flour] = new BuildableItem
-            {
-                ItemCode = BuildableItemEnum.White_Flour,
-                CoinCost = 100,
-                IsConsumable = true,
-                BuildSeconds = 180,
-                ProductionItem = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1,
-                RequiredItems = new List<ItemQuantity>
-                {
-                     new ItemQuantity 
-                     {
-                          ItemCode = BuildableItemEnum.Dough_Mixer_L1,
-                          Quantity = 4
-                    }
-                }
-            };
-            string expectedJson = @"[{""ItemCode"":35,""RequiredLevel"":0,""CoinCost"":0,""ProductionItem"":0,""ProductionCapacity"":0,""BaseProduction"":0,""StorageCapacity"":0,""StorageItem"":0,""IsStorage"":false,""IsConsumable"":false,""IsImmediate"":false,""IsWorkSubtracted"":false,""Experience"":0,""BuildSeconds"":0,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":null},{""ItemCode"":1,""RequiredLevel"":0,""CoinCost"":100,""ProductionItem"":35,""ProductionCapacity"":0,""BaseProduction"":0,""StorageCapacity"":0,""StorageItem"":0,""IsStorage"":false,""IsConsumable"":true,""IsImmediate"":false,""IsWorkSubtracted"":false,""Experience"":0,""BuildSeconds"":180,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[{""ItemCode"":48,""Quantity"":4}]}]";
+                dict[item.ItemCode] = item;
+            }
+
+            string expectedJson =
+                @"[{""ItemCode"":46,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":{""StorageStats"":[{""Capacity"":10}],""ItemCode"":46,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":0,""BuildSeconds"":0,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""ConsumableItem"":null},{""ItemCode"":27,""WorkItem"":null,""ProductionItem"":{""ProductionStats"":[{""Capacity"":2},{""Capacity"":2},{""Capacity"":2}],""ItemCode"":27,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":0,""BuildSeconds"":0,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":28,""WorkItem"":null,""ProductionItem"":{""ProductionStats"":[{""Capacity"":2}],""ItemCode"":28,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":0,""BuildSeconds"":0,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":48,""WorkItem"":{""WorkStats"":[{}],""ItemCode"":48,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":100,""BuildSeconds"":-1000,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":47,""WorkItem"":{""WorkStats"":[{}],""ItemCode"":47,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":100,""BuildSeconds"":-1000,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":49,""WorkItem"":{""WorkStats"":[{}],""ItemCode"":49,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":100,""BuildSeconds"":-1000,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":1,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":27,""StoredIn"":46,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":1,""Stats"":[{""RequiredLevel"":1,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]}},{""ItemCode"":6,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":27,""StoredIn"":46,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":6,""Stats"":[{""RequiredLevel"":1,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]}},{""ItemCode"":4,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":27,""StoredIn"":46,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":4,""Stats"":[{""RequiredLevel"":1,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]}},{""ItemCode"":7,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":28,""StoredIn"":42,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":7,""Stats"":[{""RequiredLevel"":1,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]}},{""ItemCode"":15,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":40,""StoredIn"":42,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":15,""Stats"":[{""RequiredLevel"":3,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[{""ItemCode"":1,""StoredQuantity"":1,""UnStoredQuantity"":0,""Level"":0},{""ItemCode"":6,""StoredQuantity"":1,""UnStoredQuantity"":0,""Level"":0},{""ItemCode"":4,""StoredQuantity"":1,""UnStoredQuantity"":0,""Level"":0}]}]}}]";
 
             // Act
             string json = BuildableItemHelper.ToJSON(dict);
 
             // Assert
             Assert.AreEqual(expectedJson, json);
-             * */
         }
 
         [TestMethod]
         public void TestFromJSON()
         {
-            Assert.Fail("Not implemented");
-
-            /*
             // Arrange
-            string expectedJson = @"[{""ItemCode"":35,""RequiredLevel"":0,""CoinCost"":0,""ProductionItem"":0,""ProductionCapacity"":0,""BaseProduction"":0,""StorageCapacity"":0,""StorageItem"":0,""IsStorage"":false,""IsConsumable"":false,""IsImmediate"":false,""IsWorkSubtracted"":false,""Experience"":0,""BuildSeconds"":0,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":null},{""ItemCode"":1,""RequiredLevel"":0,""CoinCost"":100,""ProductionItem"":35,""ProductionCapacity"":0,""BaseProduction"":0,""StorageCapacity"":0,""StorageItem"":0,""IsStorage"":false,""IsConsumable"":true,""IsImmediate"":false,""IsWorkSubtracted"":false,""Experience"":0,""BuildSeconds"":180,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[{""ItemCode"":48,""Quantity"":4}]}]";
+            string expectedJson =
+                @"[{""ItemCode"":46,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":{""StorageStats"":[{""Capacity"":10}],""ItemCode"":46,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":0,""BuildSeconds"":0,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""ConsumableItem"":null},{""ItemCode"":27,""WorkItem"":null,""ProductionItem"":{""ProductionStats"":[{""Capacity"":2},{""Capacity"":2},{""Capacity"":2}],""ItemCode"":27,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":0,""BuildSeconds"":0,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":28,""WorkItem"":null,""ProductionItem"":{""ProductionStats"":[{""Capacity"":2}],""ItemCode"":28,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":0,""BuildSeconds"":0,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":48,""WorkItem"":{""WorkStats"":[{}],""ItemCode"":48,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":100,""BuildSeconds"":-1000,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":47,""WorkItem"":{""WorkStats"":[{}],""ItemCode"":47,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":100,""BuildSeconds"":-1000,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":49,""WorkItem"":{""WorkStats"":[{}],""ItemCode"":49,""Stats"":[{""RequiredLevel"":0,""CoinCost"":0,""Experience"":100,""BuildSeconds"":-1000,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]},""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":null},{""ItemCode"":1,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":27,""StoredIn"":46,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":1,""Stats"":[{""RequiredLevel"":1,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]}},{""ItemCode"":6,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":27,""StoredIn"":46,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":6,""Stats"":[{""RequiredLevel"":1,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]}},{""ItemCode"":4,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":27,""StoredIn"":46,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":4,""Stats"":[{""RequiredLevel"":1,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]}},{""ItemCode"":7,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":28,""StoredIn"":42,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":7,""Stats"":[{""RequiredLevel"":1,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[]}]}},{""ItemCode"":15,""WorkItem"":null,""ProductionItem"":null,""StorageItem"":null,""ConsumableItem"":{""ProducedWith"":40,""StoredIn"":42,""ConsumableStats"":[{""ProductionQuantity"":1}],""ItemCode"":15,""Stats"":[{""RequiredLevel"":3,""CoinCost"":50,""Experience"":100,""BuildSeconds"":30,""CouponCost"":0,""SpeedUpCoupons"":0,""SpeedUpSeconds"":0,""RequiredItems"":[{""ItemCode"":1,""StoredQuantity"":1,""UnStoredQuantity"":0,""Level"":0},{""ItemCode"":6,""StoredQuantity"":1,""UnStoredQuantity"":0,""Level"":0},{""ItemCode"":4,""StoredQuantity"":1,""UnStoredQuantity"":0,""Level"":0}]}]}}]";
 
             // Act
             Dictionary<BuildableItemEnum, BuildableItem> dict = BuildableItemHelper.FromJSON(expectedJson);
 
             // Assert
-            Assert.AreEqual(2, dict.Values.Count);
-            Assert.AreEqual(BuildableItemEnum.Dry_Goods_Delivery_Truck_L1, dict[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1].ItemCode);
-            Assert.AreEqual(0, dict[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1].CoinCost);
-            Assert.AreEqual(false, dict[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1].IsConsumable);
-
-            Assert.AreEqual(BuildableItemEnum.White_Flour, dict[BuildableItemEnum.White_Flour].ItemCode);
-            Assert.AreEqual(100, dict[BuildableItemEnum.White_Flour].CoinCost);
-            Assert.AreEqual(true, dict[BuildableItemEnum.White_Flour].IsConsumable);
-            Assert.AreEqual(180, dict[BuildableItemEnum.White_Flour].BuildSeconds);
-            Assert.AreEqual(BuildableItemEnum.Dry_Goods_Delivery_Truck_L1, dict[BuildableItemEnum.White_Flour].ProductionItem);
-            Assert.AreEqual(1, dict[BuildableItemEnum.White_Flour].RequiredItems.Count);
-            Assert.AreEqual(BuildableItemEnum.Dough_Mixer_L1, dict[BuildableItemEnum.White_Flour].RequiredItems[0].ItemCode);
-            Assert.AreEqual(4, dict[BuildableItemEnum.White_Flour].RequiredItems[0].Quantity);
-             * */
+            Assert.AreEqual(11, dict.Values.Count);
+            ProductionItem deliveryTruck = dict[BuildableItemEnum.Dry_Goods_Delivery_Truck] as ProductionItem;
+            Assert.AreEqual(BuildableItemEnum.Dry_Goods_Delivery_Truck, deliveryTruck.ItemCode);
+            Assert.AreEqual(3, deliveryTruck.ProductionStats.Count);
+            Assert.AreEqual(2, deliveryTruck.ProductionStats[0].Capacity);
+            Assert.AreEqual(2, deliveryTruck.ProductionStats[1].Capacity);
+            Assert.AreEqual(2, deliveryTruck.ProductionStats[2].Capacity);
         }
     }
 }

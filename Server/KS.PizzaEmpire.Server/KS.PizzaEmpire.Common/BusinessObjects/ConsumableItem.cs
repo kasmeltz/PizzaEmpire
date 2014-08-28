@@ -9,7 +9,9 @@ namespace KS.PizzaEmpire.Common.BusinessObjects
          /// <summary>
         /// Creates a new instance of the ConsumableItem class.
         /// </summary>
-        public ConsumableItem() { }
+        public ConsumableItem() 
+        {
+        }
 
         /// <summary>
         /// The item that produces this item

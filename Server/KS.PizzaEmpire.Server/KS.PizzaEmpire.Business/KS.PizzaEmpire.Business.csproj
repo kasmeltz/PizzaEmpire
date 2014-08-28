@@ -74,6 +74,8 @@
     <Compile Include="Automapper\AutoMapperConfiguration.cs" />
     <Compile Include="Cache\GamePlayerCacheable.cs" />
     <Compile Include="Cache\ICacheEntity.cs" />
+    <Compile Include="ProtoSerializable\LocationStorageProtoSerializable.cs" />
+    <Compile Include="ProtoSerializable\BusinessLocationProtoSerializable.cs" />
     <Compile Include="ProtoSerializable\ConsumableItemStatProtoSerializable.cs" />
     <Compile Include="ProtoSerializable\StorageItemStatProtoSerializable.cs" />
     <Compile Include="ProtoSerializable\WorkItemStatProtoSerializable.cs" />
@@ -87,7 +89,6 @@
     <Compile Include="StorageInformation\GamePlayerStorageInformation.cs" />
     <Compile Include="StorageInformation\IStorageInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TableStorage\BuildableItemCategory.cs" />
     <Compile Include="TableStorage\BuildableItemTableStorage.cs" />
     <Compile Include="TableStorage\ExperienceLevelTableStorage.cs" />
     <Compile Include="TableStorage\GamePlayerTableStorage.cs" />

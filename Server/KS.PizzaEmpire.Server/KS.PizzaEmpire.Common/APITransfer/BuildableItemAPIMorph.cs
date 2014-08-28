@@ -1,14 +1,17 @@
 ﻿namespace KS.PizzaEmpire.Common.APITransfer
 {
     using BusinessObjects;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Class that can morph BuildableItem objects to and from a dto format
     /// </summary>
     public class BuildableItemAPIMorph : IAPIEntityMorph
-    {
+    {        
         /// <summary>
         /// Converts a business object to an API dto object
         /// </summary>
@@ -16,33 +19,40 @@
         /// <returns></returns>
         public IAPIEntity ToAPIFormat(IBusinessObjectEntity entity)
         {
-            throw new NotImplementedException();
+            BuildableItemAPI api = new BuildableItemAPI();
 
-            /*
-            BuildableItem other = entity as BuildableItem;
-            BuildableItemAPI clone = new BuildableItemAPI();
+            BuildableItem bi = entity as BuildableItem;
+            api.ItemCode = bi.ItemCode;
 
-            clone.ItemCode = other.ItemCode;
-            clone.IsStorage = other.IsStorage;
-            clone.IsConsumable = other.IsConsumable;
-            clone.IsImmediate = other.IsImmediate;
-            clone.IsWorkSubtracted = other.IsWorkSubtracted;
+            WorkItem workItem = entity as WorkItem;
+            if (workItem != null)
+            {
+                api.WorkItem = workItem;
+                return api;
+            }
 
-            clone.ProductionItem = other.ProductionItem;
-            clone.ProductionCapacity = other.ProductionCapacity;
-            clone.BaseProduction = other.BaseProduction;
-            clone.StorageCapacity = other.StorageCapacity;
-            clone.StorageItem = other.StorageItem;
-           
-            clone.Experience = other.Experience;
-            clone.BuildSeconds = other.BuildSeconds;
-            clone.CouponCost = other.CouponCost;
-            clone.SpeedUpCoupons = other.SpeedUpCoupons;
-            clone.SpeedUpSeconds = other.SpeedUpSeconds;
-            clone.RequiredItems = other.RequiredItems;
+            ProductionItem productionItem = entity as ProductionItem;
+            if (productionItem != null)
+            {
+                api.ProductionItem = productionItem;
+                return api;
+            }
 
-            return clone;
-             * */
+            ConsumableItem consumableItem = entity as ConsumableItem;
+            if (consumableItem != null)
+            {
+                api.ConsumableItem = consumableItem;
+                return api;
+            }
+
+            StorageItem storageItem = entity as StorageItem;
+            if (storageItem != null)
+            {
+                api.StorageItem = storageItem;
+                return api;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -52,32 +62,29 @@
         /// <returns></returns>
         public IBusinessObjectEntity ToBusinessFormat(IAPIEntity entity)
         {
-            throw new NotImplementedException();
+            BuildableItemAPI api = entity as BuildableItemAPI;
 
-            /*
-            BuildableItemAPI other = entity as BuildableItemAPI;
-            BuildableItem clone = new BuildableItem();
+            if (api.WorkItem != null)
+            {
+                return api.WorkItem;
+            }
 
-            clone.ItemCode = other.ItemCode;
-            clone.RequiredLevel = other.RequiredLevel;
-            clone.CoinCost = other.CoinCost;
-            clone.ProductionItem = other.ProductionItem;
-            clone.ProductionCapacity = other.ProductionCapacity;
-            clone.BaseProduction = other.BaseProduction;
-            clone.StorageCapacity = other.StorageCapacity;
-            clone.StorageItem = other.StorageItem;
-            clone.IsConsumable = other.IsConsumable;
-            clone.IsImmediate = other.IsImmediate;
-            clone.IsWorkSubtracted = other.IsWorkSubtracted;
-            clone.Experience = other.Experience;
-            clone.BuildSeconds = other.BuildSeconds;
-            clone.CouponCost = other.CouponCost;
-            clone.SpeedUpCoupons = other.SpeedUpCoupons;
-            clone.SpeedUpSeconds = other.SpeedUpSeconds;
-            clone.RequiredItems = other.RequiredItems;
+            if (api.ProductionItem != null)
+            {
+                return api.ProductionItem;
+            }
 
-            return clone;
-             * */
+            if (api.StorageItem != null)
+            {
+                return api.StorageItem;
+            }
+
+            if (api.ConsumableItem != null)
+            {
+                return api.ConsumableItem;
+            }
+
+            return null;
         }
     }
 }

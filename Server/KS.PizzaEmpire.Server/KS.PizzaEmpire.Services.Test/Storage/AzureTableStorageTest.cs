@@ -518,28 +518,5 @@
             players = (await Storage.GetAll<AzureTableStorageTestEntity>("Ka")).ToList();
             Assert.AreEqual(0, players.Count);
         }
-
-        [TestMethod]
-        public async Task TestSaveGamePlayer()
-        {
-            Assert.Fail("Not implemented");
-
-            /*
-            GamePlayerStorageInformation storageInfo = new GamePlayerStorageInformation("test123");
-            GamePlayer player = new GamePlayer();
-            player.Coins = 1000;
-            player.Coupons = 5;
-            player.Experience = 0;
-            player.Level = 1;
-            player.BuildableItems = new Dictionary<BuildableItemEnum, int>();
-            player.BuildableItems[BuildableItemEnum.Dry_Goods_Delivery_Truck_L1] = 1;
-            player.BuildableItems[BuildableItemEnum.Restaurant_Storage] = 1;
-            player.WorkItems = new List<WorkInProgress>();            
-
-            AzureTableStorage storage = new AzureTableStorage();
-            await storage.SetTable(storageInfo.TableName);
-            await storage.InsertOrReplace<GamePlayerTableStorage>((GamePlayerTableStorage)storageInfo.ToTableStorage(player));
-             * */
-        }
     }
 }

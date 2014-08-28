@@ -1,5 +1,5 @@
 ﻿
-namespace KS.PizzaEmpire.Business.TableStorage
+namespace KS.PizzaEmpire.Common.BusinessObjects
 {
     public enum BuildableItemCategory
     {
