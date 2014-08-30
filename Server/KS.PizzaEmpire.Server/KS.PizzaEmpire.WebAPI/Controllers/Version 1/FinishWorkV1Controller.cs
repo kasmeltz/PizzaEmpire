@@ -22,9 +22,6 @@
         // GET api/finishwork/5
         public async Task<Result> Get(string id)
         {
-            throw new NotImplementedException();
-
-            /*
             try
             {
                 GamePlayerStorageInformation storageInfo = new GamePlayerStorageInformation(id);
@@ -53,7 +50,6 @@
             {
                 return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT, Item = ex.Message };
             }
-             * */
         }
 
         // POST api/finishwork

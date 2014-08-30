@@ -34,7 +34,7 @@
                     (ServerCommunication com) =>
                     {
                         GamePlayerLogic.Instance.StartWork(
-                            GamePlayerManager.Instance.LoggedInPlayer, ItemToBuild);
+                            GamePlayerManager.Instance.LoggedInPlayer, 0, 0, ItemToBuild);
                     }, GUIGameObject.SetGlobalError);
 
                 Destroy(gameObject);

@@ -5,6 +5,7 @@ namespace KS.PizzaEmpire.Unity
     using UnityEngine;
     using Common.BusinessObjects;
 	using Common.GameLogic;
+	using Common.GameLogic.GamePlayerState;
 
     public class TutorialManager
     {
@@ -160,9 +161,16 @@ namespace KS.PizzaEmpire.Unity
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, false);
 			};
             stateCheck = new GamePlayerStateCheck();
-            stateCheck.WorkItemsInProgress = new List<ItemQuantity>();
-            stateCheck.WorkItemsInProgress.Add (
-                new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, Quantity = 1 });
+            stateCheck.Rules.Add(
+            	new WorkInProgressCompareRule 
+            	{
+            	  	Item = new ItemQuantity
+            	  	{
+    	  				ItemCode = BuildableItemEnum.White_Flour,
+            	  		UnStoredQuantity = 1            	  		
+            	  	},
+            	  	ComparisonType = ComparisonEnum.GreaterThan
+            	});
             stage.PlayerStateCheck = stateCheck;
             stages.Add(stage);
 
@@ -222,9 +230,15 @@ namespace KS.PizzaEmpire.Unity
 				GameObject.Instantiate(dirtyTable, new Vector3(-5f,-0.6f,0), Quaternion.identity);						
 			};
 			stateCheck = new GamePlayerStateCheck ();
-			stateCheck.ItemQuantityLessThan = new List<ItemQuantity> ();
-			stateCheck.ItemQuantityLessThan.Add(
-				new ItemQuantity { ItemCode = BuildableItemEnum.Dirty_Table, Quantity = 1 });	
+			stateCheck.Rules.Add(
+				new StorageItemUnstoredQuantityCompareRule
+				{
+					 Location = 0,
+					 Level = 0,
+					 Item = BuildableItemEnum.Dirty_Table,
+					 Quantity = 1,
+					 ComparisonType = ComparisonEnum.LessThan
+				});
 			stage.PlayerStateCheck = stateCheck;
             stages.Add(stage);
 
@@ -277,9 +291,16 @@ namespace KS.PizzaEmpire.Unity
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, false);
 			};
 			stateCheck = new GamePlayerStateCheck();
-			stateCheck.WorkItemsInProgress = new List<ItemQuantity>();
-			stateCheck.WorkItemsInProgress.Add (
-				new ItemQuantity { ItemCode = BuildableItemEnum.Tomatoes, Quantity = 1 });
+			stateCheck.Rules.Add(
+				new WorkInProgressCompareRule 
+				{
+				Item = new ItemQuantity
+				{
+					ItemCode = BuildableItemEnum.Tomatoes,
+					UnStoredQuantity = 1            	  		
+				},
+				ComparisonType = ComparisonEnum.GreaterThan
+			});
 			stage.PlayerStateCheck = stateCheck;
 			stages.Add(stage);
 
@@ -317,9 +338,15 @@ namespace KS.PizzaEmpire.Unity
 				GameObject.Instantiate(dirtyTable, new Vector3(-5f,-0.6f,0), Quaternion.identity);			
 			};
 			stateCheck = new GamePlayerStateCheck ();
-			stateCheck.ItemQuantityLessThan = new List<ItemQuantity> ();
-			stateCheck.ItemQuantityLessThan.Add(
-				new ItemQuantity { ItemCode = BuildableItemEnum.Dirty_Dishes, Quantity = 1 });	
+			stateCheck.Rules.Add(
+				new StorageItemUnstoredQuantityCompareRule
+				{
+				Location = 0,
+				Level = 0,
+				Item = BuildableItemEnum.Dirty_Dishes,
+				Quantity = 1,
+				ComparisonType = ComparisonEnum.LessThan
+			});
 			stage.PlayerStateCheck = stateCheck;
 			stages.Add(stage);
 
@@ -342,9 +369,15 @@ namespace KS.PizzaEmpire.Unity
 				SetLouieTexture(LouieExpression.Surprised_Arm_Raised, false);
 			};   
 			stateCheck = new GamePlayerStateCheck ();
-			stateCheck.ItemQuantityGreaterThan = new List<ItemQuantity> ();
-			stateCheck.ItemQuantityGreaterThan.Add(
-				new ItemQuantity { ItemCode = BuildableItemEnum.White_Flour, Quantity = 0 });	
+			stateCheck.Rules.Add(
+				new StorageItemUnstoredQuantityCompareRule
+				{
+				Location = 0,
+				Level = 0,
+				Item = BuildableItemEnum.White_Flour,
+				Quantity = 1,
+				ComparisonType = ComparisonEnum.GreaterThanOrEqual
+			});
 			stage.PlayerStateCheck = stateCheck;
 
 			//Well look at that! Your flour is here. I told you it wouldn't take long. To unload the flour, tap the flour bag in the back of the delivery van and drag it into your restaurant.
@@ -501,7 +534,7 @@ namespace KS.PizzaEmpire.Unity
 			if (currentStage.PlayerStateCheck != null)
 			{
 				Debug.Log(currentStage.PlayerStateCheck);
-				Debug.Log(currentStage.PlayerStateCheck.CheckAll(player));
+				Debug.Log(currentStage.PlayerStateCheck.IsValid(player));
 			}
 			
 			if (currentStage.GUIEvent != GUIEvent.Empty)
@@ -510,7 +543,7 @@ namespace KS.PizzaEmpire.Unity
 				Debug.Log(currentStage.GUIEvent == guiEvent);
 			}
 						
-            if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.CheckAll(player)) &&
+			if ((currentStage.PlayerStateCheck == null || currentStage.PlayerStateCheck.IsValid(player)) &&
                 (currentStage.GUIEvent == guiEvent))
             {
                 SetStage(currentStageIndex + 1);

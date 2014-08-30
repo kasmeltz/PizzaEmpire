@@ -3,6 +3,7 @@ namespace KS.PizzaEmpire.Unity
 	using UnityEngine;
 	using Common.BusinessObjects;
 	using Common.GameLogic;
+	using Common.GameLogic.GamePlayerState;
 	
 	/// <summary>
 	/// Represents the common GUI elements in the
@@ -77,7 +78,12 @@ namespace KS.PizzaEmpire.Unity
 				window.Toggle();
 			};
 			availableCheck = new GamePlayerStateCheck();
-			availableCheck.TutorialStage = 3;
+			availableCheck.Rules.Add(
+				new TutorialStageCompareRule 
+				{
+			 		TutorialStage = 3,
+				 	ComparisonType = ComparisonEnum.GreaterThanOrEqual
+				});
 			phoneIcon.AvailableCheck = availableCheck;
 			
 			GUIStateManager.Instance.AddChild(phoneIcon);	

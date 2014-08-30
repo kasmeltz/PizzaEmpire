@@ -1,10 +1,11 @@
 namespace KS.PizzaEmpire.Unity
 {
-    using Common;
+    using System;
+	using System.Collections.Generic;
+	using Common;
 	using Common.BusinessObjects;
-	using Common.GameLogic;
-	using System;
-    using System.Collections.Generic;
+    using Common.GameLogic;
+    using Common.GameLogic.GamePlayerState;
     using Common.ObjectPool;
     using UnityEngine;
 
@@ -456,7 +457,7 @@ namespace KS.PizzaEmpire.Unity
 			
 			if (AvailableCheck != null)
 			{
-				if (!AvailableCheck.CheckAll(player))
+				if (!AvailableCheck.IsValid(player))
 				{
 					Available = false;
 				}
@@ -464,7 +465,7 @@ namespace KS.PizzaEmpire.Unity
 			
 			if (EnabledCheck != null)
 			{
-				if (!EnabledCheck.CheckAll(player))
+				if (!EnabledCheck.IsValid(player))
 				{
 					Enabled = false;
 				}

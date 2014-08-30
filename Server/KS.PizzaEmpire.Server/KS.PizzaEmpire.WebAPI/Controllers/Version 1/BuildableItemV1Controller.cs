@@ -12,7 +12,7 @@
         // GET api/buildableitem
         public IEnumerable<BuildableItem> Get()
         {            
-                return ItemManager.Instance.BuildableItems.Values;
+             return ItemManager.Instance.BuildableItems.Values;
         }
 
         // GET api/buildableitem/5

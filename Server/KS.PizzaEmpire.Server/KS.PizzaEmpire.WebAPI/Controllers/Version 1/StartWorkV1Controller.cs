@@ -21,9 +21,6 @@
         // GET api/startwork/uniqueKey@@itemCode
         public async Task<Result> Get(string id)
         {
-            throw new NotImplementedException();
-
-            /*
             string[] parts = id.Split(new string[] { "@@" }, StringSplitOptions.RemoveEmptyEntries);
             string playerKey = parts[0];            
             int itemCode = Int32.Parse(parts[1]);
@@ -39,7 +36,7 @@
                     return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT };
                 }
 
-                WorkInProgress item = GamePlayerLogic.Instance.StartWork(player, (BuildableItemEnum)itemCode);
+                WorkInProgress item = GamePlayerLogic.Instance.StartWork(player, 0, 0, (BuildableItemEnum)itemCode);
 
                 if (player.StateChanged)
                 {
@@ -54,7 +51,6 @@
             {
                 return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT, Item = ex.Message };
             }
-             * */
         }
 
         // POST api/startwork

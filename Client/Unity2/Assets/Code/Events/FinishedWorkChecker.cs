@@ -43,10 +43,10 @@
 
             bool contactServer = false;
 
-            for(int i = 0;i < player.WorkItems.Count;i++)
+            for(int i = 0;i < player.WorkInProgress.Count;i++)
             {
-                WorkItem workItem = player.WorkItems[i];
-                if (workItem.FinishTime <= DateTime.UtcNow)
+				WorkInProgress workInProgress = player.WorkInProgress[i];
+				if (workInProgress.FinishTime <= DateTime.UtcNow)
                 {
                     contactServer = true;
                     break;

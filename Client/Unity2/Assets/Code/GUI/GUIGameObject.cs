@@ -7,7 +7,6 @@ namespace KS.PizzaEmpire.Unity
 	using Common.GameLogic;
 	using Common;
 	using Common.APITransfer;
-	using LitJson;
 	
 	public class GUIGameObject : MonoBehaviour 
 	{	
@@ -226,11 +225,12 @@ namespace KS.PizzaEmpire.Unity
 			}
 					
 			//TutorialManager.Instance.OnGUI();		
-										       
+									/*										       	      
 			GUI.TextArea(new Rect(100,0,50, 20), player.Level.ToString());
 			GUI.TextArea(new Rect(150,0,50, 20), player.Experience.ToString());
 			GUI.TextArea(new Rect(200,0,50, 20), player.BuildableItems.Count.ToString());
 			GUI.TextArea(new Rect(250,0,50, 20), player.WorkItems.Count.ToString());
+			*/
 		}
 			
 		private void InitStyles()

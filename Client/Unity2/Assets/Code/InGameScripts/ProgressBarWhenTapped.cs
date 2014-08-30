@@ -1,16 +1,16 @@
 namespace KS.PizzaEmpire.Unity
 {
-	using UnityEngine;
 	using System;
 	using System.Collections.Generic;
 	using Common.BusinessObjects;
 	using Common.GameLogic;
+	using UnityEngine;
 	
 	public class ProgressBarWhenTapped : Tappable 
 	{
 		public GUIElementEnum ProgressBarElement = GUIElementEnum.ProgressBarDryGoodTruck;
-		public BuildableItemEnum BuildableItem = BuildableItemEnum.Dry_Goods_Delivery_Truck_L1;
-		public List<WorkItem> WorkItems;
+		public BuildableItemEnum BuildableItem = BuildableItemEnum.Dry_Goods_Delivery_Truck;
+		public List<WorkInProgress> InProgress;
 		
 		GUIBox guiItemBox;
 		WorkItemProgressBar progressBar;
@@ -30,15 +30,15 @@ namespace KS.PizzaEmpire.Unity
 			isTapped = true;
 			
 			double maxRatio = -1;
-			WorkItem workItem = null;
+			WorkInProgress workInProgress = null;
 			GamePlayer player = GamePlayerManager.Instance.LoggedInPlayer;
-			WorkItems = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(player, BuildableItem);
-			foreach(WorkItem wi in WorkItems)
+			InProgress = GamePlayerLogic.Instance.GetCurrentWorkItemsForProductionItem(player, BuildableItem);
+			foreach(WorkInProgress wip in InProgress)
 			{
-				double ratio = GamePlayerLogic.Instance.GetPercentageCompleteForWorkItem(wi);
+				double ratio = GamePlayerLogic.Instance.GetPercentageCompleteForWorkItem(wip);
 				if (ratio > maxRatio)
 				{
-					workItem = wi;
+					workInProgress = wip;
 					maxRatio = ratio;			
 				}
 			}
@@ -52,7 +52,7 @@ namespace KS.PizzaEmpire.Unity
 			
 			GUIStateManager.Instance.AddChild(guiItemBox);							
 						
-			if (workItem != null)
+			if (workInProgress != null)
 			{
 				progressBar = GUIItemFactory<WorkItemProgressBar>.Instance.Pool.New();
 				progressBar.Content.image = ResourceManager<Texture2D>.Instance.Load(ResourceEnum.TEXTURE_BAR_OUTER);
@@ -61,7 +61,7 @@ namespace KS.PizzaEmpire.Unity
 				progressBar.Element = GUIElementEnum.ProgressBar;
 				progressBar.Visible = true;								
 				
-				progressBar.WorkItem = workItem;
+				progressBar.WorkInProgress = workInProgress;
 				
 				guiItemBox.AddChild(progressBar);	
 			}

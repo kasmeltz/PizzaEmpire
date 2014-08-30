@@ -3,6 +3,7 @@
 	using System;
 	using UnityEngine;
 	using Common.GameLogic;
+	using Common.GameLogic.GamePlayerState;
 	
 	/// <summary>
 	/// Represents an item which defines a stage in a tutorial

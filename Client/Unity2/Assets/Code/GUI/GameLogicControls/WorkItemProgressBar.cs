@@ -24,12 +24,12 @@ namespace KS.PizzaEmpire.Unity
 		/// The WorkItem that determines the length of the progess bar
 		/// </summary>
 		/// <value>The work item.</value>
-		public WorkItem WorkItem { get; set; }
+		public WorkInProgress WorkInProgress { get; set; }
 		
 		public override void Animate (float dt)
 		{
 			Value = (float)GamePlayerLogic.Instance
-				.GetPercentageCompleteForWorkItem(WorkItem);
+				.GetPercentageCompleteForWorkItem(WorkInProgress);
 		}
 						
 		#region GUIItem
@@ -60,7 +60,7 @@ namespace KS.PizzaEmpire.Unity
 				return;
 			}
 			
-			WorkItem = bar.WorkItem; 
+			WorkInProgress = bar.WorkInProgress; 
 		}
 		
 		public override void Reset ()
@@ -70,7 +70,7 @@ namespace KS.PizzaEmpire.Unity
 			Animated = true;
 			MinValue = 0;
 			MaxValue = 1;
-			WorkItem = null;
+			WorkInProgress = null;
 		}		
 		
 		#endregion

@@ -4,8 +4,8 @@
 	using System.Collections.Generic;
 	using System.Text;
 	using UnityEngine;
-	using LitJson;
 	using Common;
+	using Newtonsoft.Json;
 	
 	/// <summary>
 	/// Represents an item that can communicate with the server 
@@ -81,7 +81,11 @@
 		{
 			T response = default(T);
 			
-			WWW www = com.Request;			
+			WWW www = com.Request;		
+			Result result = JsonConvert.DeserializeObject<Result>(www.text);
+			Debug.Log(result.ErrorCode);
+			
+			/*
 			JsonData data = JsonMapper.ToObject(www.text);					
 			int ec =(int)data["ErrorCode"];
 			if (ec == (int)ErrorCode.ERROR_OK)
@@ -101,6 +105,7 @@
 					com.OnError(com);
 				}						
 			}			
+			*/
 			
 			return response;
 		}

@@ -21,9 +21,6 @@
         // GET api/tutorialstage/uniqueKey@@stage
         public async Task<Result> Get(string id)
         {
-            throw new NotImplementedException();
-
-            /*
             string[] parts = id.Split(new string[] { "@@" }, StringSplitOptions.RemoveEmptyEntries);
             string playerKey = parts[0];            
             int stage = Int32.Parse(parts[1]);
@@ -54,7 +51,6 @@
             {
                 return new Result { ErrorCode = ErrorCode.ERROR_RETRIEVING_ACCOUNT, Item = ex.Message };
             }
-             * */
         }
     }
 }

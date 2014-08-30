@@ -1,9 +1,10 @@
 namespace KS.PizzaEmpire.Unity
 {	
-	using UnityEngine;
+	using System.Collections.Generic;
 	using Common.BusinessObjects;
 	using Common.GameLogic;
-	using System.Collections.Generic;
+	using Common.GameLogic.GamePlayerState;
+	using UnityEngine;
 	
 	/// <summary>
 	/// Represents the window for ordering ingreduents
@@ -78,7 +79,7 @@ namespace KS.PizzaEmpire.Unity
 						ServerActionEnum.StartWork, (int)i2.BuildableItem,
 						(ServerCommunication com) => 
 						{
-						GamePlayerLogic.Instance.StartWork(OrderIngredientsWindow.Player, i2.BuildableItem);
+						GamePlayerLogic.Instance.StartWork(OrderIngredientsWindow.Player, 0, 0, i2.BuildableItem);
 					}, GUIGameObject.SetGlobalError);
 				}
 			};
@@ -127,7 +128,12 @@ namespace KS.PizzaEmpire.Unity
 				vegetablesTab.Visible = false;
 			};
 			availableCheck = new GamePlayerStateCheck();
-			availableCheck.TutorialStage = 3;
+			availableCheck.Rules.Add(
+				new TutorialStageCompareRule
+				{ 
+					TutorialStage = 3, 
+					ComparisonType = ComparisonEnum.GreaterThanOrEqual 
+				});
 			dryGoodsTabButton.AvailableCheck = availableCheck;
 
 			window.AddChild (dryGoodsTabButton);
@@ -144,7 +150,12 @@ namespace KS.PizzaEmpire.Unity
 				dryGoodsTab.Visible = false;
 			};
 			availableCheck = new GamePlayerStateCheck();
-			availableCheck.TutorialStage = 13;
+			availableCheck.Rules.Add(
+				new TutorialStageCompareRule
+				{ 
+				TutorialStage = 13, 
+				ComparisonType = ComparisonEnum.GreaterThanOrEqual 
+			});
 			vegetablesTabButton.AvailableCheck = availableCheck;
 			
 			window.AddChild (vegetablesTabButton);
@@ -157,7 +168,13 @@ namespace KS.PizzaEmpire.Unity
 			flourBox.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
 			flourBox.Element = GUIElementEnum.BoxFlour;
 			enabledCheck = new GamePlayerStateCheck();
-			enabledCheck.CanBuildItem = BuildableItemEnum.White_Flour;
+			enabledCheck.Rules.Add(
+				new CanBuildItemRule
+				{ 
+					Level = 0,
+					Location = 0,
+					Item = BuildableItemEnum.White_Flour		
+				});
 			flourBox.EnabledCheck = enabledCheck;
 			
 			dryGoodsTab.AddChild (flourBox);
@@ -179,7 +196,13 @@ namespace KS.PizzaEmpire.Unity
 			flourIngredient.Element = GUIElementEnum.IconFlour;
 			flourIngredient.BuildableItem = BuildableItemEnum.White_Flour;
 			enabledCheck = new GamePlayerStateCheck();
-			enabledCheck.CanBuildItem = BuildableItemEnum.White_Flour;
+			enabledCheck.Rules.Add(
+				new CanBuildItemRule
+				{ 
+				Level = 0,
+				Location = 0,
+				Item = BuildableItemEnum.White_Flour		
+			});
 			flourIngredient.EnabledCheck = enabledCheck;
 			
 			dryGoodsTab.AddChild (flourIngredient);
@@ -191,7 +214,13 @@ namespace KS.PizzaEmpire.Unity
 			tomatoBox.Style = LightweightResourceManager<GUIStyle>.Instance.Get(ResourceEnum.GUISTYLE_BASIC_STYLE);
 			tomatoBox.Element = GUIElementEnum.BoxTomato;
 			enabledCheck = new GamePlayerStateCheck();
-			enabledCheck.CanBuildItem = BuildableItemEnum.Tomatoes;
+			enabledCheck.Rules.Add(
+				new CanBuildItemRule
+				{ 
+				Level = 0,
+				Location = 0,
+				Item = BuildableItemEnum.Tomatoes		
+			});
 			tomatoBox.EnabledCheck = enabledCheck;
 			
 			vegetablesTab.AddChild (tomatoBox);
@@ -213,7 +242,13 @@ namespace KS.PizzaEmpire.Unity
 			tomatoIngredient.Element = GUIElementEnum.IconTomato;
 			tomatoIngredient.BuildableItem = BuildableItemEnum.Tomatoes;
 			enabledCheck = new GamePlayerStateCheck();
-			enabledCheck.CanBuildItem = BuildableItemEnum.Tomatoes;
+			enabledCheck.Rules.Add(
+				new CanBuildItemRule
+				{ 
+				Level = 0,
+				Location = 0,
+				Item = BuildableItemEnum.Tomatoes		
+			});
 			tomatoIngredient.EnabledCheck = enabledCheck;
 			
 			vegetablesTab.AddChild (tomatoIngredient);
