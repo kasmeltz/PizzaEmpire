@@ -5,7 +5,6 @@
 	using System.Text;
 	using UnityEngine;
 	using Common;
-	using Newtonsoft.Json;
 	
 	/// <summary>
 	/// Represents an item that can communicate with the server 
@@ -82,8 +81,12 @@
 			T response = default(T);
 			
 			WWW www = com.Request;		
+			Debug.Log(www.text);
+			
+			/*
 			Result result = JsonConvert.DeserializeObject<Result>(www.text);
 			Debug.Log(result.ErrorCode);
+			*/
 			
 			/*
 			JsonData data = JsonMapper.ToObject(www.text);					

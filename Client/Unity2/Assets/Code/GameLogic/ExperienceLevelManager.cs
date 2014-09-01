@@ -59,7 +59,7 @@
 		/// </summary>
 		public void LoadExperienceLevelDefinitions(string json)
 		{			
-			ExperienceLevels = ExperienceLevelHelper.FromJSON(json);			
+			ExperienceLevels = JsonHelper.Instance.LevelsFromJSON(json);
 		}
 	}
 }

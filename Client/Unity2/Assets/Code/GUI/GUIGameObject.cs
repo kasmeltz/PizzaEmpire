@@ -6,6 +6,7 @@ namespace KS.PizzaEmpire.Unity
 	using Common.BusinessObjects;
 	using Common.GameLogic;
 	using Common;
+	using Common.Utility;
 	using Common.APITransfer;
 	
 	public class GUIGameObject : MonoBehaviour 
@@ -71,6 +72,8 @@ namespace KS.PizzaEmpire.Unity
 	    private void Start()
 		{		
 			IsLoaded = false;
+			
+			JsonHelper.Instance.Initialize(null);
 	        
 			ServerCommunicator.Instance.Communicate(ServerActionEnum.GetBuildableItems,
 		        (ServerCommunication com) => 

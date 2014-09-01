@@ -59,7 +59,7 @@
 		/// </summary>
 		public void LoadItemDefinitions(string json)
 		{
-			BuildableItems = BuildableItemHelper.FromJSON(json);
+			BuildableItems = JsonHelper.Instance.ItemsFromJSON(json);
 		}
 	}
 }

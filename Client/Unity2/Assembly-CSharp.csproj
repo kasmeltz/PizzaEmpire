@@ -94,9 +94,6 @@
  <Reference Include="KS.PizzaEmpire.Common">
  <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/Code/DLLs/KS.PizzaEmpire.Common.dll</HintPath>
  </Reference>
- <Reference Include="Newtonsoft.Json">
- <HintPath>C:/Users/Kevin/Documents/GitHub/PizzaEmpire/Client/Unity2/Assets/Code/DLLs/Newtonsoft.Json.dll</HintPath>
- </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
