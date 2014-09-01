@@ -1,21 +1,25 @@
 ﻿namespace KS.PizzaEmpire.Common.Test.APITransfer
 {
-    using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Common.BusinessObjects;
     using Common.APITransfer;
+    using Common.BusinessObjects;
+    using Common.Utility;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Services.Json;
+    using System;
     using System.Collections.Generic;
-    using Newtonsoft.Json;
 
     [TestClass]
     public class GamePlayerAPIMorphTest
     {
         public GamePlayerAPIMorph Morph;
         public GamePlayer Player;
+        protected IJsonConverter converter;
 
         [TestInitialize]
         public void Initialize()
         {
+            converter = new NewtonsoftJsonConverter();
+
             // Arrange
             Player = new GamePlayer
             {
@@ -130,8 +134,8 @@
         {
             // Act            
             GamePlayerAPI playerAPI = (GamePlayerAPI)Morph.ToAPIFormat(Player);
-            string json = JsonConvert.SerializeObject(playerAPI);
-            GamePlayerAPI unJson = JsonConvert.DeserializeObject<GamePlayerAPI>(json);
+            string json = converter.Serlialize<GamePlayerAPI>(playerAPI);
+            GamePlayerAPI unJson = converter.Deserialize<GamePlayerAPI>(json);
             GamePlayer flip = (GamePlayer)Morph.ToBusinessFormat(unJson);
             // Assert
             Assert.AreEqual(99, flip.Coins);

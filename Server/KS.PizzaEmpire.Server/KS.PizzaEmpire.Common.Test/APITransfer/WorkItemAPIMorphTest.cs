@@ -1,25 +1,25 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+﻿
 namespace KS.PizzaEmpire.Common.Test.APITransfer
 {
-    using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Common.BusinessObjects;
     using Common.APITransfer;
+    using Common.BusinessObjects;
+    using Common.Utility;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Services.Json;
     using System.Collections.Generic;
-    using Newtonsoft.Json;
 
     [TestClass]
     public class WorkItemAPIMorphTest
     {
         public BuildableItemAPIMorph Morph;
         public WorkItem Item;
-
+        protected IJsonConverter converter;
+        
         [TestInitialize]
         public void Initialize()
         {
             Morph = new BuildableItemAPIMorph();
+            converter = new NewtonsoftJsonConverter();
 
             Item = new WorkItem
             {
@@ -102,8 +102,8 @@ namespace KS.PizzaEmpire.Common.Test.APITransfer
         {
             // Act            
             BuildableItemAPI itemAPI = (BuildableItemAPI)Morph.ToAPIFormat(Item);
-            string json = JsonConvert.SerializeObject(itemAPI);
-            BuildableItemAPI unJson = JsonConvert.DeserializeObject<BuildableItemAPI>(json);
+            string json = converter.Serlialize<BuildableItemAPI>(itemAPI);
+            BuildableItemAPI unJson = converter.Deserialize<BuildableItemAPI>(json);
             WorkItem flip = (WorkItem)Morph.ToBusinessFormat(unJson);
 
             // Assert

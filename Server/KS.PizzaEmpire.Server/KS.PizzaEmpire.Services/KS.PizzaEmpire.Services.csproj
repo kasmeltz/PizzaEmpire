@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\RedisCache.cs" />
+    <Compile Include="Json\NewtonsoftJsonConverter.cs" />
     <Compile Include="Serialization\BinaryFormatSerializer.cs" />
     <Compile Include="Serialization\ICacheSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,7 +90,12 @@
       <Project>{4da809fd-8d3c-470f-8608-04da00f89554}</Project>
       <Name>KS.PizzaEmpire.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KS.PizzaEmpire.Common\KS.PizzaEmpire.Common.csproj">
+      <Project>{002afa5c-8d13-4567-8730-498af485a1cb}</Project>
+      <Name>KS.PizzaEmpire.Common</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,11 +1,6 @@
 ﻿namespace KS.PizzaEmpire.Common.APITransfer
 {
     using BusinessObjects;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Class that can morph BuildableItem objects to and from a dto format
