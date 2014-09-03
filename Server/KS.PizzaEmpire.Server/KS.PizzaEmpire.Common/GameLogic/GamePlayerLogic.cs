@@ -256,6 +256,15 @@
             AddItem(player,
                 0, new ItemQuantity
                 {
+                    ItemCode = BuildableItemEnum.Vegetable_Farm_Delivery_Truck,
+                    UnStoredQuantity = 1,
+                    StoredQuantity = 0,
+                    Level = 0
+                });
+
+            AddItem(player,
+                0, new ItemQuantity
+                {
                     ItemCode = BuildableItemEnum.Restaurant_Storage,
                     UnStoredQuantity = 1,
                     StoredQuantity = 0,
@@ -402,10 +411,15 @@
             if (consumable == null)
             {
                 return true;
-            }
+            }           
 
             BusinessLocation businessLocation = player.Locations[location];
             LocationStorage storage = businessLocation.Storage;
+
+            if (!storage.Items.ContainsKey(consumable.StoredIn))
+            {
+                return false;
+            }
 
             int itemsInStorage = 0;
             foreach (ItemQuantity iq in storage.Items.Values)

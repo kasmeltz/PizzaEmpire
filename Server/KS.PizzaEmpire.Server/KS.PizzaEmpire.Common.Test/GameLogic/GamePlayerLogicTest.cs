@@ -96,15 +96,23 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
         [TestMethod]
         public void TestNewGamePlayerHasProperItemCount()
         {
-            Assert.AreEqual(5, Player.Locations[0].Storage.Items.Count);
+            Assert.AreEqual(6, Player.Locations[0].Storage.Items.Count);
         }
 
         [TestMethod]
-        public void TestNewGamePlayerHasProperDeliveryTruck()
+        public void TestNewGamePlayerHasProperDryGoodsDeliveryTruck()
         {
             Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].Level);
             Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].StoredQuantity);
             Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Dry_Goods_Delivery_Truck].UnStoredQuantity);
+        }
+
+        [TestMethod]
+        public void TestNewGamePlayerHasProperVegetableDeliveryTruck()
+        {
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Vegetable_Farm_Delivery_Truck].Level);
+            Assert.AreEqual(0, Player.Locations[0].Storage.Items[BuildableItemEnum.Vegetable_Farm_Delivery_Truck].StoredQuantity);
+            Assert.AreEqual(1, Player.Locations[0].Storage.Items[BuildableItemEnum.Vegetable_Farm_Delivery_Truck].UnStoredQuantity);
         }
 
         [TestMethod]
@@ -398,6 +406,15 @@ namespace KS.PizzaEmpire.Common.Test.GameLogic
             Assert.AreEqual(950, Player.Coins);
             Assert.AreEqual(5, Player.Coupons);
         }
+
+        [TestMethod]
+        public void TestCanBuildTomatoes()
+        {
+            ErrorCode ec = GamePlayerLogic.Instance.CanBuildItem(Player, 0, 0, BuildableItemEnum.Tomatoes);
+
+            Assert.AreEqual(ErrorCode.START_WORK_NO_STORAGE_CAPACITY, ec);
+        }
+
 
         [TestMethod]
         public void TestCanBuildItemFailItemType()

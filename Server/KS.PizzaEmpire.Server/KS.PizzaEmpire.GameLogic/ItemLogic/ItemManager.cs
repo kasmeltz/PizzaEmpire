@@ -745,6 +745,32 @@
             };
             items.Add(item);
 
+            item = new StorageItem
+            {
+                ItemCode = BuildableItemEnum.Fridge,
+                Stats = new List<BuildableItemStat> 
+                {
+                    new BuildableItemStat 
+                    {
+                        BuildSeconds = 0,
+                        CoinCost = 0,
+                        CouponCost = 0,
+                        Experience = 0,
+                        RequiredLevel = 0,
+                        SpeedUpCoupons = 0,
+                        SpeedUpSeconds = 0, 
+                        RequiredItems = new List<ItemQuantity>()                                                      
+                    }
+                },
+                StorageStats = new List<StorageItemStat>
+                {
+                    new StorageItemStat
+                    {                         
+                         Capacity = 10
+                    }
+                }
+            };
+            items.Add(item);
 
             item = new ProductionItem
             {
