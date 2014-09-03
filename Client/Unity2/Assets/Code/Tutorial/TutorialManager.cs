@@ -169,7 +169,7 @@ namespace KS.PizzaEmpire.Unity
     	  				ItemCode = BuildableItemEnum.White_Flour,
             	  		UnStoredQuantity = 1            	  		
             	  	},
-            	  	ComparisonType = ComparisonEnum.GreaterThan
+            	  	ComparisonType = ComparisonEnum.GreaterThanOrEqual
             	});
             stage.PlayerStateCheck = stateCheck;
             stages.Add(stage);
