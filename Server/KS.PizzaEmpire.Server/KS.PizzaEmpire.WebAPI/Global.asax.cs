@@ -4,6 +4,8 @@
     using Common.GameLogic;
     using GameLogic.ExperienceLevelLogic;
     using GameLogic.ItemLogic;
+    using KS.PizzaEmpire.Common.Utility;
+    using KS.PizzaEmpire.Services.Json;
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Mvc;
@@ -14,6 +16,7 @@
     {
         protected void Application_Start()
         {
+            JsonHelper.Instance.Initialize(new NewtonsoftJsonConverter());
             AutoMapperConfiguration.Configure();
 
             Task.WaitAll(ItemManager.Instance.Initialize());

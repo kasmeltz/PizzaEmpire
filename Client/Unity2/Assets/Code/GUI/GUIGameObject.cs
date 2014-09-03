@@ -73,7 +73,7 @@ namespace KS.PizzaEmpire.Unity
 		{		
 			IsLoaded = false;
 			
-			JsonHelper.Instance.Initialize(null);
+			JsonHelper.Instance.Initialize(new UnityJsonConverter());
 	        
 			ServerCommunicator.Instance.Communicate(ServerActionEnum.GetBuildableItems,
 		        (ServerCommunication com) => 

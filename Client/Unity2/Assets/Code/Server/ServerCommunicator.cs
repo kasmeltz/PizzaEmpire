@@ -3,8 +3,10 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Text;
-	using UnityEngine;
 	using Common;
+	using UnityEngine;
+	using Newtonsoft.Json.Linq;
+	using Newtonsoft.Json;
 	
 	/// <summary>
 	/// Represents an item that can communicate with the server 
@@ -83,20 +85,11 @@
 			WWW www = com.Request;		
 			Debug.Log(www.text);
 			
-			/*
-			Result result = JsonConvert.DeserializeObject<Result>(www.text);
-			Debug.Log(result.ErrorCode);
-			*/
-			
-			/*
-			JsonData data = JsonMapper.ToObject(www.text);					
-			int ec =(int)data["ErrorCode"];
+			JToken root = JObject.Parse(www.text);
+			int ec = (int)root["ErrorCode"];
 			if (ec == (int)ErrorCode.ERROR_OK)
 			{
-				data = data["Item"];
-				string json = JsonMapper.ToJson(data);
-				Debug.Log(DateTime.Now + ":" + json);
-				response = JsonMapper.ToObject<T>(json);
+				response = root["Item"].ToObject<T>();				
 			}
 			else
 			{
@@ -108,7 +101,6 @@
 					com.OnError(com);
 				}						
 			}			
-			*/
 			
 			return response;
 		}
